@@ -1,13 +1,12 @@
 name: CI
 
-# Documentation and governance gates run on every pull request and on main.
+# Documentation and governance gates run on every pull request and every push.
 # PLAN P0 row 0 extends this workflow with the source, packed-consumer,
 # fixture, and security jobs; each job added there becomes a required check.
 
 on:
   pull_request:
   push:
-    branches: [main]
 
 permissions:
   contents: read
