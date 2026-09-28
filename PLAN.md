@@ -10,6 +10,16 @@ release. The five [local TDDs](docs/designs/) own component-level design.
 A row is complete only when its acceptance check runs in CI and passes. A
 missing, skipped, or manually bypassed required check is a failure.
 
+## Design readiness gate
+
+Before package feature implementation begins, PAD-PLT-003 and SAD-003 must
+resolve the capability and system boundaries, and all five TDDs must define
+traceable requirements, exact contracts, algorithms, failure behavior,
+observability, tests, rollout, compatibility, and bounded open questions. The
+central linter and local documentation gate must pass, then the authorized human
+reviewer must approve the proposed SAD/TDD revisions. CI or merge success alone
+does not perform that lifecycle transition.
+
 ## P0 entry gate — deterministic bootstrap
 
 Repair the design-system Panda prepare resolution before package feature work.
