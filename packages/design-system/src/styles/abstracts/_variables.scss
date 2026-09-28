@@ -1,0 +1,262 @@
+@use "sass:map";
+@use "sass:string";
+
+// ============================================
+// SCSS VARIABLES — Symmetrical Developer API
+// ============================================
+
+
+// ── Neutral Super-Scheme Structural Elevations ──────────────
+$color-surface-canvas: var(--ds-color-neutral-canvas-default);
+$color-surface-raised: var(--ds-color-neutral-surface-raised-default);
+$color-surface-floating: var(--ds-color-neutral-surface-floating-default);
+$color-surface-sunken: var(--ds-color-neutral-surface-sunken-default);
+
+// ── Symmetrical Matrix Anchors (Core Developer Mappings) ────
+$color-surface-default: var(--ds-color-neutral-surface-default-default);
+$color-surface-subtle: var(--ds-color-neutral-surface-subtle-default);
+$color-surface-muted: var(--ds-color-neutral-surface-strong-default);
+
+$color-state-hover: var(--ds-color-neutral-surface-default-hover);
+$color-state-pressed: var(--ds-color-neutral-surface-default-pressed);
+$color-state-selected: var(--ds-color-neutral-surface-default-selected);
+$color-state-disabled: var(--ds-color-neutral-surface-default-disabled);
+
+$color-text-primary: var(--ds-color-neutral-text-default-default);
+$color-text-secondary: var(--ds-color-neutral-text-subtle-default);
+$color-text-tertiary: var(--ds-color-neutral-text-strong-default);
+$color-text-disabled: var(--ds-color-neutral-text-default-disabled);
+$color-text-inverse: var(--ds-color-neutral-text-contrast-default);
+
+$color-border-default: var(--ds-color-neutral-border-default-default);
+$color-border-subtle: var(--ds-color-neutral-border-subtle-default);
+$color-border-strong: var(--ds-color-neutral-border-strong-default);
+$color-border-disabled: var(--ds-color-neutral-border-default-disabled);
+
+$color-icon-primary: var(--ds-color-neutral-icon-default-default);
+$color-icon-secondary: var(--ds-color-neutral-icon-subtle-default);
+$color-icon-disabled: var(--ds-color-neutral-icon-default-disabled);
+$color-icon-inverse: var(--ds-color-neutral-icon-contrast-default);
+
+$color-ring-focus: var(--ds-color-neutral-border-default-focus);
+$color-shadow-low: var(--ds-color-neutral-shadow-default-default);
+$color-shadow-medium: var(--ds-color-neutral-shadow-subtle-default);
+$color-shadow-high: var(--ds-color-neutral-shadow-strong-default);
+
+// ── Overlay Primitives ─────────────────────────────────────
+$color-overlay-scrim: var(--ds-color-overlay-scrim);
+$color-overlay-scrim-light: var(--ds-color-overlay-scrim-light);
+$color-overlay-glass: var(--ds-color-overlay-glass);
+$color-overlay-glass-dark: var(--ds-color-overlay-glass-dark);
+$color-overlay-backdrop: var(--ds-color-overlay-backdrop);
+
+// ── Utility Primitives ─────────────────────────────────────
+$color-utility-skeleton: var(--ds-color-utility-skeleton);
+$color-utility-skeleton-shimmer: var(--ds-color-utility-skeleton-shimmer);
+$color-utility-highlight: var(--ds-color-utility-highlight);
+$color-utility-selection: var(--ds-color-utility-selection);
+$color-utility-mask: var(--ds-color-utility-mask);
+$color-utility-placeholder: var(--ds-color-utility-placeholder);
+$color-utility-debug: var(--ds-color-utility-debug);
+
+// ── Chart Primitives ───────────────────────────────────────
+$color-chart-categorical-1: var(--ds-color-chart-categorical-1);
+$color-chart-categorical-2: var(--ds-color-chart-categorical-2);
+$color-chart-categorical-3: var(--ds-color-chart-categorical-3);
+$color-chart-categorical-4: var(--ds-color-chart-categorical-4);
+$color-chart-categorical-5: var(--ds-color-chart-categorical-5);
+$color-chart-categorical-6: var(--ds-color-chart-categorical-6);
+
+$color-chart-sequential-1: var(--ds-color-chart-sequential-1);
+$color-chart-sequential-2: var(--ds-color-chart-sequential-2);
+$color-chart-sequential-3: var(--ds-color-chart-sequential-3);
+$color-chart-sequential-4: var(--ds-color-chart-sequential-4);
+$color-chart-sequential-5: var(--ds-color-chart-sequential-5);
+$color-chart-sequential-6: var(--ds-color-chart-sequential-6);
+
+$color-chart-diverging-1: var(--ds-color-chart-diverging-1);
+$color-chart-diverging-2: var(--ds-color-chart-diverging-2);
+$color-chart-diverging-3: var(--ds-color-chart-diverging-3);
+$color-chart-diverging-4: var(--ds-color-chart-diverging-4);
+$color-chart-diverging-5: var(--ds-color-chart-diverging-5);
+$color-chart-diverging-6: var(--ds-color-chart-diverging-6);
+
+$color-chart-threshold-1: var(--ds-color-chart-threshold-1);
+$color-chart-threshold-2: var(--ds-color-chart-threshold-2);
+$color-chart-threshold-3: var(--ds-color-chart-threshold-3);
+$color-chart-threshold-4: var(--ds-color-chart-threshold-4);
+$color-chart-threshold-5: var(--ds-color-chart-threshold-5);
+$color-chart-threshold-6: var(--ds-color-chart-threshold-6);
+
+// ── Primary Brand Symmetrical Matrix Anchors ────────────────
+$color-primary-default: var(--ds-color-primary-solid-default-default);
+$color-primary-hover: var(--ds-color-primary-solid-default-hover);
+$color-primary-pressed: var(--ds-color-primary-solid-default-pressed);
+$color-primary-subtle: var(--ds-color-primary-surface-subtle-default);
+$color-primary-subtle-hover: var(--ds-color-primary-surface-subtle-hover);
+$color-primary-subtle-pressed: var(--ds-color-primary-surface-subtle-pressed);
+$color-primary-text: var(--ds-color-primary-text-default-default);
+$color-primary-text-hover: var(--ds-color-primary-text-default-hover);
+$color-primary-border: var(--ds-color-primary-border-default-default);
+
+
+// ============================================
+// SPACING VARIABLES
+// ============================================
+$spacing-3xs: var(--ds-spacing-3xs);
+$spacing-2xs: var(--ds-spacing-2xs);
+$spacing-xs: var(--ds-spacing-xs);
+$spacing-sm: var(--ds-spacing-sm);
+$spacing-md: var(--ds-spacing-md);
+$spacing-lg: var(--ds-spacing-lg);
+$spacing-xl: var(--ds-spacing-xl);
+$spacing-2xl: var(--ds-spacing-2xl);
+$spacing-3xl: var(--ds-spacing-3xl);
+$spacing-4xl: var(--ds-spacing-4xl);
+
+
+// ============================================
+// SIZE VARIABLES
+// ============================================
+$size-control-xs: var(--ds-size-control-xs);
+$size-control-sm: var(--ds-size-control-sm);
+$size-control-md: var(--ds-size-control-md);
+$size-control-lg: var(--ds-size-control-lg);
+$size-control-xl: var(--ds-size-control-xl);
+$size-icon-xs: var(--ds-size-icon-xs);
+$size-icon-sm: var(--ds-size-icon-sm);
+$size-icon-md: var(--ds-size-icon-md);
+$size-icon-lg: var(--ds-size-icon-lg);
+$size-avatar-xs: var(--ds-size-avatar-xs);
+$size-avatar-sm: var(--ds-size-avatar-sm);
+$size-avatar-md: var(--ds-size-avatar-md);
+$size-avatar-lg: var(--ds-size-avatar-lg);
+
+
+// ============================================
+// BORDER VARIABLES
+// ============================================
+$radius-none: var(--ds-radius-none);
+$radius-sm: var(--ds-radius-sm);
+$radius-md: var(--ds-radius-md);
+$radius-lg: var(--ds-radius-lg);
+$radius-xl: var(--ds-radius-xl);
+$radius-2xl: var(--ds-radius-2xl);
+$radius-full: var(--ds-radius-full);
+
+$stroke-none: var(--ds-stroke-none);
+$stroke-hairline: var(--ds-stroke-hairline);
+$stroke-thin: var(--ds-stroke-thin);
+$stroke-default: var(--ds-stroke-default);
+$stroke-medium: var(--ds-stroke-medium);
+$stroke-thick: var(--ds-stroke-thick);
+
+
+// ============================================
+// OPACITY VARIABLES
+// ============================================
+$opacity-disabled: var(--ds-opacity-disabled);
+$opacity-subtle: var(--ds-opacity-subtle);
+$opacity-muted: var(--ds-opacity-muted);
+$opacity-overlay: var(--ds-opacity-overlay);
+$opacity-scrim: var(--ds-opacity-scrim);
+
+
+// ============================================
+// SHADOW VARIABLES
+// ============================================
+$shadow-low: var(--ds-shadow-low);
+$shadow-medium: var(--ds-shadow-medium);
+$shadow-high: var(--ds-shadow-high);
+$shadow-overlay: var(--ds-shadow-overlay);
+$shadow-focus: var(--ds-shadow-focus);
+
+
+// ============================================
+// Z-INDEX VARIABLES
+// ============================================
+$z-base: var(--ds-z-base);
+$z-sticky: var(--ds-z-sticky);
+$z-dropdown: var(--ds-z-dropdown);
+$z-popover: var(--ds-z-popover);
+$z-toast: var(--ds-z-toast);
+$z-tooltip: var(--ds-z-tooltip);
+$z-overlay: var(--ds-z-overlay);
+$z-modal: var(--ds-z-modal);
+$z-max: var(--ds-z-max);
+
+
+// ============================================
+// TYPOGRAPHY VARIABLES
+// ============================================
+$font-family-base: var(--ds-font-family-base);
+$font-family-heading: var(--ds-font-family-heading);
+$font-family-mono: var(--ds-font-family-mono);
+$font-family-brand: var(--ds-font-family-brand);
+
+$font-size-xs: var(--ds-font-size-xs);
+$font-size-sm: var(--ds-font-size-sm);
+$font-size-md: var(--ds-font-size-md);
+$font-size-lg: var(--ds-font-size-lg);
+$font-size-xl: var(--ds-font-size-xl);
+$font-size-2xl: var(--ds-font-size-2xl);
+$font-size-3xl: var(--ds-font-size-3xl);
+$font-size-4xl: var(--ds-font-size-4xl);
+
+$font-weight-regular: var(--ds-font-weight-regular);
+$font-weight-medium: var(--ds-font-weight-medium);
+$font-weight-semibold: var(--ds-font-weight-semibold);
+$font-weight-bold: var(--ds-font-weight-bold);
+
+$line-height-tight: var(--ds-line-height-tight);
+$line-height-normal: var(--ds-line-height-normal);
+$line-height-relaxed: var(--ds-line-height-relaxed);
+
+$letter-spacing-tight: var(--ds-letter-spacing-tight);
+$letter-spacing-normal: var(--ds-letter-spacing-normal);
+$letter-spacing-wide: var(--ds-letter-spacing-wide);
+
+
+// ============================================
+// MOTION VARIABLES
+// ============================================
+$duration-instant: var(--ds-duration-instant);
+$duration-fast: var(--ds-duration-fast);
+$duration-normal: var(--ds-duration-normal);
+$duration-slow: var(--ds-duration-slow);
+$duration-slower: var(--ds-duration-slower);
+
+$easing-standard: var(--ds-easing-standard);
+$easing-enter: var(--ds-easing-enter);
+$easing-exit: var(--ds-easing-exit);
+$easing-emphasized: var(--ds-easing-emphasized);
+
+$transition-hover: var(--ds-transition-hover);
+$transition-focus: var(--ds-transition-focus);
+$transition-expand: var(--ds-transition-expand);
+$transition-modal: var(--ds-transition-modal);
+$transition-toast: var(--ds-transition-toast);
+
+
+// ============================================
+// LAYOUT VARIABLES
+// ============================================
+// Layout variables defined as semantic CSS properties
+$layout-sidebar-width: var(--ds-layout-sidebar-width);
+$layout-navbar-height: var(--ds-layout-navbar-height);
+
+// Container variables defined as semantic CSS properties
+$container-prose: var(--ds-container-prose);
+$container-base: var(--ds-container-base);
+$container-wide: var(--ds-container-wide);
+$container-fluid: var(--ds-container-fluid);
+
+// Breakpoint variables defined as semantic CSS properties
+$breakpoint-xs: var(--ds-breakpoint-xs);
+$breakpoint-sm: var(--ds-breakpoint-sm);
+$breakpoint-md: var(--ds-breakpoint-md);
+$breakpoint-lg: var(--ds-breakpoint-lg);
+$breakpoint-xl: var(--ds-breakpoint-xl);
+$breakpoint-2xl: var(--ds-breakpoint-2xl);
+
+

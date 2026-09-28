@@ -1,0 +1,11 @@
+{
+  "name": "scnehaux-ui-platform-workspace",
+  "private": true,
+  "version": "0.0.0",
+  "packageManager": "pnpm@10.23.0",
+  "scripts": {
+    "build": "pnpm --filter @scnx/core-ui build && pnpm --filter @scnx/system build",
+    "typecheck": "pnpm --filter @scnx/core-ui exec tsc --noEmit && pnpm --filter @scnx/system exec tsc --noEmit",
+    "test:source": "pnpm --filter @scnx/core-ui test:run && pnpm --filter @scnx/system test"
+  }
+}

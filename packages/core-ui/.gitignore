@@ -1,0 +1,10 @@
+# Test coverage
+coverage/
+.nyc_output/
+
+# Vitest
+.vitest/
+
+# Test artifacts
+test-results/
+playwright-report/

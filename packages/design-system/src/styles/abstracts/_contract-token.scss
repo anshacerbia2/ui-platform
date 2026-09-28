@@ -1,0 +1,409 @@
+// ============================================
+// 1. CORE CONTRACT (TIER-1)
+// ============================================
+// Defines the foundational raw scales and values that MUST exist
+// before System tokens can map to them.
+@use "sass:map";
+$neutral-scale: (
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  "1A",
+  "2A",
+  "3A",
+  "4A",
+  "5A",
+  "6A",
+  "7A",
+  "8A",
+  "9A",
+  "10A",
+  "11A",
+  "12A"
+);
+
+$chromatic-scale: (
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  "1A",
+  "2A",
+  "3A",
+  "4A",
+  "5A",
+  "6A",
+  "7A",
+  "8A",
+  "9A",
+  "10A",
+  "11A",
+  "12A"
+);
+
+$core: (
+  // ==========================================
+  // 1. COLOR
+  // ==========================================
+  color: (
+      white: (
+        light: $neutral-scale,
+        dark: $neutral-scale,
+      ),
+      black: (
+        light: $neutral-scale,
+        dark: $neutral-scale,
+      ),
+      neutral: (
+        light: $neutral-scale,
+        dark: $neutral-scale,
+      ),
+      red: (
+        light: $chromatic-scale,
+        dark: $chromatic-scale,
+      ),
+      orange: (
+        light: $chromatic-scale,
+        dark: $chromatic-scale,
+      ),
+      yellow: (
+        light: $chromatic-scale,
+        dark: $chromatic-scale,
+      ),
+      lime: (
+        light: $chromatic-scale,
+        dark: $chromatic-scale,
+      ),
+      green: (
+        light: $chromatic-scale,
+        dark: $chromatic-scale,
+      ),
+      teal: (
+        light: $chromatic-scale,
+        dark: $chromatic-scale,
+      ),
+      blue: (
+        light: $chromatic-scale,
+        dark: $chromatic-scale,
+      ),
+      purple: (
+        light: $chromatic-scale,
+        dark: $chromatic-scale,
+      ),
+      magenta: (
+        light: $chromatic-scale,
+        dark: $chromatic-scale,
+      ),
+    ),
+  // ==========================================
+  // 2. SPACING & SIZING
+  // ==========================================
+  spacing: (0, 0_5, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20),
+  size: ('10', '12', '14', '16', '20', '24', '32', '40', '48', '56', '64', '72'),
+  // ==========================================
+  // 3. BORDER & SHAPE
+  // ==========================================
+  radius: (none, xs, sm, md, lg, xl, full),
+  width: (0, 1, 2, 3, 4),
+  // ==========================================
+  // 4. EFFECTS & Z-INDEX
+  // ==========================================
+  opacity: (0, 4, 8, 12, 16, 24, 38, 60, 100),
+  shadow: (none, sm, md, lg, xl, inner),
+  motion: (
+    duration-fast,
+    duration-base,
+    duration-slow,
+    duration-natural,
+    easing-standard,
+    easing-in,
+    easing-out,
+    easing-sharp
+  ),
+  z-index: (0, 10, 20, 30, 40, 50, 60),
+  // ==========================================
+  // 5. TYPOGRAPHY
+  // ==========================================
+  font-family: (sans, mono),
+  font-weight: (thin, regular, normal, medium, semibold, bold),
+  line-height: (tight, normal, relaxed),
+  letter-spacing: (tighter, tight, normal, wide),
+  // ==========================================
+  // 6. LAYOUT & MISC
+  // ==========================================
+  layout: (sidebar-width, navbar-height),
+  breakpoint: (xs, sm, md, lg, xl, 2xl),
+  container-width: (prose, base, wide, fluid)
+);
+
+// ============================================
+// 2. SYSTEM CONTRACT (TIER-2 SEMANTIC ALIASES)
+// ============================================
+// Defines the semantic design tokens that components will consume.
+
+$emphases: (subtle, default, strong, contrast);
+
+$states-surface-solid: (default, hover, pressed, selected, disabled);
+$states-border: (default, selected, focus, disabled);
+$states-text-icon: (default, hover, disabled);
+$states-shadow: (default, hover, pressed);
+
+$emphasis-states-surface: (
+  subtle: $states-surface-solid,
+  default: $states-surface-solid,
+  strong: $states-surface-solid,
+  contrast: $states-surface-solid
+);
+
+$emphasis-states-solid: (
+  subtle: $states-surface-solid,
+  default: $states-surface-solid,
+  strong: $states-surface-solid,
+  contrast: $states-surface-solid
+);
+
+$emphasis-states-border: (
+  subtle: $states-border,
+  default: $states-border,
+  strong: $states-border,
+  contrast: $states-border
+);
+
+$emphasis-states-text: (
+  subtle: $states-text-icon,
+  default: $states-text-icon,
+  strong: $states-text-icon,
+  contrast: $states-text-icon
+);
+
+$emphasis-states-icon: (
+  subtle: $states-text-icon,
+  default: $states-text-icon,
+  strong: $states-text-icon,
+  contrast: $states-text-icon
+);
+
+$emphasis-states-shadow: (
+  subtle: $states-shadow,
+  default: $states-shadow,
+  strong: $states-shadow,
+  contrast: $states-shadow
+);
+
+// Asymmetric Symmetrical-Scheme Matrix Contract
+$scheme-contract: (
+  surface: $emphasis-states-surface,
+  solid: $emphasis-states-solid,
+  border: $emphasis-states-border,
+  text: $emphasis-states-text,
+  icon: $emphasis-states-icon,
+  shadow: $emphasis-states-shadow
+);
+
+$system: (
+  color: (
+    neutral: map.merge($scheme-contract, (
+      canvas: (default: ()),
+      surface-raised: (default: ()),
+      surface-floating: (default: ()),
+      surface-sunken: (default: ())
+    )),
+    black: $scheme-contract,
+    white: $scheme-contract,
+    primary: $scheme-contract,
+    secondary: $scheme-contract,
+    accent: $scheme-contract,
+    info: $scheme-contract,
+    success: $scheme-contract,
+    warning: $scheme-contract,
+    danger: $scheme-contract,
+    overlay: (scrim, scrim-light, glass, glass-dark, backdrop),
+    utility: (skeleton, skeleton-shimmer, selection, mask, placeholder, debug),
+    chart: (
+      categorical: (1, 2, 3, 4, 5, 6),
+      sequential: (1, 2, 3, 4, 5, 6),
+      diverging: (1, 2, 3, 4, 5, 6),
+      threshold: (1, 2, 3, 4, 5, 6)
+    )
+  ),
+
+  // Dimension Semantic Families
+  spacing: (
+    '3xs',
+    '2xs',
+    'xs',
+    'sm',
+    'md',
+    'lg',
+    'xl',
+    '2xl',
+    '3xl',
+    '4xl',
+  ),
+
+  size: (
+    control-xs,
+    control-sm,
+    control-md,
+    control-lg,
+    control-xl,
+    icon-xs,
+    icon-sm,
+    icon-md,
+    icon-lg,
+    avatar-xs,
+    avatar-sm,
+    avatar-md,
+    avatar-lg,
+  ),
+
+  radius: (
+    none,
+    sm,
+    md,
+    lg,
+    xl,
+    '2xl',
+    full,
+  ),
+
+  stroke: (
+    none,
+    hairline,
+    thin,
+    default,
+    medium,
+    thick,
+  ),
+
+  opacity: (
+    disabled,
+    subtle,
+    muted,
+    overlay,
+    scrim,
+  ),
+
+  z: (
+    base,
+    sticky,
+    dropdown,
+    popover,
+    toast,
+    tooltip,
+    overlay,
+    modal,
+    max,
+  ),
+
+  shadow: (
+    low,
+    medium,
+    high,
+    overlay,
+    focus,
+  ),
+
+  // Typography Semantic Families
+  font-family: (
+    base,
+    heading,
+    mono,
+    brand,
+  ),
+
+  font-size: (
+    xs,
+    sm,
+    md,
+    lg,
+    xl,
+    '2xl',
+    '3xl',
+    '4xl',
+  ),
+
+  font-weight: (
+    regular,
+    medium,
+    semibold,
+    bold,
+  ),
+
+  line-height: (
+    tight,
+    normal,
+    relaxed,
+  ),
+
+  letter-spacing: (
+    tight,
+    normal,
+    wide,
+  ),
+
+  // Motion Semantic Families
+  duration: (
+    instant,
+    fast,
+    normal,
+    slow,
+    slower,
+  ),
+
+  easing: (
+    standard,
+    enter,
+    exit,
+    emphasized,
+  ),
+
+  transition: (
+    hover,
+    focus,
+    expand,
+    modal,
+    toast,
+  ),
+
+  layout: (
+    sidebar-width,
+    navbar-height,
+  ),
+
+  breakpoint: (
+    xs,
+    sm,
+    md,
+    lg,
+    xl,
+    '2xl',
+  ),
+
+  container: (
+    prose,
+    base,
+    wide,
+    fluid,
+  ),
+
+  // Animation Tokens
+  animation: (),
+);

@@ -1,0 +1,21 @@
+// ============================================
+// COMPONENTS — SCSS SOURCE BUNDLE
+// ============================================
+// Consumer: @use '@scnx/system/styles/components'
+// (For SCSS users who want to customize before compile)
+//
+// Import order matches tsup compile order:
+// Atoms → Layouts → Organisms
+
+// Atoms
+@forward "../../components/atoms/button/Button.scss";
+@forward "../../components/atoms/transition/Transition.scss";
+
+// Layouts
+@forward "../../components/layouts/floating-layout/FloatingLayout.scss";
+
+// Organisms
+@forward "../../components/organisms/navbar/Navbar.scss";
+@forward "../../components/organisms/navigation/Navigation.scss";
+@forward "../../components/organisms/sidebar/Sidebar.scss";
+@forward "../../components/organisms/code-showcase/CodeShowcase.scss";

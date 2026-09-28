@@ -1,0 +1,65 @@
+@use "sass:map";
+@use "sass:meta";
+@use "sass:string";
+@use "./contract-token" as contract;
+
+@function flatten-keys($map: contract.$contract-token, $prefix: "") {
+  $result: ();
+
+  @each $key, $value in $map {
+    $joined-key: "";
+    @if $prefix == "" {
+      $joined-key: $key;
+    } @else {
+      $joined-key: "#{$prefix}-#{$key}";
+    }
+
+    @if meta.type-of($value) == "map" or meta.type-of($value) == "list" {
+      $nested: flatten-keys($value, $joined-key);
+      $result: map.merge($result, $nested);
+    } @else {
+      $result: map.merge(
+        $result,
+        (
+          $joined-key: "#{$joined-key}",
+        )
+      );
+    }
+  }
+
+  @return $result;
+}
+
+// Generic token resolver (for non-RGB values like spacing, typography, etc)
+@function token($name) {
+  @return string.unquote("var(--#{$name})");
+}
+
+// Directly accessing css var and converts to RGB value
+@function rgb-token($name, $opacity: 1) {
+  @return string.unquote("rgb(var(--#{$name})/#{calc($opacity / 1 * 100)}%)");
+}
+
+@mixin show-registered-variables() {
+  $flattened: flatten-keys();
+  $debug-string: "List of Variables";
+
+  @each $key, $value in $flattened {
+    $debug-string: "#{$debug-string}\a--#{$value}";
+  }
+
+  body::before {
+    content: "#{$debug-string}";
+    white-space: pre;
+    display: block;
+    padding: 1rem;
+    background: #000;
+    color: #0f0;
+    font-family: monospace;
+    z-index: 9999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+  }
+}

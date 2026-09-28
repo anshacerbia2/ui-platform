@@ -1,0 +1,54 @@
+@use "styles/abstracts/variables" as tokens;
+
+.scnx-toc {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  font-family: tokens.$font-family-base;
+
+  &__label {
+    // text-transform: uppercase;
+    font-size: tokens.$font-size-sm;
+    font-weight: tokens.$font-weight-semibold;
+    letter-spacing: tokens.$letter-spacing-wide;
+    color: tokens.$color-text-primary;
+    margin-bottom: tokens.$spacing-xs;
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-top: tokens.$spacing-xs;
+    position: relative;
+    
+    // Nested lists receive automatic indentation margin
+    .scnx-toc__item & {
+      margin-left: tokens.$spacing-md;
+    }
+  }
+
+  &__item {
+    position: relative;
+    margin-bottom: tokens.$spacing-xs;
+  }
+
+  &__link {
+      text-decoration: none;
+      display: block;
+      font-size: tokens.$font-size-sm;
+      color: tokens.$color-text-secondary;
+      transition: tokens.$transition-expand;
+      line-height: tokens.$line-height-tight;
+      position: relative;
+
+      &:hover {
+        color: tokens.$color-text-primary;
+      }
+
+      // Automatically activated by the Headless RSC Slot Hook Output! 
+      &[data-active="true"] {
+        color: tokens.$color-text-primary;
+      }
+    }
+}

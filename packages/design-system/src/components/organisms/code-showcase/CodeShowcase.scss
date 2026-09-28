@@ -1,0 +1,196 @@
+@use "styles/abstracts/variables" as *;
+
+.scnx-code-showcase {
+  --showcase-bg: #{$color-surface-canvas};
+  --showcase-border: #{$color-border-default};
+  --showcase-nav-bg: #{$color-surface-raised};
+  --showcase-tab-active-bg: #{$color-state-selected};
+  --showcase-text-primary: #{$color-text-primary};
+  --showcase-text-secondary: #{$color-text-secondary};
+  --showcase-preview-bg: #{$color-surface-default};
+  --showcase-content-bg: #{$color-surface-sunken};
+  --showcase-content-text: #{$color-text-secondary};
+  --showcase-radius: #{$radius-lg};
+  
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-block: 1.5em;
+  border: 1px solid var(--showcase-border);
+  border-radius: var(--showcase-radius);
+  background-color: var(--showcase-bg);
+  box-shadow: $shadow-low;
+  transition: box-shadow 0.3s ease;
+  overflow: hidden;
+
+  &:hover {
+    box-shadow: $shadow-medium;
+  }
+
+  // Principal-grade internal border management
+  & > * + * {
+    border-top: 1px solid var(--showcase-border);
+  }
+
+  &__preview {
+    padding: $spacing-xl;
+    background-color: var(--showcase-preview-bg);
+    background-image: conic-gradient(
+      #{$color-surface-raised} 25%,
+      #{$color-surface-canvas} 0 50%,
+      #{$color-surface-raised} 0 75%,
+      #{$color-surface-canvas} 0
+    );
+    background-size: 30px 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 120px;
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 2em;
+    row-gap: 0.5em;
+    padding: 0.5em 1em;
+    color: var(--showcase-text-secondary);
+    font-size: 0.875em;
+    background-color: $color-surface-default;
+  }
+
+  &__tabs {
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-family: $font-family-base;
+  }
+
+  &__marker {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    border-radius: $radius-sm;
+    background-color: var(--showcase-tab-active-bg); 
+    transition: left 0.2s ease, width 0.2s ease;
+    z-index: 1;
+  }
+
+  &__tab {
+    position: relative;
+    padding: 0.25em 0.75em;
+    transition: color 0.2s ease;
+    cursor: pointer;
+    z-index: 2; 
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    color: var(--showcase-text-secondary);
+
+    &[data-active="true"] {
+      color: var(--showcase-text-primary);
+    }
+  }
+
+  &__lang-icon {
+    display: flex;
+    align-items: center;
+    svg {
+      min-width: fit-content;
+      font-size: 1.5em;
+    }
+  }
+
+  &__selectors {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    column-gap: 0.5em;
+  }
+
+  &__icon-button {
+    background: transparent;
+    border: none;
+    color: var(--showcase-text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.35em;
+    border-radius: $radius-sm;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: var(--showcase-text-primary);
+      background-color: $color-state-hover;
+    }
+  }
+
+  &__content {
+    background-color: var(--showcase-content-bg);
+    overflow: hidden;
+    transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+  }
+
+  &__code-inner {
+    background-color: var(--showcase-content-bg);
+    color: var(--showcase-content-text);
+    font-family: $font-family-mono;
+    font-size: $font-size-sm;
+    overflow-x: auto;
+
+    pre, code {
+      margin: 0;
+      padding: 0 !important;
+      border: none;
+      background: transparent !important;
+      color: var(--showcase-content-text);
+      font-size: 0.925em;
+      min-width: max-content;
+      display: block;
+    }
+
+    pre {
+      padding: $spacing-md $spacing-lg !important;
+    }
+
+    // Minimalist 3px scrollbar
+    &::-webkit-scrollbar {
+      width: 3px;
+      height: 3px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: var(--showcase-text-secondary);
+      border-radius: 3px;
+    }
+  }
+
+  // Responsive logic port
+  @media (max-width: 1024px) { 
+    &__nav {
+      flex-wrap: wrap;
+    }
+    &__actions {
+      flex-grow: 1;
+    }
+    &__selectors {
+      max-width: 100%;
+      flex-grow: 1;
+      justify-content: flex-end;
+    }
+  }
+}

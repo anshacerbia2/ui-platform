@@ -1,0 +1,56 @@
+@use "sass:list";
+@use "sass:map";
+@use "sass:meta";
+@use "./contract-token" as contract;
+
+// ============================================
+// THEME VALIDATOR
+// ============================================
+// Validates a full theme token against the base contract by default.
+// Alternatively accepts an explicit $contract to validate partial overrides.
+@mixin validate-structure($token, $schema, $path: "") {
+  @if meta.type-of($schema) == "map" {
+    @each $key, $sub-schema in $schema {
+      @if not map.has-key($token, $key) {
+        @error "SCHEMA ERROR: Missing required key '#{$key}' at path '#{$path}'.";
+      }
+      $token-val: map.get($token, $key);
+      $sub-path: $key;
+      @if $path != "" { $sub-path: "#{$path}.#{$key}"; }
+      @include validate-structure($token-val, $sub-schema, $sub-path);
+    }
+  } @else if meta.type-of($schema) == "list" {
+    @each $key in $schema {
+      @if not map.has-key($token, $key) {
+        @error "SCHEMA ERROR: Missing required key '#{$key}' at path '#{$path}'.";
+      }
+    }
+  }
+}
+
+@mixin reverse-validate-structure($token, $schema, $path: "") {
+  @each $key, $value in $token {
+    @if meta.type-of($schema) == "map" {
+      @if not map.has-key($schema, $key) {
+        @error "STRICTNESS ERROR: Unknown key '#{$key}' found at path '#{$path}'. Please define it in _contract-token.scss first.";
+      }
+      $sub-schema: map.get($schema, $key);
+      $sub-path: $key;
+      @if $path != "" { $sub-path: "#{$path}.#{$key}"; }
+      @if meta.type-of($value) == "map" {
+        @include reverse-validate-structure($value, $sub-schema, $sub-path);
+      }
+    } @else if meta.type-of($schema) == "list" {
+      @if not list.index($schema, $key) {
+        @error "STRICTNESS ERROR: Unknown key '#{$key}' found at path '#{$path}'. Please define it in _contract-token.scss first.";
+      }
+    } @else {
+      @error "STRICTNESS ERROR: Unknown key '#{$key}' found at path '#{$path}'.";
+    }
+  }
+}
+
+@mixin validate-token($token, $contract: contract.$system) {
+  @include validate-structure($token, $contract);
+  @include reverse-validate-structure($token, $contract);
+}

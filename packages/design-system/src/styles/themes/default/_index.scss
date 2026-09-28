@@ -1,0 +1,143 @@
+@use "sass:map";
+@use "styles/abstracts/contract-token" as contract;
+@use "styles/abstracts/core-token" as core;
+@use "styles/abstracts/token-validator" as validator;
+@use "styles/abstracts/theme-injector" as injector;
+@use "./default-token" as default;
+@use "./default_dark-token" as dark;
+
+// 1. Validate Tier 1 Internal Scales (SCSS Only)
+@include validator.validate-token(
+  (
+    color-palette: core.$color,
+  ),
+  (
+    color-palette: map.get(contract.$core, "color"),
+  )
+);
+@include validator.validate-token(
+  (
+    spacing-scale: core.$spacing,
+  ),
+  (
+    spacing-scale: map.get(contract.$core, "spacing"),
+  )
+);
+@include validator.validate-token(
+  (
+    size-scale: core.$size,
+  ),
+  (
+    size-scale: map.get(contract.$core, "size"),
+  )
+);
+@include validator.validate-token(
+  (
+    radius-scale: core.$radius,
+  ),
+  (
+    radius-scale: map.get(contract.$core, "radius"),
+  )
+);
+@include validator.validate-token(
+  (
+    width-scale: core.$width,
+  ),
+  (
+    width-scale: map.get(contract.$core, "width"),
+  )
+);
+@include validator.validate-token(
+  (
+    opacity-scale: core.$opacity,
+  ),
+  (
+    opacity-scale: map.get(contract.$core, "opacity"),
+  )
+);
+@include validator.validate-token(
+  (
+    shadow-scale: core.$shadow,
+  ),
+  (
+    shadow-scale: map.get(contract.$core, "shadow"),
+  )
+);
+@include validator.validate-token(
+  (
+    motion-scale: core.$motion,
+  ),
+  (
+    motion-scale: map.get(contract.$core, "motion"),
+  )
+);
+@include validator.validate-token(
+  (
+    z-index-scale: core.$z-index,
+  ),
+  (
+    z-index-scale: map.get(contract.$core, "z-index"),
+  )
+);
+@include validator.validate-token(
+  (
+    font-family-scale: core.$font-family,
+  ),
+  (
+    font-family-scale: map.get(contract.$core, "font-family"),
+  )
+);
+@include validator.validate-token(
+  (
+    font-weight-scale: core.$font-weight,
+  ),
+  (
+    font-weight-scale: map.get(contract.$core, "font-weight"),
+  )
+);
+@include validator.validate-token(
+  (
+    line-height-scale: core.$line-height,
+  ),
+  (
+    line-height-scale: map.get(contract.$core, "line-height"),
+  )
+);
+@include validator.validate-token(
+  (
+    layout-scale: core.$layout,
+  ),
+  (
+    layout-scale: map.get(contract.$core, "layout"),
+  )
+);
+
+@include validator.validate-token(
+  (
+    letter-spacing-scale: core.$letter-spacing,
+  ),
+  (
+    letter-spacing-scale: map.get(contract.$core, "letter-spacing"),
+  )
+);
+
+// 2. Validate Tier 2 Semantic Mapping
+@include validator.validate-token(default.$default-token, contract.$system);
+@include validator.validate-token(dark.$dark-token, contract.$system);
+
+
+// ============================================
+// 4. INJECT TIER-2 SEMANTIC MAPPINGS (THEME SPECIFIC)
+// ============================================
+:root,
+[data-theme="light"] {
+  // Inject semantic mappings (Tier-2)
+  @include injector.inject-theme(default.$default-token, "ds", "light");
+}
+
+[data-theme="dark"] {
+  // We use dark mode mapping over the BASE token
+  // meaning it fetches both the semantic mappings from _dark-token.scss
+  // AND the shifted dual-axis chromatic scales defined in _default-token.scss
+  @include injector.inject-theme(dark.$dark-token, "ds", "dark");
+}

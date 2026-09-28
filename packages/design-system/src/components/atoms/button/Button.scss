@@ -1,0 +1,45 @@
+@use "styles/abstracts/variables" as *;
+
+.scnx-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1.25rem;
+  border-radius: $radius-md;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  transition: $transition-hover;
+  gap: $spacing-xs;
+
+  &[data-variant="primary"] {
+    background: $color-primary-default;
+    color: $color-text-inverse;
+
+    &:hover {
+      background: $color-primary-hover;
+      box-shadow: $shadow-low;
+    }
+
+    &:active {
+      background: $color-primary-pressed;
+    }
+  }
+
+  &[data-variant="secondary"] {
+    background: $color-surface-default;
+    color: $color-text-primary;
+    border: 1px solid $color-border-default;
+
+    &:hover {
+      background: $color-state-hover;
+      border-color: $color-text-primary;
+    }
+  }
+
+  &:disabled, &[data-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

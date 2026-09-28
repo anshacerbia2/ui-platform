@@ -1,0 +1,41 @@
+@use "sass:map";
+@use "sass:meta";
+@use "sass:string";
+
+@mixin inject-theme($token, $prefix: "", $mode: "light") {
+  @each $key, $value in $token {
+    $full-key: "";
+    @if $prefix != "" {
+      $full-key: "#{$prefix}-#{$key}";
+    } @else {
+      $full-key: "#{$key}";
+    }
+
+    @if meta.type-of($value) == "map" {
+      // DUAL AXIS HANDLER
+      // If we encounter a 'light' or 'dark' node inside the atomic colors,
+      // only recurse into it if it matches our current target $mode.
+      // E.g. skip the 'dark' loop if we are injecting the 'light' base theme.
+      // Additionally, drop the "light" string from the variable name so it resolves as --palette-red-500.
+      @if $key == "light" or $key == "dark" {
+        @if $key == $mode {
+          // Pass the previous prefix without adding "-light" or "-dark"
+          @include inject-theme($value, $prefix, $mode);
+        }
+      } @else {
+        // Standard structural recursion
+        @include inject-theme($value, $full-key, $mode);
+      }
+    } @else {
+      // For multi-value tokens (like font stacks), Sass might try to format
+      // them as a list with newlines. We force a single-line string.
+      $formatted-value: "";
+      @if meta.type-of($value) == "list" {
+        $formatted-value: string.unquote(meta.inspect($value));
+      } @else {
+        $formatted-value: #{$value};
+      }
+      --#{$full-key}: #{$formatted-value};
+    }
+  }
+}

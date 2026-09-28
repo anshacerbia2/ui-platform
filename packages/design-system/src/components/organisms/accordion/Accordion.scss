@@ -1,0 +1,98 @@
+@use "styles/abstracts/variables" as *;
+
+.scnx-accordion {
+  --accordion-bg: #{$color-surface-canvas};
+  --accordion-border-color: #{$color-border-default};
+  --accordion-focus-ring: #{$color-ring-focus};
+  --accordion-item-border-radius: #{$radius-md};
+
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+  width: 100%;
+
+  // Variant: single border (stacked)
+  &--stacked {
+    gap: 0;
+    
+    .scnx-accordion__item {
+      border-radius: 0;
+      border-bottom: 0;
+      
+      &:first-child {
+        border-top-left-radius: var(--accordion-item-border-radius);
+        border-top-right-radius: var(--accordion-item-border-radius);
+      }
+      
+      &:last-child {
+        border-bottom-left-radius: var(--accordion-item-border-radius);
+        border-bottom-right-radius: var(--accordion-item-border-radius);
+        border-bottom: 1px solid var(--accordion-border-color);
+      }
+    }
+  }
+
+  &__item {
+    border: 1px solid var(--accordion-border-color);
+    border-radius: var(--accordion-item-border-radius);
+    background-color: var(--accordion-bg);
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus-within {
+      border-color: var(--accordion-focus-ring);
+      box-shadow: var(--ds-shadow-focus);
+    }
+  }
+
+  &__trigger {
+    width: 100%;
+    padding: $spacing-md 1.25rem;
+    background-color: $color-surface-default;
+    border: none;
+    text-align: left;
+    font-size: $font-size-md;
+    font-weight: 500;
+    color: $color-text-primary;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    outline: none;
+
+    &:hover {
+      background-color: $color-state-hover;
+    }
+
+    /* Icon rotation support if an icon is placed inside */
+    &[data-state="open"] {
+      .scnx-accordion__icon {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &__content {
+    background-color: var(--accordion-bg);
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
+    line-height: $line-height-relaxed;
+    transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    
+    // Internal wrapper for padding to allow smooth height transitions
+    // without padding-box calculations interfering
+    &-inner {
+      padding: $spacing-md 1.25rem;
+      border-top: 1px solid var(--accordion-border-color);
+    }
+  }
+
+  &__icon {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    color: $color-text-secondary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

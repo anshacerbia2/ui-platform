@@ -1,0 +1,33 @@
+@use "styles/abstracts/token-validator" as validator;
+@use "styles/abstracts/theme-injector" as injector;
+@use "achromatic-contract" as contract;
+@use "achromatic-light-token" as achromatic;
+@use "achromatic-dark-token" as achromatic-dark;
+
+// ============================================
+// VALIDATE before injecting
+// Ensures $achromatic-token satisfies all keys
+// declared in $achromatic-contract.
+// Fails the build if a required key is missing.
+// ============================================
+@include validator.validate-token(
+  $token: achromatic.$achromatic-light-token,
+  $contract: contract.$achromatic-contract
+);
+@include validator.validate-token(
+  $token: achromatic-dark.$achromatic-dark-token,
+  $contract: contract.$achromatic-contract
+);
+
+// ============================================
+// INJECT achromatic theme overrides into :root
+// ============================================
+:root,
+[data-theme="light"] {
+  @include injector.inject-theme(achromatic.$achromatic-light-token, "ds");
+}
+
+[data-theme="dark"],
+.dark {
+  @include injector.inject-theme(achromatic-dark.$achromatic-dark-token, "ds");
+}

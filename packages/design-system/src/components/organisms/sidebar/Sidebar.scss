@@ -1,0 +1,393 @@
+@use "styles/abstracts/variables" as *;
+@use "styles/abstracts/mixins" as *;
+
+// ============================================
+// TIER 3: Sidebar Component Tokens (Semantic)
+// ============================================
+// Sidebar inherently acts as an "Inverse" surface (Dark on Light canvas).
+// Passive items use primary-on-color text, active items act as solid surface pills.
+.scnx-sidebar {
+  --sidebar-width: var(--layout-sidebar-width, var(--ds-layout-sidebar-width));
+  --sidebar-bg-color: #{$color-surface-default};
+  --sidebar-group-header-color: #{$color-text-primary};
+  --sidebar-item-color: #{$color-text-secondary};
+  --sidebar-item-hover-color: #{$color-primary-text-hover};
+  --sidebar-item-active-color: #{$color-primary-text};
+  --sidebar-item-hover-bg: #{$color-primary-subtle-hover};
+  --sidebar-item-active-bg: #{$color-primary-subtle};
+  --sidebar-item-active-weight: 600;
+
+  &[data-variant="light"] {
+    .scnx-sidebar__toggle {
+      color: #{$color-text-primary};
+      border-color: #{$color-border-subtle};
+    }
+  }
+}
+
+.scnx-sidebar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: var(--sidebar-width);
+  height: 100%;
+  // border-radius: $border-radius-xl;
+  // border: 1px solid #{$color-border-muted};
+  background-color: var(--sidebar-bg-color);
+  color: #{$color-text-primary};
+  transition: width $duration-slow $easing-standard;
+
+  &__navigation {
+    flex-grow: 1;
+    margin-block: 1rem;
+    padding-block: 0 !important;
+    color: #{$color-text-primary};
+    overflow-y: auto;
+    overflow-x: hidden;
+    user-select: none;
+
+    // Thin scrollbar styling
+    @include thin-scrollbar($width: 0);
+
+    .scnx-navigation__group {
+      > li {
+        .scnx-transition > .scnx-navigation__group {
+          height: auto;
+        }
+      }
+    }
+
+    .scnx-navigation__item {
+      position: relative;
+      color: var(--sidebar-item-color);
+      border-radius: $radius-md;
+      transition:
+        background-color $duration-fast $easing-standard,
+        color $duration-fast $easing-standard;
+
+      &:hover,
+      &:focus {
+        background-color: var(--sidebar-item-hover-bg);
+        color: var(--sidebar-item-hover-color);
+      }
+
+      &[data-active="true"] {
+        background-color: var(--sidebar-item-active-bg);
+        color: var(--sidebar-item-active-color);
+        font-weight: var(--sidebar-item-active-weight);
+
+        // Expert Enterprise Standard: Vertical Indicator for cohesive nav language
+        &::before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: $spacing-xs;
+          bottom: $spacing-xs;
+          width: 2px;
+          background-color: var(--sidebar-item-active-color);
+          border-radius: $radius-full;
+        }
+      }
+    }
+
+    .scnx-navigation__item-content {
+      transition:
+        translate $duration-slow $easing-standard,
+        opacity $duration-slow $easing-standard,
+        visibility $duration-slow;
+    }
+
+    .scnx-navigation__badge {
+      background-color: color-mix(in oklch, var(--ds-color-neutral-surface-default-default) 10%, transparent);
+    }
+
+    .scnx-navigation__trailing-icon {
+      transition: rotate $duration-slow $easing-standard;
+    }
+
+    .scnx-transition {
+      transition: height $duration-slow $easing-standard;
+      overflow: hidden;
+    }
+
+    .scnx-sidebar[data-state="expanded"] & {
+      [data-level="0"] {
+        > .scnx-navigation__item .scnx-navigation__item-content {
+          transition-delay: calc(var(--item-index) * 33ms);
+        }
+
+        // [IMPORTANT] This block will only be applied if the data-level 0 direct children transition is settled
+        // Context: Applies staggered when sidebar state change from collapsed to expanded
+        // Goal: Synchronize deep nested items to strictly follow their Level 0 Ancestor's stagger timing.
+        > div > .scnx-transition[data-state="settled"][data-mounted="true"]:not([data-interrupted="true"]) {
+          --ancestors-index: var(--item-index);
+
+          // Align transition timing with the Root Item's index.
+          .scnx-navigation__item-content {
+            transition-delay: calc(var(--ancestors-index) * 33ms);
+          }
+
+          // Since rapid double click on already settled items will cause a delayed transition because of 
+          // the ancestor's transition delay already set we need to unset the transition delay for the settled items
+          // First on data contract we put a resettled flag to true on every settled item that being faded out
+          // Then on every fadein transition end we reset the resettled flag to false
+          [data-state="exiting"],
+          [data-interrupted="true"] { 
+            .scnx-navigation__item-content {
+              transition-delay: unset;
+            }
+          }
+        }
+      }
+
+      // Expanded Group with Pre-Expanded and Pre-Settled Descendants
+      // Context: Applies when a group is actively expanding, but contains children that were already "open" (settled state).
+      // Goal: Ensure visual cohesion by handling direct children and deep subtree timing differently.
+      .scnx-transition[data-state="entering"]:not([data-mounted="true"]) {
+        // 1. Direct Descendants Strategy
+        // Immediate children of the expanding group stagger naturally based on their local index.
+        > .scnx-navigation__group
+          > li
+          > .scnx-navigation__item
+          .scnx-navigation__item-content {
+          transition-delay: calc(var(--item-index) * 33ms);
+        }
+
+        // 2. Deep Subtree Synchronization Strategy
+        // Pre-expanded (settled) sub-groups of the current expanding group must NOT run their own stagger sequence.
+        // Instead, they capture the index of their direct ancestor (the child from Point 1)
+        // and synchronize their entire subtree to that ancestor's timing, creating a "Solid Block" movement.
+        > .scnx-navigation__group
+          > li
+          > div
+          > .scnx-transition[data-state="settled"][data-mounted="true"] {
+          --ancestors-index: var(--item-index);
+
+          .scnx-navigation__item-content {
+            // Descendants wait for the ancestor, moving as one cohesive unit.
+            transition-delay: calc(var(--ancestors-index) * 33ms);
+          }
+        }
+      }
+
+      .scnx-transition {
+        &:not([data-state="entering"]):not([data-state="settled"]) {
+          .scnx-navigation__item-content {
+            visibility: hidden;
+            opacity: 0;
+            translate: $spacing-lg 0;
+          }
+        }
+      }
+    }
+
+    .scnx-sidebar[data-state="collapsed"] & {
+      .scnx-transition {
+        height: 0;
+      }
+
+      .scnx-navigation__group-header {
+        visibility: hidden;
+        opacity: 0;
+      }
+
+      .scnx-navigation__item-content {
+        visibility: hidden;
+        opacity: 0;
+        translate: $spacing-lg 0;
+      }
+    }
+  }
+
+  &__toggle {
+    position: absolute;
+    top: 1.25rem;
+    right: -12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: 1px solid #{$color-border-default};
+    border-radius: 50%;
+    color: #{$color-text-secondary};
+    cursor: pointer;
+    overflow: hidden;
+    z-index: 1;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background-color: var(--sidebar-bg-color);
+      z-index: -1;
+    }
+
+    svg {
+      width: 0.875rem;
+      height: 0.875rem;
+      // stroke-width: 2.5; // Boost stroke weight for visual matching
+      transition: transform $duration-slow $easing-standard;
+    }
+
+  }
+
+  &__header {
+    flex-shrink: 0;
+    padding: 1.25rem;
+    border-bottom: none;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  &__footer {
+    padding: $spacing-md;
+    border-top: 1px solid #{$color-border-subtle};
+    flex-shrink: 0;
+  }
+
+  &__flyout {
+    width: var(--sidebar-width, 280px);
+    margin-left: $spacing-2xs;
+    color: #{$color-text-primary};
+
+    > .scnx-transition {
+      border-radius: $radius-xl;
+      box-shadow: $shadow-high;
+
+      > div {
+        // Creates non-scrollable padding space at top and bottom
+        padding-block: $spacing-md;
+        border-radius: $radius-xl;
+        background-color: $color-surface-default;
+
+        > div {
+          border-radius: $radius-xl;
+          overflow: hidden;
+          overflow-y: auto;
+          @include thin-scrollbar($width: 0);
+
+          > .scnx-navigation__group {
+            border-radius: $radius-xl;
+
+            .scnx-navigation__group li {
+              padding-left: $spacing-xs;
+              padding-right: 0;
+            }
+          }
+        }
+      }
+
+      li {
+        padding-inline: $spacing-md;
+      }
+
+      .scnx-navigation__group {
+        height: auto;
+      }
+    }
+
+    .scnx-navigation__item {
+      &:hover,
+      &:focus,
+      &[data-active="true"] {
+        background-color: color-mix(in oklch, var(--ds-color-neutral-surface-default-default) 10%, transparent);
+      }
+    }
+
+    .scnx-navigation__icon {
+      display: none;
+    }
+
+    .scnx-navigation__item-content {
+      transition:
+        translate $duration-slow $easing-standard,
+        opacity $duration-slow $easing-standard,
+        visibility $duration-slow;
+    }
+
+    .scnx-navigation__badge {
+      background-color: color-mix(in oklch, var(--ds-color-neutral-surface-default-default) 10%, transparent);
+    }
+
+    .scnx-navigation__trailing-icon {
+      transition: rotate $duration-slow $easing-standard;
+    }
+
+    .scnx-transition {
+      transition: height $duration-slow $easing-standard;
+      overflow: hidden;
+
+      &:not([data-state="entering"]):not([data-state="settled"]) {
+        .scnx-navigation__item-content {
+          visibility: hidden;
+          opacity: 0;
+          translate: $spacing-lg 0;
+        }
+      }
+    }
+
+    // Expanded Group with Pre-Expanded and Pre-Settled Descendants
+    // Context: Applies when a group is actively expanding, but contains children that were already "open" (settled state).
+    // Goal: Ensure visual cohesion by handling direct children and deep subtree timing differently.
+    .scnx-transition[data-state="entering"]:not([data-mounted="true"]) {
+      // 1. Direct Descendants Strategy
+      // Immediate children of the expanding group stagger naturally based on their local index.
+
+      > div
+        > div
+        > .scnx-navigation__group
+        > li
+        > .scnx-navigation__item
+        .scnx-navigation__item-content,
+      > .scnx-navigation__group
+        > li
+        > .scnx-navigation__item
+        .scnx-navigation__item-content {
+        transition-delay: calc(var(--item-index) * 33ms);
+      }
+
+      // 2. Deep Subtree Synchronization Strategy
+      // Pre-expanded (settled) sub-groups of the current expanding group must NOT run their own stagger sequence.
+      // Instead, they capture the index of their direct ancestor (the child from Point 1)
+      // and synchronize their entire subtree to that ancestor's timing, creating a "Solid Block" movement.
+
+      > div
+        > div
+        > .scnx-navigation__group
+        > li
+        > div
+        > .scnx-transition[data-state="settled"][data-mounted="true"],
+      > .scnx-navigation__group
+        > li
+        > div
+        > .scnx-transition[data-state="settled"][data-mounted="true"] {
+        --ancestors-index: var(--item-index);
+
+        .scnx-navigation__item-content {
+          // Descendants wait for the ancestor, moving as one cohesive unit.
+          transition-delay: calc(var(--ancestors-index) * 33ms);
+        }
+      }
+    }
+  }
+
+  &[data-state="expanded"] {
+    .scnx-sidebar__toggle {
+      &:hover {
+        svg {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+
+  &[data-state="collapsed"] {
+    width: 80px;
+    min-width: 80px;
+  }
+}

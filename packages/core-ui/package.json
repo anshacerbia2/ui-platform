@@ -1,0 +1,83 @@
+{
+  "name": "@scnx/core-ui",
+  "type": "module",
+  "version": "1.0.0",
+  "packageManager": "pnpm@10.23.0",
+  "description": "Enterprise-grade UI component library with optimal tree shaking",
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "sideEffects": false,
+  "exports": {
+    "./components/*": {
+      "import": {
+        "types": "./dist/components/*/index.d.ts",
+        "default": "./dist/components/*/index.js"
+      },
+      "require": {
+        "types": "./dist/components/*/index.d.cts",
+        "default": "./dist/components/*/index.cjs"
+      }
+    },
+    "./hooks/*": {
+      "import": {
+        "types": "./dist/hooks/*/index.d.ts",
+        "default": "./dist/hooks/*/index.js"
+      },
+      "require": {
+        "types": "./dist/hooks/*/index.d.cts",
+        "default": "./dist/hooks/*/index.cjs"
+      }
+    },
+    "./providers/*": {
+      "import": {
+        "types": "./dist/providers/*/index.d.ts",
+        "default": "./dist/providers/*/index.js"
+      },
+      "require": {
+        "types": "./dist/providers/*/index.d.cts",
+        "default": "./dist/providers/*/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:ui": "vitest --coverage --ui",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "catalog:",
+    "@eslint-react/eslint-plugin": "catalog:",
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:conflicts_@types/react-dom_h19_2_3",
+    "@vitejs/plugin-react": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "@vitest/ui": "catalog:",
+    "esbuild-plugin-preserve-directives": "catalog:",
+    "eslint": "catalog:",
+    "eslint-plugin-format": "catalog:",
+    "jsdom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router-dom": "catalog:",
+    "tsup": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

@@ -1,0 +1,26 @@
+@use "styles/abstracts/variables" as *;
+
+.scnx-floating-layout {
+  display: flex;
+  gap: 1.25rem;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding-block: 1.25rem;
+
+  &__sidebar {
+    position: sticky;
+    top: 1.25rem;
+    align-self: flex-start;
+    height: calc(100vh - (1.25rem * 2));
+  }
+
+  &__content {
+    flex: 1;
+
+    // background-color: $color-bg-surface;
+    // border-radius: $border-radius-xl;
+    // padding: $spacing-5;
+    // border: 1px solid $color-border-default;
+    // box-shadow: $shadow-sm;
+  }
+}

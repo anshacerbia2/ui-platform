@@ -1,0 +1,42 @@
+@use "styles/abstracts/variables" as *;
+
+.scnx-divider {
+  border: 0;
+  background-color: #{$color-border-default};
+  flex-shrink: 0;
+
+  // Horizontal Orientation (Default)
+  &[data-orientation="horizontal"] {
+    width: 100%;
+    margin: $spacing-md 0;
+    
+    &[data-weight="thin"]   { height: 0.5px; }
+    &[data-weight="normal"] { height: 1px; }
+    &[data-weight="thick"]  { height: 2px; }
+    &[data-weight="strong"] { height: 4px; }
+  }
+
+  // Vertical Orientation
+  &[data-orientation="vertical"] {
+    height: 100%;
+    margin: 0 $spacing-md;
+
+    &[data-weight="thin"]   { width: 0.5px; }
+    &[data-weight="normal"] { width: 1px; }
+    &[data-weight="thick"]  { width: 2px; }
+    &[data-weight="strong"] { width: 4px; }
+  }
+
+  // Color Variants
+  &[data-color="default"] {
+    background-color: #{$color-border-default};
+  }
+
+  &[data-color="muted"] {
+    background-color: #{$color-border-subtle};
+  }
+
+  &[data-color="strong"] {
+    background-color: #{$color-border-strong};
+  }
+}

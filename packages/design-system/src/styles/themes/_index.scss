@@ -1,0 +1,8 @@
+// ============================================
+// THEMES ENTRY POINT
+// ============================================
+// Exports the default theme as the baseline infrastructure.
+// Consumers can override this by importing specific themes
+// (e.g., @use 'styles/themes/achromatic') after this base layer.
+
+@forward "default";

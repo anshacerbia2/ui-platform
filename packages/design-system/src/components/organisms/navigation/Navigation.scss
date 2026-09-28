@@ -1,0 +1,198 @@
+@use "styles/abstracts/variables" as *;
+
+// ============================================
+// NAVIGATION ORGANISM (BEM + Atomic Design)
+// ============================================
+
+.scnx-navigation {
+  --nav-group-header-color: var(--sidebar-group-header-color);
+  --nav-item-active-borded-color: #{$color-primary-default};
+}
+
+.scnx-navigation {
+  // Block: Navigation root
+  padding-block: 1rem;
+  user-select: none;
+
+  // Element: Group Header (Section Title like 'FOUNDATIONS')
+
+  // Element: Group (list container)
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-2xs;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+
+    // Style li elements directly (no class, follows core-ui structure)
+    > li {
+      list-style: none;
+      margin: 0;
+      padding: 0 calc($spacing-sm + $spacing-3xs);
+
+      &.scnx-navigation__group-header {
+        display: block; // Kembali ke block biasa
+        // width: max-content;      // Paksa blok ini segede teksnya walau kontainer ngecil!
+        min-width: max-content; // Tolak kompromi Flexbox
+        font-size: $font-size-xs;
+        line-height: normal;
+        font-weight: $font-weight-bold;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--nav-group-header-color);
+        padding-block: $spacing-xs;
+        // white-space: nowrap !important; // Membiarkan teks meluber lurus tanpa wrap
+        // word-break: keep-all !important;
+        transition:
+          opacity $duration-normal $easing-standard,
+          visibility $duration-normal;
+
+        &:not(:first-child) {
+          margin-top: $spacing-md;
+        }
+      }
+
+      .scnx-navigation__item[data-expanded="true"] + .scnx-navigation__group {
+        height: auto;
+      }
+
+      // Nested submenu group (sibling to nav-item within li)
+      .scnx-navigation__group {
+        height: 0;
+        margin-left: $spacing-md;
+        // overflow: hidden;
+      }
+
+      li {
+        padding: 0;
+
+        &:first-child {
+          margin-top: $spacing-2xs;
+        }
+      }
+    }
+  }
+
+  // Element: Item (navigation link/button)
+  &__item {
+    display: flex;
+    align-items: center;
+    padding: calc($spacing-2xs + $spacing-3xs) 0;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    // transition: margin-bottom $transition-base,
+    //   background-color $transition-base;
+    cursor: pointer;
+
+    &::before {
+      content: "";
+      height: 1rem;
+      border-left: $stroke-medium solid transparent;
+      border-radius: $stroke-medium;
+      // transition: border-left-color $transition-base;
+    }
+
+    &:hover,
+    &:focus {
+      background-color: #{$color-state-hover};
+    }
+
+    // Modifier: Active state
+    &[data-active="true"] {
+      position: relative;
+      background-color: #{$color-primary-subtle};
+      color: #{$color-primary-default};
+      font-weight: $font-weight-semibold;
+
+      &::before {
+        // ⚡ ACCENT COLOR IMPLEMENTATION
+        // We inject a local variable that grabs a high-contrast color (Electric Blue) from Tier 1,
+        // intentionally separating this 'Focus Indicator' from the brand color (Purple/Black).
+        border-left: $stroke-medium solid
+          var(--nav-item-active-borded-color);
+      }
+    }
+
+    // Modifier: Disabled state
+    &[data-disabled="true"] {
+      opacity: 0.5;
+      pointer-events: none;
+      cursor: not-allowed;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
+
+  // Element: Icon
+  &__icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: calc($spacing-md - $stroke-medium);
+    line-height: 1;
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      color: inherit;
+    }
+  }
+
+  // Element: Item Content (wrapper for text + badge + trailing icon)
+  &__item-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    padding-inline: $spacing-md;
+    overflow: hidden;
+  }
+
+  // Element: Text
+  &__text {
+    flex: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  // Element: Badge
+  &__badge {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-2xs $spacing-xs;
+    border-radius: $radius-full;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    color: inherit;
+    line-height: 1;
+  }
+
+  // Element: Trailing Icon
+  &__trailing-icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    // transition: rotate $transition-fast;
+
+    svg {
+      width: 0.875rem;
+      height: 0.875rem;
+    }
+
+    // Rotate when parent is active/expanded
+    .scnx-navigation__item--expanded &,
+    .scnx-navigation__item[data-expanded="true"] & {
+      rotate: 90deg;
+    }
+  }
+}

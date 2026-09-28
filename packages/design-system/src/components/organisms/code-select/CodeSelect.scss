@@ -1,0 +1,107 @@
+@use "styles/abstracts/variables" as *;
+
+.scnx-code-select {
+  --select-bg: #{$color-surface-default};
+  --select-border: #{$color-border-default};
+  --select-hover-bg: #{$color-state-hover};
+  --select-text: #{$color-text-primary};
+  --select-text-muted: #{$color-text-secondary};
+  --select-dropdown-bg: #{$color-surface-floating};
+  --select-option-hover-bg: #{$color-state-hover};
+
+  position: relative;
+  display: inline-flex;
+  min-width: 140px;
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    background-color: var(--select-bg);
+    border: 1px solid var(--select-border);
+    border-radius: var(--ds-radius-md);
+    padding: 4px 10px;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: var(--select-hover-bg);
+    }
+  }
+
+  &__input {
+    background: transparent;
+    border: none;
+    font-size: var(--ds-font-size-2xs);
+    color: var(--select-text);
+    width: 100%;
+    outline: none;
+    font-family: inherit;
+    
+    &::placeholder {
+      color: var(--select-text-muted);
+    }
+  }
+
+  &__display-value {
+    position: absolute;
+    left: 10px;
+    right: 28px;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    font-size: var(--ds-font-size-xs);
+    color: var(--select-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__icon {
+    margin-right: var(--ds-spacing-2);
+    display: flex;
+    align-items: center;
+  }
+
+  &__chevron {
+    color: var(--select-text-muted);
+    margin-left: auto;
+    font-size: 10px;
+    transition: transform 0.2s ease;
+
+    &[data-open="true"] {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: var(--ds-spacing-2);
+    background-color: var(--select-dropdown-bg);
+    border: 1px solid var(--select-border);
+    border-radius: var(--ds-radius-md);
+    box-shadow: var(--ds-shadow-lg);
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  &__option {
+    padding: var(--ds-spacing-2) var(--ds-spacing-3);
+    font-size: var(--ds-font-size-xs);
+    color: var(--select-text);
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background-color: var(--select-option-hover-bg);
+    }
+    
+    &[data-selected="true"] {
+      color: #{$color-primary-default}; // Use primary color for selected
+    }
+  }
+}

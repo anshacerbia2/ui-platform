@@ -1,0 +1,9 @@
+@use "sass:map";
+@use "./default-token" as light;
+
+$dark-token: map.deep-merge(
+  light.$default-token,
+  (
+    color: light.get-color-tokens("dark")
+  )
+);

@@ -1,0 +1,19 @@
+@use "styles/abstracts/variables" as *;
+
+.scnx-transition {
+}
+
+// .scnx-transition {
+//   display: grid;
+//   grid-template-rows: 0fr;
+//   transition: grid-template-rows $transition-fast;
+//   overflow: hidden;
+
+//   &[data-state="fadein"] {
+//     grid-template-rows: 1fr;
+//   }
+
+//   > * {
+//     min-height: 0;
+//   }
+// }

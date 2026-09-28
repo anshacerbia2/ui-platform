@@ -1,0 +1,56 @@
+{
+  "name": "@scnx/system",
+  "version": "1.1.0",
+  "description": "Enterprise-grade design system — tokens, components, and themes",
+  "exports": {
+    "./themes/*": "./dist/styles/*",
+    "./styles/core": "./dist/styles/_core-token.scss",
+    "./styles/contract": "./dist/styles/_contract-token.scss",
+    "./styles/variables": "./dist/styles/_variables.scss",
+    "./components/styles": "./dist/components/index.css",
+    "./components": {
+      "types": "./dist/components/index.d.ts",
+      "import": "./dist/components/index.mjs",
+      "require": "./dist/components/index.js",
+      "default": "./dist/components/index.js"
+    },
+    "./*": {
+      "types": "./dist/*/index.d.ts",
+      "import": "./dist/*/index.mjs",
+      "require": "./dist/*/index.js",
+      "default": "./dist/*/index.js"
+    }
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm build:css && tsup && pnpm postbuild",
+    "build:css": "npx panda css -o src/styled-system",
+    "codegen": "npx panda codegen",
+    "postbuild": "node scripts/copy-tokens.mjs",
+    "prepare": "npx panda codegen",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "dependencies": {
+    "@scnx/core-ui": "workspace:*"
+  },
+  "devDependencies": {
+    "@pandacss/dev": "^1.8.2",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "esbuild-plugin-preserve-directives": "^0.0.11",
+    "esbuild-plugin-tsconfig-paths": "^1.0.2",
+    "esbuild-sass-plugin": "^3.3.1",
+    "sass": "^1.94.2",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3"
+  }
+}

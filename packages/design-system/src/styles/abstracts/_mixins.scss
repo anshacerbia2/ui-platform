@@ -1,0 +1,63 @@
+@use "sass:map";
+
+// ============================================
+// SCROLLBAR MIXINS
+// ============================================
+
+/// Thin scrollbar for overflow containers
+/// @param {Color} $thumb-color - Scrollbar thumb color
+/// @param {Color} $hover-color - Scrollbar thumb hover color (default: brighter)
+/// @param {Color} $track-color - Scrollbar track color (default: transparent)
+/// @param {Number} $width - Scrollbar width (default: 6px)
+@mixin thin-scrollbar(
+  $thumb-color: transparent,
+  $hover-color: transparent,
+  $track-color: transparent,
+  $width: 2px
+) {
+  // Webkit (Chrome, Safari, Edge)
+  &::-webkit-scrollbar {
+    width: $width;
+    height: $width;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $track-color;
+    border-radius: $width;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-color;
+    border-radius: $width;
+
+    &:hover {
+      background: $hover-color;
+    }
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: $track-color;
+  }
+
+  /* ===== Firefox only ===== */
+  @supports (-moz-appearance: none) {
+    scrollbar-width: $width;
+    scrollbar-color: $thumb-color $track-color;
+  }
+}
+
+/// Auto-hide scrollbar (appears on hover)
+/// @param {Color} $thumb-color - Scrollbar thumb color
+/// @param {Color} $track-color - Scrollbar track color
+/// @param {Number} $width - Scrollbar width
+@mixin scrollbar-auto-hide(
+  $thumb-color: rgb(255 255 255 / 30%),
+  $track-color: transparent,
+  $width: 6px
+) {
+  @include thin-scrollbar(transparent, $track-color, $width);
+
+  &:hover {
+    @include thin-scrollbar($thumb-color, $track-color, $width);
+  }
+}

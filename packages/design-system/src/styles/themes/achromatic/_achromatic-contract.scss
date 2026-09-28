@@ -1,0 +1,16 @@
+@use "sass:map";
+@use "styles/abstracts/contract-token" as contract;
+
+$achromatic-contract: (
+  color: (
+    neutral: map.merge(contract.$scheme-contract, (
+      canvas: (default: ()),
+      surface-raised: (default: ()),
+      surface-floating: (default: ()),
+      surface-sunken: (default: ())
+    )),
+    primary: contract.$scheme-contract
+  ),
+  radius: (sm, md, lg, xl),
+  shadow: (none, sm, md, lg, xl)
+);

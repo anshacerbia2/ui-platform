@@ -1,0 +1,23 @@
+// ============================================
+// ACHROMATIC UI — SINGLE ENTRY POINT
+// ============================================
+// Consumer: import '@scnx/system/achromatic-ui.css'
+//
+// Import order (CRITICAL — cascade):
+//   1. DS Base   → reset, normalize, body defaults
+//   2. DS Theme  → Tier 1 palette + Tier 2 semantic (light + dark)
+//   3. Achromatic → Tier 2 overrides (primary → neutral remap)
+//   4. Panda CSS  → utility classes (Container, Flex, Grid recipes)
+// ============================================
+
+// Step 1: Design System base layer
+@use "../base/index" as ds-base;
+
+// Step 2: Design System theme — Tier 1 + Tier 2 defaults
+@use "../themes/index" as ds-theme;
+
+// Step 3: Achromatic theme overrides
+@use "../themes/achromatic";
+
+// Step 5: Panda CSS utility classes (Container, Flex, Grid)
+@import "../../styled-system/styles.css";

@@ -1,0 +1,38 @@
+@use "styles/abstracts/variables" as *;
+
+.scnx-navbar {
+  --navbar-height: var(--layout-navbar-height, var(--ds-layout-navbar-height));
+  --navbar-sidebar-width: var(--layout-sidebar-width, var(--ds-layout-sidebar-width));
+
+  background-color: #{$color-surface-default};
+  
+  border-bottom: 1px solid #{$color-border-subtle};
+  padding: 0; // Remove block padding, rely on height
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: var(--navbar-height);
+  max-height: var(--navbar-height);
+
+  &__start,
+  &__center,
+  &__end {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    height: 100%;
+    padding: 0 $spacing-lg; // Add padding internally
+  }
+
+  &__start {
+    width: var(--navbar-sidebar-width);
+    flex-shrink: 0;
+    // border-right: 1px solid rgb(var(--ds-color-border-muted)); // Add optional divider for edge layout
+  }
+
+  &__center {
+    flex: 1;
+    justify-content: center;
+  }
+}

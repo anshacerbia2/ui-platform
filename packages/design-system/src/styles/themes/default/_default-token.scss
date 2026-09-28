@@ -1,0 +1,471 @@
+// ============================================
+// SYSTEM TOKEN (TIER-2)
+// ============================================
+@use "sass:list";
+@use "sass:map";
+@use "sass:meta";
+@use "sass:string";
+@use "styles/abstracts/core-token" as core;
+
+// ─── Private Ternary Helper ────────────────────────────────────────────────
+// Avoids ambiguity with the CSS-native if() function introduced in Dart Sass.
+// Use this instead of the deprecated global if() in all Sass-logic contexts.
+// @see https://sass-lang.com/d/if-function
+@function -if($condition, $if-true, $if-false) {
+  @if $condition { @return $if-true; } @else { @return $if-false; }
+}
+
+@function math-max($v1, $v2) {
+  @if $v1 > $v2 {
+    @return $v1;
+  }
+  @return $v2;
+}
+
+@function math-clamp($val, $min, $max) {
+  @if $val < $min {
+    @return $min;
+  }
+  @if $val > $max {
+    @return $max;
+  }
+  @return $val;
+}
+
+// Snap sub-epsilon float residues to exact 0 to prevent
+// floating-point noise like 0.0000119209 in computed OKLCH output.
+@function snap-epsilon($val, $threshold: 0.0001) {
+  @if $val < $threshold {
+    @return 0;
+  }
+  @return $val;
+}
+
+@function get-raw-channels($hue, $step, $mode) {
+  @if $hue == "white" and $step == null { @return "1 0 0"; }
+  @if $hue == "black" and $step == null { @return "0 0 0"; }
+
+  @each $key, $val in core.$color {
+    @if meta.inspect($key) == $hue {
+      $mode-map: map.get($val, $mode);
+      @if $mode-map {
+        @each $s-key, $s-val in $mode-map {
+          @if "#{$s-key}" == "#{$step}" {
+            @return $s-val;
+          }
+        }
+      }
+    }
+  }
+  @return null;
+}
+
+@function resolve-core-color($hue, $step, $mode) {
+  $raw: get-raw-channels($hue, $step, $mode);
+  @if not $raw {
+    @error "Could not resolve channels for hue: #{$hue}, step: #{$step}, mode: #{$mode}";
+  }
+  @return string.unquote("oklch(#{$raw})");
+}
+
+// Symmetric 12-Step Core-to-Semantic Token Steps
+$role-base-steps: (
+  surface: (subtle: 2, default: 3, strong: 4),
+  border: (subtle: 6, default: 7, strong: 8),
+  solid: (subtle: 3, default: 9, strong: 10),
+  text: (subtle: 11, default: 12, strong: 12),
+  icon: (subtle: 11, default: 12, strong: 12),
+  shadow: (subtle: 3, default: 4, strong: 5)
+);
+
+@function get-state-step($base-step, $state, $role, $mode) {
+  @if $state == "default" {
+    @return $base-step;
+  } @else if $state == "hover" {
+    @if $role == "solid" {
+      // Vercel Glow Logic: Hover is always LIGHTER
+      // In Light mode: lower step = lighter (e.g. 10 -> 9)
+      // In Dark mode: higher step = lighter (e.g. 9 -> 10)
+      $shifted: -if($mode == "light", $base-step - 1, $base-step + 1);
+      @return math-clamp($shifted, 1, 12);
+    }
+    
+    $shifted: $base-step + 1;
+    @if $shifted > 12 { @return 12; }
+    @return $shifted;
+  } @else if $state == "pressed" {
+    @if $role == "solid" {
+      // Pressed state goes slightly darker than default
+      $shifted: -if($mode == "light", $base-step + 1, $base-step - 1);
+      @return math-clamp($shifted, 1, 12);
+    }
+    $shifted: $base-step + 2;
+    @if $shifted > 12 { @return 12; }
+    @return $shifted;
+  } @else if $state == "selected" {
+    $shifted: $base-step + 1;
+    @if $shifted > 12 { @return 12; }
+    @return $shifted;
+  } @else if $state == "disabled" {
+    @if $role == "text" or $role == "icon" {
+      @return 8;
+    }
+    @return 3;
+  }
+  @return $base-step;
+}
+
+@function get-scheme-hue($scheme) {
+  @if $scheme == "primary" { @return "blue"; }
+  @if $scheme == "secondary" { @return "purple"; }
+  @if $scheme == "accent" { @return "magenta"; }
+  @if $scheme == "info" { @return "blue"; }
+  @if $scheme == "success" { @return "green"; }
+  @if $scheme == "warning" { @return "yellow"; }
+  @if $scheme == "danger" { @return "red"; }
+  @return $scheme;
+}
+
+@function generate-scheme-matrix($scheme, $mode) {
+  $role-map: ();
+  $hue: get-scheme-hue($scheme);
+  
+  @each $role in (surface, solid, border, text, icon, shadow) {
+    $target-role: $role;
+    @if $role == icon { $target-role: text; }
+    @if $role == shadow { $target-role: solid; }
+    
+    $emphasis-map: ();
+    
+    @each $emphasis in (subtle, default, strong, contrast) {
+      $state-map: ();
+      $valid-states: (default);
+      
+      @if $role == surface or $role == solid {
+        $valid-states: (default, hover, pressed, selected, disabled);
+      } @else if $role == border {
+        $valid-states: (default, selected, focus, disabled);
+      } @else if $role == text or $role == icon {
+        $valid-states: (default, hover, disabled);
+      } @else if $role == shadow {
+        $valid-states: (default, hover, pressed);
+      }
+      
+      @each $state in $valid-states {
+        $value: "";
+        
+        @if $emphasis == "contrast" {
+          @if $role == "surface" or $role == "solid" or $role == "border" {
+            $value: -if($mode == "light", resolve-core-color("white", null, $mode), resolve-core-color("black", null, $mode));
+          } @else if $role == "text" or $role == "icon" {
+            @if $scheme == "warning" {
+              $value: -if($mode == "light", resolve-core-color("neutral", 12, $mode), resolve-core-color("neutral", 1, $mode));
+            } @else if $scheme == "neutral" and $mode == "dark" {
+              $value: resolve-core-color("neutral", 1, $mode);
+            } @else {
+              $value: resolve-core-color("white", null, $mode);
+            }
+          } @else if $role == "shadow" {
+            $value: -if($mode == "light", resolve-core-color("white", null, $mode), resolve-core-color("black", null, $mode));
+          }
+        } @else {
+          $base-step: map.get($role-base-steps, $target-role, $emphasis);
+          
+          // Override solid default for Vercel Glow
+          @if $role == "solid" and $emphasis == "default" {
+            $base-step: -if($mode == "light", 10, 9);
+          }
+          
+          $step: get-state-step($base-step, $state, $role, $mode);
+          
+          @if $role == "border" and $state == "focus" {
+            $raw: get-raw-channels($hue, $step, $mode);
+            $value: string.unquote("oklch(#{$raw} / 0.4)");
+          } @else if $role == "shadow" {
+            $raw: get-raw-channels($hue, $step, $mode);
+            $value: string.unquote("oklch(#{$raw} / 0.15)");
+          } @else {
+            $value: resolve-core-color($hue, $step, $mode);
+          }
+        }
+        
+        $state-map: map.merge($state-map, ($state: $value));
+      }
+      
+      $emphasis-map: map.merge($emphasis-map, ($emphasis: $state-map));
+    }
+    
+    $role-map: map.merge($role-map, ($role: $emphasis-map));
+  }
+  
+  @return $role-map;
+}
+
+@function get-color-tokens($mode: "light") {
+  $neutral-matrix: generate-scheme-matrix("neutral", $mode);
+  
+  $canvas-val: resolve-core-color("neutral", 1, $mode);
+  $surface-raised-val: -if($mode == "light", resolve-core-color("white", null, $mode), resolve-core-color("neutral", 2, $mode));
+  $surface-floating-val: -if($mode == "light", resolve-core-color("white", null, $mode), resolve-core-color("neutral", 3, $mode));
+  $surface-sunken-val: -if($mode == "light", resolve-core-color("neutral", 2, $mode), resolve-core-color("neutral", 1, $mode));
+  
+  $neutral-merged: map.merge($neutral-matrix, (
+    canvas: (default: $canvas-val),
+    surface-raised: (default: $surface-raised-val),
+    surface-floating: (default: $surface-floating-val),
+    surface-sunken: (default: $surface-sunken-val)
+  ));
+  
+  $utility-map: (
+    skeleton: -if($mode == "light", resolve-core-color("neutral", 3, $mode), resolve-core-color("neutral", 2, $mode)),
+    skeleton-shimmer: -if($mode == "light", resolve-core-color("neutral", 2, $mode), resolve-core-color("neutral", 3, $mode)),
+    selection: resolve-core-color("blue", 3, $mode),
+    mask: rgba(0, 0, 0, 0.5),
+    placeholder: resolve-core-color("neutral", 8, $mode),
+    debug: resolve-core-color("red", 9, $mode)
+  );
+
+  $chart-map: (
+    categorical: (
+      1: resolve-core-color("blue", 9, $mode),
+      2: resolve-core-color("green", 9, $mode),
+      3: resolve-core-color("yellow", 9, $mode),
+      4: resolve-core-color("orange", 9, $mode),
+      5: resolve-core-color("purple", 9, $mode),
+      6: resolve-core-color("magenta", 9, $mode)
+    ),
+    sequential: (
+      1: resolve-core-color("blue", 2, $mode),
+      2: resolve-core-color("blue", 4, $mode),
+      3: resolve-core-color("blue", 6, $mode),
+      4: resolve-core-color("blue", 8, $mode),
+      5: resolve-core-color("blue", 10, $mode),
+      6: resolve-core-color("blue", 12, $mode)
+    ),
+    diverging: (
+      1: resolve-core-color("orange", 9, $mode),
+      2: resolve-core-color("orange", 4, $mode),
+      3: resolve-core-color("neutral", 3, $mode),
+      4: resolve-core-color("blue", 4, $mode),
+      5: resolve-core-color("blue", 9, $mode),
+      6: resolve-core-color("blue", 11, $mode)
+    ),
+    threshold: (
+      1: resolve-core-color("orange", 11, $mode),
+      2: resolve-core-color("orange", 9, $mode),
+      3: resolve-core-color("yellow", 9, $mode),
+      4: resolve-core-color("green", 9, $mode),
+      5: resolve-core-color("blue", 9, $mode),
+      6: resolve-core-color("purple", 9, $mode)
+    )
+  );
+  
+  @return (
+    neutral: $neutral-merged,
+    black: generate-scheme-matrix("black", $mode),
+    white: generate-scheme-matrix("white", $mode),
+    primary: generate-scheme-matrix("primary", $mode),
+    secondary: generate-scheme-matrix("secondary", $mode),
+    accent: generate-scheme-matrix("accent", $mode),
+    info: generate-scheme-matrix("info", $mode),
+    success: generate-scheme-matrix("success", $mode),
+    warning: generate-scheme-matrix("warning", $mode),
+    danger: generate-scheme-matrix("danger", $mode),
+    overlay: (
+      scrim: -if($mode == "light", rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.75)),
+      scrim-light: -if($mode == "light", rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)),
+      glass: -if($mode == "light", rgba(255, 255, 255, 0.8), rgba(15, 15, 15, 0.8)),
+      glass-dark: rgba(0, 0, 0, 0.8),
+      backdrop: -if($mode == "light", rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5))
+    ),
+    utility: $utility-map,
+    chart: $chart-map
+  );
+}
+
+$default-token: (
+  // Color Semantic Families
+  color: get-color-tokens("light"),
+  // Dimension Semantic Families
+  spacing: (
+    '3xs': map.get(core.$spacing, 0_5),
+    '2xs': map.get(core.$spacing, 1),
+    'xs': map.get(core.$spacing, 2),
+    'sm': map.get(core.$spacing, 3),
+    'md': map.get(core.$spacing, 4),
+    'lg': map.get(core.$spacing, 6),
+    'xl': map.get(core.$spacing, 8),
+    '2xl': map.get(core.$spacing, 12),
+    '3xl': map.get(core.$spacing, 16),
+    '4xl': map.get(core.$spacing, 20),
+  ),
+
+  size: (
+    control-xs: map.get(core.$spacing, 6),
+    control-sm: map.get(core.$spacing, 8),
+    control-md: map.get(core.$spacing, 10),
+    control-lg: map.get(core.$spacing, 12),
+    control-xl: map.get(core.$spacing, 16),
+    icon-xs: map.get(core.$spacing, 3),
+    icon-sm: map.get(core.$spacing, 4),
+    icon-md: map.get(core.$spacing, 5),
+    icon-lg: map.get(core.$spacing, 6),
+    avatar-xs: map.get(core.$spacing, 6),
+    avatar-sm: map.get(core.$spacing, 8),
+    avatar-md: map.get(core.$spacing, 10),
+    avatar-lg: map.get(core.$spacing, 12),
+  ),
+
+  radius: (
+    none: map.get(core.$radius, none),
+    sm: map.get(core.$radius, sm),
+    md: map.get(core.$radius, md),
+    lg: map.get(core.$radius, lg),
+    xl: map.get(core.$radius, xl),
+    '2xl': map.get(core.$radius, xl) * 1.5,
+    full: map.get(core.$radius, full),
+  ),
+
+  stroke: (
+    none: map.get(core.$width, 0),
+    hairline: 0.5px,
+    thin: map.get(core.$width, 1),
+    default: map.get(core.$width, 1),
+    medium: map.get(core.$width, 2),
+    thick: map.get(core.$width, 4),
+  ),
+
+  opacity: (
+    disabled: map.get(core.$opacity, 38),
+    subtle: map.get(core.$opacity, 4),
+    muted: map.get(core.$opacity, 60),
+    overlay: map.get(core.$opacity, 60),
+    scrim: map.get(core.$opacity, 60),
+  ),
+
+  z: (
+    base: map.get(core.$z-index, 0),
+    sticky: map.get(core.$z-index, 20),
+    dropdown: map.get(core.$z-index, 10),
+    popover: map.get(core.$z-index, 50),
+    toast: map.get(core.$z-index, 30),
+    tooltip: map.get(core.$z-index, 60),
+    overlay: map.get(core.$z-index, 30),
+    modal: map.get(core.$z-index, 40),
+    max: map.get(core.$z-index, 60),
+  ),
+
+  shadow: (
+    low: (
+      #{string.unquote("#{list.nth(map.get(core.$shadow-elevation, sm), 1)}")}
+        var(--ds-color-neutral-shadow-default-default),
+    ),
+    medium: (
+      #{string.unquote("#{list.nth(map.get(core.$shadow-elevation, md), 1)}")}
+        var(--ds-color-neutral-shadow-subtle-default),
+      #{string.unquote("#{list.nth(map.get(core.$shadow-elevation, md), 2)}")}
+        var(--ds-color-neutral-shadow-subtle-default),
+    ),
+    high: (
+      #{string.unquote("#{list.nth(map.get(core.$shadow-elevation, lg), 1)}")}
+        var(--ds-color-neutral-shadow-strong-default),
+      #{string.unquote("#{list.nth(map.get(core.$shadow-elevation, lg), 2)}")}
+        var(--ds-color-neutral-shadow-strong-default),
+    ),
+    overlay: (
+      #{string.unquote("#{list.nth(map.get(core.$shadow-elevation, xl), 1)}")}
+        var(--ds-color-neutral-shadow-contrast-default),
+      #{string.unquote("#{list.nth(map.get(core.$shadow-elevation, xl), 2)}")}
+        var(--ds-color-neutral-shadow-contrast-default),
+    ),
+    focus: (
+      #{string.unquote("#{list.nth(map.get(core.$shadow-elevation, inner), 1)}")}
+        var(--ds-color-neutral-border-default-focus),
+    ),
+  ),
+
+  font-family: (
+    base: map.get(core.$font-family, sans),
+    heading: map.get(core.$font-family, sans),
+    mono: map.get(core.$font-family, mono),
+    brand: map.get(core.$font-family, sans),
+  ),
+
+  font-size: (
+    xs: map.get(core.$size, '12'),
+    sm: map.get(core.$size, '14'),
+    md: map.get(core.$size, '16'),
+    lg: map.get(core.$size, '20'),
+    xl: map.get(core.$size, '24'),
+    '2xl': map.get(core.$size, '32'),
+    '3xl': map.get(core.$size, '40'),
+    '4xl': map.get(core.$size, '48'),
+  ),
+
+  font-weight: (
+    regular: map.get(core.$font-weight, normal),
+    medium: map.get(core.$font-weight, medium),
+    semibold: map.get(core.$font-weight, semibold),
+    bold: map.get(core.$font-weight, bold),
+  ),
+
+  line-height: (
+    tight: map.get(core.$line-height, tight),
+    normal: map.get(core.$line-height, normal),
+    relaxed: map.get(core.$line-height, relaxed),
+  ),
+
+  letter-spacing: (
+    tight: map.get(core.$letter-spacing, tight),
+    normal: map.get(core.$letter-spacing, normal),
+    wide: map.get(core.$letter-spacing, wide),
+  ),
+
+  // Motion Semantic Families
+  duration: (
+    instant: 0ms,
+    fast: map.get(core.$motion, duration-fast),
+    normal: map.get(core.$motion, duration-base),
+    slow: map.get(core.$motion, duration-slow),
+    slower: map.get(core.$motion, duration-natural),
+  ),
+
+  easing: (
+    standard:   map.get(core.$motion, easing-standard), // cubic-bezier(0.4, 0, 0.2, 1)
+    enter:      map.get(core.$motion, easing-in),        // cubic-bezier(0.4, 0, 1, 1)
+    exit:       map.get(core.$motion, easing-out),       // cubic-bezier(0, 0, 0.2, 1)
+    emphasized: map.get(core.$motion, easing-sharp),     // cubic-bezier(0.4, 0, 0.6, 1)
+  ),
+
+  transition: (
+    hover: all map.get(core.$motion, duration-fast) map.get(core.$motion, easing-standard),
+    focus: all map.get(core.$motion, duration-fast) map.get(core.$motion, easing-standard),
+    expand: all map.get(core.$motion, duration-base) map.get(core.$motion, easing-standard),
+    modal: all map.get(core.$motion, duration-slow) map.get(core.$motion, easing-standard),
+    toast: all map.get(core.$motion, duration-base) map.get(core.$motion, easing-standard),
+  ),
+
+  layout: (
+    sidebar-width: map.get(core.$layout, sidebar-width),
+    navbar-height: map.get(core.$layout, navbar-height),
+  ),
+
+  breakpoint: (
+    xs: map.get(core.$breakpoint, xs),
+    sm: map.get(core.$breakpoint, sm),
+    md: map.get(core.$breakpoint, md),
+    lg: map.get(core.$breakpoint, lg),
+    xl: map.get(core.$breakpoint, xl),
+    '2xl': map.get(core.$breakpoint, 2xl),
+  ),
+
+  container: (
+    prose: map.get(core.$container-width, prose),
+    base: map.get(core.$container-width, base),
+    wide: map.get(core.$container-width, wide),
+    fluid: map.get(core.$container-width, fluid),
+  ),
+
+  // Animation Tokens
+  animation: (),
+);
