@@ -2,6 +2,8 @@
 
 This index answers **which document owns which decision**. It does not turn a proposed decision into an approved one. As of 2026-09-28, no system governed by these UI Platform ADRs has entered production, and this code baseline is not a stable release.
 
+The canonical EAD/PAD/SAD/ADR/STD review packet is on the [architecture review branch](https://github.com/anshacerbia2/scnehaux-architecture/tree/review/ui-platform-sot-20260928). It is separate from the existing approved baseline until principal review and governance merge.
+
 ## Authority and location
 
 | Level | Owner and canonical location | Authority |
