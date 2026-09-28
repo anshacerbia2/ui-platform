@@ -54,7 +54,7 @@ Source tests exercise native and composite keyboard behavior, focus restoration,
 
 ## Performance Notes
 
-Measure subscription and render behavior on representative widget workloads. Cloning, a ref callback, or a geometry read is assessed by traces, not rejected by name alone. Any size threshold identifies its subpath, build mode, compression, measurement tool, and incremental consumer scenario.
+Measure subscription and render behavior on the P2 slice widgets (Button, one form control, one overlay, one composite widget). Cloning, a ref callback, or a geometry read is assessed by traces, not rejected by name alone. Any size threshold identifies its subpath, build mode, compression, measurement tool, and incremental consumer scenario.
 
 ## Security Notes
 
@@ -66,4 +66,4 @@ Widgets with unresolved required behavior remain experimental or unexported from
 
 ## Traceability
 
-Parent: SAD-003. Governing review draft: STD-UIP-PRM-001. Implements UIP-DEC-001 and UIP-DEC-004 with P0 items 10 and 11 in the [decision register](../architecture/DECISION_REGISTER.md).
+Parent: SAD-003. Governing review draft: STD-UIP-PRM-001. Implements UIP-DEC-001 and UIP-DEC-004 with PLAN P0 rows 13 and 14 and the [decision register](../architecture/DECISION_REGISTER.md).

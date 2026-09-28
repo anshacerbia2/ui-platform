@@ -24,11 +24,11 @@ Core values, semantic contracts, component aliases, default/achromatic theme out
 
 ## Technical Context
 
-Sass maps are the current source. Panda references some `--ds-*` names absent from Sass output. The observed baseline contains malformed `low` and `focus` shadows, a `--ds-shadow-lg` reference without a matching public definition, and an invalid achromatic expression. OKLCH authoring alone cannot prove contrast; alpha depends on the actual background.
+Sass maps are the current source. Panda references some `--ds-*` names absent from Sass output. The observed baseline contains malformed `low` and `focus` shadows, different shadow key sets per theme (`low`/`medium`/`high`/`overlay`/`focus` in default, `sm`/`md`/`lg`/`xl` in achromatic, so `--ds-shadow-lg` and `--ds-shadow-low` each resolve in only one theme), legacy names such as `--ds-color-primary-solid-default-default` that do not follow the canonical grammar, and an invalid achromatic expression. OKLCH authoring alone cannot prove contrast; alpha depends on the actual background.
 
 ## Component Design
 
-Tier 1 contains raw scales. Tier 2 uses `color.{scheme}.{role}.{emphasis}.{state}` for color and `{domain}.{property}.{intent}` for dimension, typography, and motion. Tier 3 uses `{component}.{element?}.{property}.{state?}`. CSS output prefixes `--ds-` and hyphenates the logical path. A single versioned dictionary generates Sass-facing and Panda-facing names. Sass remains the source until a DTCG generator and migration test replace it. Brand overrides inherit declared baseline keys inside `[data-scnx-theme]` roots.
+The grammar is defined once in STD-UIP-TKN-001. Tier 2 color is `color.{scheme}.{role}.{emphasis}.{state}` (canonical example `color.primary.surface.solid.default`, emitted as `--ds-color-primary-surface-solid-default`). Every theme emits the identical public shadow set `effect.shadow.low|medium|high|overlay|focus`; Tier-1 `effect.shadow.sm|md|lg|xl` stays internal. Z-index uses `dimension.z-index.{step}` (Tier 1), `dimension.z-index.modal` (Tier 2), and `dialog.root.z-index.default` (Tier 3). Legacy names are renamed in P0 without compatibility aliases. A single versioned dictionary generates Sass-facing and Panda-facing names. Sass remains the source until a DTCG generator and migration test replace it. Brand overrides inherit declared baseline keys inside `[data-scnx-theme]` roots.
 
 ## Data Model
 
@@ -48,7 +48,7 @@ Declared themes, browser support, color fallback policy, font formats, and selec
 
 ## Testing Strategy
 
-Source checks validate legal roles, canonical names, generated Sass/Panda parity, and references. Packed tests parse output and fail on every undefined public variable or invalid consuming property after substitution, including shadow key mismatches. Browser tests compute shadows, colors, typography, spacing, and font family in each theme. Contrast tests cover actual pairs and states against WCAG 2.2 SC 1.4.3 and SC 1.4.11. Two brand roots are rendered together to catch leakage.
+Source checks validate legal roles, canonical names, generated Sass/Panda parity, and references. Packed tests parse output and fail on any emitted name outside the grammar, any Tier-2 key-set difference between themes, any undefined public variable, and any invalid consuming property after substitution. Browser tests compute shadows, colors, typography, spacing, and font family in each theme. Contrast tests cover actual pairs and states against WCAG 2.2 SC 1.4.3 and SC 1.4.11. Two brand roots are rendered together to catch leakage.
 
 ## Performance Notes
 

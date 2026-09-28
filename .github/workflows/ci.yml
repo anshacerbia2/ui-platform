@@ -1,0 +1,32 @@
+name: CI
+
+# Documentation and governance gates run on every pull request and on main.
+# PLAN P0 row 0 extends this workflow with the source, packed-consumer,
+# fixture, and security jobs; each job added there becomes a required check.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  docs:
+    name: Documentation gates
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Link check and acceptance-condition audit
+        run: node scripts/check-docs.mjs
+
+  governance:
+    name: Central governance linter
+    uses: anshacerbia2/scnehaux-architecture/.github/workflows/linter.yml@review/ui-platform-consensus-r2-20260928
+    with:
+      target_dir: docs/designs
+      governance_ref: review/ui-platform-consensus-r2-20260928
