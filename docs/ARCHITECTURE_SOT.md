@@ -18,7 +18,7 @@ The canonical EAD/PAD/SAD/ADR/STD review packet is on the [architecture review b
 | Guide | [docs/07-guides](07-guides/) in this repository | Explanations and current value maps; informative, never overrides a standard |
 | Execution | [PLAN](../PLAN.md), [ROADMAP](../ROADMAP.md), [release template](architecture/RELEASE_CONFORMANCE_TEMPLATE.md) | Work order and proof of readiness, not architectural authority |
 
-**Conflict rule:** governance procedure applies first; EAD/PAD set authority, accepted ADRs explain approved choices, active STDs constrain implementation, SAD/TDD realize those contracts. A proposed revision is a review target, not a silent override of an existing approved document. Where two active documents conflict, record the conflict and obtain the authorizing ADR before treating revised rules as binding. The proposed ADR-GLB-FE-003 and ADR-UIP-PLT-001 are the current approval path.
+**Conflict rule:** governance procedure applies first; EAD/PAD set authority, accepted ADRs explain approved choices, active STDs constrain implementation, SAD/TDD realize those contracts. A proposed revision is a review target, not a silent override of an existing approved document. Where two active documents conflict, record the conflict and obtain the authorizing ADR before treating revised rules as binding. The proposed ADR-GLB-FE-010 and ADR-UIP-PLT-001 are the current approval path.
 
 ## Current review status
 
