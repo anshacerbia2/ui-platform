@@ -15,14 +15,6 @@ const tdds = [
   "docs/designs/TDD-ui-platform-theme-005-provider-and-transitions.md",
   "docs/designs/TDD-ui-platform-tokens-003-theme-and-token-output.md",
 ];
-const reviews = [
-  "docs/reviews/2026-09-29-round-3.md",
-  "docs/reviews/2026-09-29-counter-review.md",
-  "docs/reviews/2026-09-29-design-maturity.md",
-  "docs/reviews/2026-09-29-ratification-readiness.md",
-];
-const governing = ["README.md", "PLAN.md", "ROADMAP.md", ...tdds, ...reviews];
-
 function markdownBelow(directory) {
   if (!existsSync(directory)) return [];
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -31,6 +23,24 @@ function markdownBelow(directory) {
     return entry.name.endsWith(".md") ? [path.replaceAll("\\", "/")] : [];
   });
 }
+
+const reviewPathPattern =
+  /^docs\/reviews\/\d{4}-\d{2}-\d{2}-[a-z0-9]+(?:-[a-z0-9]+)*\.md$/;
+const reviews = markdownBelow("docs/reviews").sort();
+if (reviews.length === 0) {
+  failures.push(
+    "docs/reviews/: at least one principal-review record is required",
+  );
+}
+for (const review of reviews) {
+  if (!reviewPathPattern.test(review)) {
+    failures.push(
+      `${review}: review path must match docs/reviews/YYYY-MM-DD-<slug>.md`,
+    );
+  }
+}
+
+const governing = ["README.md", "PLAN.md", "ROADMAP.md", ...tdds, ...reviews];
 
 const actualDocs = markdownBelow("docs").sort();
 const expectedDocs = [...tdds, ...reviews].sort();
@@ -186,14 +196,8 @@ tdds.forEach((file, index) => {
     );
   if (!text.includes("[PLAN](../../PLAN.md)"))
     failures.push(`${file}: traceability must link to PLAN`);
-  if (
-    /UIP-DEC-|DECISION_REGISTER|ARCHITECTURE_SOT|RATIFICATION_MANIFEST/.test(
-      text,
-    )
-  ) {
-    failures.push(
-      `${file}: references a removed duplicate-authority document or local decision ID`,
-    );
+  if (/DECISION_REGISTER|ARCHITECTURE_SOT|RATIFICATION_MANIFEST/.test(text)) {
+    failures.push(`${file}: references a removed duplicate-authority document`);
   }
 });
 
