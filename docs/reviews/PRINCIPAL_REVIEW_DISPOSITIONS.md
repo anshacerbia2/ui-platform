@@ -60,3 +60,19 @@ The following remain open and must not be described as complete:
 Closing any item requires the exact CI/artifact evidence named in PLAN. A green
 documentation or linter job is not implementation conformance or human
 approval.
+
+## Design-maturity correction
+
+The first consolidation established document authority and schema compliance
+but did not provide enough component-level detail for implementation. That gap
+is accepted as a documentation defect and corrected in place without creating
+more documents:
+
+| Defect                                                                    | Correction                                                                                                                                                                                          | Proof gate                                     |
+| :------------------------------------------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------- |
+| PAD/SAD were directionally correct but not an execution-quality hierarchy | PAD-PLT-003 now fixes logical contracts and quantified capability NFRs; SAD-003 fixes physical components, flows, integration, security, telemetry, failure blast radius, deployment, and migration | Central PAD/SAD lint and qualitative review    |
+| Five TDDs were thin requirement summaries                                 | Each TDD now includes requirement IDs, concrete data/API contracts, algorithms, configuration, failure handling, observability, test matrices, rollout/compatibility, and bounded open questions    | Central TDD lint plus local maturity gate      |
+| PLAN could start implementation after structural lint alone               | A human-approved implementation-ready SAD/TDD baseline is now an explicit entry gate                                                                                                                | PLAN design-readiness gate and ROADMAP phase 0 |
+
+These changes do not approve the proposed SAD/TDDs or claim implementation
+conformance. They make the proposal reviewable and executable after approval.

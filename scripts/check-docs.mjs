@@ -136,6 +136,10 @@ const requiredSections = [
   "Performance Notes",
   "Security Notes",
   "Operational Notes",
+  "Failure Handling",
+  "Observability",
+  "Rollout and Compatibility",
+  "Open Questions",
   "Traceability",
 ];
 const expectedIds = [
@@ -153,12 +157,24 @@ tdds.forEach((file, index) => {
     failures.push(`${file}: id is ${id}; expected ${expectedIds[index]}`);
   if (!/^\s*status:\s*proposed\s*$/m.test(text))
     failures.push(`${file}: lifecycle status must remain proposed`);
+  if (!/^\s*version:\s*1\.0\.0\s*$/m.test(text))
+    failures.push(
+      `${file}: implementation-ready baseline must be version 1.0.0`,
+    );
   if (!/^\s*parent_sad:\s*SAD-003\s*$/m.test(text))
     failures.push(`${file}: parent_sad must be SAD-003`);
   for (const section of requiredSections) {
     if (!text.includes(`## ${section}`))
       failures.push(`${file}: missing section ${section}`);
   }
+  if (!/^\|\s*[A-Z]{3}-\d{3}\s*\|/m.test(text))
+    failures.push(`${file}: must define traceable requirement IDs`);
+  if (!/```(?:mermaid|ts|text)/.test(text))
+    failures.push(
+      `${file}: must contain an executable design model or contract`,
+    );
+  if (/\b(?:TODO|TBD|fill this|coming soon)\b/i.test(text))
+    failures.push(`${file}: contains an unresolved placeholder`);
   if (!text.includes("Architecture authority:"))
     failures.push(
       `${file}: traceability must name central architecture authority`,
