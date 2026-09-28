@@ -2,10 +2,13 @@
 
 Status: proposal for principal review. This plan sequences work; it does not declare a P0 fix complete. Each item closes only when its evidence is reproducible in CI. The current copied packages remain an extracted baseline.
 
+The [architecture source-of-truth index](docs/ARCHITECTURE_SOT.md) identifies the governing documents and the five new C3 TDDs. The older microfrontend documentation is read-only historical input.
+
 ## P0: establish and repair release evidence
 
 | Order | Work | Acceptance evidence |
 | --- | --- | --- |
+| 0 | Connect the central governance linter to this repository's `docs/02-designs` path and validate TDD metadata/structure. | CI validates these C3 drafts against GDC-011 and resolves cross-repository `SAD-003` references. |
 | 1 | Keep the now-running `core-ui` Vitest suite reliable, add real design-system tests, replace its placeholder script, and resolve declaration-build heap cost. | Source CI runs interaction/state tests for both packages and builds within an explicit memory budget. |
 | 2 | Build an isolated consumer that installs tarballs from `npm pack`, without workspace aliases. | Consumer resolves documented JS, type, CSS, Sass, and asset paths. The harness is reused by later gates. |
 | 3 | Fix Sass token serialization for `low` and `focus` shadows, and invalid achromatic color output. Audit all `--ds-*` definitions and references. | CSS parser and browser computed-value checks pass for every supported theme and representative property; unresolved variables are reported. |

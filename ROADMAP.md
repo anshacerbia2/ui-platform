@@ -2,6 +2,8 @@
 
 This roadmap uses **exit criteria**, not calendar promises. The current state is an extracted baseline. Each phase needs a release-conformance record with links to evidence.
 
+Document authority and the current approval state are in the [architecture source-of-truth index](docs/ARCHITECTURE_SOT.md).
+
 | Phase | Deliverable | Exit criterion |
 | --- | --- | --- |
 | 0. Baseline and P0 repair | Standalone workspace, running source tests, packed consumer harness, fixes to emitted CSS, fonts, exports, CSP/provider, RSC, federation and exposed widget behavior | Every documented import and supported baseline scenario works from tarballs; failures have regression tests |

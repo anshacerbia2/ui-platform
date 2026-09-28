@@ -9,3 +9,5 @@ The local copy excludes `node_modules`, `dist`, editor state, build logs, and Ty
 This provenance check proves copy fidelity for included files; it does not prove that the baseline builds, tests, publishes, or meets accessibility and security requirements. The extraction intentionally preserves known defects so P0 can fix them with reproducible tests in this repository.
 
 The original microfrontend repository remains a separate project. Subsequent changes to this UI Platform repository do not flow back to it automatically.
+
+The original `packages/docs` tree was not copied. It contains implementation records with stale claims and two empty guides. Five new draft TDDs and three new guides were written for this repository under `docs/02-designs` and `docs/07-guides`. The [source-of-truth index](../ARCHITECTURE_SOT.md) defines their relationship to the canonical architecture repository and the read-only legacy records.

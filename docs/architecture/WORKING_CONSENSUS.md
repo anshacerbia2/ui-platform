@@ -2,6 +2,8 @@
 
 Status: **proposal for the three principals**, 2026-09-28. This document describes the intended contract and the extracted baseline. It is not a claim of implementation conformance or an approved release.
 
+For normative precedence and the full EAD → TDD chain, use the [architecture source-of-truth index](../ARCHITECTURE_SOT.md). This page is a review summary.
+
 ## Objective
 
 Build a global reusable UI Platform whose package contracts, interaction behavior, themes, CSS, security, and compatibility can be verified by an external consumer. The three-tier model is a strong conceptual foundation. The current execution does not yet justify a “beyond FAANG” or global-ready claim. Product quality will be judged by repeatable consumer evidence, not an architectural label.

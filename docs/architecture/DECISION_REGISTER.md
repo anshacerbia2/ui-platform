@@ -12,3 +12,5 @@ These choices are **open**. No principal is being asked to ratify an implementat
 | CSS delivery | Explicit shared stylesheet; component CSS subpaths; JS side-effect imports | Packed consumer render, tree shaking, documented import ergonomics, SSR behavior | Select one public contract in P0 |
 
 Decision reviews must separate source-level proof from packed-package and application-level proof. Any new numeric budget must state the measured environment and scenario.
+
+Until those decisions close, the implementation defaults in the [source-of-truth index](../ARCHITECTURE_SOT.md) constrain new work. An open design decision is not permission to claim the corresponding feature is supported.

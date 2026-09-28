@@ -7,6 +7,8 @@ Copy this template for each candidate release. Link CI runs, tarball checksums, 
 - Version / commit / package tarball checksums:
 - React, Next, Vite/Rspack, browser, OS versions tested:
 - Reviewer and date:
+- Applicable accepted ADRs, active STD versions, and reviewed TDD revisions:
+- Open/proposed decisions affecting this candidate and the resulting release restriction:
 - Supported package subpaths, themes, component inventory:
 
 ## Source evidence

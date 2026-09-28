@@ -2,6 +2,8 @@
 
 Standalone workspace for the UI Platform packages. This repository was split from the microfrontend workspace without modifying its source. It contains two physical packages:
 
+**Start with the [architecture source-of-truth index](docs/ARCHITECTURE_SOT.md)** for document authority, review status, and interim implementation direction.
+
 | Package | Current responsibility |
 | --- | --- |
 | `@scnx/core-ui` | Style-agnostic React primitives and behavior |
