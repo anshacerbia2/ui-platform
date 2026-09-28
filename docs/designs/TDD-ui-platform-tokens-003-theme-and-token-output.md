@@ -3,13 +3,13 @@ doc_meta:
   id: TDD-ui-platform-tokens-003
   title: Theme and Token Output
   owner: UI Platform Team
-  version: 0.1.0
-  status: draft
+  version: 0.2.0
+  status: proposed
   classification: public
   parent_sad: SAD-003
   review_cycle_days: 30
   created_date: 2026-09-28
-  last_reviewed: 2026-09-28
+  last_reviewed: 2026-09-29
 ---
 
 # TDD-ui-platform-tokens-003: Theme and Token Output
@@ -28,7 +28,7 @@ Sass maps are the current source. Panda references some `--ds-*` names absent fr
 
 ## Component Design
 
-The grammar is defined once in STD-UIP-TKN-001. Tier 2 color is `color.{scheme}.{role}.{emphasis}.{state}` (canonical example `color.primary.surface.solid.default`, emitted as `--ds-color-primary-surface-solid-default`). Every theme emits the identical public shadow set `effect.shadow.low|medium|high|overlay|focus`; Tier-1 `effect.shadow.sm|md|lg|xl` stays internal. Z-index uses `dimension.z-index.{step}` (Tier 1), `dimension.z-index.modal` (Tier 2), and `dialog.root.z-index.default` (Tier 3). Legacy names are renamed in P0 without compatibility aliases. A single versioned dictionary generates Sass-facing and Panda-facing names. Sass remains the source until a DTCG generator and migration test replace it. Brand overrides inherit declared baseline keys inside `[data-scnx-theme]` roots.
+The grammar is defined once in STD-UIP-TKN-001. Tier 2 color is `color.{scheme}.{role}.{emphasis}.{state}` (canonical example `color.primary.surface.solid.default`, emitted as `--ds-color-primary-surface-solid-default`). Every theme emits the identical public shadow set `effect.shadow.low|medium|high|overlay|focus`; Tier-1 `effect.shadow.sm|md|lg|xl` stays internal. Z-index uses `dimension.z-index.{step}` (Tier 1), `dimension.z-index.modal` (Tier 2), and `dialog.root.z-index.default` (Tier 3). A focus shadow may supplement but never replace the required visible `outline` indicator. Legacy names are renamed in P0 without compatibility aliases. A single versioned dictionary generates Sass-facing and Panda-facing names. Sass remains the source until a DTCG generator and migration test replace it. Brand overrides inherit declared baseline keys inside `[data-scnx-theme]` roots.
 
 ## Data Model
 
@@ -36,7 +36,7 @@ Each public token records name, type, tier, semantic purpose, theme/state covera
 
 ## API / Interface
 
-Public web tokens are documented `--ds-*` variables, `@scnx/system/tokens/*` subpaths, and CSS theme exports. DTCG 2025.10 is a Community Group Final Report and the target interchange model; current Sass maps do not claim conformance. The [dimension guide](../07-guides/GD-ui-platform-002-dimension-spacing-scale.md) records current scale versus proposed semantic aliases.
+Public web tokens are documented `--ds-*` variables, `@scnx/system/tokens/*` subpaths, and CSS theme exports. DTCG 2025.10 is a Community Group Final Report and the target interchange model; current Sass maps do not claim conformance. STD-UIP-TKN-001 owns the canonical grammar and scale; this TDD owns only its implementation and verification.
 
 ## Algorithms / Logic
 
@@ -52,7 +52,7 @@ Source checks validate legal roles, canonical names, generated Sass/Panda parity
 
 ## Performance Notes
 
-Record emitted CSS size and unused generated variants by import path. Token count and CSS bytes are measured rather than inferred from taxonomy.
+Record emitted CSS size and unused generated variants by import path, theme, build mode, tool version, and consumer baseline. Token count and CSS bytes are measured rather than inferred from taxonomy; no universal percentage or multiplier is a pass/fail rule.
 
 ## Security Notes
 
@@ -64,4 +64,4 @@ Token renames and semantic changes are versioned; migration maps and release con
 
 ## Traceability
 
-Parent: SAD-003. Governing ADRs: ADR-UIP-TKN-001/002/003; review drafts: STD-UIP-TKN-001/002. Implements UIP-DEC-002, UIP-DEC-003, and UIP-DEC-005 with P0 items 3 and 4.
+Architecture authority: SAD-003; ADR-UIP-PLT-001 and ADR-UIP-TKN-001/002/003; STD-GLB-FE-005, STD-GLB-FE-009, and STD-UIP-TKN-001/002. Each record's lifecycle status in `scnehaux-architecture` controls whether it is binding or proposed. Execution: [PLAN](../../PLAN.md) P0 row 4.

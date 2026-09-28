@@ -3,13 +3,13 @@ doc_meta:
   id: TDD-ui-platform-theme-005
   title: Theme Provider, Transitions, and Disclosure
   owner: UI Platform Team
-  version: 0.1.0
-  status: draft
+  version: 0.2.0
+  status: proposed
   classification: public
   parent_sad: SAD-003
   review_cycle_days: 30
   created_date: 2026-09-28
-  last_reviewed: 2026-09-28
+  last_reviewed: 2026-09-29
 ---
 
 # TDD-ui-platform-theme-005: Theme Provider, Transitions, and Disclosure
@@ -46,11 +46,11 @@ Resolve server-safe initial state → hydrate without mismatched markup → subs
 
 ## Configuration
 
-Supported themes and mode names are versioned. CSP policy is supplied by the consumer test harness. The `csp` fixture serves `script-src` and `style-src` without `unsafe-eval` or `unsafe-inline`. Any prepaint bootstrap is an external asset or runs through a consumer-controlled nonce or hash. The provider never injects an unhashed `<style>` element; theme CSS ships as static assets.
+Supported themes and mode names are versioned. CSP policy is supplied by the consumer test harness. The `csp` fixture serves `script-src` and `style-src` without `unsafe-eval` or `unsafe-inline`. Any prepaint bootstrap is an external asset or runs through a consumer-controlled nonce or hash. The provider never injects an unhashed `<style>` element; theme CSS ships as static assets. When the conditional federation fixture is evaluated, the host propagates the same consumer-controlled nonce or hash through remote-entry and dynamic-chunk loading; a runtime that cannot do so is ineligible.
 
 ## Testing Strategy
 
-Two providers with distinct themes coexist in one DOM (`fixtures/consumers/themes`). A modal and tooltip portal retain the originating theme without leaking into the neighboring root. Strict CSP with zero violation reports, an import-only test showing no effect at module evaluation, SSR/hydration with zero mismatches, preference changes, persistence, a missing completion event that settles through the bounded timeout, interrupted transitions, reduced motion, unmount cleanup, and exactly-once callbacks are tested. Browser traces record forced layout and frame cost in named scenarios. Packed shell/remote tests confirm context identity.
+Two providers with distinct themes coexist in one DOM (`fixtures/consumers/themes`). A modal and tooltip portal retain the originating theme without leaking into the neighboring root. Strict CSP with zero violation reports, an import-only test showing no effect at module evaluation, SSR/hydration with zero mismatches, preference changes, persistence, a missing completion event that settles through the bounded timeout, interrupted transitions, reduced motion, unmount cleanup, and exactly-once callbacks are tested. The standalone fixture is mandatory; the federation fixture is an `assess`-stage evaluation and does not authorize adoption. Browser traces record forced layout and frame cost in named scenarios. Packed shell/remote tests confirm context identity.
 
 ## Performance Notes
 
@@ -62,8 +62,8 @@ Remove `new Function` and global mutable callbacks. An inline script runs only t
 
 ## Operational Notes
 
-If theme initialization fails, retain a valid baseline theme and report the failure in the consumer fixture. A broken provider blocks stable promotion.
+If theme initialization fails, retain a valid baseline theme and report the failure in the consumer fixture. A broken provider blocks stable promotion. A federation-specific CSP failure blocks federation support; it never permits weakening the standalone security policy.
 
 ## Traceability
 
-Parent: SAD-003. Governing review drafts: STD-UIP-ENG-001, STD-UIP-STY-001, and STD-UIP-PRM-001. Implements UIP-DEC-002 with P0 items 7 and 10.
+Architecture authority: SAD-003; ADR-GLB-FE-012, ADR-GLB-FE-013, and ADR-UIP-PLT-001; STD-GLB-FE-003 and STD-UIP-ENG-001/STY-001/PRM-001. Each record's lifecycle status in `scnehaux-architecture` controls whether it is binding or proposed. Execution: [PLAN](../../PLAN.md) P0 rows 6, 9, and 10.

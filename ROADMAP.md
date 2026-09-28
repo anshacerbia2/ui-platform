@@ -1,24 +1,32 @@
 # UI Platform roadmap
 
-The roadmap advances through evidence gates. The current state is an extracted baseline.
+Status: **documentation baseline in review; deterministic bootstrap is next**.
 
-| Phase                     | Deliverable                                                                                                                                    | Exit criterion                                                                                                                         | Target review                                                 |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| 0. Contract ratification  | Ratified authorizing and replacement ADRs, active STDs, approved SAD, and UIP-DEC-001 through UIP-DEC-007 recorded with their decision rules   | Required leads and ARB approve; status rows name the actual approvers; linter passes with zero failures; no normative conflict remains | Decisions recorded 2026-10-16; ratification before 2026-10-28 |
-| 1. P0 repair and evidence | CI, source tests, `pnpm pack` consumer, repaired tokens/fonts/CSS/exports/provider/RSC/widgets, security audit, and owned integration fixtures | Every P0 row in PLAN passes in CI; every decision has its evidence and a recorded outcome                                              | P0 exit 2026-11-27                                            |
-| 2. Reference slice        | Representative components and repeatable release pipeline                                                                                      | Source, packed, SSR/RSC, CSP, federation, visual, and accessibility evidence passes for one candidate                                  | Exit based                                                    |
-| 3. Global beta            | Consumer pilots, localization, multi-brand support, migration tooling, and support operations                                                  | Named standalone and federated pilots publish measured budgets and Component ACRs                                                      | Exit based                                                    |
-| 4. Stable product         | Versioned packages, provenance, deprecation, incident, and rollback procedures                                                                 | Release authority accepts evidence and a real consumer completes a migration rehearsal                                                 | Exit based                                                    |
+The architecture repository owns architecture and governance. The five
+[TDDs](docs/designs/) own local component design. [PLAN.md](PLAN.md) owns work
+order and acceptance. This roadmap owns only phase state and exit gates.
 
-## Decision scope
+| Phase                            | State              | Deliverable                                                                                                                                                       | Exit gate                                                                                                                                                  |
+| -------------------------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0. Architecture and TDD baseline | In review          | Canonical architecture updates in `scnehaux-architecture`; five aligned TDDs; one plan; one roadmap; one principal-review disposition record                      | Both repositories pass their documentation/governance gates; architecture lifecycle states remain truthful; no duplicate UI architecture authority remains |
+| 1. Deterministic bootstrap       | Next               | Repaired Panda prepare resolution and required clean-install CI job                                                                                               | A clean checkout passes `pnpm install --frozen-lockfile` with scripts enabled, no bypass flag, and no lockfile mutation                                    |
+| 2. P0 repair and evidence        | Blocked by phase 1 | Source tests, packed consumers, corrected tokens/CSS/provider/primitives, security evidence, strict-CSP standalone fixture, and conditional federation evaluation | Every applicable P0 PLAN row passes against exact commits and artifacts; failed capabilities remain outside stable exports                                 |
+| 3. Reference slice and beta      | Not started        | Four-component reference slice, repeatable release pipeline, named consumer pilots, migration/support evidence                                                    | Source, packed, SSR/RSC, CSP, accessibility, visual, localization, performance, provenance, migration, and rollback gates pass for the supported scope     |
+| 4. Stable release                | Not started        | Versioned packages and operating model                                                                                                                            | Human release authority accepts exact-version evidence and at least one real consumer completes migration and rollback rehearsal                           |
 
-The seven governed items are UIP-DEC-001 interaction foundation, UIP-DEC-002 theme isolation, UIP-DEC-003 styling ownership, UIP-DEC-004 polymorphism, UIP-DEC-005 token packaging, UIP-DEC-006 CSS delivery, and UIP-DEC-007 federation sharing. Their owner, authority, alternatives, evidence, decision rule, and dates live in the [decision register](docs/architecture/DECISION_REGISTER.md).
+## Non-negotiable boundaries
 
-## Quality progression
+- CI, merge, and linter success are evidence, not human lifecycle approval.
+- Module Federation remains `assess`. The P0 federation fixture is an
+  evaluation; Rspack is conditional on a separately authorized federation
+  scope. Failure reopens federation, never strict CSP.
+- Strict CSP rejects `unsafe-eval` and `unsafe-inline`; dynamic remote/chunk
+  loading must use consumer-controlled nonces or hashes with zero violations.
+- Clean install precedes package feature work.
+- Comparative measurements retain full context; no universal 15 KB, 10%, or
+  2x rule exists.
+- Proposed/draft architecture remains proposed/draft until the authorized human
+  transition is recorded in `scnehaux-architecture`.
 
-- Architecture: dependency direction, token semantics, bounded ownership, and clear product authority.
-- Artifact: published assets resolve and compute under every supported theme and import path.
-- Interaction: native semantics and tested composite keyboard, focus, state, and assistive-technology behavior.
-- Operations: compatibility, provenance, support, deprecation, rollback, and measured consumer cost.
-
-Comparative claims require comparative adoption and outcome data. The roadmap creates that evidence.
+Target dates belong in delivery tracking after owners commit to them. This
+roadmap does not present unapproved dates as architectural facts.

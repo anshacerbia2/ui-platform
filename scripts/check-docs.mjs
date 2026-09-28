@@ -1,26 +1,45 @@
 #!/usr/bin/env node
-// Documentation gates for the UI Platform repository.
-//
-// 1. Link check: every relative Markdown link in the governing documents
-//    resolves to a tracked file, and every `#anchor` resolves to a heading.
-// 2. Acceptance audit: every P0 row in PLAN.md names a defined role and a
-//    binary acceptance condition without hedging vocabulary, and every
-//    decision in the register carries its required fields.
-//
-// Historical inherited notes under `packages/**` are excluded from the link
-// check (README.md marks them as historical source material).
+// Enforce the deliberately small UI Platform documentation boundary:
+// README + PLAN + ROADMAP, exactly five TDDs, and one review record.
 
-import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, join, normalize, relative } from "node:path";
 
 const root = process.cwd();
 const failures = [];
 
-const tracked = execFileSync("git", ["ls-files", "*.md"], { encoding: "utf8" })
-  .split("\n")
-  .filter(Boolean)
-  .filter((file) => !file.startsWith("packages/"));
+const tdds = [
+  "docs/designs/TDD-ui-platform-packaging-001-build-and-package-contract.md",
+  "docs/designs/TDD-ui-platform-primitives-002-behavior-and-polymorphism.md",
+  "docs/designs/TDD-ui-platform-styled-004-component-css-delivery.md",
+  "docs/designs/TDD-ui-platform-theme-005-provider-and-transitions.md",
+  "docs/designs/TDD-ui-platform-tokens-003-theme-and-token-output.md",
+];
+const review = "docs/reviews/PRINCIPAL_REVIEW_DISPOSITIONS.md";
+const governing = ["README.md", "PLAN.md", "ROADMAP.md", ...tdds, review];
+
+function markdownBelow(directory) {
+  if (!existsSync(directory)) return [];
+  return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) return markdownBelow(path);
+    return entry.name.endsWith(".md") ? [path.replaceAll("\\", "/")] : [];
+  });
+}
+
+const actualDocs = markdownBelow("docs").sort();
+const expectedDocs = [...tdds, review].sort();
+if (actualDocs.join("\n") !== expectedDocs.join("\n")) {
+  failures.push(
+    `docs/: expected only five TDDs and one review record; found ${actualDocs.join(", ")}`,
+  );
+}
+
+for (const file of governing) {
+  if (!existsSync(file) || !statSync(file).isFile()) {
+    failures.push(`${file}: required governing document is missing`);
+  }
+}
 
 function slug(heading) {
   return heading
@@ -51,9 +70,8 @@ function anchorsOf(file) {
   return anchorCache.get(file);
 }
 
-// 1. Link check
 const linkPattern = /\[[^\]]*\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g;
-for (const file of tracked) {
+for (const file of governing.filter(existsSync)) {
   const text = readFileSync(file, "utf8").replace(/```[\s\S]*?```/g, "");
   for (const [, target] of text.matchAll(linkPattern)) {
     if (/^(?:[a-z]+:|\/\/)/i.test(target)) continue;
@@ -77,24 +95,10 @@ for (const file of tracked) {
   }
 }
 
-// 2. Acceptance audit
-const vague =
-  /\b(reported|known|representative|profiled|where support is claimed|as needed|if possible|should|recommended)\b/i;
-
-const sot = readFileSync("docs/ARCHITECTURE_SOT.md", "utf8");
-const rolesSection = sot.split(/^## Roles$/m)[1]?.split(/^## /m)[0] ?? "";
-const roles = new Set(
-  [...rolesSection.matchAll(/^\|\s*([A-Z][A-Za-z ]+Lead)\s*\|/gm)].map((m) =>
-    m[1].trim(),
-  ),
-);
-if (roles.size === 0)
-  failures.push("docs/ARCHITECTURE_SOT.md: no roles table found");
-
 const plan = readFileSync("PLAN.md", "utf8");
 const p0 =
   plan
-    .split(/^## P0: release-blocking evidence and repair$/m)[1]
+    .split(/^## P0 — release-blocking repair and evidence$/m)[1]
     ?.split(/^## /m)[0] ?? "";
 const rows = p0
   .split(/\r?\n/)
@@ -105,53 +109,81 @@ const rows = p0
       .slice(1, -1)
       .map((cell) => cell.trim()),
   );
-if (rows.length === 0) failures.push("PLAN.md: no P0 rows found");
+if (rows.length !== 12)
+  failures.push(`PLAN.md: expected 12 P0 rows; found ${rows.length}`);
+const vague = /\b(as needed|if possible|should|recommended)\b/i;
 rows.forEach(([order, owner, work, acceptance], index) => {
   if (Number(order) !== index)
+    failures.push(`PLAN.md: row ${order} expected order ${index}`);
+  if (!/^[A-Z][A-Za-z ]+ Lead$/.test(owner))
+    failures.push(`PLAN.md: row ${order} has invalid owner "${owner}"`);
+  if (!work) failures.push(`PLAN.md: row ${order} has no work`);
+  if (!acceptance) failures.push(`PLAN.md: row ${order} has no acceptance`);
+  else if (vague.test(acceptance))
+    failures.push(`PLAN.md: row ${order} has non-binary acceptance wording`);
+});
+
+const requiredSections = [
+  "Purpose",
+  "Scope",
+  "Technical Context",
+  "Component Design",
+  "Data Model",
+  "API / Interface",
+  "Algorithms / Logic",
+  "Configuration",
+  "Testing Strategy",
+  "Performance Notes",
+  "Security Notes",
+  "Operational Notes",
+  "Traceability",
+];
+const expectedIds = [
+  "TDD-ui-platform-packaging-001",
+  "TDD-ui-platform-primitives-002",
+  "TDD-ui-platform-styled-004",
+  "TDD-ui-platform-theme-005",
+  "TDD-ui-platform-tokens-003",
+];
+tdds.forEach((file, index) => {
+  if (!existsSync(file)) return;
+  const text = readFileSync(file, "utf8");
+  const id = /^\s*id:\s*(\S+)\s*$/m.exec(text)?.[1];
+  if (id !== expectedIds[index])
+    failures.push(`${file}: id is ${id}; expected ${expectedIds[index]}`);
+  if (!/^\s*status:\s*proposed\s*$/m.test(text))
+    failures.push(`${file}: lifecycle status must remain proposed`);
+  if (!/^\s*parent_sad:\s*SAD-003\s*$/m.test(text))
+    failures.push(`${file}: parent_sad must be SAD-003`);
+  for (const section of requiredSections) {
+    if (!text.includes(`## ${section}`))
+      failures.push(`${file}: missing section ${section}`);
+  }
+  if (!text.includes("Architecture authority:"))
     failures.push(
-      `PLAN.md: P0 row ${order} is out of order (expected ${index})`,
+      `${file}: traceability must name central architecture authority`,
     );
-  if (!roles.has(owner))
+  if (!text.includes("[PLAN](../../PLAN.md)"))
+    failures.push(`${file}: traceability must link to PLAN`);
+  if (
+    /UIP-DEC-|DECISION_REGISTER|ARCHITECTURE_SOT|RATIFICATION_MANIFEST/.test(
+      text,
+    )
+  ) {
     failures.push(
-      `PLAN.md: P0 row ${order} owner "${owner}" is not a role in the SOT`,
-    );
-  if (!work) failures.push(`PLAN.md: P0 row ${order} has no work description`);
-  if (!acceptance)
-    failures.push(`PLAN.md: P0 row ${order} has no acceptance condition`);
-  else if (vague.test(acceptance)) {
-    failures.push(
-      `PLAN.md: P0 row ${order} acceptance uses non-binary wording "${acceptance.match(vague)[0]}"`,
+      `${file}: references a removed duplicate-authority document or local decision ID`,
     );
   }
 });
 
-const register = readFileSync("docs/architecture/DECISION_REGISTER.md", "utf8");
-const decisions = register.split(/^### /m).slice(1);
-const ids = decisions.map((section) => section.split(" ")[0]);
-const expected = Array.from({ length: 7 }, (_, i) => `UIP-DEC-00${i + 1}`);
-if (ids.join() !== expected.join()) {
-  failures.push(
-    `DECISION_REGISTER.md: decisions are ${ids.join(", ")}; expected ${expected.join(", ")}`,
-  );
-}
-for (const section of decisions) {
-  const id = section.split(" ")[0];
-  for (const field of ["**Owner:**", "**Position:**", "**Evidence"]) {
-    if (!section.includes(field))
-      failures.push(`DECISION_REGISTER.md: ${id} lacks ${field}`);
-  }
-  const owner = /\*\*Owner:\*\*\s*([A-Za-z ]+Lead)/.exec(section)?.[1];
-  if (owner && !roles.has(owner))
-    failures.push(
-      `DECISION_REGISTER.md: ${id} owner "${owner}" is not a role in the SOT`,
-    );
+const reviewText = readFileSync(review, "utf8");
+if (!/audit record; non-normative/i.test(reviewText)) {
+  failures.push(`${review}: must state its non-normative authority boundary`);
 }
 
-for (const file of tracked) {
+for (const file of governing.filter(existsSync)) {
   if (/\bnpm pack\b/.test(readFileSync(file, "utf8"))) {
-    failures.push(
-      `${file}: uses "npm pack"; the release harness uses "pnpm pack"`,
-    );
+    failures.push(`${file}: uses npm pack; use pnpm pack`);
   }
 }
 
@@ -160,6 +192,7 @@ if (failures.length > 0) {
   console.error(`\n${failures.length} documentation gate failure(s).`);
   process.exit(1);
 }
+
 console.log(
-  `Documentation gates passed: ${tracked.length} files link-checked, ${rows.length} P0 rows and ${decisions.length} decisions audited.`,
+  `Documentation boundary passed: ${tdds.length} TDDs, ${rows.length} P0 rows, one roadmap, and one principal-review record.`,
 );

@@ -25,7 +25,7 @@ jobs:
 
   governance:
     name: Central governance linter
-    uses: anshacerbia2/scnehaux-architecture/.github/workflows/linter.yml@review/ui-platform-consensus-r2-20260928
+    uses: anshacerbia2/scnehaux-architecture/.github/workflows/linter.yml@main
     with:
       target_dir: docs/designs
-      governance_ref: review/ui-platform-consensus-r2-20260928
+      governance_ref: main
