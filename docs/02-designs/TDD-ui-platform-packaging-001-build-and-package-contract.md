@@ -28,9 +28,9 @@ The repo uses pnpm workspaces, tsup, Sass, and Panda. `core-ui` built in the fir
 
 ## Component Design
 
-The build pipeline has four stages: generate token/recipe assets; build both packages in dependency order; pack each package; install tarballs into consumers outside the workspace. No release check may substitute a workspace alias for a packed import.
+The build pipeline has four stages: generate token/recipe assets in the producer workspace; build both packages in dependency order; pack each package; install tarballs into consumers outside the workspace. No release check may substitute a workspace alias for a packed import. The packed consumer does not run Panda or inspect workspace source.
 
-Every supported import path is listed in a machine-readable export inventory derived from `package.json`. The inventory identifies JS, declarations, CSS, fonts, and Sass paths. The CSS delivery choice is closed in [TDD styled components](TDD-ui-platform-styled-004-component-css-delivery.md) before stable publication.
+Every supported import path is listed in a machine-readable export inventory derived from `package.json`. The inventory identifies JS, declarations, CSS, fonts, and Sass paths. The composition-root CSS working contract is defined in [TDD styled components](TDD-ui-platform-styled-004-component-css-delivery.md); packed/federated evidence and formal ratification close it before stable publication.
 
 ## Data Model
 
@@ -38,15 +38,16 @@ Release record: source commit, package name/version, tarball checksum, declared 
 
 ## API / Interface
 
-Public API is `package.json#exports` plus documented CSS/Sass asset entry points. React and React DOM are peers. The package must not depend on a consumer's source-path alias or on a consumer running Panda merely to render shipped components.
+Public API is `package.json#exports` plus documented aggregate component CSS, theme CSS, and Sass asset entry points. React and React DOM are peers. Component JS has no implicit CSS side effect. The package must not depend on a consumer's source-path alias or on a consumer running Panda merely to render shipped components.
 
 ## Algorithms / Logic
 
-1. Build `core-ui`, then `system`.
+1. Verify `core-ui` has no Panda callsite, generate styling assets from sources owned by `system`, then build `core-ui` and `system` in dependency order.
 2. Execute `npm pack` for each package.
 3. Create isolated consumers from those tarballs and declared peer versions.
 4. Import every documented subpath and fail on missing JS, type, CSS, or asset targets.
-5. Render representative components; then run SSR/RSC, strict CSP, and shell/remote fixtures.
+5. At the standalone or host composition root, import aggregate component CSS and the selected theme CSS once.
+6. Render representative components; then run SSR/RSC, strict CSP, and shell/remote fixtures. Remotes must not inject duplicate UI Platform CSS.
 
 Client-only entry boundaries are explicit in source and verified in the emitted ESM. A hook-name regex is not the authority for `"use client"`.
 
@@ -56,11 +57,11 @@ Pin the package manager and toolchain in the workspace. Record supported Node, R
 
 ## Testing Strategy
 
-Source tests cover state and interaction; packed tests cover exports and emitted assets. Next App Router imports client-only and server-safe entries. A federated shell and remote verify React/context identity and CSS loading. CI fails when a documented path is unresolved or a fixture fails.
+Source tests cover state and interaction; producer tests cover Panda generation and package builds; packed tests cover exports and emitted assets. Next App Router imports client-only and server-safe entries. A federated shell with multiple remotes verifies React/context identity, one intended stylesheet set, load-order independence, and portal theme propagation. CI fails when a documented path is unresolved or a fixture fails.
 
 ## Performance Notes
 
-Measure declaration-build peak memory and time, CSS bytes by import path, and incremental consumer JS size. No universal 12 KB package budget is assumed.
+Measure declaration-build peak memory and time, CSS bytes by import path, and incremental consumer JS size. Record raw, minified, gzip/Brotli, tool, and scenario before assigning a threshold. No universal package-size budget is assumed.
 
 ## Security Notes
 
