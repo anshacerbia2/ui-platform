@@ -46,7 +46,7 @@ Compile Sass and Panda in the producer workspace → compose theme/component CSS
 
 ## Configuration
 
-Panda `staticCss` generation is profiled. The canonical order is `reset, tokens, base, components, recipes, utilities, overrides`. Portaled content receives a container inside the active `[data-scnx-theme]` root. Consumer overrides use the final layer.
+Panda `staticCss` output is measured against the recipe CSS actually referenced, for the UIP-DEC-003 decision rule. The canonical order is `reset, tokens, base, components, recipes, utilities, overrides`. Portaled content receives a container inside the active `[data-scnx-theme]` root. Consumer overrides use the final layer.
 
 ## Testing Strategy
 
@@ -54,7 +54,7 @@ A packed consumer renders the supported v1 set under each theme. A federated fix
 
 ## Performance Notes
 
-Measure full-theme CSS, a representative route, individual component CSS if offered, generated variant cost, and build time. The result decides whether dual engines remain.
+Measure full-theme CSS, the P2 slice route, generated variant cost, and build time. The result decides whether dual engines remain.
 
 ## Security Notes
 

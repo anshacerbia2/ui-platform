@@ -20,4 +20,4 @@ The DTCG 2025.10 format is a future interchange target. A DTCG source can become
 
 For each proposed token, document its type, tier, intent, states, theme coverage, fallback, consumer examples, and migration impact. Reject aliases that merely rename an existing semantic role. Do not impose an arbitrary count of aliases per component.
 
-See [the token TDD](../02-designs/TDD-ui-platform-tokens-003-theme-and-token-output.md) for compilation and release tests. The read-only microfrontend guide GD-SCNX-UI-JS-001 is historical material, not the UI Platform's current authority.
+See [the token TDD](../designs/TDD-ui-platform-tokens-003-theme-and-token-output.md) for compilation and release tests. The read-only microfrontend guide GD-SCNX-UI-JS-001 is historical material, not the UI Platform's current authority.

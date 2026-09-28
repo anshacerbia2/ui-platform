@@ -18,4 +18,4 @@ Treat channels, complete color functions, alpha colors, and shadow lists as dist
 
 A CSS parser can accept a custom-property value that later becomes invalid after substitution. Browser computed styles close that gap. For the extracted baseline, `low` and `focus` shadows and an achromatic color expression are known failing examples to turn into regression tests.
 
-See [the token TDD](../02-designs/TDD-ui-platform-tokens-003-theme-and-token-output.md) and the [release record template](../architecture/RELEASE_CONFORMANCE_TEMPLATE.md).
+See [the token TDD](../designs/TDD-ui-platform-tokens-003-theme-and-token-output.md) and the [release record template](../architecture/RELEASE_CONFORMANCE_TEMPLATE.md).

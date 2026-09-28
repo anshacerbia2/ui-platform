@@ -47,17 +47,17 @@ Public API is `package.json#exports` plus documented aggregate component CSS, th
 3. Install the tarballs in `fixtures/consumers/packed` with declared peer versions and no workspace alias.
 4. Import every documented subpath and fail on missing JS, type, CSS, or asset targets.
 5. At the standalone or host composition root, import aggregate component CSS and the selected theme CSS once.
-6. Render representative components; run `fixtures/consumers/next-app` and `fixtures/consumers/csp`; then run `fixtures/federation/host` with `remote-a` and `remote-b`. Remotes must not inject UI Platform CSS.
+6. Render the supported set (UIP-DEC-006); run `fixtures/consumers/next-app` and `fixtures/consumers/csp`; then run `fixtures/federation/host` with `remote-a` and `remote-b`. Remotes must not inject UI Platform CSS.
 
 Client-only entry boundaries are explicit in source and verified in the emitted ESM. A hook-name regex is not the authority for `"use client"`.
 
 ## Configuration
 
-Pin the package manager and toolchain in the workspace. Record supported Node, React, bundler, and browser versions in the release record. The federation host owns explicit singleton keys for React, React DOM, and every supported public context-bearing UI request. `requiredVersion` is derived from the relevant manifest range. Remotes remain lazy; only the host may choose eager loading.
+Pin the package manager and toolchain in the workspace. Record supported Node, React, bundler, and browser versions in the release record. Public exports are explicit; no wildcard subpath is published. `@scnx/system` declares `@scnx/core-ui` as a peer and dev dependency, and both packages declare identical `react` and `react-dom` peer ranges. The federation host follows ADR-GLB-FE-012: explicit singleton keys for React, React DOM, `@scnx/core-ui`, and every other public context-bearing entry, generated from the export inventory; `requiredVersion` is the consuming application's declared range; remotes remain lazy; only the host may load eagerly.
 
 ## Testing Strategy
 
-Source tests cover state and interaction; producer tests cover Panda generation and package builds; packed tests cover exports and emitted assets. Next App Router imports client-only and server-safe entries. Both remote load orders must produce one React identity, one UI context identity, exactly one aggregate component stylesheet content hash, exactly one selected theme asset, and scoped portal styling. Any unresolved export, retained `workspace:` range, duplicate stylesheet, incompatible-version mismatch without a controlled failure, or required fixture failure fails CI.
+Source tests cover state and interaction; producer tests cover Panda generation and package builds; packed tests cover exports and emitted assets. Next App Router imports client-only and server-safe entries. Both remote load orders must produce one React identity, one UI context identity, exactly one aggregate component stylesheet content hash, one instance of each selected theme asset, and scoped portal styling. Any unresolved export, retained `workspace:` range, duplicate stylesheet, incompatible-version mismatch without a controlled failure, or required fixture failure fails CI.
 
 ## Performance Notes
 
@@ -65,7 +65,7 @@ Measure declaration-build peak memory and time, CSS bytes by import path, and in
 
 ## Security Notes
 
-The packed consumer runs under CSP without `unsafe-eval`. Release provenance and dependency/license review accompany publication.
+The packed consumer runs under a CSP whose `script-src` and `style-src` reject `unsafe-eval` and `unsafe-inline`. An import-only test proves that importing any public entry mutates no DOM, global, network, or stylesheet state, and that no asset needed at render time is dropped by a bundler honoring `sideEffects`. The dependency audit of STD-GLB-FE-006 section 3.10 runs on every fixture. Release provenance and license review accompany publication.
 
 ## Operational Notes
 

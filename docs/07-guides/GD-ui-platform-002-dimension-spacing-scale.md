@@ -4,21 +4,21 @@ Status: code-grounded baseline plus review guidance, 2026-09-28. This fills the 
 
 ## Current core spacing
 
-| Core key | Value |
-| --- | --- |
-| `0` | `0` |
-| `0_5` | `0.125rem` |
-| `1` | `0.25rem` |
-| `2` | `0.5rem` |
-| `3` | `0.75rem` |
-| `4` | `1rem` |
-| `5` | `1.25rem` |
-| `6` | `1.5rem` |
-| `8` | `2rem` |
-| `10` | `2.5rem` |
-| `12` | `3rem` |
-| `16` | `4rem` |
-| `20` | `5rem` |
+| Core key | Value      |
+| -------- | ---------- |
+| `0`      | `0`        |
+| `0_5`    | `0.125rem` |
+| `1`      | `0.25rem`  |
+| `2`      | `0.5rem`   |
+| `3`      | `0.75rem`  |
+| `4`      | `1rem`     |
+| `5`      | `1.25rem`  |
+| `6`      | `1.5rem`   |
+| `8`      | `2rem`     |
+| `10`     | `2.5rem`   |
+| `12`     | `3rem`     |
+| `16`     | `4rem`     |
+| `20`     | `5rem`     |
 
 The current default semantic spacing map is `3xs→0_5`, `2xs→1`, `xs→2`, `sm→3`, `md→4`, `lg→6`, `xl→8`, `2xl→12`, `3xl→16`, and `4xl→20`. These are implementation facts, not proof that every consumer uses the intended size.
 
@@ -33,4 +33,4 @@ The current default semantic spacing map is `3xs→0_5`, `2xs→1`, `xs→2`, `s
 
 A spacing change records affected semantic aliases, components, screenshots, viewport scenarios, and migration impact. A public alias rename is a compatibility change. The packed browser test checks that every emitted spacing variable resolves to a valid length where consumed.
 
-See [the token TDD](../02-designs/TDD-ui-platform-tokens-003-theme-and-token-output.md). The CSS custom-property names emitted by the build, not the Sass map keys, are the public web contract.
+See [the token TDD](../designs/TDD-ui-platform-tokens-003-theme-and-token-output.md). The CSS custom-property names emitted by the build, not the Sass map keys, are the public web contract.

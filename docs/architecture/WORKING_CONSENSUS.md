@@ -24,7 +24,7 @@ The authoritative register is [DECISION_REGISTER.md](DECISION_REGISTER.md). Its 
 6. UIP-DEC-006 CSS delivery.
 7. UIP-DEC-007 Module Federation sharing.
 
-The register supplies owner, target authority, evidence, review deadline, and status for every item. The SOT, PLAN, and roadmap use the same IDs.
+The register supplies owner, target authority, alternatives, evidence, decision rule, and the two dates (decision recorded 2026-10-16, evidence complete at P0 exit 2026-11-27) for every item. The SOT, PLAN, and roadmap use the same IDs.
 
 ## Evidence model
 
@@ -38,19 +38,18 @@ The register supplies owner, target authority, evidence, review deadline, and st
 
 The workspace uses `pnpm pack` because it owns a pnpm workspace and publishes `workspace:*` dependencies. The isolated consumer installs those tarballs without aliases. Every unresolved public variable, invalid substituted property, missing export, duplicate stylesheet, or required fixture failure blocks promotion.
 
-## Required governance corrections
+## Round-three governance corrections
 
-- Expand ADR-GLB-FE-010 to cover the global styling, React, accessibility, Module Federation, and static CSS conflicts.
-- Attach the global ADR to EAD-005 and route its approval to the ARB.
-- Add the authorizing ADR to every major-version STD through `governed_by`.
-- Align token naming between the token STD and ADR-UIP-TKN-003.
-- Validate SAD-003 fully in `proposed` state and preserve its original creation date.
-- Align the TDD location to repository-root `docs/designs/`.
-- Update the technology radar for the technologies used or evaluated by the platform.
+- Standards keep `governed_by` for their attachment and name their authorizing ADR in `authorized_by`; the ADR names them back in `authorizes`. The linter enforces the edge and the ADR's status on the final state of each commit.
+- The global ADRs FE-002, FE-004, and FE-006 are restored to their accepted wording and remain binding; ADR-GLB-FE-011, -012, and -013 replace them on ratification because the production status of the approved Experience frontends cannot be established.
+- ADR-GLB-FE-010 carries a rule-level delta table for every revised global standard.
+- The React security floor is an advisory-driven dependency audit over the resolved graph, not a fixed version (STD-GLB-FE-006 section 3.10).
+- Token grammar is defined once in STD-UIP-TKN-001, including `solid`, the neutral elevation values, `effect.shadow.*`, and `dimension.z-index.*`.
+- Focus indicators are outlines; shadows only enhance them; a forced-colors fixture verifies them.
 - Record final dates and approvers only after the corresponding people approve.
 
 ## Known baseline defects
 
-P0 covers malformed shadow values, the `--ds-shadow-lg` key mismatch, achromatic color output, font drift and packaging, missing design-system tests, declaration-build heap growth, CSS exports, unsafe theme evaluation, global provider callbacks, RSC boundary inference, federation identity, TOC IDs, unused initial state, prop leakage, widget keyboard behavior, Slot provenance, and render-path logging.
+P0 covers malformed shadow values, the shadow key-set mismatch between themes, achromatic color output, font drift and packaging, missing design-system tests, declaration-build heap growth, CSS exports, unsafe theme evaluation, global provider callbacks, RSC boundary inference, federation identity, TOC IDs, unused initial state, prop leakage, widget keyboard behavior, Slot provenance, and render-path logging.
 
 A larger Node heap remains a diagnostic. Arbitrary byte limits and universal runtime guarantees require a named measured scenario.

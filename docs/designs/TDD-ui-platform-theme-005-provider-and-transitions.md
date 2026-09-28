@@ -46,11 +46,11 @@ Resolve server-safe initial state → hydrate without mismatched markup → subs
 
 ## Configuration
 
-Supported themes and mode names are versioned. CSP policy is supplied by the consumer test harness. Any prepaint bootstrap uses an approved external asset or host-controlled nonce/hash; it never requires `unsafe-eval`.
+Supported themes and mode names are versioned. CSP policy is supplied by the consumer test harness. The `csp` fixture serves `script-src` and `style-src` without `unsafe-eval` or `unsafe-inline`. Any prepaint bootstrap is an external asset or runs through a consumer-controlled nonce or hash. The provider never injects an unhashed `<style>` element; theme CSS ships as static assets.
 
 ## Testing Strategy
 
-Two providers with distinct themes coexist in one DOM. A modal and tooltip portal retain the originating theme without leaking into the neighboring root. Strict CSP, SSR/hydration, preference changes, persistence, missing completion events, interrupted transitions, reduced motion, unmount cleanup, and disclosure timing are tested. Browser traces record forced layout and frame cost in named scenarios. Packed shell/remote tests confirm context identity.
+Two providers with distinct themes coexist in one DOM (`fixtures/consumers/themes`). A modal and tooltip portal retain the originating theme without leaking into the neighboring root. Strict CSP with zero violation reports, an import-only test showing no effect at module evaluation, SSR/hydration with zero mismatches, preference changes, persistence, a missing completion event that settles through the bounded timeout, interrupted transitions, reduced motion, unmount cleanup, and exactly-once callbacks are tested. Browser traces record forced layout and frame cost in named scenarios. Packed shell/remote tests confirm context identity.
 
 ## Performance Notes
 
@@ -58,7 +58,7 @@ No absolute zero-reflow or sub-50 ms promise. Measure theme-switch interaction a
 
 ## Security Notes
 
-Remove `new Function` and global mutable callbacks. An inline script is allowed only under the consumer's explicit CSP policy and documented host integration.
+Remove `new Function` and global mutable callbacks. An inline script runs only through a nonce or hash that the consumer controls; the package never requires `unsafe-eval` or `unsafe-inline`.
 
 ## Operational Notes
 
