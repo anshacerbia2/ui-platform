@@ -1,24 +1,24 @@
 # UI Platform roadmap
 
-This roadmap uses **exit criteria**, not calendar promises. The current state is an extracted baseline. Each phase needs a release-conformance record with links to evidence.
+The roadmap advances through evidence gates. The current state is an extracted baseline.
 
-Document authority and the current approval state are in the [architecture source-of-truth index](docs/ARCHITECTURE_SOT.md).
+| Phase                       | Deliverable                                                                                                                                     | Exit criterion                                                                                                     | Target review     |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
+| 0. Governance and P0 repair | Fully validated review packet, source tests, `pnpm pack` consumer, fixed CSS/fonts/exports/provider/RSC/widgets, and owned integration fixtures | Every documented baseline scenario passes; UIP-DEC-001 through UIP-DEC-007 have evidence and accountable decisions | 2026-10-23        |
+| 1. Contract ratification    | Accepted authorizing ADRs, active STDs, approved SAD, API/theme/support contracts, and release policy                                           | Required leads and ARB approve; status tables name the actual approvers; no normative conflict remains             | Before 2026-10-28 |
+| 2. Reference slice          | Representative components and repeatable release pipeline                                                                                       | Source, packed, SSR/RSC, CSP, federation, visual, and accessibility evidence passes for one candidate              | Exit based        |
+| 3. Global beta              | Consumer pilots, localization, multi-brand support, migration tooling, and support operations                                                   | Named standalone and federated pilots publish measured budgets and Component ACRs                                  | Exit based        |
+| 4. Stable product           | Versioned packages, provenance, deprecation, incident, and rollback procedures                                                                  | Release authority accepts evidence and a real consumer completes a migration rehearsal                             | Exit based        |
 
-| Phase | Deliverable | Exit criterion |
-| --- | --- | --- |
-| 0. Baseline and P0 repair | Standalone workspace, running source tests, packed consumer harness, fixes to emitted CSS, fonts, exports, CSP/provider, RSC, federation and exposed widget behavior | Every documented import and supported baseline scenario works from tarballs; failures have regression tests |
-| 1. Contract approval | Reviewed canonical SAD/STDs/ADRs, API and theme contracts, support matrix, decision register outcomes | Principals approve major rule changes and the package contract; no unresolved contradiction controls implementation |
-| 2. Reference slice | Small representative component set and release pipeline | Source, packed, SSR/RSC, CSP, federation, visual, and accessibility evidence is repeatable for one candidate release |
-| 3. Global beta | Consumer pilots, documentation, migration tooling, localization and multi-brand support | Named standalone and federated pilots complete integration; measured budgets and component conformance reports are published |
-| 4. Stable product | Versioned packages, support/deprecation policy, provenance, incident/rollback path | Release authority accepts evidence, known limitations, and consumer migration rehearsal |
+## Decision scope
+
+The seven governed items are UIP-DEC-001 interaction foundation, UIP-DEC-002 theme isolation, UIP-DEC-003 styling ownership, UIP-DEC-004 polymorphism, UIP-DEC-005 token packaging, UIP-DEC-006 CSS delivery, and UIP-DEC-007 federation sharing. Their owner, authority, evidence, deadline, and status live in the [decision register](docs/architecture/DECISION_REGISTER.md).
 
 ## Quality progression
 
-- **Architecture quality:** dependency direction, logical token semantics, bounded styling ownership, clear product authority.
-- **Artifact quality:** published assets resolve and compute correctly under each supported theme and import path.
-- **Interaction quality:** native semantics plus tested composite behavior, focus, keyboard, screen-reader names, and state transitions.
-- **Operational quality:** compatibility, provenance, support, deprecation, rollback, and measured consumer cost.
+- Architecture: dependency direction, token semantics, bounded ownership, and clear product authority.
+- Artifact: published assets resolve and compute under every supported theme and import path.
+- Interaction: native semantics and tested composite keyboard, focus, state, and assistive-technology behavior.
+- Operations: compatibility, provenance, support, deprecation, rollback, and measured consumer cost.
 
-Claims such as “best in the world” or “beyond FAANG” require comparative evidence that the platform delivers lower consumer effort, fewer accessibility and integration defects, predictable upgrades, and competitive runtime cost across real adoption. The roadmap aims to produce that evidence; it does not predeclare the result.
-
-See [PLAN.md](PLAN.md) for item-level work and the [release template](docs/architecture/RELEASE_CONFORMANCE_TEMPLATE.md) for the evidence expected at each candidate release.
+Comparative claims require comparative adoption and outcome data. The roadmap creates that evidence.

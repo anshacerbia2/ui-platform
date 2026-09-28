@@ -22,16 +22,16 @@ Copy this template for each candidate release. Link CI runs, tarball checksums, 
 
 ## Packed artifact evidence
 
-| Gate                | Scenario and expected behavior                                                                                   | Result / evidence |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| Install and exports | Isolated `npm pack` consumer, no source aliases                                                                  |                   |
-| Types and CSS       | Every documented subpath resolves; Button is styled                                                              |                   |
-| Tokens/themes       | Parser plus computed styles, each theme/scope/state                                                              |                   |
-| Fonts/assets        | Requested font loads; declared CSS variables resolve                                                             |                   |
-| SSR/RSC             | Next App Router client boundary; no server import crash                                                          |                   |
-| CSP/provider        | Strict CSP, no `unsafe-eval`; two providers coexist                                                              |                   |
-| Federation          | Shell/remote React and context identity, version policy                                                          |                   |
-| CSS ownership       | Composition root imports aggregate component and theme CSS once; remotes add no duplicates; portal retains theme |                   |
+| Gate                | Scenario and expected behavior                                                                              | Result / evidence |
+| ------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------- |
+| Install and exports | Isolated `pnpm pack` consumer, no source aliases; packed manifests contain no `workspace:` ranges           |                   |
+| Types and CSS       | Every documented JS/type/CSS/Sass/font/token subpath resolves; supported components are styled              |                   |
+| Tokens/themes       | Parser plus computed properties for every theme/scope/state; unresolved variables fail                      |                   |
+| Fonts/assets        | Requested font loads; declared CSS variables resolve                                                        |                   |
+| SSR/RSC             | Next App Router client boundary; no server import crash                                                     |                   |
+| CSP/provider        | Strict CSP, no `unsafe-eval`; two providers coexist                                                         |                   |
+| Federation          | Packed host plus two remotes; singleton identity, manifest-derived version policy, lazy remotes             |                   |
+| CSS ownership       | Exactly one aggregate component stylesheet hash and one selected theme asset; portal retains its theme root |                   |
 
 ## Product integration evidence
 
