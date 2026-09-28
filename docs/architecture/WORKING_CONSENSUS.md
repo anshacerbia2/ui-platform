@@ -1,6 +1,6 @@
 # UI Platform working consensus
 
-Status: **proposal for the three principals**, 2026-09-28. This document describes the intended contract and the extracted baseline. It is not a claim of implementation conformance or an approved release.
+Status: **working consensus pending consolidated ratification**, 2026-09-28. Principal review accepted the evidence corrections and the composition-root CSS contract. ADR/SAD/STD metadata remains unchanged until the remaining review and required draft edits are complete. This document is not a claim of implementation conformance or an approved release.
 
 For normative precedence and the full EAD → TDD chain, use the [architecture source-of-truth index](../ARCHITECTURE_SOT.md). This page is a review summary.
 
@@ -23,20 +23,20 @@ graph LR
 - **Logical architecture:** Tier 1 core values → Tier 2 semantic tokens → Tier 3 component aliases. A theme changes mappings while preserving semantic meaning.
 - **Physical architecture today:** `packages/core-ui` publishes `@scnx/core-ui`; `packages/design-system` publishes `@scnx/system`. Tokens are currently within the latter. There is no third token package yet.
 - **Dependency direction:** `@scnx/system` may consume `@scnx/core-ui`. `@scnx/core-ui` must not import `@scnx/system`. Downstream products own business workflows and their own page-level conformance.
-- **Delivery:** Static CSS and JS are package assets. Sass and Panda both exist today. A single token contract and explicit ownership of emitted rules are required. Whether to retain both engines is an open, measured decision.
+- **Delivery:** Static CSS and JS are package assets. Sass and Panda both exist today. A single token contract and explicit ownership of emitted rules are required. `@scnx/system` exports aggregate component CSS and explicit theme CSS; a host or standalone composition root imports them once. Component JS and federated remotes do not inject duplicate CSS.
 - **Interactions:** Native elements keep native semantics; composite widgets have explicit keyboard/focus/state contracts. OFSM can organize transitions but does not itself prove usability or accessibility.
 
 ## Evidence model
 
-| Level | What it proves | Required examples |
-| --- | --- | --- |
-| Source | Internal logic and behavior | OFSM transitions, focus/keyboard interaction, type checks, lint |
-| Built artifact | Emitted outputs are coherent | CSS parsing and computed values per theme; font assets and variable references |
-| Packed consumer | What another project installs | Exports, types, JS/CSS resolution, styled Button, no source aliases |
-| Integration consumer | Host environment works | SSR/RSC, strict CSP, multiple providers, federation shell and remote |
-| Product page | Actual user experience | WCAG 2.2 AA page audit in real context, viewport/theme/state matrix |
+| Level                | What it proves                | Required examples                                                              |
+| -------------------- | ----------------------------- | ------------------------------------------------------------------------------ |
+| Source               | Internal logic and behavior   | OFSM transitions, focus/keyboard interaction, type checks, lint                |
+| Built artifact       | Emitted outputs are coherent  | CSS parsing and computed values per theme; font assets and variable references |
+| Packed consumer      | What another project installs | Exports, types, JS/CSS resolution, styled Button, no source aliases            |
+| Integration consumer | Host environment works        | SSR/RSC, strict CSP, multiple providers, federation shell and remote           |
+| Product page         | Actual user experience        | WCAG 2.2 AA page audit in real context, viewport/theme/state matrix            |
 
-A CSS parser can catch malformed syntax; it cannot prove that every custom property resolves to a valid value after `var()` substitution. Test computed styles in a browser for representative uses. A component conformance report is evidence for product teams, not page certification.
+A CSS parser can catch malformed syntax; it cannot prove that every custom property resolves to a valid value after `var()` substitution. Test computed styles in a browser for representative uses. A Component Accessibility Conformance Report (Component ACR) records WCAG 2.2 and APG evidence for a component; it is not a VPAT or page certification.
 
 ## Known baseline gaps
 
@@ -46,8 +46,8 @@ The copied code retains the issues found in review. The first release gate must 
 
 No system governed by the UI Platform ADRs has reached production. Under GDC-010, accepted ADR wording may be edited in place before first production. Under GDC-007, a major STD rule change still requires ADR authorization. The canonical architecture repository holds proposed authorizing ADRs and review-draft standard revisions. No copied package is promoted by those drafts alone.
 
-## Open decisions
+## Governed decisions
 
-The [decision register](DECISION_REGISTER.md) records React Aria scope, multi-brand isolation, styling-engine ownership, polymorphism, and a possible independent token package. Each choice requires alternatives and consumer evidence.
+The [decision register](DECISION_REGISTER.md) records all six choices: React Aria scope, multi-brand isolation, styling-engine ownership, polymorphism, token package topology, and CSS delivery. Working positions constrain P0, but empirical gates remain. In particular, no arbitrary `<2 KB` invariant is accepted; `asChild` remains a candidate until its API and provenance tests pass; and a packed consumer never runs Panda to render shipped components.
 
 The implementation sequence is in [PLAN.md](../../PLAN.md); maturity gates are in [ROADMAP.md](../../ROADMAP.md).

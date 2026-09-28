@@ -28,9 +28,9 @@ The baseline combines Sass classes with Panda recipes. A JS component entry does
 
 ## Component Design
 
-Styled wrappers compose `@scnx/core-ui` behavior and own visual variants. Component source uses semantic tokens or justified component aliases. The release contract chooses one primary explicit stylesheet import for each supported theme that renders the documented component set; this is the **P0 target**, not an implemented claim. Optional per-component CSS subpaths may follow only with export and consumer-size evidence. No JS import is documented as self-styling until a packed consumer proves that behavior.
+Styled wrappers compose `@scnx/core-ui` behavior and own visual variants. Component source uses semantic tokens or justified component aliases. `@scnx/system` exports one aggregate component stylesheet and explicit theme stylesheets. A host or standalone composition root imports each required stylesheet once. Component JS has no CSS side-effect import, and federated remotes do not inject another copy. This is the **P0 target**, not an implemented claim. Optional per-component CSS subpaths may follow only with export and consumer-size evidence.
 
-Sass owns skinned component rules in the current baseline; Panda owns declared structural recipes. Both read one token contract. The ownership and cascade order are tested. Styling-engine consolidation remains a measured decision, not a prerequisite for P0.
+Sass owns skinned component rules in the current baseline; Panda owns declared structural recipes. Both read one token contract. `@scnx/core-ui` remains headless and contains no Panda callsite; after verification, Panda does not scan its source. The ownership and cascade order are tested. Styling-engine consolidation remains a measured decision, not a prerequisite for P0.
 
 ## Data Model
 
@@ -38,19 +38,19 @@ For each styled component: public JS entry, primitive dependency, visual states,
 
 ## API / Interface
 
-Public styling API comprises class/data attributes that are intentionally stable, documented theme scope, token variables, and an explicit stylesheet entry. Internal SCSS class structure is not a compatibility promise unless documented.
+Public styling API comprises class/data attributes that are intentionally stable, documented theme scope, token variables, aggregate component CSS, and explicit theme stylesheet entries. Internal SCSS class structure is not a compatibility promise unless documented. Reset rules are scoped below `.scnx-root` or the documented equivalent; they do not target unrelated host or remote elements.
 
 ## Algorithms / Logic
 
-Compile Sass and Panda → compose theme/component CSS in declared order → publish and export the asset → install the tarball → import JS plus documented stylesheet → render and inspect computed styles. A cascade layer sets priority only; selector prefixes or scoped roots provide isolation.
+Compile Sass and Panda in the producer workspace → compose theme/component CSS in declared order → publish and export the assets → install the tarball → import JS plus component/theme CSS once at the composition root → render and inspect computed styles. A packed consumer never invokes Panda. A cascade layer sets priority only; selector prefixes or scoped roots provide isolation.
 
 ## Configuration
 
-Panda `staticCss` generation is profiled. Theme selectors, reset boundaries, and layer order are declared once. Consumer overrides have a documented precedence slot.
+Panda `staticCss` generation is profiled. Theme selectors, reset boundaries, and layer order are declared once. Portaled content receives an explicit container inside the active theme scope or an equivalent documented propagation mechanism. Consumer overrides have a documented precedence slot.
 
 ## Testing Strategy
 
-A packed consumer renders Button, one layout, and one compound widget under each supported theme. Tests verify component styling, missing variables, CSS import resolution, override precedence, two brand roots, and absence of host leakage. Visual snapshots supplement computed-style assertions.
+A packed consumer renders Button, one layout, and one compound widget under each supported theme. A federated fixture loads multiple remotes in different orders. Tests verify component styling, missing variables, CSS import resolution, one intended stylesheet set, deterministic cascade order, portal theming, override precedence, two brand roots, and absence of host leakage. Visual snapshots supplement computed-style assertions.
 
 ## Performance Notes
 

@@ -13,24 +13,25 @@ Copy this template for each candidate release. Link CI runs, tarball checksums, 
 
 ## Source evidence
 
-| Gate | Scenario and expected behavior | Result / evidence |
-| --- | --- | --- |
-| Types and dependency direction | Both packages; no `core-ui → system` import | |
-| State/interaction | OFSM, disclosure, TOC, navigation, keyboard/focus matrix | |
-| Static analysis | Debug logs, prohibited token bypass, unsafe-eval | |
-| A11y component report | Applicable APG/WCAG checks per state | |
+| Gate                           | Scenario and expected behavior                                                                                                                          | Result / evidence |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| Types and dependency direction | Both packages; no `core-ui → system` import                                                                                                             |                   |
+| State/interaction              | OFSM, disclosure, TOC, navigation, keyboard/focus matrix                                                                                                |                   |
+| Static analysis                | Debug logs, prohibited token bypass, unsafe-eval                                                                                                        |                   |
+| Component ACR                  | Applicable WCAG 2.2/APG checks per state using the [Component ACR guide](../07-guides/GD-ui-platform-004-component-accessibility-conformance-report.md) |                   |
 
 ## Packed artifact evidence
 
-| Gate | Scenario and expected behavior | Result / evidence |
-| --- | --- | --- |
-| Install and exports | Isolated `npm pack` consumer, no source aliases | |
-| Types and CSS | Every documented subpath resolves; Button is styled | |
-| Tokens/themes | Parser plus computed styles, each theme/scope/state | |
-| Fonts/assets | Requested font loads; declared CSS variables resolve | |
-| SSR/RSC | Next App Router client boundary; no server import crash | |
-| CSP/provider | Strict CSP, no `unsafe-eval`; two providers coexist | |
-| Federation | Shell/remote React and context identity, version policy | |
+| Gate                | Scenario and expected behavior                                                                                   | Result / evidence |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
+| Install and exports | Isolated `npm pack` consumer, no source aliases                                                                  |                   |
+| Types and CSS       | Every documented subpath resolves; Button is styled                                                              |                   |
+| Tokens/themes       | Parser plus computed styles, each theme/scope/state                                                              |                   |
+| Fonts/assets        | Requested font loads; declared CSS variables resolve                                                             |                   |
+| SSR/RSC             | Next App Router client boundary; no server import crash                                                          |                   |
+| CSP/provider        | Strict CSP, no `unsafe-eval`; two providers coexist                                                              |                   |
+| Federation          | Shell/remote React and context identity, version policy                                                          |                   |
+| CSS ownership       | Composition root imports aggregate component and theme CSS once; remotes add no duplicates; portal retains theme |                   |
 
 ## Product integration evidence
 

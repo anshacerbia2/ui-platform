@@ -20,7 +20,7 @@ Define theme state and transition behavior that works under strict CSP, SSR, mul
 
 ## Scope
 
-ThemeProvider, theme root attributes, persistence/preference handling, OFSM transitions, disclosure registry, and related browser effects. Exact multi-brand scoping is a pending ADR; this TDD defines the required behavior and a provisional scoped-root direction.
+ThemeProvider, theme root attributes, persistence/preference handling, portal propagation, OFSM transitions, disclosure registry, and related browser effects. The working contract uses scoped subtree themes; formal ratification remains pending.
 
 ## Technical Context
 
@@ -28,7 +28,7 @@ The baseline evaluates script text through `new Function` and assigns one global
 
 ## Component Design
 
-Each provider owns a named theme root or subscribes to an explicit shared store selected by the host. It never implicitly owns every provider on `window`. Its visual state is reflected on the root via a documented attribute; CSS variables are scoped to that root. Persistence keys and system preference listeners belong to a clearly identified authority, with cleanup. A host may opt into document-wide theme behavior, but that mode is not presented as multi-brand isolation.
+Each provider owns a named theme root or subscribes to an explicit shared store selected by the host. It never implicitly owns every provider on `window`. Its visual state is reflected on the root via a documented attribute; CSS variables and resets are scoped below that root. Persistence keys and system preference listeners belong to a clearly identified authority, with cleanup. A host may opt into document-wide theme behavior, but that mode is not presented as multi-brand isolation. Overlay components receive a portal container inside the active theme root or propagate the same theme contract to an explicit portal root.
 
 OFSM transitions expose state and callbacks with interrupt semantics. The component cleans animation frames and listeners. Disclosure registry operations are deterministic under register/unregister, rapid toggle, and controlled/uncontrolled modes.
 
@@ -38,7 +38,7 @@ Theme state: theme ID, mode, root element, source of truth, subscription set, an
 
 ## API / Interface
 
-Provider props document root scope, initial theme, controlled theme, preference policy, and change callback. External shells interact through this API or an explicit store, never undocumented window globals. Transition and disclosure public props consume their own configuration before spreading DOM props.
+Provider props document root scope, portal container/root, initial theme, controlled theme, preference policy, and change callback. External shells interact through this API or an explicit store, never undocumented window globals. Transition and disclosure public props consume their own configuration before spreading DOM props.
 
 ## Algorithms / Logic
 
@@ -50,7 +50,7 @@ Supported themes and mode names are versioned. CSP policy is supplied by the con
 
 ## Testing Strategy
 
-Two providers with distinct themes coexist in one DOM. Strict CSP, SSR/hydration, preference changes, persistence, interrupted transitions, reduced motion, and disclosure timing are tested. Browser traces record forced layout and frame cost in named scenarios. Packed shell/remote tests confirm context identity.
+Two providers with distinct themes coexist in one DOM. A modal and tooltip portal retain the originating theme without leaking into the neighboring root. Strict CSP, SSR/hydration, preference changes, persistence, interrupted transitions, reduced motion, and disclosure timing are tested. Browser traces record forced layout and frame cost in named scenarios. Packed shell/remote tests confirm context identity.
 
 ## Performance Notes
 

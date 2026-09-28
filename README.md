@@ -4,10 +4,10 @@ Standalone workspace for the UI Platform packages. This repository was split fro
 
 **Start with the [architecture source-of-truth index](docs/ARCHITECTURE_SOT.md)** for document authority, review status, and interim implementation direction.
 
-| Package | Current responsibility |
-| --- | --- |
-| `@scnx/core-ui` | Style-agnostic React primitives and behavior |
-| `@scnx/system` | Tier 1 core values, Tier 2 semantic tokens, themes, and styled components |
+| Package         | Current responsibility                                                    |
+| --------------- | ------------------------------------------------------------------------- |
+| `@scnx/core-ui` | Style-agnostic React primitives and behavior                              |
+| `@scnx/system`  | Tier 1 core values, Tier 2 semantic tokens, themes, and styled components |
 
 The three token tiers are a logical model. They are **not yet three physical packages**. Tier 3 component aliases live with the styled system. The package boundary and the dependency direction are described in [the working consensus](docs/architecture/WORKING_CONSENSUS.md).
 
@@ -32,6 +32,6 @@ The package source was copied byte-for-byte. Build artifacts, dependencies, app 
 
 ## Review status
 
-The documents here record a **working consensus for principal review**. Decisions about React Aria adoption, multi-brand theme isolation, and the long-term styling engines remain open. No document in this repository claims that the copied code already meets the target contract.
+The documents here record a **working consensus pending consolidated principal ratification**. The composition-root CSS contract is agreed; the six governed decisions and their evidence gates are tracked in the [decision register](docs/architecture/DECISION_REGISTER.md). Formal ADR/SAD/STD status remains unchanged, and no document in this repository claims that the copied code already meets the target contract.
 
 The inherited implementation notes under `packages/**` are historical source material. Where they claim production readiness, absolute performance, or import paths inconsistent with the manifests, use this README, the working consensus, and the current package manifests as the review baseline. The provenance/license review for the `Slot` implementation is also a P0 publication check.
