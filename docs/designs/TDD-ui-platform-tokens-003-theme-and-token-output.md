@@ -62,13 +62,13 @@ graph LR
   PANDA --> P
 ```
 
-| Component          | Responsibility                                                                                    |
-| :----------------- | :------------------------------------------------------------------------------------------------ |
-| normalizer         | Convert source maps into ordered typed records; reject duplicate logical names                    |
-| contract validator | Enforce central grammar, legal type, tier direction, references, theme coverage, and alias budget |
-| emitters           | Serialize the same normalized record set into target formats                                      |
-| browser verifier   | Load packed CSS and verify computed values, pairs, roots, and coexistence                         |
-| migration reporter | Map removed baseline names to canonical names and enumerate affected source callsites             |
+| Component          | Responsibility                                                                                            |
+| :----------------- | :-------------------------------------------------------------------------------------------------------- |
+| normalizer         | Convert source maps into ordered typed records; reject duplicate logical names                            |
+| contract validator | Enforce central grammar, legal type, tier direction, references, theme coverage, and alias review records |
+| emitters           | Serialize the same normalized record set into target formats                                              |
+| browser verifier   | Load packed CSS and verify computed values, pairs, roots, and coexistence                                 |
+| migration reporter | Map removed baseline names to canonical names and enumerate affected source callsites                     |
 
 The canonical grammar remains owned by STD-UIP-TKN-001. This TDD implements it
 and does not fork its vocabulary.
@@ -103,23 +103,27 @@ type TokenRecord = {
 Canonical public examples include
 `color.primary.surface.solid.default`, `effect.shadow.low`,
 `dimension.z-index.modal`, and `dialog.root.z-index.default`. The exact grammar,
-allowed vocabularies, role/emphasis/state compatibility, and alias budget are
-read from the central standards rather than restated locally.
+allowed vocabularies, role/emphasis/state compatibility, and required alias
+review fields are read from the central standards rather than restated locally.
 
-Theme identity is `<brand>/<mode>` with stable machine IDs. A public theme is a
-complete mapping over the public semantic key set; inheritance may be used in
+Theme identity is a URL-safe `<theme-id>` identifying the brand; mode is the
+separate `light` or `dark` dimension. A public theme is a complete mapping over
+the public semantic key set for every declared mode; inheritance may be used in
 source only when the resolved output is complete and its parent is explicit.
 
 ## API / Interface
 
 | Entry                                      | Content                                                            |
 | :----------------------------------------- | :----------------------------------------------------------------- |
-| `@scnx/system/tokens/css/<theme-id>.css`   | Scoped public CSS variables for one resolved theme/mode family     |
-| `@scnx/system/tokens/json/<theme-id>.json` | Typed normalized token records for tooling                         |
+| `@scnx/system/tokens/css/<theme-id>.css`   | Scoped public CSS variables for one brand across declared modes    |
+| `@scnx/system/tokens/json/<theme-id>.json` | Typed normalized token records for one brand across declared modes |
 | `@scnx/system/tokens/scss`                 | Supported Sass variables/functions generated from the same records |
 
 CSS variables use `--ds-` plus the canonical kebab-case path. Public variables
-are emitted under `[data-scnx-theme="<theme-id>"]`; a separately exported
+are emitted under
+`[data-scnx-theme="<theme-id>"][data-scnx-resolved-mode="<mode>"]`. The theme
+ID and resolved mode are separate selector dimensions; `system` is a preference
+resolved by the provider and never an emitted CSS mode. A separately exported
 single-brand compatibility asset may use `:root` and is excluded from
 multi-brand/federated support. Raw Tier-1 scales and internal generator helpers
 are not public compatibility contracts.
@@ -153,9 +157,11 @@ calculation. P3 values include a declared fallback and are tested on both paths.
 ## Configuration
 
 Versioned configuration declares theme IDs, modes, public token families,
-browser support, color fallback policy, font assets, alias budget, and selector
-roots. Unknown configuration keys fail. Environment variables cannot alter
-public token values during a release build.
+browser support, color fallback policy, font assets, alias review records, and
+selector roots. An alias review records semantic purpose, Tier-2 fallback,
+theme/state coverage, and migration impact; no numerical alias cap is implied.
+Unknown configuration keys fail. Environment variables cannot alter public
+token values during a release build.
 
 ## Failure Handling
 
@@ -180,7 +186,7 @@ success. Main/release alerts fire on any previously green contract regression.
 ## Testing Strategy
 
 - Unit: grammar adapter, name conversion, type serializer, reference graph,
-  inheritance, alias budget, alpha compositing, contrast calculation.
+  inheritance, alias review validation, alpha compositing, contrast calculation.
 - Property/boundary: empty maps, quoted numeric keys, deep paths, cycle chains,
   zero values, multi-shadow lists, font stacks, wide-gamut fallback.
 - Negative fixtures: legacy names, unknown roles/states, Tier-3 back-reference,

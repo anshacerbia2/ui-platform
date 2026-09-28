@@ -20,6 +20,26 @@ central linter and local documentation gate must pass, then the authorized human
 reviewer must approve the proposed SAD/TDD revisions. CI or merge success alone
 does not perform that lifecycle transition.
 
+## Role accountability
+
+Execution roles are stable responsibilities, not person names. They map to the
+team ownership in PAD-PLT-003 section 7.1 as follows; the exact ratification and
+release records name the individual acting in each role.
+
+| Execution role   | Accountable team | Consultation or approval boundary                                             |
+| :--------------- | :--------------- | :---------------------------------------------------------------------------- |
+| Repository Lead  | UI Platform Team | Developer Platform for protected CI and repository controls                   |
+| Governance Lead  | UI Platform Team | Architecture Authority owns human lifecycle transitions                       |
+| Test Lead        | UI Platform Team | Accessibility reviewer for assistive-technology evidence                      |
+| Release Lead     | UI Platform Team | Developer Platform supplies registry, provenance, and signing infrastructure  |
+| Token Lead       | UI Platform Team | Design and accessibility owners review semantics and contrast evidence        |
+| Styling Lead     | UI Platform Team | Token Lead and consuming Product teams review public styling compatibility    |
+| Theme Lead       | UI Platform Team | Consuming Product teams review SSR, preference, and multi-brand behavior      |
+| Interaction Lead | UI Platform Team | Accessibility reviewer and consumers review behavior contracts                |
+| Packaging Lead   | UI Platform Team | Developer Platform reviews package and registry mechanics                     |
+| Integration Lead | UI Platform Team | Workspace Experience and named Product consumers review composition scenarios |
+| Security Lead    | UI Platform Team | Architecture Authority decides any requested security-policy waiver           |
+
 ## P0 entry gate — deterministic bootstrap
 
 Repair the design-system Panda prepare resolution before package feature work.
@@ -58,6 +78,15 @@ If both alternatives satisfy correctness, accessibility, security, license,
 and approved consumer budgets, the TDD's preferred option is retained. If only
 one qualifies, use it. If neither qualifies, keep the capability outside stable
 exports and reopen the design.
+
+A consumer budget is approved only when the accountable technical owner of the
+named consuming Product team and the UI Platform Release Lead accept the exact
+scenario, artifact digest, runner/device, metric, threshold, and measurement
+method. A durable Product-specific budget is recorded in that consumer's SAD or
+TDD; a pilot/release budget is recorded in the immutable release evidence
+packet. A fixture without a named consumer and both approvals produces
+comparative evidence only and cannot claim an approved budget. Architecture
+Authority owns any waiver from an applicable enterprise standard.
 
 ## Later work
 

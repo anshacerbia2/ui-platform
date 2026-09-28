@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Enforce the deliberately small UI Platform documentation boundary:
-// README + PLAN + ROADMAP, exactly five TDDs, and one review record.
+// README + PLAN + ROADMAP, exactly five TDDs, and review records split by round.
 
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, join, normalize, relative } from "node:path";
@@ -15,8 +15,13 @@ const tdds = [
   "docs/designs/TDD-ui-platform-theme-005-provider-and-transitions.md",
   "docs/designs/TDD-ui-platform-tokens-003-theme-and-token-output.md",
 ];
-const review = "docs/reviews/PRINCIPAL_REVIEW_DISPOSITIONS.md";
-const governing = ["README.md", "PLAN.md", "ROADMAP.md", ...tdds, review];
+const reviews = [
+  "docs/reviews/2026-09-29-round-3.md",
+  "docs/reviews/2026-09-29-counter-review.md",
+  "docs/reviews/2026-09-29-design-maturity.md",
+  "docs/reviews/2026-09-29-ratification-readiness.md",
+];
+const governing = ["README.md", "PLAN.md", "ROADMAP.md", ...tdds, ...reviews];
 
 function markdownBelow(directory) {
   if (!existsSync(directory)) return [];
@@ -28,10 +33,10 @@ function markdownBelow(directory) {
 }
 
 const actualDocs = markdownBelow("docs").sort();
-const expectedDocs = [...tdds, review].sort();
+const expectedDocs = [...tdds, ...reviews].sort();
 if (actualDocs.join("\n") !== expectedDocs.join("\n")) {
   failures.push(
-    `docs/: expected only five TDDs and one review record; found ${actualDocs.join(", ")}`,
+    `docs/: expected only five TDDs and review records split by round; found ${actualDocs.join(", ")}`,
   );
 }
 
@@ -192,9 +197,14 @@ tdds.forEach((file, index) => {
   }
 });
 
-const reviewText = readFileSync(review, "utf8");
-if (!/audit record; non-normative/i.test(reviewText)) {
-  failures.push(`${review}: must state its non-normative authority boundary`);
+for (const review of reviews.filter(existsSync)) {
+  const reviewText = readFileSync(review, "utf8");
+  if (!/audit record; non-normative/i.test(reviewText)) {
+    failures.push(`${review}: must state its non-normative authority boundary`);
+  }
+  if ((reviewText.match(/^## .*review disposition$/gim) ?? []).length > 1) {
+    failures.push(`${review}: must contain only one review-round disposition`);
+  }
 }
 
 for (const file of governing.filter(existsSync)) {
@@ -210,5 +220,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `Documentation boundary passed: ${tdds.length} TDDs, ${rows.length} P0 rows, one roadmap, and one principal-review record.`,
+  `Documentation boundary passed: ${tdds.length} TDDs, ${rows.length} P0 rows, one roadmap, and ${reviews.length} principal-review records.`,
 );

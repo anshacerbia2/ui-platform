@@ -20,4 +20,4 @@ pnpm --filter @scnx/system exec tsc --noEmit
 pnpm --filter @scnx/system build
 ```
 
-The styling owner and future Sass/Panda balance are open decisions. See the [working consensus](../../docs/architecture/WORKING_CONSENSUS.md) and [decision register](../../docs/architecture/DECISION_REGISTER.md).
+ADR-UIP-PLT-001 owns the bounded Sass/Panda decision; the [styled-components TDD](../../docs/designs/TDD-ui-platform-styled-004-component-css-delivery.md) owns its component design and evidence gates.
