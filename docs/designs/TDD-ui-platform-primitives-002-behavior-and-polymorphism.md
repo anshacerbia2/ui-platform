@@ -16,7 +16,7 @@ doc_meta:
 
 ## Purpose
 
-Define a testable headless component contract independent of `@scnx/system` styling and any specific third-party foundation.
+Define a testable headless component contract independent of `@scnx/system` styling, with third-party behavior hidden behind the public API.
 
 ## Scope
 
@@ -28,9 +28,9 @@ The baseline has `as`, `asChild`, and fixed-element APIs. A native button or val
 
 ## Component Design
 
-Each public widget records: semantic root element, anatomy, controlled/uncontrolled state, focus order, required and optional keys, disabled behavior, accessible name, ref target, cleanup behavior, and stable `data-*` styling hooks. Native elements are the default. Polymorphism is opt-in per component and cannot erase native meaning. `asChild` is the preferred candidate where polymorphism is required; dynamic `as` is not expanded in new APIs. The final choice remains pending measured API and provenance review, so no consumer should infer universal support.
+Each public widget records: semantic root element, anatomy, controlled/uncontrolled state, focus order, required and optional keys, disabled behavior, accessible name, ref target, cleanup behavior, and stable `data-*` styling hooks. Native elements are the default. Interactive parts expose `asChild` only where composition is required. Typography and layout primitives may expose a closed `as` tag union. A component never exposes both, and every remaining component keeps a fixed element.
 
-The package's dependency direction is one-way: `core-ui` has no import from `system`. Simple primitives use native/custom behavior. Selected React Aria hooks may implement high-risk composite widgets only after component-level comparison and provenance review. Vendor types and APIs never appear in the public contract.
+The package's dependency direction is one-way: `core-ui` has no import from `system`. Button, Disclosure/Accordion, Navigation, Sidebar, and layout primitives use native/custom behavior. Combobox, Select, Menu, Dialog, Popover, Listbox, and Tabs use selected React Aria hooks behind the public contract. Vendor types and APIs never appear in public types or props. A widget stays outside stable exports until its evidence passes.
 
 ## Data Model
 
@@ -50,7 +50,7 @@ The behavior matrix is versioned with the component inventory. React support and
 
 ## Testing Strategy
 
-Source tests exercise native and composite keyboard behavior, focus restoration, state transitions, controlled state, ID uniqueness, prop filtering, and registry races. Polymorphism tests cover TypeScript props, ref targets, handler order, semantic tags, and single-child failure. Packed tests verify subpath/type resolution, refs, and DOM output. Assistive-technology results are recorded in a Component ACR per stable complex widget; page-level WCAG conformance stays with the consuming page.
+Source tests exercise native and composite keyboard behavior, focus restoration, state transitions, controlled state, ID uniqueness, prop filtering, and registry races. The Combobox spike compares custom and React Aria behavior through the APG matrix, manual NVDA and VoiceOver runs, bundle output, internationalization, and license/provenance. Polymorphism tests cover TypeScript props, ref targets, handler order, semantic tags, router Link composition, disabled behavior, and single-child failure. Packed tests verify subpath/type resolution, refs, and DOM output. Assistive-technology results are recorded in a Component ACR per stable complex widget; page-level WCAG conformance stays with the consuming page.
 
 ## Performance Notes
 
@@ -62,8 +62,8 @@ No primitive contains business authorization. User-provided text is rendered thr
 
 ## Operational Notes
 
-Widgets with unresolved required behavior remain experimental or unexported from the stable channel. `Slot.tsx` requires a provenance and license decision before an `asChild` API is promoted.
+Widgets with unresolved required behavior remain experimental or unexported from the stable channel. `Slot.tsx` requires a provenance and license decision before any `asChild` API is promoted.
 
 ## Traceability
 
-Parent: SAD-003. Governing review draft: STD-UIP-PRM-001. P0 item 10 and the public polymorphism/React Aria entries in the [decision register](../architecture/DECISION_REGISTER.md). This supersedes the UI Platform direction in the read-only microfrontend TDD-SCNX-UI-JS-002.
+Parent: SAD-003. Governing review draft: STD-UIP-PRM-001. Implements UIP-DEC-001 and UIP-DEC-004 with P0 items 10 and 11 in the [decision register](../architecture/DECISION_REGISTER.md).

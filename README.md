@@ -32,6 +32,6 @@ The package source was copied byte-for-byte. Build artifacts, dependencies, app 
 
 ## Review status
 
-The documents here record a **working consensus pending consolidated principal ratification**. The composition-root CSS contract is agreed; the six governed decisions and their evidence gates are tracked in the [decision register](docs/architecture/DECISION_REGISTER.md). Formal ADR/SAD/STD status remains unchanged, and no document in this repository claims that the copied code already meets the target contract.
+The documents here record an **approve-with-required-changes working consensus pending consolidated principal ratification**. Seven governed decisions and their evidence gates are tracked in the [decision register](docs/architecture/DECISION_REGISTER.md). Formal ADR/SAD/STD status remains pending, and no document in this repository claims that the copied code already meets the target contract.
 
 The inherited implementation notes under `packages/**` are historical source material. Where they claim production readiness, absolute performance, or import paths inconsistent with the manifests, use this README, the working consensus, and the current package manifests as the review baseline. The provenance/license review for the `Slot` implementation is also a P0 publication check.

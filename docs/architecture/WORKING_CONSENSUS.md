@@ -1,53 +1,56 @@
 # UI Platform working consensus
 
-Status: **working consensus pending consolidated ratification**, 2026-09-28. Principal review accepted the evidence corrections and the composition-root CSS contract. ADR/SAD/STD metadata remains unchanged until the remaining review and required draft edits are complete. This document is not a claim of implementation conformance or an approved release.
+Status: **approve with required changes; formal ratification pending**, 2026-09-28.
 
-For normative precedence and the full EAD → TDD chain, use the [architecture source-of-truth index](../ARCHITECTURE_SOT.md). This page is a review summary.
+The architectural direction, technology method, three-tier token model, two-package baseline, evidence model, and composition-root CSS contract have principal support. The remaining work closes normative conflicts, governance mechanics, and executable acceptance gates. This summary carries no independent normative authority.
 
-## Objective
+## Product boundary
 
-Build a global reusable UI Platform whose package contracts, interaction behavior, themes, CSS, security, and compatibility can be verified by an external consumer. The three-tier model is a strong conceptual foundation. The current execution does not yet justify a “beyond FAANG” or global-ready claim. Product quality will be judged by repeatable consumer evidence, not an architectural label.
+- Three logical token tiers: core values, semantic intent, and component aliases.
+- Two v1 packages: `@scnx/core-ui` for headless behavior and `@scnx/system` for tokens, themes, styled components, and static assets.
+- Dependency direction: `@scnx/system` may consume `@scnx/core-ui`.
+- Tokens remain physically inside `@scnx/system` and gain stable `@scnx/system/tokens/*` exports.
+- Downstream products own business workflows and complete-page accessibility conformance.
 
-## Boundaries
+## Seven working decisions
 
-```mermaid
-graph LR
-  T1["Tier 1: core values"] --> T2["Tier 2: semantic intent"]
-  T2 --> T3["Tier 3: component aliases"]
-  P["@scnx/core-ui<br/>headless primitives"] --> S["@scnx/system<br/>tokens + themes + styled components"]
-  T1 --> S
-  T2 --> S
-  T3 --> S
-```
+The authoritative register is [DECISION_REGISTER.md](DECISION_REGISTER.md). Its complete set is:
 
-- **Logical architecture:** Tier 1 core values → Tier 2 semantic tokens → Tier 3 component aliases. A theme changes mappings while preserving semantic meaning.
-- **Physical architecture today:** `packages/core-ui` publishes `@scnx/core-ui`; `packages/design-system` publishes `@scnx/system`. Tokens are currently within the latter. There is no third token package yet.
-- **Dependency direction:** `@scnx/system` may consume `@scnx/core-ui`. `@scnx/core-ui` must not import `@scnx/system`. Downstream products own business workflows and their own page-level conformance.
-- **Delivery:** Static CSS and JS are package assets. Sass and Panda both exist today. A single token contract and explicit ownership of emitted rules are required. `@scnx/system` exports aggregate component CSS and explicit theme CSS; a host or standalone composition root imports them once. Component JS and federated remotes do not inject duplicate CSS.
-- **Interactions:** Native elements keep native semantics; composite widgets have explicit keyboard/focus/state contracts. OFSM can organize transitions but does not itself prove usability or accessibility.
+1. UIP-DEC-001 interaction foundation.
+2. UIP-DEC-002 scoped multi-brand theming.
+3. UIP-DEC-003 Sass/Panda ownership.
+4. UIP-DEC-004 bounded polymorphism.
+5. UIP-DEC-005 token package boundary.
+6. UIP-DEC-006 CSS delivery.
+7. UIP-DEC-007 Module Federation sharing.
+
+The register supplies owner, target authority, evidence, review deadline, and status for every item. The SOT, PLAN, and roadmap use the same IDs.
 
 ## Evidence model
 
-| Level                | What it proves                | Required examples                                                              |
-| -------------------- | ----------------------------- | ------------------------------------------------------------------------------ |
-| Source               | Internal logic and behavior   | OFSM transitions, focus/keyboard interaction, type checks, lint                |
-| Built artifact       | Emitted outputs are coherent  | CSS parsing and computed values per theme; font assets and variable references |
-| Packed consumer      | What another project installs | Exports, types, JS/CSS resolution, styled Button, no source aliases            |
-| Integration consumer | Host environment works        | SSR/RSC, strict CSP, multiple providers, federation shell and remote           |
-| Product page         | Actual user experience        | WCAG 2.2 AA page audit in real context, viewport/theme/state matrix            |
+| Level               | Proof supplied                                                     |
+| ------------------- | ------------------------------------------------------------------ |
+| Source              | State transitions, interaction behavior, types, and static checks  |
+| Producer build      | Generated token/style coherence and package build behavior         |
+| Packed consumer     | Published exports, types, assets, CSS, fonts, and computed values  |
+| Integration fixture | SSR/RSC, strict CSP, theme roots, portals, and federation identity |
+| Product page        | Complete WCAG 2.2 conformance in real content and workflow context |
 
-A CSS parser can catch malformed syntax; it cannot prove that every custom property resolves to a valid value after `var()` substitution. Test computed styles in a browser for representative uses. A Component Accessibility Conformance Report (Component ACR) records WCAG 2.2 and APG evidence for a component; it is not a VPAT or page certification.
+The workspace uses `pnpm pack` because it owns a pnpm workspace and publishes `workspace:*` dependencies. The isolated consumer installs those tarballs without aliases. Every unresolved public variable, invalid substituted property, missing export, duplicate stylesheet, or required fixture failure blocks promotion.
 
-## Known baseline gaps
+## Required governance corrections
 
-The copied code retains the issues found in review. The first release gate must resolve and reproduce them: invalid `low`/`focus` shadow values and an achromatic color expression; drift between Panda font variables and Sass output; component CSS delivery and export ambiguity; a design-system placeholder test and declaration-build heap failure; `new Function` and a global theme callback; fragile RSC directive detection; federation share keys for subpaths; TOC duplicate IDs, unused `initialActiveId`, prop leakage, and widget keyboard gaps; render-path debug logging. In this standalone workspace, `core-ui` Vitest now runs (10 tests), which does not cover the remaining gaps. Suspected defects, including Disclosure registry timing, require tests before asserting a fix.
+- Expand ADR-GLB-FE-010 to cover the global styling, React, accessibility, Module Federation, and static CSS conflicts.
+- Attach the global ADR to EAD-005 and route its approval to the ARB.
+- Add the authorizing ADR to every major-version STD through `governed_by`.
+- Align token naming between the token STD and ADR-UIP-TKN-003.
+- Validate SAD-003 fully in `proposed` state and preserve its original creation date.
+- Align the TDD location to repository-root `docs/designs/`.
+- Update the technology radar for the technologies used or evaluated by the platform.
+- Record final dates and approvers only after the corresponding people approve.
 
-## Governance
+## Known baseline defects
 
-No system governed by the UI Platform ADRs has reached production. Under GDC-010, accepted ADR wording may be edited in place before first production. Under GDC-007, a major STD rule change still requires ADR authorization. The canonical architecture repository holds proposed authorizing ADRs and review-draft standard revisions. No copied package is promoted by those drafts alone.
+P0 covers malformed shadow values, the `--ds-shadow-lg` key mismatch, achromatic color output, font drift and packaging, missing design-system tests, declaration-build heap growth, CSS exports, unsafe theme evaluation, global provider callbacks, RSC boundary inference, federation identity, TOC IDs, unused initial state, prop leakage, widget keyboard behavior, Slot provenance, and render-path logging.
 
-## Governed decisions
-
-The [decision register](DECISION_REGISTER.md) records all six choices: React Aria scope, multi-brand isolation, styling-engine ownership, polymorphism, token package topology, and CSS delivery. Working positions constrain P0, but empirical gates remain. In particular, no arbitrary `<2 KB` invariant is accepted; `asChild` remains a candidate until its API and provenance tests pass; and a packed consumer never runs Panda to render shipped components.
-
-The implementation sequence is in [PLAN.md](../../PLAN.md); maturity gates are in [ROADMAP.md](../../ROADMAP.md).
+A larger Node heap remains a diagnostic. Arbitrary byte limits and universal runtime guarantees require a named measured scenario.

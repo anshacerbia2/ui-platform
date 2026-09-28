@@ -20,7 +20,7 @@ Define theme state and transition behavior that works under strict CSP, SSR, mul
 
 ## Scope
 
-ThemeProvider, theme root attributes, persistence/preference handling, portal propagation, OFSM transitions, disclosure registry, and related browser effects. The working contract uses scoped subtree themes; formal ratification remains pending.
+ThemeProvider, `[data-scnx-theme]` roots, persistence/preference handling, portal containers, OFSM transitions, disclosure registry, and related browser effects.
 
 ## Technical Context
 
@@ -28,7 +28,7 @@ The baseline evaluates script text through `new Function` and assigns one global
 
 ## Component Design
 
-Each provider owns a named theme root or subscribes to an explicit shared store selected by the host. It never implicitly owns every provider on `window`. Its visual state is reflected on the root via a documented attribute; CSS variables and resets are scoped below that root. Persistence keys and system preference listeners belong to a clearly identified authority, with cleanup. A host may opt into document-wide theme behavior, but that mode is not presented as multi-brand isolation. Overlay components receive a portal container inside the active theme root or propagate the same theme contract to an explicit portal root.
+Each provider owns a `[data-scnx-theme="<theme-id>"]` root or subscribes to an explicit store selected by the host. It never owns every provider on `window`. CSS variables and resets stay below that root. A separate `:root` compatibility stylesheet may support a single-brand document and is excluded from multi-brand and federated claims. Shadow DOM is outside v1. Persistence keys and system-preference listeners have one identified authority and cleanup. Overlay components receive a portal container inside the active theme root.
 
 OFSM transitions expose state and callbacks with interrupt semantics. The component cleans animation frames and listeners. Disclosure registry operations are deterministic under register/unregister, rapid toggle, and controlled/uncontrolled modes.
 
@@ -42,7 +42,7 @@ Provider props document root scope, portal container/root, initial theme, contro
 
 ## Algorithms / Logic
 
-Resolve server-safe initial state → hydrate without mismatched markup → subscribe to the chosen store/preference source → apply root attribute → notify local subscribers → clean up. For transitions, dispatch a state event, schedule only necessary frame work, and settle on the element's own completion event or disabled-motion branch. Every callback fires according to a tested state table.
+Resolve server-safe initial state → hydrate without mismatched markup → subscribe to the chosen store/preference source → apply the root attribute → notify local subscribers → clean up. For transitions, dispatch a state event, schedule required frame work, and settle on the element's own `transitionend`/`animationend` event, a reduced-motion branch, or a bounded timeout fallback. Interruption and unmount cancel all pending work.
 
 ## Configuration
 
@@ -50,7 +50,7 @@ Supported themes and mode names are versioned. CSP policy is supplied by the con
 
 ## Testing Strategy
 
-Two providers with distinct themes coexist in one DOM. A modal and tooltip portal retain the originating theme without leaking into the neighboring root. Strict CSP, SSR/hydration, preference changes, persistence, interrupted transitions, reduced motion, and disclosure timing are tested. Browser traces record forced layout and frame cost in named scenarios. Packed shell/remote tests confirm context identity.
+Two providers with distinct themes coexist in one DOM. A modal and tooltip portal retain the originating theme without leaking into the neighboring root. Strict CSP, SSR/hydration, preference changes, persistence, missing completion events, interrupted transitions, reduced motion, unmount cleanup, and disclosure timing are tested. Browser traces record forced layout and frame cost in named scenarios. Packed shell/remote tests confirm context identity.
 
 ## Performance Notes
 
@@ -66,4 +66,4 @@ If theme initialization fails, retain a valid baseline theme and report the fail
 
 ## Traceability
 
-Parent: SAD-003. Governing review drafts: STD-UIP-ENG-001, STD-UIP-STY-001, and STD-UIP-PRM-001. P0 items 7 and 10. This supersedes the UI Platform direction in read-only microfrontend TDD-SCNX-UI-JS-005.
+Parent: SAD-003. Governing review drafts: STD-UIP-ENG-001, STD-UIP-STY-001, and STD-UIP-PRM-001. Implements UIP-DEC-002 with P0 items 7 and 10.

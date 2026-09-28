@@ -28,7 +28,7 @@ The repo uses pnpm workspaces, tsup, Sass, and Panda. `core-ui` built in the fir
 
 ## Component Design
 
-The build pipeline has four stages: generate token/recipe assets in the producer workspace; build both packages in dependency order; pack each package; install tarballs into consumers outside the workspace. No release check may substitute a workspace alias for a packed import. The packed consumer does not run Panda or inspect workspace source.
+The build pipeline has four stages: generate token/recipe assets in the producer workspace; build both packages in dependency order; pack each package with the pinned pnpm version; install tarballs into consumers outside the workspace. No release check may substitute a workspace alias for a packed import. The packed consumer does not run Panda or inspect workspace source.
 
 Every supported import path is listed in a machine-readable export inventory derived from `package.json`. The inventory identifies JS, declarations, CSS, fonts, and Sass paths. The composition-root CSS working contract is defined in [TDD styled components](TDD-ui-platform-styled-004-component-css-delivery.md); packed/federated evidence and formal ratification close it before stable publication.
 
@@ -38,26 +38,26 @@ Release record: source commit, package name/version, tarball checksum, declared 
 
 ## API / Interface
 
-Public API is `package.json#exports` plus documented aggregate component CSS, theme CSS, and Sass asset entry points. React and React DOM are peers. Component JS has no implicit CSS side effect. The package must not depend on a consumer's source-path alias or on a consumer running Panda merely to render shipped components.
+Public API is `package.json#exports` plus documented aggregate component CSS, theme CSS, Sass asset entries, and stable `@scnx/system/tokens/*` entries. React and React DOM are peers. Component JS has no implicit CSS side effect. The package must not depend on a consumer's source-path alias or on a consumer running Panda merely to render shipped components.
 
 ## Algorithms / Logic
 
 1. Verify `core-ui` has no Panda callsite, generate styling assets from sources owned by `system`, then build `core-ui` and `system` in dependency order.
-2. Execute `npm pack` for each package.
-3. Create isolated consumers from those tarballs and declared peer versions.
+2. Execute `pnpm pack` for each package and fail if a packed manifest retains a `workspace:` dependency.
+3. Install the tarballs in `fixtures/consumers/packed` with declared peer versions and no workspace alias.
 4. Import every documented subpath and fail on missing JS, type, CSS, or asset targets.
 5. At the standalone or host composition root, import aggregate component CSS and the selected theme CSS once.
-6. Render representative components; then run SSR/RSC, strict CSP, and shell/remote fixtures. Remotes must not inject duplicate UI Platform CSS.
+6. Render representative components; run `fixtures/consumers/next-app` and `fixtures/consumers/csp`; then run `fixtures/federation/host` with `remote-a` and `remote-b`. Remotes must not inject UI Platform CSS.
 
 Client-only entry boundaries are explicit in source and verified in the emitted ESM. A hook-name regex is not the authority for `"use client"`.
 
 ## Configuration
 
-Pin the package manager and toolchain in the workspace. Record supported Node, React, bundler, and browser versions in the release record. Version compatibility for Module Federation uses explicit share keys for root and public context-bearing subpaths, with a tested `requiredVersion` policy; remotes are not made eager by default.
+Pin the package manager and toolchain in the workspace. Record supported Node, React, bundler, and browser versions in the release record. The federation host owns explicit singleton keys for React, React DOM, and every supported public context-bearing UI request. `requiredVersion` is derived from the relevant manifest range. Remotes remain lazy; only the host may choose eager loading.
 
 ## Testing Strategy
 
-Source tests cover state and interaction; producer tests cover Panda generation and package builds; packed tests cover exports and emitted assets. Next App Router imports client-only and server-safe entries. A federated shell with multiple remotes verifies React/context identity, one intended stylesheet set, load-order independence, and portal theme propagation. CI fails when a documented path is unresolved or a fixture fails.
+Source tests cover state and interaction; producer tests cover Panda generation and package builds; packed tests cover exports and emitted assets. Next App Router imports client-only and server-safe entries. Both remote load orders must produce one React identity, one UI context identity, exactly one aggregate component stylesheet content hash, exactly one selected theme asset, and scoped portal styling. Any unresolved export, retained `workspace:` range, duplicate stylesheet, incompatible-version mismatch without a controlled failure, or required fixture failure fails CI.
 
 ## Performance Notes
 
@@ -73,4 +73,4 @@ On failure, retain the previous immutable release and publish a corrected versio
 
 ## Traceability
 
-Parent: SAD-003. Governing review drafts: STD-UIP-ENG-001 and STD-GLB-FE-002. P0 items 1, 2, 5, 6, and 8 in [PLAN](../../PLAN.md). This replaces the UI Platform direction formerly described by the read-only microfrontend TDD-SCNX-UI-JS-001.
+Parent: SAD-003. Governing review drafts: STD-UIP-ENG-001 and STD-GLB-FE-002. Implements UIP-DEC-005, UIP-DEC-006, and UIP-DEC-007 plus P0 items 1, 2, 5, 6, and 8 in [PLAN](../../PLAN.md).
