@@ -54,8 +54,8 @@ export default defineConfig({
     testTimeout: 10000,
     hookTimeout: 10000,
 
-    // Retry flaky tests
-    retry: 1,
+    // No retries: a flaky test must fail the merge and release gate (PLAN P0 row 2)
+    retry: 0,
 
     // Better error output
     clearMocks: true,

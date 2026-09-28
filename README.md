@@ -1,37 +1,58 @@
 # Scnehaux UI Platform
 
-Standalone workspace for the UI Platform packages. This repository was split from the microfrontend workspace without modifying its source. It contains two physical packages:
+Workspace for the `@scnx/core-ui` and `@scnx/system` packages.
 
-**Start with the [architecture source-of-truth index](docs/ARCHITECTURE_SOT.md)** for document authority, review status, and interim implementation direction.
+## Document authority
 
-| Package         | Current responsibility                                                    |
-| --------------- | ------------------------------------------------------------------------- |
-| `@scnx/core-ui` | Style-agnostic React primitives and behavior                              |
-| `@scnx/system`  | Tier 1 core values, Tier 2 semantic tokens, themes, and styled components |
+There is one architecture authority: the
+[Scnehaux Architecture repository](https://github.com/anshacerbia2/scnehaux-architecture).
+Its GDC, EAD, PAD, SAD, ADR, STD, and Technology Radar records are the source
+of truth according to each record's lifecycle status. A `draft` or `proposed`
+record is authoritative evidence of a proposal, not an approved rule.
 
-The three token tiers are a logical model. They are **not yet three physical packages**. Tier 3 component aliases live with the styled system. The package boundary and the dependency direction are described in [the working consensus](docs/architecture/WORKING_CONSENSUS.md).
+This repository keeps only the implementation documents needed next to the
+code:
 
-## Status
+- [PLAN.md](PLAN.md) — ordered work and pass/fail acceptance;
+- [ROADMAP.md](ROADMAP.md) — phase state and exit gates;
+- [five TDDs](docs/designs/) — component-level implementation contracts;
+- [principal review dispositions](docs/reviews/PRINCIPAL_REVIEW_DISPOSITIONS.md)
+  — audit trail only, never normative authority.
 
-This is an extracted baseline, **not a release candidate**. The copied packages retain known defects in CSS output, packaging, tests, theme behavior, and accessibility. The repository exists so those defects can be corrected and verified independently of the microfrontend project. See [PLAN.md](PLAN.md) and [ROADMAP.md](ROADMAP.md).
+Markdown beside package source is implementation commentary. It cannot
+override the architecture repository, these TDDs, PLAN, or ROADMAP.
 
-## Workspace
+## Current state
 
-Requires pnpm 10.23.0 and a compatible Node.js version. From the repository root:
+The repository is an extracted, unreleased baseline with known build,
+packaging, token, theme, accessibility, and test defects. It is not a release
+candidate and does not claim implementation conformance.
+
+The first executable gate is a deterministic clean installation:
 
 ```sh
-pnpm install
+pnpm install --frozen-lockfile
+```
+
+It must pass with lifecycle scripts enabled, without `--ignore-scripts`, and
+without changing `pnpm-lock.yaml`. Until it passes locally and in CI, package
+feature work remains blocked.
+
+After bootstrap is repaired, use:
+
+```sh
 pnpm typecheck
 pnpm build
 pnpm test:source
 ```
 
-`core-ui` Vitest currently runs (2 files, 10 tests); `design-system` still has a placeholder failing test script. The first baseline build completed `core-ui` and emitted `design-system` CSS/JS, then exhausted the default Node heap during declaration generation. See the [baseline record](docs/migration/BASELINE_VERIFICATION.md). Do not treat a successful package build or type check as release approval.
+## Packages
 
-The package source was copied byte-for-byte. Build artifacts, dependencies, app shells, and local build logs were excluded. The [copy record](docs/migration/SOURCE_COPY.md) lists provenance and scope.
+| Package         | Responsibility                                                        |
+| --------------- | --------------------------------------------------------------------- |
+| `@scnx/core-ui` | Style-agnostic React primitives and interaction behavior              |
+| `@scnx/system`  | Tokens, themes, styled components, static CSS, fonts, and Sass assets |
 
-## Review status
-
-The documents here record an **approve-with-required-changes working consensus pending consolidated principal ratification**. Seven governed decisions and their evidence gates are tracked in the [decision register](docs/architecture/DECISION_REGISTER.md). Formal ADR/SAD/STD status remains pending, and no document in this repository claims that the copied code already meets the target contract.
-
-The inherited implementation notes under `packages/**` are historical source material. Where they claim production readiness, absolute performance, or import paths inconsistent with the manifests, use this README, the working consensus, and the current package manifests as the review baseline. The provenance/license review for the `Slot` implementation is also a P0 publication check.
+The three token tiers are a logical model, not three physical packages. The
+package boundary and dependency direction are specified by SAD-003 and the
+local TDDs.
