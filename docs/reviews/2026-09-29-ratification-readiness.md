@@ -44,3 +44,15 @@ principal approval or ratification:
 | ADR-GLB-FE-010 referred to a nonexistent “UI Platform SOT” role location               | Replaced it with the normative `PLAN` role-accountability location.                                                                                                                   | Cross-repository terminology review             |
 | UIP-DEC-003 used the vague phrase “this recorded rule”                                 | Replaced it with a direct reference to the following dual-engine eligibility rule and the Styled Component Delivery TDD.                                                              | ADR/TDD traceability review                     |
 | The local docs gate prohibited valid `UIP-DEC-*` references and hardcoded review paths | Preserved duplicate-authority bans, allowed the governed decision identifiers, and discovered review records by `docs/reviews/YYYY-MM-DD-<slug>.md`.                                  | Positive and negative documentation-gate probes |
+
+## Ratification record
+
+Appended after the status-change commits merged. Earlier sections are kept as
+written.
+
+| Repository            | Candidate commit | Merge commit | Pull request | CI at merge commit |
+| :-------------------- | :--------------- | :----------- | :----------- | :----------------- |
+| scnehaux-architecture | `84a99ae`        | `cf748f6`    | #17          | Linter passed      |
+| ui-platform           | `56ba42b`        | `03cdefe`    | #6           | All jobs passed    |
+
+Both merges were made by Ansha Cerbia on 2026-09-29.
