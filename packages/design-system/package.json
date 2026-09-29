@@ -33,7 +33,8 @@
     "codegen": "panda codegen",
     "postbuild": "node scripts/copy-tokens.mjs",
     "prepare": "panda codegen",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "peerDependencies": {
     "react": ">=18",
@@ -44,13 +45,20 @@
   },
   "devDependencies": {
     "@pandacss/dev": "^1.8.2",
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "catalog:",
     "esbuild-plugin-preserve-directives": "^0.0.11",
     "esbuild-plugin-tsconfig-paths": "^1.0.2",
     "esbuild-sass-plugin": "^3.3.1",
+    "jsdom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
     "sass": "^1.94.2",
     "tsup": "^8.5.1",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "catalog:"
   }
 }

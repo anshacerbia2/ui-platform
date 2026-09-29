@@ -1,8 +1,8 @@
 name: CI
 
 # Documentation and governance gates run on every pull request and every push.
-# PLAN P0 row 0 extends this workflow with the source, packed-consumer,
-# fixture, and security jobs; each job added there becomes a required check.
+# PLAN P0 rows extend this workflow with source, build, packed-consumer,
+# fixture, and security jobs; each job added becomes a required check.
 
 on:
   pull_request:
@@ -40,6 +40,68 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Tracked files are unchanged
         run: git diff --exit-code && test -z "$(git status --porcelain --untracked-files=no)"
+
+  policy:
+    name: CI policy
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Policy detectors reject known violations
+        run: node scripts/check-ci-policy.mjs --self-test
+      - name: No heap override; Vitest retry is 0
+        run: node scripts/check-ci-policy.mjs
+
+  source-tests:
+    name: Source tests
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - run: pnpm install --frozen-lockfile
+      - name: Both packages, retry 0
+        run: pnpm test:source
+
+  build:
+    name: Build with default heap
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Assert pinned toolchain and no heap override
+        run: |
+          test "$(node --version)" = "v$(cat .node-version)"
+          test "pnpm@$(pnpm --version)" = "$(node -p "require('./package.json').packageManager")"
+          test -z "${NODE_OPTIONS:-}"
+      - run: pnpm install --frozen-lockfile
+      - name: Build both packages, including declarations
+        run: /usr/bin/time -v -o build-time.txt pnpm run build
+      - name: Record peak memory
+        if: always()
+        run: |
+          limit_mb=$(node -p "Math.round(require('v8').getHeapStatistics().heap_size_limit / 1048576)")
+          peak_kb=$(awk -F': ' '/Maximum resident set size/ {print $2}' build-time.txt)
+          wall=$(awk -F': ' '/Elapsed \(wall clock\)/ {print $2}' build-time.txt)
+          {
+            echo "### Build memory"
+            echo ""
+            echo "| Node | Default V8 heap limit | Peak RSS (largest process) | Wall time |"
+            echo "| :--- | :-------------------- | :------------------------- | :-------- |"
+            echo "| $(node --version) | ${limit_mb} MiB | $((peak_kb / 1024)) MiB | ${wall} |"
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: build-memory
+          path: build-time.txt
 
   governance:
     name: Central governance linter
