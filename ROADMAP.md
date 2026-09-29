@@ -1,6 +1,6 @@
 # UI Platform roadmap
 
-Status: **implementation-ready architecture and TDD baseline in review**.
+Status: **ratification candidate; implementation remains gated by exact-commit approval**.
 
 The architecture repository owns architecture and governance. The five
 [TDDs](docs/designs/) own local component design. [PLAN.md](PLAN.md) owns work
@@ -9,7 +9,7 @@ gates.
 
 | Phase                            | State              | Target date | Deliverable                                                                                                                                                       | Exit gate                                                                                                                                                            |
 | -------------------------------- | ------------------ | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 0. Architecture and TDD baseline | In review          | 2026-10-02  | Mature PAD-PLT-003 and SAD-003; five implementation-ready TDDs; one plan; one roadmap; review records separated by round                                          | Both repositories pass documentation/governance gates; human authority approves the exact proposed SAD/TDD revisions; no duplicate UI architecture authority remains |
+| 0. Architecture and TDD baseline | In ratification    | 2026-10-02  | Mature PAD-PLT-003 and SAD-003; five implementation-ready TDDs; one plan; one roadmap; review records separated by round                                          | Both repositories pass documentation/governance gates; human authority approves the exact ratification commits; no duplicate UI architecture authority remains |
 | 1. Deterministic bootstrap       | Next               | 2026-10-09  | Repaired Panda prepare resolution and required clean-install CI job                                                                                               | A clean checkout passes `pnpm install --frozen-lockfile` with scripts enabled, no bypass flag, and no lockfile mutation                                              |
 | 2. P0 repair and evidence        | Blocked by phase 1 | 2026-10-30  | Source tests, packed consumers, corrected tokens/CSS/provider/primitives, security evidence, strict-CSP standalone fixture, and conditional federation evaluation | Every applicable P0 PLAN row passes against exact commits and artifacts; failed capabilities remain outside stable exports                                           |
 | 3. Reference slice and beta      | Not started        | 2026-11-20  | Four-component reference slice, repeatable release pipeline, named consumer pilots, migration/support evidence                                                    | Source, packed, SSR/RSC, CSP, accessibility, visual, localization, performance, provenance, migration, and rollback gates pass for the supported scope               |

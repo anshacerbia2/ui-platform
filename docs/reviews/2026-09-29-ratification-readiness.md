@@ -24,8 +24,13 @@ artifact is ratified.
 | R9  | Define consumer-budget authority and record                    | Addressed in proposal: named Product technical owner and UI Platform Release Lead approve an exact scenario; the consumer SAD/TDD or immutable release packet records it.                                                                                                                                                           | PLAN review; future release evidence                          |
 | R10 | Put delivery targets in the roadmap                            | Addressed in proposal: every phase has a target date; missed targets require owner disposition without weakening exit gates.                                                                                                                                                                                                        | ROADMAP review                                                |
 
-Ratification remains blocked until all required checks pass and every authorized
-principal approves the same exact commit set.
+The candidate corrections were approved by two principal reviewers at the exact
+source heads `f5e3dde0a3fc2093b8603923d6686d74c4ef7595` (architecture) and
+`c7f2a99632eb7ea1037ef9744350c64b8d86b11c` (UI Platform). Ansha Cerbia
+confirmed on 2026-09-29 that he acts as the Architecture Review Board and UI
+Platform Lead approver for this transition. The status-change commits built
+from those heads remain ratification candidates until their exact hashes and
+validation results are acknowledged under GDC-000 section 2.6.7.
 
 ## Follow-up corrections
 
