@@ -101,7 +101,8 @@ export default defineConfig({
     ...componentEntries,
   },
   format: ["esm", "cjs"],
-  dts: true,
+  // Declarations for TypeScript entries only; style entries have no types.
+  dts: { entry: componentEntries },
   sourcemap: true,
   clean: true,
   external: ["react", "react-dom", "@scnx/core-ui"],
