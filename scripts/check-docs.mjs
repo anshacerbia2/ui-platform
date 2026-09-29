@@ -170,8 +170,8 @@ tdds.forEach((file, index) => {
   const id = /^\s*id:\s*(\S+)\s*$/m.exec(text)?.[1];
   if (id !== expectedIds[index])
     failures.push(`${file}: id is ${id}; expected ${expectedIds[index]}`);
-  if (!/^\s*status:\s*proposed\s*$/m.test(text))
-    failures.push(`${file}: lifecycle status must remain proposed`);
+  if (!/^\s*status:\s*approved\s*$/m.test(text))
+    failures.push(`${file}: ratified baseline lifecycle status must be approved`);
   if (!/^\s*version:\s*1\.0\.0\s*$/m.test(text))
     failures.push(
       `${file}: implementation-ready baseline must be version 1.0.0`,

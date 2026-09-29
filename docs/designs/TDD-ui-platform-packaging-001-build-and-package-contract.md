@@ -4,7 +4,7 @@ doc_meta:
   title: Build and Published Package Contract
   owner: UI Platform Team
   version: 1.0.0
-  status: proposed
+  status: approved
   classification: public
   parent_sad: SAD-003
   review_cycle_days: 30
