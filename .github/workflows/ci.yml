@@ -23,6 +23,24 @@ jobs:
       - name: Link check and acceptance-condition audit
         run: node scripts/check-docs.mjs
 
+  clean-install:
+    name: Clean install
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Assert pinned toolchain
+        run: |
+          test "$(node --version)" = "v$(cat .node-version)"
+          test "pnpm@$(pnpm --version)" = "$(node -p "require('./package.json').packageManager")"
+      - name: Install with lifecycle scripts and a frozen lockfile
+        run: pnpm install --frozen-lockfile
+      - name: Tracked files are unchanged
+        run: git diff --exit-code && test -z "$(git status --porcelain --untracked-files=no)"
+
   governance:
     name: Central governance linter
     uses: anshacerbia2/scnehaux-architecture/.github/workflows/linter.yml@main

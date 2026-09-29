@@ -29,10 +29,10 @@
   ],
   "scripts": {
     "build": "pnpm build:css && tsup && pnpm postbuild",
-    "build:css": "npx panda css -o src/styled-system",
-    "codegen": "npx panda codegen",
+    "build:css": "panda css -o src/styled-system",
+    "codegen": "panda codegen",
     "postbuild": "node scripts/copy-tokens.mjs",
-    "prepare": "npx panda codegen",
+    "prepare": "panda codegen",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "peerDependencies": {
