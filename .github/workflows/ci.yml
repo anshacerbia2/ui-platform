@@ -64,6 +64,8 @@ jobs:
         with:
           node-version-file: .node-version
       - run: pnpm install --frozen-lockfile
+      - name: Typecheck both packages
+        run: pnpm typecheck
       - name: Both packages, retry 0
         run: pnpm test:source
 
@@ -102,6 +104,33 @@ jobs:
         with:
           name: build-memory
           path: build-time.txt
+
+  packed-consumer:
+    name: Packed consumer
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - run: pnpm install --frozen-lockfile
+      - name: Exports match source entries
+        run: node scripts/sync-exports.mjs --check
+      - run: pnpm run build
+      - name: Inspector rejects known violations
+        run: node scripts/inspect-packages.mjs --self-test
+      - name: Pack and inspect both tarballs
+        run: node scripts/inspect-packages.mjs --out artifacts/packages
+      - name: Isolated consumers at both React peer boundaries
+        run: node scripts/packed-consumer.mjs --packs artifacts/packages
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: packed-packages
+          path: |
+            artifacts/packages/*.tgz
+            artifacts/packages/*.json
 
   governance:
     name: Central governance linter
