@@ -4,41 +4,100 @@
   "version": "1.0.0",
   "packageManager": "pnpm@10.23.0",
   "description": "Enterprise-grade UI component library with optimal tree shaking",
-  "author": "",
-  "license": "ISC",
+  "author": "Scnehaux",
+  "license": "UNLICENSED",
   "keywords": [],
   "sideEffects": false,
   "exports": {
-    "./components/*": {
-      "import": {
-        "types": "./dist/components/*/index.d.ts",
-        "default": "./dist/components/*/index.js"
-      },
-      "require": {
-        "types": "./dist/components/*/index.d.cts",
-        "default": "./dist/components/*/index.cjs"
-      }
+    "./components/accordion-base": {
+      "types": "./dist/components/accordion-base/index.d.ts",
+      "default": "./dist/components/accordion-base/index.js"
     },
-    "./hooks/*": {
-      "import": {
-        "types": "./dist/hooks/*/index.d.ts",
-        "default": "./dist/hooks/*/index.js"
-      },
-      "require": {
-        "types": "./dist/hooks/*/index.d.cts",
-        "default": "./dist/hooks/*/index.cjs"
-      }
+    "./components/box-base": {
+      "types": "./dist/components/box-base/index.d.ts",
+      "default": "./dist/components/box-base/index.js"
     },
-    "./providers/*": {
-      "import": {
-        "types": "./dist/providers/*/index.d.ts",
-        "default": "./dist/providers/*/index.js"
-      },
-      "require": {
-        "types": "./dist/providers/*/index.d.cts",
-        "default": "./dist/providers/*/index.cjs"
-      }
-    }
+    "./components/button-base": {
+      "types": "./dist/components/button-base/index.d.ts",
+      "default": "./dist/components/button-base/index.js"
+    },
+    "./components/code-showcase-base": {
+      "types": "./dist/components/code-showcase-base/index.d.ts",
+      "default": "./dist/components/code-showcase-base/index.js"
+    },
+    "./components/collapsible-base": {
+      "types": "./dist/components/collapsible-base/index.d.ts",
+      "default": "./dist/components/collapsible-base/index.js"
+    },
+    "./components/container-base": {
+      "types": "./dist/components/container-base/index.d.ts",
+      "default": "./dist/components/container-base/index.js"
+    },
+    "./components/disclosure-base": {
+      "types": "./dist/components/disclosure-base/index.d.ts",
+      "default": "./dist/components/disclosure-base/index.js"
+    },
+    "./components/divider-base": {
+      "types": "./dist/components/divider-base/index.d.ts",
+      "default": "./dist/components/divider-base/index.js"
+    },
+    "./components/edge-layout-base": {
+      "types": "./dist/components/edge-layout-base/index.d.ts",
+      "default": "./dist/components/edge-layout-base/index.js"
+    },
+    "./components/flex-base": {
+      "types": "./dist/components/flex-base/index.d.ts",
+      "default": "./dist/components/flex-base/index.js"
+    },
+    "./components/floating-layout-base": {
+      "types": "./dist/components/floating-layout-base/index.d.ts",
+      "default": "./dist/components/floating-layout-base/index.js"
+    },
+    "./components/grid-base": {
+      "types": "./dist/components/grid-base/index.d.ts",
+      "default": "./dist/components/grid-base/index.js"
+    },
+    "./components/heading-base": {
+      "types": "./dist/components/heading-base/index.d.ts",
+      "default": "./dist/components/heading-base/index.js"
+    },
+    "./components/list-base": {
+      "types": "./dist/components/list-base/index.d.ts",
+      "default": "./dist/components/list-base/index.js"
+    },
+    "./components/navigation-bar-base": {
+      "types": "./dist/components/navigation-bar-base/index.d.ts",
+      "default": "./dist/components/navigation-bar-base/index.js"
+    },
+    "./components/navigation-base": {
+      "types": "./dist/components/navigation-base/index.d.ts",
+      "default": "./dist/components/navigation-base/index.js"
+    },
+    "./components/sidebar-base": {
+      "types": "./dist/components/sidebar-base/index.d.ts",
+      "default": "./dist/components/sidebar-base/index.js"
+    },
+    "./components/table-of-contents-base": {
+      "types": "./dist/components/table-of-contents-base/index.d.ts",
+      "default": "./dist/components/table-of-contents-base/index.js"
+    },
+    "./components/text-base": {
+      "types": "./dist/components/text-base/index.d.ts",
+      "default": "./dist/components/text-base/index.js"
+    },
+    "./components/transition-base": {
+      "types": "./dist/components/transition-base/index.d.ts",
+      "default": "./dist/components/transition-base/index.js"
+    },
+    "./hooks/use-on-click-outside": {
+      "types": "./dist/hooks/use-on-click-outside/index.d.ts",
+      "default": "./dist/hooks/use-on-click-outside/index.js"
+    },
+    "./providers/theme-provider-base": {
+      "types": "./dist/providers/theme-provider-base/index.d.ts",
+      "default": "./dist/providers/theme-provider-base/index.js"
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "dist"
