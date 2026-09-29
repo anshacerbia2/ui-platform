@@ -21,7 +21,7 @@ NavigationBarBaseCompound.displayName = "NavigationBarBase";
  *
  * @example
  * ```tsx
- * import { NavigationBarBase } from "@scnx/core-ui";
+ * import { NavigationBarBase } from "@scnx/core-ui/components/navigation-bar-base";
  * 
  * const MyAppHeader = () => (
  *   <NavigationBarBase>

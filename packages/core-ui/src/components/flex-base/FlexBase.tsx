@@ -12,7 +12,7 @@ import { Slot } from "../../utils/Slot";
  *
  * @example
  * ```tsx
- * import { FlexBase, ButtonBase } from "@scnx/core-ui";
+ * import { FlexBase, ButtonBase } from "@scnx/core-ui/components/flex-base";
  * 
  * <FlexBase data-justify="between" data-align="center">
  *   <h1>Dashboard</h1>

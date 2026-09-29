@@ -11,7 +11,7 @@ import { Slot } from "../../utils/Slot";
  *
  * @example
  * ```tsx
- * import { BoxBase } from "@scnx/core-ui";
+ * import { BoxBase } from "@scnx/core-ui/components/box-base";
  * 
  * <BoxBase data-state="collapsed">
  *   <p>Content</p>

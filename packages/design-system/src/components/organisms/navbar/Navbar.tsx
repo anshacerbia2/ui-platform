@@ -15,7 +15,7 @@ NavbarCompound.displayName = "Navbar";
  *
  * @example
  * ```tsx
- * import { Navbar } from "@scnx/system/navbar";
+ * import { Navbar } from "@scnx/system/components/navbar";
  *
  * <Navbar>
  *   <Navbar.Start>Logo</Navbar.Start>

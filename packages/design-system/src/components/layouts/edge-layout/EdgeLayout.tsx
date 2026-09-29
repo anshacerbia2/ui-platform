@@ -14,7 +14,7 @@ EdgeLayoutCompound.displayName = "EdgeLayout";
  *
  * @example
  * ```tsx
- * import { EdgeLayout } from "@scnx/system/edge-layout";
+ * import { EdgeLayout } from "@scnx/system/components/edge-layout";
  * 
  * <EdgeLayout>
  *   <EdgeLayout.Navbar>

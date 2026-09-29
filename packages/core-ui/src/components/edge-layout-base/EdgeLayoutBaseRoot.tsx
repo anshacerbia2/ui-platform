@@ -9,7 +9,7 @@ import { EdgeLayoutContext } from "./EdgeLayoutContext";
  *
  * @example
  * ```tsx
- * import { EdgeLayoutBase, NavigationBarBase, SidebarBase } from "@scnx/core-ui";
+ * import { EdgeLayoutBase, NavigationBarBase, SidebarBase } from "@scnx/core-ui/components/edge-layout-base";
  * 
  * <EdgeLayoutBase>
  *   <EdgeLayoutBase.NavigationBar>

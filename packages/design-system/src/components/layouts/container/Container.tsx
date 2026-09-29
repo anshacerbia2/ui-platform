@@ -9,12 +9,12 @@ import { cx } from "styled-system/css";
 /**
  * Constrains content width and provides centered layout.
 ilizing the Enterprise Layout System.
- * Wraps `@scnx/core-ui/container-base` and applies `containerRecipe`.
+ * Wraps `@scnx/core-ui/components/container-base` and applies `containerRecipe`.
  * Renders a semantic `<div>` (polymorphic via `as` prop).
  *
  * @example
  * ```tsx
- * import { Container } from "@scnx/system/container";
+ * import { Container } from "@scnx/system/components/container";
  * 
  * <Container size="base">
  *   <div>Content goes here</div>

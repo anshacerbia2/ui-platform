@@ -7,13 +7,13 @@ import { cx } from "styled-system/css";
 /**
  * Transition - Tier 1 Atomic Component.
  * 
- * Styled transition wrapper using `@scnx/core-ui/transition-base`.
+ * Styled transition wrapper using `@scnx/core-ui/components/transition-base`.
  * Provides entrance/exit animations for children.
  * Renders a semantic `<div>` element to manage visibility states.
  *
  * @example
  * ```tsx
- * import { Transition } from "@scnx/system/transition";
+ * import { Transition } from "@scnx/system/components/transition";
  * 
  * <Transition smoothClose={isOpen} styleFrom={{ opacity: 0 }} styleTo={{ opacity: 1 }}>
  *   <div>Animated Content</div>

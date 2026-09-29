@@ -6,7 +6,7 @@ import type { FloatingLayoutBaseRootProps } from "./types";
  *
  * @example
  * ```tsx
- * import { FloatingLayoutBase } from "@scnx/core-ui";
+ * import { FloatingLayoutBase } from "@scnx/core-ui/components/floating-layout-base";
  * 
  * <FloatingLayoutBase.Root className="overlay">
  *   <FloatingLayoutBase.Content>...</FloatingLayoutBase.Content>

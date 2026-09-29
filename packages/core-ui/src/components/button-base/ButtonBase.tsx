@@ -10,7 +10,7 @@ import type { ButtonBaseProps } from "./types";
  *
  * @example
  * ```tsx
- * import { ButtonBase } from "@scnx/core-ui";
+ * import { ButtonBase } from "@scnx/core-ui/components/button-base";
  * 
  * // Renders as <button>
  * <ButtonBase onClick={() => console.log('clicked')}>

@@ -9,7 +9,7 @@ import type { HeadingBaseProps } from "./types";
  *
  * @example
  * ```tsx
- * import { HeadingBase, ContainerBase } from "@scnx/core-ui";
+ * import { HeadingBase, ContainerBase } from "@scnx/core-ui/components/heading-base";
  * 
  * <ContainerBase>
  *   <HeadingBase as="h1" data-size="2xl">Page Title</HeadingBase>

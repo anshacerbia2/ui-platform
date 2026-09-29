@@ -9,7 +9,7 @@ import type { DividerBaseProps } from "./types";
  *
  * @example
  * ```tsx
- * import { DividerBase, FlexBase } from "@scnx/core-ui";
+ * import { DividerBase, FlexBase } from "@scnx/core-ui/components/divider-base";
  * 
  * <FlexBase data-direction="col">
  *   <div>Top Section</div>

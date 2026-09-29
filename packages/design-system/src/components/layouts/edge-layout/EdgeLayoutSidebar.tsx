@@ -26,7 +26,7 @@ EdgeLayoutBaseSidebarCompound.displayName = "EdgeLayoutSidebar";
  * 
  * @example
  * ```tsx
- * import { EdgeLayout } from "@scnx/system/edge-layout";
+ * import { EdgeLayout } from "@scnx/system/components/edge-layout";
  * 
  * <EdgeLayout.Sidebar>...</EdgeLayout.Sidebar>
  * ```

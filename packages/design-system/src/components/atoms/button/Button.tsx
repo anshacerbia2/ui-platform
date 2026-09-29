@@ -5,12 +5,12 @@ import type { ButtonProps } from "./types";
 import { cx } from "styled-system/css";
 
 /**
- * Styled button component for user interaction. Wraps `@scnx/core-ui/button-base`.
+ * Styled button component for user interaction. Wraps `@scnx/core-ui/components/button-base`.
  * Renders a semantic `<button>` or `<a>` element based on props.
  *
  * @example
  * ```tsx
- * import { Button } from "@scnx/system/button";
+ * import { Button } from "@scnx/system/components/button";
  *
  * <Button variant="primary" onClick={() => console.log('clicked')}>
  *   Click Me

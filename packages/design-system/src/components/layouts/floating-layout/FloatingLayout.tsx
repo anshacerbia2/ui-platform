@@ -13,7 +13,7 @@ FloatingLayoutCompound.displayName = "FloatingLayout";
  *
  * @example
  * ```tsx
- * import { FloatingLayout } from "@scnx/system/floating-layout";
+ * import { FloatingLayout } from "@scnx/system/components/floating-layout";
  * 
  * <FloatingLayout>
  *   <FloatingLayout.Sidebar>...</FloatingLayout.Sidebar>

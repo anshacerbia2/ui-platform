@@ -11,7 +11,7 @@ import { Flex } from "../flex";
  *
  * @example
  * ```tsx
- * import { Stack } from "@scnx/system/components/layouts/stack";
+ * import { Stack } from "@scnx/system/components/stack";
  * 
  * <Stack gap="4">
  *   <input type="text" />

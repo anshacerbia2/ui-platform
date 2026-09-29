@@ -14,7 +14,7 @@ import { Navbar } from "../../organisms/navbar";
  * 
  * @example
  * ```tsx
- * import { EdgeLayout } from "@scnx/system/edge-layout";
+ * import { EdgeLayout } from "@scnx/system/components/edge-layout";
  * 
  * <EdgeLayout.Navbar>
  *   <EdgeLayout.Navbar.Start>Logo</EdgeLayout.Navbar.Start>

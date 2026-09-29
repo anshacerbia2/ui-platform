@@ -8,7 +8,7 @@ import type { SidebarBaseRootProps } from "./types";
  *
  * @example
  * ```tsx
- * import { SidebarBase } from "@scnx/core-ui";
+ * import { SidebarBase } from "@scnx/core-ui/components/sidebar-base";
  * 
  * <SidebarBase.Root className="w-64 border-r">
  *   <SidebarBase.Nav>...</SidebarBase.Nav>
