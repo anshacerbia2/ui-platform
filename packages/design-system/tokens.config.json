@@ -20,8 +20,11 @@
     "system": ["-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "Menlo", "Consolas", "SFMono-Regular"],
     "assets": {
       "Inter": {
-        "files": ["assets/fonts/Inter-VariableFont_opsz,wght.woff2", "assets/fonts/Inter-Italic-VariableFont_opsz,wght.woff2"],
-        "license": "assets/fonts/OFL.txt"
+        "faces": [
+          { "source": "assets/fonts/Inter-VariableFont_opsz,wght.woff2", "publish": "fonts/inter-variable.woff2", "style": "normal", "weight": "100 900" },
+          { "source": "assets/fonts/Inter-Italic-VariableFont_opsz,wght.woff2", "publish": "fonts/inter-italic-variable.woff2", "style": "italic", "weight": "100 900" }
+        ],
+        "license": { "source": "assets/fonts/OFL.txt", "publish": "fonts/inter-ofl.txt" }
       }
     }
   },

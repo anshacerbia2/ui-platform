@@ -263,7 +263,7 @@ export function validate({ themes, config, packageDir }) {
               add({ category: "font", theme: themeId, mode, token: name, message: `family "${family}" is neither a declared asset, a declared system font, nor generic` });
               continue;
             }
-            for (const file of [...asset.files, asset.license]) {
+            for (const file of [...asset.faces.map((face) => face.source), asset.license.source]) {
               if (!fs.existsSync(path.join(packageDir, file))) {
                 add({ category: "font", theme: themeId, mode, token: name, message: `asset file ${file} for "${family}" is missing` });
               }

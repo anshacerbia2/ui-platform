@@ -25,7 +25,9 @@ const CONFIG_KEYS = {
   theme: ["inherits", "modes"],
   mode: ["module", "variable"],
   fonts: ["system", "assets"],
-  asset: ["files", "license"],
+  asset: ["faces", "license"],
+  face: ["source", "publish", "style", "weight"],
+  license: ["source", "publish"],
   contrast: ["textMinimum", "nonTextMinimum", "canvas", "neutralBackgrounds"],
 };
 
@@ -50,7 +52,25 @@ export function loadConfig(file) {
     }
   }
   known(config.fonts, CONFIG_KEYS.fonts, "fonts");
-  for (const [family, asset] of Object.entries(config.fonts?.assets ?? {})) known(asset, CONFIG_KEYS.asset, `fonts.assets.${family}`);
+  const published = new Set();
+  const publishPath = (value, where) => {
+    if (!/^fonts\/[a-z0-9][a-z0-9.-]*$/.test(value ?? "")) errors.push(`${where}: publish path must be fonts/<lowercase-name>`);
+    if (published.has(value)) errors.push(`${where}: publish path "${value}" is used twice`);
+    published.add(value);
+  };
+  for (const [family, asset] of Object.entries(config.fonts?.assets ?? {})) {
+    const where = `fonts.assets.${family}`;
+    known(asset, CONFIG_KEYS.asset, where);
+    known(asset.license, CONFIG_KEYS.license, `${where}.license`);
+    publishPath(asset.license?.publish, `${where}.license`);
+    if (!asset.faces?.length) errors.push(`${where}: at least one face is required`);
+    (asset.faces ?? []).forEach((face, index) => {
+      known(face, CONFIG_KEYS.face, `${where}.faces[${index}]`);
+      publishPath(face.publish, `${where}.faces[${index}]`);
+      if (!["normal", "italic"].includes(face.style)) errors.push(`${where}.faces[${index}]: style must be normal or italic`);
+      if (!/^\d{3}( \d{3})?$/.test(face.weight ?? "")) errors.push(`${where}.faces[${index}]: weight must be "400" or a range "100 900"`);
+    });
+  }
   known(config.contrast, CONFIG_KEYS.contrast, "contrast");
   if (errors.length > 0) throw new Error(`Invalid token configuration:\n${errors.join("\n")}`);
   return config;

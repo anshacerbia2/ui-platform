@@ -28,7 +28,7 @@ function targets(value) {
 export function references(file, text) {
   const refs = [];
   const patterns = file.endsWith(".css")
-    ? [/@import\s+(?:url\()?["']([^"']+)["']/g]
+    ? [/@import\s+["']([^"']+)["']/g, /url\(\s*["']?([^"')\s]+)["']?\s*\)/g]
     : [
         /\bfrom\s*["']([^"']+)["']/g,
         /\bimport\s*["']([^"']+)["']/g,
@@ -168,6 +168,14 @@ function selfTest() {
     ["packed source", run(good, { ...goodFiles, "src/a.ts": "" }), "source file src/a.ts"],
     ["absolute source-map path", run(good, { ...goodFiles, "dist/a.js.map": '{"sources":["C:/Users/me/a.ts"]}' }), "leaks absolute source path"],
     ["missing chunk", run(good, withoutChunk), 'references missing "./chunk.js"'],
+    [
+      "missing font behind a stylesheet url()",
+      run(
+        { ...good, exports: { ...good.exports, "./theme.css": "./dist/theme.css" } },
+        { ...goodFiles, "dist/theme.css": '@font-face { src: url("../fonts/a.woff2") format("woff2"); }' },
+      ),
+      'references missing "../fonts/a.woff2"',
+    ],
   ];
 
   const failed = cases.filter(([, failures, expected]) =>
