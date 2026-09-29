@@ -11,7 +11,7 @@ import type { GridBaseProps } from "./types";
  *
  * @example
  * ```tsx
- * import { GridBase } from "@scnx/core-ui";
+ * import { GridBase } from "@scnx/core-ui/components/grid-base";
  * 
  * <GridBase data-columns="3" data-gap="4">
  *   <p>Column 1</p>

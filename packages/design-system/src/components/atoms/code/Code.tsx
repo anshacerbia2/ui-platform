@@ -11,7 +11,7 @@ import { cx } from "styled-system/css";
  *
  * @example
  * ```tsx
- * import { Code } from "@scnx/system/code";
+ * import { Code } from "@scnx/system/components/code";
  * 
  * <Code intent="primary">npm install @scnx/system</Code>
  * ```

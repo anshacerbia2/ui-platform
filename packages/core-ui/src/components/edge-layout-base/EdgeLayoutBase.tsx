@@ -14,7 +14,7 @@ EdgeLayoutBaseCompound.displayName = "EdgeLayoutBase";
  *
  * @example
  * ```tsx
- * import { EdgeLayoutBase } from "@scnx/core-ui";
+ * import { EdgeLayoutBase } from "@scnx/core-ui/components/edge-layout-base";
  * 
  * <EdgeLayoutBase>
  *   <EdgeLayoutBase.Navbar>Header</EdgeLayoutBase.Navbar>

@@ -23,7 +23,7 @@ NavigationCompound.displayName = "Navigation";
  *
  * @example
  * ```tsx
- * import { Navigation } from "@scnx/system/navigation";
+ * import { Navigation } from "@scnx/system/components/navigation";
  * 
  * <Navigation>
  *   <Navigation.Group>

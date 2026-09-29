@@ -5,11 +5,11 @@ import { cx } from "styled-system/css";
 
 /**
  * Root container for the FloatingLayout.
- * Wraps `@scnx/core-ui/floating-layout-base`.
+ * Wraps `@scnx/core-ui/components/floating-layout-base`.
  * 
  * @example
  * ```tsx
- * import { FloatingLayout } from "@scnx/system/floating-layout";
+ * import { FloatingLayout } from "@scnx/system/components/floating-layout";
  * 
  * <FloatingLayout.Root>...</FloatingLayout.Root>
  * ```

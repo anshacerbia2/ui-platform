@@ -9,7 +9,7 @@ import { cx } from "styled-system/css";
  *
  * @example
  * ```tsx
- * import { Flex } from "@scnx/system/components/layouts/flex";
+ * import { Flex } from "@scnx/system/components/flex";
  * 
  * <Flex direction="row" align="center" gap="4">
  *   <div>Item 1</div>

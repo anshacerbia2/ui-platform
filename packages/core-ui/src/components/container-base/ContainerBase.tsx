@@ -9,7 +9,7 @@ import type { ContainerBaseProps } from "./types";
  *
  * @example
  * ```tsx
- * import { ContainerBase } from "@scnx/core-ui";
+ * import { ContainerBase } from "@scnx/core-ui/components/container-base";
  * 
  * <ContainerBase as="main" data-size="lg">
  *   <section>Content goes here</section>

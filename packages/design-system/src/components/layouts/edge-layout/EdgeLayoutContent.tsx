@@ -5,13 +5,13 @@ import { cx } from "styled-system/css";
 
 /**
  * Content area for the EdgeLayout.
- * Renders the scrollable content zone with `@scnx/core-ui/edge-layout-base`.
+ * Renders the scrollable content zone with `@scnx/core-ui/components/edge-layout-base`.
  * 
  * @throws Warns in development if rendered outside of `EdgeLayout.Root`.
  * 
  * @example
  * ```tsx
- * import { EdgeLayout } from "@scnx/system/edge-layout";
+ * import { EdgeLayout } from "@scnx/system/components/edge-layout";
  * 
  * <EdgeLayout.Content>...</EdgeLayout.Content>
  * ```

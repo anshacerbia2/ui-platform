@@ -14,7 +14,7 @@ TableOfContentsBaseCompound.displayName = "TableOfContentsBase";
  *
  * @example
  * ```tsx
- * import { TableOfContentsBase } from "@scnx/core-ui";
+ * import { TableOfContentsBase } from "@scnx/core-ui/components/table-of-contents-base";
  * 
  * <TableOfContentsBase>
  *   <TableOfContentsBase.List>

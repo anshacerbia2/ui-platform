@@ -17,7 +17,7 @@ import { NavigationBaseTrailingIcon as TrailingIcon } from "./NavigationBaseTrai
  *
  * @example
  * ```tsx
- * import { NavigationBase } from "@scnx/core-ui";
+ * import { NavigationBase } from "@scnx/core-ui/components/navigation-base";
  * 
  * <NavigationBase.Group>
  *   <NavigationBase.Item 

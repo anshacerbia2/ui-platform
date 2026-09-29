@@ -6,7 +6,7 @@ import type { NavigationBaseRootProps } from "./types";
  *
  * @example
  * ```tsx
- * import { NavigationBase } from "@scnx/core-ui";
+ * import { NavigationBase } from "@scnx/core-ui/components/navigation-base";
  * 
  * <NavigationBase.Root className="w-full">
  *   Nav content
