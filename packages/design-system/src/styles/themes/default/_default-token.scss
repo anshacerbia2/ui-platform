@@ -115,10 +115,26 @@ $role-base-steps: (
   @return $base-step;
 }
 
+// Canonical emphasis values and states per role (STD-UIP-TKN-001 section 3,
+// Role x Emphasis and State compatibility tables).
+$role-emphases: (
+  surface: (subtle, default, strong, solid),
+  border: (subtle, default, strong),
+  text: (subtle, default, strong, contrast),
+  icon: (subtle, default, strong, contrast),
+  shadow: (subtle, default, strong, contrast)
+);
+
+$role-states: (
+  surface: (default, hover, pressed, selected, disabled),
+  border: (default, selected, focus, disabled),
+  text: (default, hover, disabled),
+  icon: (default, hover, disabled),
+  shadow: (default, hover, pressed)
+);
+
 @function get-scheme-hue($scheme) {
   @if $scheme == "primary" { @return "blue"; }
-  @if $scheme == "secondary" { @return "purple"; }
-  @if $scheme == "accent" { @return "magenta"; }
   @if $scheme == "info" { @return "blue"; }
   @if $scheme == "success" { @return "green"; }
   @if $scheme == "warning" { @return "yellow"; }
@@ -129,35 +145,28 @@ $role-base-steps: (
 @function generate-scheme-matrix($scheme, $mode) {
   $role-map: ();
   $hue: get-scheme-hue($scheme);
-  
-  @each $role in (surface, solid, border, text, icon, shadow) {
-    $target-role: $role;
-    @if $role == icon { $target-role: text; }
-    @if $role == shadow { $target-role: solid; }
-    
+
+  @each $role, $emphases in $role-emphases {
     $emphasis-map: ();
-    
-    @each $emphasis in (subtle, default, strong, contrast) {
-      $state-map: ();
-      $valid-states: (default);
-      
-      @if $role == surface or $role == solid {
-        $valid-states: (default, hover, pressed, selected, disabled);
-      } @else if $role == border {
-        $valid-states: (default, selected, focus, disabled);
-      } @else if $role == text or $role == icon {
-        $valid-states: (default, hover, disabled);
-      } @else if $role == shadow {
-        $valid-states: (default, hover, pressed);
+
+    @each $emphasis in $emphases {
+      // Recipe inputs: the solid fill keeps the baseline "solid" role recipe.
+      $recipe-role: $role;
+      $recipe-emphasis: $emphasis;
+      @if $emphasis == "solid" {
+        $recipe-role: solid;
+        $recipe-emphasis: default;
       }
-      
-      @each $state in $valid-states {
+      $target-role: $recipe-role;
+      @if $recipe-role == icon { $target-role: text; }
+      @if $recipe-role == shadow { $target-role: solid; }
+      $state-map: ();
+
+      @each $state in map.get($role-states, $role) {
         $value: "";
-        
-        @if $emphasis == "contrast" {
-          @if $role == "surface" or $role == "solid" or $role == "border" {
-            $value: -if($mode == "light", resolve-core-color("white", null, $mode), resolve-core-color("black", null, $mode));
-          } @else if $role == "text" or $role == "icon" {
+
+        @if $recipe-emphasis == "contrast" {
+          @if $recipe-role == "text" or $recipe-role == "icon" {
             @if $scheme == "warning" {
               $value: -if($mode == "light", resolve-core-color("neutral", 12, $mode), resolve-core-color("neutral", 1, $mode));
             } @else if $scheme == "neutral" and $mode == "dark" {
@@ -165,23 +174,23 @@ $role-base-steps: (
             } @else {
               $value: resolve-core-color("white", null, $mode);
             }
-          } @else if $role == "shadow" {
+          } @else if $recipe-role == "shadow" {
             $value: -if($mode == "light", resolve-core-color("white", null, $mode), resolve-core-color("black", null, $mode));
           }
         } @else {
-          $base-step: map.get($role-base-steps, $target-role, $emphasis);
-          
+          $base-step: map.get($role-base-steps, $target-role, $recipe-emphasis);
+
           // Override solid default for Vercel Glow
-          @if $role == "solid" and $emphasis == "default" {
+          @if $recipe-role == "solid" and $recipe-emphasis == "default" {
             $base-step: -if($mode == "light", 10, 9);
           }
-          
-          $step: get-state-step($base-step, $state, $role, $mode);
-          
-          @if $role == "border" and $state == "focus" {
+
+          $step: get-state-step($base-step, $state, $recipe-role, $mode);
+
+          @if $recipe-role == "border" and $state == "focus" {
             $raw: get-raw-channels($hue, $step, $mode);
             $value: string.unquote("oklch(#{$raw} / 0.4)");
-          } @else if $role == "shadow" {
+          } @else if $recipe-role == "shadow" {
             $raw: get-raw-channels($hue, $step, $mode);
             $value: string.unquote("oklch(#{$raw} / 0.15)");
           } @else {
@@ -209,77 +218,24 @@ $role-base-steps: (
   $surface-floating-val: -if($mode == "light", resolve-core-color("white", null, $mode), resolve-core-color("neutral", 3, $mode));
   $surface-sunken-val: -if($mode == "light", resolve-core-color("neutral", 2, $mode), resolve-core-color("neutral", 1, $mode));
   
-  $neutral-merged: map.merge($neutral-matrix, (
+  // Neutral-only elevation emphases are surface emphases (STD-UIP-TKN-001).
+  $neutral-surface: map.merge(map.get($neutral-matrix, surface), (
     canvas: (default: $canvas-val),
-    surface-raised: (default: $surface-raised-val),
-    surface-floating: (default: $surface-floating-val),
-    surface-sunken: (default: $surface-sunken-val)
+    raised: (default: $surface-raised-val),
+    floating: (default: $surface-floating-val),
+    sunken: (default: $surface-sunken-val)
   ));
-  
-  $utility-map: (
-    skeleton: -if($mode == "light", resolve-core-color("neutral", 3, $mode), resolve-core-color("neutral", 2, $mode)),
-    skeleton-shimmer: -if($mode == "light", resolve-core-color("neutral", 2, $mode), resolve-core-color("neutral", 3, $mode)),
-    selection: resolve-core-color("blue", 3, $mode),
-    mask: rgba(0, 0, 0, 0.5),
-    placeholder: resolve-core-color("neutral", 8, $mode),
-    debug: resolve-core-color("red", 9, $mode)
-  );
+  $neutral-merged: map.set($neutral-matrix, surface, $neutral-surface);
 
-  $chart-map: (
-    categorical: (
-      1: resolve-core-color("blue", 9, $mode),
-      2: resolve-core-color("green", 9, $mode),
-      3: resolve-core-color("yellow", 9, $mode),
-      4: resolve-core-color("orange", 9, $mode),
-      5: resolve-core-color("purple", 9, $mode),
-      6: resolve-core-color("magenta", 9, $mode)
-    ),
-    sequential: (
-      1: resolve-core-color("blue", 2, $mode),
-      2: resolve-core-color("blue", 4, $mode),
-      3: resolve-core-color("blue", 6, $mode),
-      4: resolve-core-color("blue", 8, $mode),
-      5: resolve-core-color("blue", 10, $mode),
-      6: resolve-core-color("blue", 12, $mode)
-    ),
-    diverging: (
-      1: resolve-core-color("orange", 9, $mode),
-      2: resolve-core-color("orange", 4, $mode),
-      3: resolve-core-color("neutral", 3, $mode),
-      4: resolve-core-color("blue", 4, $mode),
-      5: resolve-core-color("blue", 9, $mode),
-      6: resolve-core-color("blue", 11, $mode)
-    ),
-    threshold: (
-      1: resolve-core-color("orange", 11, $mode),
-      2: resolve-core-color("orange", 9, $mode),
-      3: resolve-core-color("yellow", 9, $mode),
-      4: resolve-core-color("green", 9, $mode),
-      5: resolve-core-color("blue", 9, $mode),
-      6: resolve-core-color("purple", 9, $mode)
-    )
-  );
-  
+  // Schemes are the STD-UIP-TKN-001 vocabulary. Data-visualization colors are
+  // product-local by that standard and are not shared tokens.
   @return (
     neutral: $neutral-merged,
-    black: generate-scheme-matrix("black", $mode),
-    white: generate-scheme-matrix("white", $mode),
     primary: generate-scheme-matrix("primary", $mode),
-    secondary: generate-scheme-matrix("secondary", $mode),
-    accent: generate-scheme-matrix("accent", $mode),
     info: generate-scheme-matrix("info", $mode),
     success: generate-scheme-matrix("success", $mode),
     warning: generate-scheme-matrix("warning", $mode),
-    danger: generate-scheme-matrix("danger", $mode),
-    overlay: (
-      scrim: -if($mode == "light", rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.75)),
-      scrim-light: -if($mode == "light", rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)),
-      glass: -if($mode == "light", rgba(255, 255, 255, 0.8), rgba(15, 15, 15, 0.8)),
-      glass-dark: rgba(0, 0, 0, 0.8),
-      backdrop: -if($mode == "light", rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5))
-    ),
-    utility: $utility-map,
-    chart: $chart-map
+    danger: generate-scheme-matrix("danger", $mode)
   );
 }
 
@@ -355,7 +311,8 @@ $default-token: (
     max: map.get(core.$z-index, 60),
   ),
 
-  shadow: (
+  // Effect domain: the public shadow set of STD-UIP-TKN-001.
+  effect: (shadow: (
     low: (
       #{string.unquote("#{list.nth(map.get(core.$shadow-elevation, sm), 1)}")}
         var(--ds-color-neutral-shadow-default-default),
@@ -382,7 +339,7 @@ $default-token: (
       #{string.unquote("#{list.nth(map.get(core.$shadow-elevation, inner), 1)}")}
         var(--ds-color-neutral-border-default-focus),
     ),
-  ),
+  )),
 
   font-family: (
     base: map.get(core.$font-family, sans),
@@ -465,7 +422,4 @@ $default-token: (
     wide: map.get(core.$container-width, wide),
     fluid: map.get(core.$container-width, fluid),
   ),
-
-  // Animation Tokens
-  animation: (),
 );

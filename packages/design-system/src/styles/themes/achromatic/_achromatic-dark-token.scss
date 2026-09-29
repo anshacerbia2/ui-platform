@@ -20,19 +20,11 @@ $achromatic-dark-token: (
     lg: 0.75rem,
     xl: 1rem,
   ),
-  shadow: (
-    none: none,
-    sm: (
-      0 1px 3px rgb(var(--ds-color-neutral-shadow-subtle-default)),
-    ),
-    md: (
-      0 4px 12px rgb(var(--ds-color-neutral-shadow-subtle-default)),
-    ),
-    lg: (
-      0 8px 24px rgb(var(--ds-color-neutral-shadow-subtle-default)),
-    ),
-    xl: (
-      0 16px 48px rgb(var(--ds-color-neutral-shadow-subtle-default)),
-    )
-  )
+  // Achromatic elevation, on the public shadow names (STD-UIP-TKN-001).
+  effect: (shadow: (
+    low: (0 1px 3px var(--ds-color-neutral-shadow-subtle-default)),
+    medium: (0 4px 12px var(--ds-color-neutral-shadow-subtle-default)),
+    high: (0 8px 24px var(--ds-color-neutral-shadow-subtle-default)),
+    overlay: (0 16px 48px var(--ds-color-neutral-shadow-subtle-default))
+  ))
 );

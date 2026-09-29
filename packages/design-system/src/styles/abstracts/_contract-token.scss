@@ -158,90 +158,60 @@ $core: (
 // ============================================
 // Defines the semantic design tokens that components will consume.
 
-$emphases: (subtle, default, strong, contrast);
-
-$states-surface-solid: (default, hover, pressed, selected, disabled);
+// Role x Emphasis x State contract of STD-UIP-TKN-001 section 3.
+$states-surface: (default, hover, pressed, selected, disabled);
 $states-border: (default, selected, focus, disabled);
 $states-text-icon: (default, hover, disabled);
 $states-shadow: (default, hover, pressed);
 
-$emphasis-states-surface: (
-  subtle: $states-surface-solid,
-  default: $states-surface-solid,
-  strong: $states-surface-solid,
-  contrast: $states-surface-solid
-);
-
-$emphasis-states-solid: (
-  subtle: $states-surface-solid,
-  default: $states-surface-solid,
-  strong: $states-surface-solid,
-  contrast: $states-surface-solid
-);
-
-$emphasis-states-border: (
-  subtle: $states-border,
-  default: $states-border,
-  strong: $states-border,
-  contrast: $states-border
-);
-
-$emphasis-states-text: (
-  subtle: $states-text-icon,
-  default: $states-text-icon,
-  strong: $states-text-icon,
-  contrast: $states-text-icon
-);
-
-$emphasis-states-icon: (
-  subtle: $states-text-icon,
-  default: $states-text-icon,
-  strong: $states-text-icon,
-  contrast: $states-text-icon
-);
-
-$emphasis-states-shadow: (
-  subtle: $states-shadow,
-  default: $states-shadow,
-  strong: $states-shadow,
-  contrast: $states-shadow
-);
-
-// Asymmetric Symmetrical-Scheme Matrix Contract
 $scheme-contract: (
-  surface: $emphasis-states-surface,
-  solid: $emphasis-states-solid,
-  border: $emphasis-states-border,
-  text: $emphasis-states-text,
-  icon: $emphasis-states-icon,
-  shadow: $emphasis-states-shadow
+  surface: (
+    subtle: $states-surface,
+    default: $states-surface,
+    strong: $states-surface,
+    solid: $states-surface
+  ),
+  border: (
+    subtle: $states-border,
+    default: $states-border,
+    strong: $states-border
+  ),
+  text: (
+    subtle: $states-text-icon,
+    default: $states-text-icon,
+    strong: $states-text-icon,
+    contrast: $states-text-icon
+  ),
+  icon: (
+    subtle: $states-text-icon,
+    default: $states-text-icon,
+    strong: $states-text-icon,
+    contrast: $states-text-icon
+  ),
+  shadow: (
+    subtle: $states-shadow,
+    default: $states-shadow,
+    strong: $states-shadow,
+    contrast: $states-shadow
+  )
 );
+
+// Neutral adds the neutral-only elevation emphases to its surface role.
+$neutral-contract: map.set($scheme-contract, surface, map.merge(map.get($scheme-contract, surface), (
+  canvas: (default: ()),
+  raised: (default: ()),
+  floating: (default: ()),
+  sunken: (default: ())
+)));
 
 $system: (
   color: (
-    neutral: map.merge($scheme-contract, (
-      canvas: (default: ()),
-      surface-raised: (default: ()),
-      surface-floating: (default: ()),
-      surface-sunken: (default: ())
-    )),
-    black: $scheme-contract,
-    white: $scheme-contract,
+    neutral: $neutral-contract,
     primary: $scheme-contract,
-    secondary: $scheme-contract,
-    accent: $scheme-contract,
     info: $scheme-contract,
     success: $scheme-contract,
     warning: $scheme-contract,
-    danger: $scheme-contract,
-    overlay: (scrim, scrim-light, glass, glass-dark, backdrop),
-    utility: (skeleton, skeleton-shimmer, selection, mask, placeholder, debug),
-    chart: (
-      categorical: (1, 2, 3, 4, 5, 6),
-      sequential: (1, 2, 3, 4, 5, 6),
-      diverging: (1, 2, 3, 4, 5, 6),
-      threshold: (1, 2, 3, 4, 5, 6)
-    )
+    danger: $scheme-contract
   ),
 
   // Dimension Semantic Families
@@ -313,12 +283,14 @@ $system: (
     max,
   ),
 
-  shadow: (
-    low,
-    medium,
-    high,
-    overlay,
-    focus,
+  effect: (
+    shadow: (
+      low,
+      medium,
+      high,
+      overlay,
+      focus,
+    ),
   ),
 
   // Typography Semantic Families
@@ -403,7 +375,4 @@ $system: (
     wide,
     fluid,
   ),
-
-  // Animation Tokens
-  animation: (),
 );
