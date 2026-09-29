@@ -23,7 +23,8 @@ engine but its registry and interaction semantics belong to the primitives TDD.
 
 ## Scope
 
-In scope: ThemeProvider/store, `[data-scnx-theme]` roots, controlled/uncontrolled
+In scope: ThemeProvider/store,
+`[data-scnx-theme][data-scnx-resolved-mode]` roots, controlled/uncontrolled
 state, system preference, persistence adapter, prepaint bootstrap, portal root,
 hydration, TransitionBase finite state machine, reduced motion, cleanup, and
 failure telemetry. Theme token values and disclosure orchestration are out of
@@ -127,8 +128,11 @@ type ThemeContextValue = ThemeSnapshot & {
 };
 ```
 
-The rendered root carries `data-scnx-theme`, `data-scnx-mode`, and
-`data-scnx-resolved-mode`. No undocumented `window.__theme` API exists.
+The rendered root carries exactly the CSS identity attributes
+`data-scnx-theme="<theme-id>"` and
+`data-scnx-resolved-mode="<light|dark>"`. The requested `mode`, including
+`system`, remains in the store snapshot and is not duplicated as a CSS selector
+attribute. No undocumented `window.__theme` API exists.
 
 TransitionBase keeps element props plus `open` (positive intent),
 `disabled?: boolean`, optional style/keyframe contract, and `onOpened`/

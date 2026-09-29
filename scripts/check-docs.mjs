@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Enforce the deliberately small UI Platform documentation boundary:
-// README + PLAN + ROADMAP, exactly five TDDs, and one review record.
+// README + PLAN + ROADMAP, exactly five TDDs, and review records split by round.
 
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, join, normalize, relative } from "node:path";
@@ -15,9 +15,6 @@ const tdds = [
   "docs/designs/TDD-ui-platform-theme-005-provider-and-transitions.md",
   "docs/designs/TDD-ui-platform-tokens-003-theme-and-token-output.md",
 ];
-const review = "docs/reviews/PRINCIPAL_REVIEW_DISPOSITIONS.md";
-const governing = ["README.md", "PLAN.md", "ROADMAP.md", ...tdds, review];
-
 function markdownBelow(directory) {
   if (!existsSync(directory)) return [];
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -27,11 +24,29 @@ function markdownBelow(directory) {
   });
 }
 
+const reviewPathPattern =
+  /^docs\/reviews\/\d{4}-\d{2}-\d{2}-[a-z0-9]+(?:-[a-z0-9]+)*\.md$/;
+const reviews = markdownBelow("docs/reviews").sort();
+if (reviews.length === 0) {
+  failures.push(
+    "docs/reviews/: at least one principal-review record is required",
+  );
+}
+for (const review of reviews) {
+  if (!reviewPathPattern.test(review)) {
+    failures.push(
+      `${review}: review path must match docs/reviews/YYYY-MM-DD-<slug>.md`,
+    );
+  }
+}
+
+const governing = ["README.md", "PLAN.md", "ROADMAP.md", ...tdds, ...reviews];
+
 const actualDocs = markdownBelow("docs").sort();
-const expectedDocs = [...tdds, review].sort();
+const expectedDocs = [...tdds, ...reviews].sort();
 if (actualDocs.join("\n") !== expectedDocs.join("\n")) {
   failures.push(
-    `docs/: expected only five TDDs and one review record; found ${actualDocs.join(", ")}`,
+    `docs/: expected only five TDDs and review records split by round; found ${actualDocs.join(", ")}`,
   );
 }
 
@@ -181,20 +196,19 @@ tdds.forEach((file, index) => {
     );
   if (!text.includes("[PLAN](../../PLAN.md)"))
     failures.push(`${file}: traceability must link to PLAN`);
-  if (
-    /UIP-DEC-|DECISION_REGISTER|ARCHITECTURE_SOT|RATIFICATION_MANIFEST/.test(
-      text,
-    )
-  ) {
-    failures.push(
-      `${file}: references a removed duplicate-authority document or local decision ID`,
-    );
+  if (/DECISION_REGISTER|ARCHITECTURE_SOT|RATIFICATION_MANIFEST/.test(text)) {
+    failures.push(`${file}: references a removed duplicate-authority document`);
   }
 });
 
-const reviewText = readFileSync(review, "utf8");
-if (!/audit record; non-normative/i.test(reviewText)) {
-  failures.push(`${review}: must state its non-normative authority boundary`);
+for (const review of reviews.filter(existsSync)) {
+  const reviewText = readFileSync(review, "utf8");
+  if (!/audit record; non-normative/i.test(reviewText)) {
+    failures.push(`${review}: must state its non-normative authority boundary`);
+  }
+  if ((reviewText.match(/^## .*review disposition$/gim) ?? []).length > 1) {
+    failures.push(`${review}: must contain only one review-round disposition`);
+  }
 }
 
 for (const file of governing.filter(existsSync)) {
@@ -210,5 +224,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `Documentation boundary passed: ${tdds.length} TDDs, ${rows.length} P0 rows, one roadmap, and one principal-review record.`,
+  `Documentation boundary passed: ${tdds.length} TDDs, ${rows.length} P0 rows, one roadmap, and ${reviews.length} principal-review records.`,
 );

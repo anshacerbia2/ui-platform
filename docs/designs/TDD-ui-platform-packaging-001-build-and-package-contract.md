@@ -55,18 +55,19 @@ restore ignored `"use client"` directives.
 
 ### Requirements
 
-| ID      | Contract                                                                                                   |
-| :------ | :--------------------------------------------------------------------------------------------------------- |
-| PKG-001 | Clean checkout passes `pnpm install --frozen-lockfile` with scripts enabled and no lockfile change.        |
-| PKG-002 | Generation has one owner and completes before compilation; generated output is reproducible.               |
-| PKG-003 | `core-ui` builds before `system`; reverse imports are rejected.                                            |
-| PKG-004 | `pnpm pack` tarballs contain no `workspace:` range, wildcard export, source-only path, or undeclared file. |
-| PKG-005 | Every public subpath resolves JS and declarations from an external consumer.                               |
-| PKG-006 | React/React DOM peers are aligned and verified at both supported-range boundaries.                         |
-| PKG-007 | Server-safe entries import in a server component; client entries retain an explicit emitted directive.     |
-| PKG-008 | Importing any public JS entry causes no DOM, global, storage, timer, network, or stylesheet mutation.      |
-| PKG-009 | Static assets resolve from documented paths and survive tree shaking according to `sideEffects`.           |
-| PKG-010 | Release evidence binds source SHA, tarball digest, manifest, SBOM, fixtures, and authority.                |
+| ID      | Contract                                                                                                             |
+| :------ | :------------------------------------------------------------------------------------------------------------------- |
+| PKG-001 | Clean checkout passes `pnpm install --frozen-lockfile` with scripts enabled and no lockfile change.                  |
+| PKG-002 | Generation has one owner and completes before compilation; generated output is reproducible.                         |
+| PKG-003 | `core-ui` builds before `system`; reverse imports are rejected.                                                      |
+| PKG-004 | `pnpm pack` tarballs contain no `workspace:` range, wildcard export, source-only path, or undeclared file.           |
+| PKG-005 | Every public subpath resolves JS and declarations from an external consumer.                                         |
+| PKG-006 | React/React DOM peers are aligned and verified at both supported-range boundaries.                                   |
+| PKG-007 | Server-safe entries import in a server component; client entries retain an explicit emitted directive.               |
+| PKG-008 | Importing any public JS entry causes no DOM, global, storage, timer, network, or stylesheet mutation.                |
+| PKG-009 | Static assets resolve from documented paths and survive tree shaking according to `sideEffects`.                     |
+| PKG-010 | Release evidence binds source SHA, tarball digest, manifest, SBOM, fixtures, and authority.                          |
+| PKG-011 | The P0 federation fixture enforces strict singleton/version identity and records both offered and selected versions. |
 
 ## Component Design
 
@@ -205,10 +206,22 @@ reused for a different tarball.
 
 ### Conditional federation evaluation
 
-Only when separately authorized, generate explicit singleton share keys from
-context-bearing inventory records. The host owns React, React DOM, core context,
-CSS, and nonce/hash propagation. Remotes stay lazy and cannot import UI CSS.
-An incompatible range produces a controlled route-local failure.
+For the P0 evaluation fixture and for any separately authorized federation
+scope, generate explicit share keys from context-bearing inventory records.
+`react`, `react-dom`, and `@scnx/core-ui` are singletons; every context-bearing
+`@scnx/core-ui` public entry resolves to that same shared identity. Each share
+uses strict compatible-range negotiation. Its `requiredVersion` is read from
+the consuming host or remote's declared dependency/peer range, never copied
+from a producer constant or silently widened.
+
+The host owns React, React DOM, shared UI context, CSS, and nonce/hash
+propagation. Remotes stay lazy and cannot import UI CSS. Negotiation emits one
+versioned event per shared package with `host_version`, `remote_name`,
+`remote_version`, `shared_package`, `required_range`, `selected_version`,
+`outcome`, and `reason`. The event therefore preserves both participating
+application versions as well as the selected shared version. An absent share,
+duplicate singleton identity, or incompatible range produces a controlled
+route-local failure while the rest of the host remains usable.
 
 ## Configuration
 

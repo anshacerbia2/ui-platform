@@ -20,4 +20,4 @@ pnpm --filter @scnx/core-ui test:run
 pnpm --filter @scnx/core-ui build
 ```
 
-The [working consensus](../../docs/architecture/WORKING_CONSENSUS.md) defines ownership and release evidence. The [decision register](../../docs/architecture/DECISION_REGISTER.md) tracks vendor foundation and polymorphism choices. A `Radix-Parity` comment in `src/utils/Slot.tsx` triggers a provenance and license review before stable publication; the comment alone is not evidence of copied source.
+The central ADR-UIP-PLT-001 owns interaction-foundation and polymorphism decisions; the [primitives TDD](../../docs/designs/TDD-ui-platform-primitives-002-behavior-and-polymorphism.md) owns component design. A `Radix-Parity` comment in `src/utils/Slot.tsx` triggers provenance and license review before stable publication; the comment alone is not evidence of copied source.

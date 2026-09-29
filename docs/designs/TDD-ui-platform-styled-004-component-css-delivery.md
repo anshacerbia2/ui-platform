@@ -35,15 +35,15 @@ The baseline combines Sass and Panda, but JS import does not prove CSS delivery;
 theme bundles may omit component rules; some rules sit outside declared layers;
 and global `:root`/reset selectors can leak across co-located brands/remotes.
 
-| ID      | Contract                                                                                                              |
-| :------ | :-------------------------------------------------------------------------------------------------------------------- |
-| STY-001 | Every styled component composes a public primitive and adds no independent behavior state machine.                    |
-| STY-002 | Stable declarations consume Tier-2 tokens or justified Tier-3 aliases; raw-value exceptions are linted.               |
-| STY-003 | One aggregate component asset and one selected theme asset are loaded by the composition root exactly once.           |
-| STY-004 | Component JS has no CSS side-effect import; remotes never inject UI Platform CSS.                                     |
-| STY-005 | All public rules participate in the canonical layer order and remain under an allowed scope.                          |
-| STY-006 | Portaled UI remains inside the originating theme root.                                                                |
-| STY-007 | Dual Sass/Panda ownership continues only if correctness, security, accessibility, and approved scenario budgets pass. |
+| ID      | Contract                                                                                                                     |
+| :------ | :--------------------------------------------------------------------------------------------------------------------------- |
+| STY-001 | Every styled component composes a public primitive and adds no independent behavior state machine.                           |
+| STY-002 | Stable declarations consume Tier-2 tokens or justified Tier-3 aliases; raw-value exceptions are linted.                      |
+| STY-003 | One aggregate component asset and one instance of each selected theme asset are loaded by the composition root exactly once. |
+| STY-004 | Component JS has no CSS side-effect import; remotes never inject UI Platform CSS.                                            |
+| STY-005 | All public rules participate in the canonical layer order and remain under an allowed scope.                                 |
+| STY-006 | Portaled UI remains inside the originating theme root.                                                                       |
+| STY-007 | Dual Sass/Panda ownership continues only if correctness, security, accessibility, and approved scenario budgets pass.        |
 
 ## Component Design
 
@@ -68,8 +68,9 @@ graph LR
 | consumer root         | importing component/theme assets once                                 | remote/component-level reinjection                   |
 
 Canonical layer order is `reset, tokens, base, components, recipes, utilities,
-overrides`. Layers determine priority; `[data-scnx-theme]` and component roots
-provide isolation.
+overrides`. Layers determine priority;
+`[data-scnx-theme][data-scnx-resolved-mode]` and component roots provide
+isolation.
 
 ## Data Model
 
@@ -100,7 +101,7 @@ Public styling consists of:
 
 - documented component props and visual variants;
 - stable `data-part`, `data-state`, and accessibility-derived selectors;
-- `[data-scnx-theme="<theme-id>"]` roots;
+- `[data-scnx-theme="<theme-id>"][data-scnx-resolved-mode="<mode>"]` roots;
 - `@scnx/system/styles/components.css`;
 - `@scnx/system/tokens/css/<theme-id>.css`; and
 - documented token variables.
