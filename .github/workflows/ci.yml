@@ -132,6 +132,43 @@ jobs:
             artifacts/packages/*.tgz
             artifacts/packages/*.json
 
+  token-gate:
+    name: Token gate
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - run: pnpm install --frozen-lockfile
+      # PLAN P0 row 4 runs in report mode until every category is fixed; a
+      # category that is already clean is listed in --block so it cannot regress.
+      - name: Validate tokens against STD-UIP-TKN-001
+        run: node packages/design-system/scripts/tokens/check.mjs --report artifacts/token-report.json --block key-set,font,contrast
+      - name: Record token findings
+        if: always()
+        run: |
+          node -e '
+            const r = require("./artifacts/token-report.json");
+            const rows = Object.entries(r.findingsByCategory)
+              .map(([c, n]) => `| ${c} | ${n} | ${r.blockedCategories.includes(c) ? "blocking" : "report"} |`);
+            console.log([
+              "### Token gate",
+              "",
+              `${r.records.names} tokens; contrast cases ${r.contrast.cases}; normalized root ${r.normalizedRootHash.slice(0, 12)}`,
+              "",
+              "| Category | Findings | Gate |",
+              "| :-- | --: | :-- |",
+              ...rows,
+            ].join("\n"));
+          ' | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: token-report
+          path: artifacts/token-report.json
+
   governance:
     name: Central governance linter
     uses: anshacerbia2/scnehaux-architecture/.github/workflows/linter.yml@main

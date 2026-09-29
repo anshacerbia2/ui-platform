@@ -1,16 +1,15 @@
 @use "sass:map";
 @use "styles/abstracts/contract-token" as contract;
 
+// Keys the achromatic theme overrides; every other key is inherited from the
+// default theme, so the resolved key set equals the default key set.
 $achromatic-contract: (
   color: (
-    neutral: map.merge(contract.$scheme-contract, (
-      canvas: (default: ()),
-      surface-raised: (default: ()),
-      surface-floating: (default: ()),
-      surface-sunken: (default: ())
-    )),
+    neutral: contract.$neutral-contract,
     primary: contract.$scheme-contract
   ),
   radius: (sm, md, lg, xl),
-  shadow: (none, sm, md, lg, xl)
+  effect: (
+    shadow: (low, medium, high, overlay)
+  )
 );

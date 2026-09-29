@@ -920,9 +920,11 @@ $z-index: (
 // ==========================================
 // 5. TYPOGRAPHY
 // ==========================================
+// Inter ships with the package (assets/fonts, OFL). Monospace uses the
+// platform stack; no monospace font asset ships (owner decision 2026-09-30).
 $font-family: (
-  sans: 'var(--ds-font-inter), -apple-system, Arial, sans-serif',
-  mono: 'var(--ds-font-jetbrains-mono), ui-monospace, monospace',
+  sans: 'Inter, -apple-system, Arial, sans-serif',
+  mono: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
 );
 
 $font-weight: (

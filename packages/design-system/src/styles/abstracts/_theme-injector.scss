@@ -27,15 +27,9 @@
         @include inject-theme($value, $full-key, $mode);
       }
     } @else {
-      // For multi-value tokens (like font stacks), Sass might try to format
-      // them as a list with newlines. We force a single-line string.
-      $formatted-value: "";
-      @if meta.type-of($value) == "list" {
-        $formatted-value: string.unquote(meta.inspect($value));
-      } @else {
-        $formatted-value: #{$value};
-      }
-      --#{$full-key}: #{$formatted-value};
+      // CSS serialization, not meta.inspect: inspect wraps a one-element list
+      // in parentheses ("(0 1px 2px red,)"), which is not a valid CSS value.
+      --#{$full-key}: #{$value};
     }
   }
 }

@@ -41,7 +41,7 @@
 
     &:focus-within {
       border-color: var(--accordion-focus-ring);
-      box-shadow: var(--ds-shadow-focus);
+      box-shadow: var(--ds-effect-shadow-focus);
     }
   }
 

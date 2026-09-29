@@ -7,7 +7,7 @@
 
 
 // ── Neutral Super-Scheme Structural Elevations ──────────────
-$color-surface-canvas: var(--ds-color-neutral-canvas-default);
+$color-surface-canvas: var(--ds-color-neutral-surface-canvas-default);
 $color-surface-raised: var(--ds-color-neutral-surface-raised-default);
 $color-surface-floating: var(--ds-color-neutral-surface-floating-default);
 $color-surface-sunken: var(--ds-color-neutral-surface-sunken-default);
@@ -43,55 +43,10 @@ $color-shadow-low: var(--ds-color-neutral-shadow-default-default);
 $color-shadow-medium: var(--ds-color-neutral-shadow-subtle-default);
 $color-shadow-high: var(--ds-color-neutral-shadow-strong-default);
 
-// ── Overlay Primitives ─────────────────────────────────────
-$color-overlay-scrim: var(--ds-color-overlay-scrim);
-$color-overlay-scrim-light: var(--ds-color-overlay-scrim-light);
-$color-overlay-glass: var(--ds-color-overlay-glass);
-$color-overlay-glass-dark: var(--ds-color-overlay-glass-dark);
-$color-overlay-backdrop: var(--ds-color-overlay-backdrop);
-
-// ── Utility Primitives ─────────────────────────────────────
-$color-utility-skeleton: var(--ds-color-utility-skeleton);
-$color-utility-skeleton-shimmer: var(--ds-color-utility-skeleton-shimmer);
-$color-utility-highlight: var(--ds-color-utility-highlight);
-$color-utility-selection: var(--ds-color-utility-selection);
-$color-utility-mask: var(--ds-color-utility-mask);
-$color-utility-placeholder: var(--ds-color-utility-placeholder);
-$color-utility-debug: var(--ds-color-utility-debug);
-
-// ── Chart Primitives ───────────────────────────────────────
-$color-chart-categorical-1: var(--ds-color-chart-categorical-1);
-$color-chart-categorical-2: var(--ds-color-chart-categorical-2);
-$color-chart-categorical-3: var(--ds-color-chart-categorical-3);
-$color-chart-categorical-4: var(--ds-color-chart-categorical-4);
-$color-chart-categorical-5: var(--ds-color-chart-categorical-5);
-$color-chart-categorical-6: var(--ds-color-chart-categorical-6);
-
-$color-chart-sequential-1: var(--ds-color-chart-sequential-1);
-$color-chart-sequential-2: var(--ds-color-chart-sequential-2);
-$color-chart-sequential-3: var(--ds-color-chart-sequential-3);
-$color-chart-sequential-4: var(--ds-color-chart-sequential-4);
-$color-chart-sequential-5: var(--ds-color-chart-sequential-5);
-$color-chart-sequential-6: var(--ds-color-chart-sequential-6);
-
-$color-chart-diverging-1: var(--ds-color-chart-diverging-1);
-$color-chart-diverging-2: var(--ds-color-chart-diverging-2);
-$color-chart-diverging-3: var(--ds-color-chart-diverging-3);
-$color-chart-diverging-4: var(--ds-color-chart-diverging-4);
-$color-chart-diverging-5: var(--ds-color-chart-diverging-5);
-$color-chart-diverging-6: var(--ds-color-chart-diverging-6);
-
-$color-chart-threshold-1: var(--ds-color-chart-threshold-1);
-$color-chart-threshold-2: var(--ds-color-chart-threshold-2);
-$color-chart-threshold-3: var(--ds-color-chart-threshold-3);
-$color-chart-threshold-4: var(--ds-color-chart-threshold-4);
-$color-chart-threshold-5: var(--ds-color-chart-threshold-5);
-$color-chart-threshold-6: var(--ds-color-chart-threshold-6);
-
 // ── Primary Brand Symmetrical Matrix Anchors ────────────────
-$color-primary-default: var(--ds-color-primary-solid-default-default);
-$color-primary-hover: var(--ds-color-primary-solid-default-hover);
-$color-primary-pressed: var(--ds-color-primary-solid-default-pressed);
+$color-primary-default: var(--ds-color-primary-surface-solid-default);
+$color-primary-hover: var(--ds-color-primary-surface-solid-hover);
+$color-primary-pressed: var(--ds-color-primary-surface-solid-pressed);
 $color-primary-subtle: var(--ds-color-primary-surface-subtle-default);
 $color-primary-subtle-hover: var(--ds-color-primary-surface-subtle-hover);
 $color-primary-subtle-pressed: var(--ds-color-primary-surface-subtle-pressed);
@@ -165,11 +120,11 @@ $opacity-scrim: var(--ds-opacity-scrim);
 // ============================================
 // SHADOW VARIABLES
 // ============================================
-$shadow-low: var(--ds-shadow-low);
-$shadow-medium: var(--ds-shadow-medium);
-$shadow-high: var(--ds-shadow-high);
-$shadow-overlay: var(--ds-shadow-overlay);
-$shadow-focus: var(--ds-shadow-focus);
+$shadow-low: var(--ds-effect-shadow-low);
+$shadow-medium: var(--ds-effect-shadow-medium);
+$shadow-high: var(--ds-effect-shadow-high);
+$shadow-overlay: var(--ds-effect-shadow-overlay);
+$shadow-focus: var(--ds-effect-shadow-focus);
 
 
 // ============================================

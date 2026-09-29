@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "sourceRoot": "src",
+  "themes": {
+    "default": {
+      "modes": {
+        "light": { "module": "styles/themes/default/default-token", "variable": "default-token" },
+        "dark": { "module": "styles/themes/default/default_dark-token", "variable": "dark-token" }
+      }
+    },
+    "achromatic": {
+      "inherits": "default",
+      "modes": {
+        "light": { "module": "styles/themes/achromatic/achromatic-light-token", "variable": "achromatic-light-token" },
+        "dark": { "module": "styles/themes/achromatic/achromatic-dark-token", "variable": "achromatic-dark-token" }
+      }
+    }
+  },
+  "fonts": {
+    "system": ["-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "Menlo", "Consolas", "SFMono-Regular"],
+    "assets": {
+      "Inter": {
+        "files": ["assets/fonts/Inter-VariableFont_opsz,wght.woff2", "assets/fonts/Inter-Italic-VariableFont_opsz,wght.woff2"],
+        "license": "assets/fonts/OFL.txt"
+      }
+    }
+  },
+  "contrast": {
+    "textMinimum": 4.5,
+    "nonTextMinimum": 3,
+    "canvas": "--ds-color-neutral-surface-canvas-default",
+    "neutralBackgrounds": [
+      "--ds-color-neutral-surface-canvas-default",
+      "--ds-color-neutral-surface-sunken-default",
+      "--ds-color-neutral-surface-raised-default",
+      "--ds-color-neutral-surface-floating-default",
+      "--ds-color-neutral-surface-subtle-default",
+      "--ds-color-neutral-surface-default-default"
+    ]
+  },
+  "aliases": {}
+}
