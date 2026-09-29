@@ -13,7 +13,7 @@ FloatingLayoutBaseCompound.displayName = "FloatingLayoutBase";
  *
  * @example
  * ```tsx
- * import { FloatingLayoutBase } from "@scnx/core-ui";
+ * import { FloatingLayoutBase } from "@scnx/core-ui/components/floating-layout-base";
  * 
  * <FloatingLayoutBase>
  *   <FloatingLayoutBase.Sidebar>Menu</FloatingLayoutBase.Sidebar>

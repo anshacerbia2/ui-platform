@@ -1,25 +1,101 @@
 {
   "name": "@scnx/system",
+  "type": "module",
   "version": "1.1.0",
   "description": "Enterprise-grade design system — tokens, components, and themes",
+  "author": "Scnehaux",
+  "license": "UNLICENSED",
   "exports": {
-    "./themes/*": "./dist/styles/*",
-    "./styles/core": "./dist/styles/_core-token.scss",
-    "./styles/contract": "./dist/styles/_contract-token.scss",
-    "./styles/variables": "./dist/styles/_variables.scss",
-    "./components/styles": "./dist/components/index.css",
     "./components": {
       "types": "./dist/components/index.d.ts",
-      "import": "./dist/components/index.mjs",
-      "require": "./dist/components/index.js",
       "default": "./dist/components/index.js"
     },
-    "./*": {
-      "types": "./dist/*/index.d.ts",
-      "import": "./dist/*/index.mjs",
-      "require": "./dist/*/index.js",
-      "default": "./dist/*/index.js"
-    }
+    "./components/accordion": {
+      "types": "./dist/components/accordion/index.d.ts",
+      "default": "./dist/components/accordion/index.js"
+    },
+    "./components/box": {
+      "types": "./dist/components/box/index.d.ts",
+      "default": "./dist/components/box/index.js"
+    },
+    "./components/button": {
+      "types": "./dist/components/button/index.d.ts",
+      "default": "./dist/components/button/index.js"
+    },
+    "./components/code": {
+      "types": "./dist/components/code/index.d.ts",
+      "default": "./dist/components/code/index.js"
+    },
+    "./components/code-select": {
+      "types": "./dist/components/code-select/index.d.ts",
+      "default": "./dist/components/code-select/index.js"
+    },
+    "./components/code-showcase": {
+      "types": "./dist/components/code-showcase/index.d.ts",
+      "default": "./dist/components/code-showcase/index.js"
+    },
+    "./components/container": {
+      "types": "./dist/components/container/index.d.ts",
+      "default": "./dist/components/container/index.js"
+    },
+    "./components/divider": {
+      "types": "./dist/components/divider/index.d.ts",
+      "default": "./dist/components/divider/index.js"
+    },
+    "./components/edge-layout": {
+      "types": "./dist/components/edge-layout/index.d.ts",
+      "default": "./dist/components/edge-layout/index.js"
+    },
+    "./components/flex": {
+      "types": "./dist/components/flex/index.d.ts",
+      "default": "./dist/components/flex/index.js"
+    },
+    "./components/floating-layout": {
+      "types": "./dist/components/floating-layout/index.d.ts",
+      "default": "./dist/components/floating-layout/index.js"
+    },
+    "./components/grid": {
+      "types": "./dist/components/grid/index.d.ts",
+      "default": "./dist/components/grid/index.js"
+    },
+    "./components/heading": {
+      "types": "./dist/components/heading/index.d.ts",
+      "default": "./dist/components/heading/index.js"
+    },
+    "./components/list": {
+      "types": "./dist/components/list/index.d.ts",
+      "default": "./dist/components/list/index.js"
+    },
+    "./components/navbar": {
+      "types": "./dist/components/navbar/index.d.ts",
+      "default": "./dist/components/navbar/index.js"
+    },
+    "./components/navigation": {
+      "types": "./dist/components/navigation/index.d.ts",
+      "default": "./dist/components/navigation/index.js"
+    },
+    "./components/sidebar": {
+      "types": "./dist/components/sidebar/index.d.ts",
+      "default": "./dist/components/sidebar/index.js"
+    },
+    "./components/stack": {
+      "types": "./dist/components/stack/index.d.ts",
+      "default": "./dist/components/stack/index.js"
+    },
+    "./components/table-of-contents": {
+      "types": "./dist/components/table-of-contents/index.d.ts",
+      "default": "./dist/components/table-of-contents/index.js"
+    },
+    "./components/text": {
+      "types": "./dist/components/text/index.d.ts",
+      "default": "./dist/components/text/index.js"
+    },
+    "./components/transition": {
+      "types": "./dist/components/transition/index.d.ts",
+      "default": "./dist/components/transition/index.js"
+    },
+    "./styles/components.css": "./dist/styles/components.css",
+    "./package.json": "./package.json"
   },
   "sideEffects": [
     "**/*.css"
@@ -28,27 +104,25 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm build:css && tsup && pnpm postbuild",
+    "build": "tsup",
     "build:css": "panda css -o src/styled-system",
     "codegen": "panda codegen",
-    "postbuild": "node scripts/copy-tokens.mjs",
     "prepare": "panda codegen",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "peerDependencies": {
-    "react": ">=18",
-    "react-dom": ">=18"
-  },
-  "dependencies": {
-    "@scnx/core-ui": "workspace:*"
+    "@scnx/core-ui": "workspace:^",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@pandacss/dev": "^1.8.2",
+    "@scnx/core-ui": "workspace:*",
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:conflicts_@types/react-dom_h19_2_3",
     "@vitejs/plugin-react": "catalog:",
     "esbuild-plugin-preserve-directives": "^0.0.11",
     "esbuild-plugin-tsconfig-paths": "^1.0.2",

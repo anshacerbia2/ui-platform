@@ -1,12 +1,17 @@
-import type { 
-  ListBaseRootProps, 
-  ListBaseItemProps 
+import type {
+  ListBaseRootProps,
+  ListBaseItemProps
 } from "@scnx/core-ui/components/list-base";
 
-import type { RecipeVariantProps } from "styled-system/types";
-import type { listRecipe } from "styled-system/recipes";
-
-export type ListVariants = RecipeVariantProps<typeof listRecipe>;
+// Owned public variant types. Kept equal to `listRecipe` in panda.config.ts by
+// src/components/recipe-variants.test.ts; published declarations must not
+// depend on generated Panda types.
+export type ListVariants = {
+  /** @default "unordered" */
+  variant?: "unordered" | "ordered" | "unstyled";
+  /** @default "1" */
+  spacing?: "1" | "2" | "3" | "4";
+};
 
 export type ListProps = ListBaseRootProps & ListVariants & {
   className?: string;

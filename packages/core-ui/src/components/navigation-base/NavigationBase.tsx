@@ -20,7 +20,7 @@ NavigationBaseCompound.displayName = "NavigationBase";
  *
  * @example
  * ```tsx
- * import { NavigationBase } from "@scnx/core-ui";
+ * import { NavigationBase } from "@scnx/core-ui/components/navigation-base";
  * 
  * const SideNav = () => (
  *   <NavigationBase>

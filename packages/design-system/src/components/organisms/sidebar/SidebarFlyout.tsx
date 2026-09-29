@@ -18,7 +18,7 @@ import { cx } from "styled-system/css";
  * 
  * @example
  * ```tsx
- * import { Sidebar } from "@scnx/system/sidebar";
+ * import { Sidebar } from "@scnx/system/components/sidebar";
  * 
  * <Sidebar>
  *   <Sidebar.Nav>...</Sidebar.Nav>

@@ -18,11 +18,11 @@ TableOfContentsCompound.displayName = "TableOfContents";
  *
  * Styled table of contents component for page-level navigation.
  * Highly composable through structural slots (List, Item, Link).
- * Wraps `@scnx/core-ui/table-of-contents-base`.
+ * Wraps `@scnx/core-ui/components/table-of-contents-base`.
  *
  * @example
  * ```tsx
- * import { TableOfContents } from "@scnx/system/table-of-contents";
+ * import { TableOfContents } from "@scnx/system/components/table-of-contents";
  *
  * <TableOfContents items={docs.toc} />
  * ```

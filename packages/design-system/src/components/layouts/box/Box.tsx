@@ -10,7 +10,7 @@ import type { BoxProps } from "./types";
  *
  * @example
  * ```tsx
- * import { Box } from "@scnx/system/components/layouts/box";
+ * import { Box } from "@scnx/system/components/box";
  * 
  * <Box className="my-class">
  *   <p>Content</p>

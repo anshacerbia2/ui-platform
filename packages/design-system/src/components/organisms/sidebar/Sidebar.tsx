@@ -17,7 +17,7 @@ SidebarCompound.displayName = "Sidebar";
  *
  * @example
  * ```tsx
- * import { Sidebar } from "@scnx/system/sidebar";
+ * import { Sidebar } from "@scnx/system/components/sidebar";
  *
  * <Sidebar>
  *   <Sidebar.Header>Logo</Sidebar.Header>

@@ -13,7 +13,7 @@ import { cx } from "styled-system/css";
  * 
  * @example
  * ```tsx
- * import { Heading } from "@scnx/system/heading";
+ * import { Heading } from "@scnx/system/components/heading";
  * 
  * <Heading as="h1" size="2xl">Page Title</Heading>
  * <Heading size="md" weight="bold">Section Header</Heading>

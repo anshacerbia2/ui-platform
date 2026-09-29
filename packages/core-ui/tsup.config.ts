@@ -1,47 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
 import { defineConfig } from "tsup";
+import { tsupEntries } from "../../scripts/package-entries.mjs";
 
-/**
- * Dynamically discovers entry points for components and hooks.
- */
-function getEntryPoints() {
-  const entries: Record<string, string> = {};
-  const categories = ["components", "hooks", "providers"];
-  const srcDir = path.resolve("src");
-
-  if (!fs.existsSync(srcDir)) return entries;
-
-  for (const category of categories) {
-    const categoryDir = path.join(srcDir, category);
-    if (!fs.existsSync(categoryDir)) continue;
-
-    const items = fs.readdirSync(categoryDir, { withFileTypes: true });
-
-    for (const item of items) {
-      if (!item.isDirectory()) continue;
-
-      const itemName = item.name;
-      const itemDir = path.join(categoryDir, itemName);
-      
-      // Discovery Priority: index.ts or index.tsx
-      const possibleEntries = ["index.ts", "index.tsx"];
-
-      for (const entryFile of possibleEntries) {
-        const fullPath = path.join(itemDir, entryFile);
-        if (fs.existsSync(fullPath)) {
-          // Output key format: components/button-base/index, hooks/use-on-click-outside/index
-          entries[`${category}/${itemName}/index`] = path.relative(process.cwd(), fullPath);
-          break;
-        }
-      }
-    }
-  }
-
-  return entries;
-}
-
-const entryPoints = getEntryPoints();
+// Entries and package `exports` come from one list (scripts/package-entries.mjs).
+const entryPoints = tsupEntries(process.cwd());
 
 /**
  * Robust "use client" restoration for tsup splitting.
@@ -58,7 +21,7 @@ async function restoreDirectives() {
 
   for (const file of files) {
     if (typeof file !== 'string') continue;
-    if (!file.endsWith('.js') && !file.endsWith('.mjs') && !file.endsWith('.cjs')) continue;
+    if (!file.endsWith('.js')) continue;
 
     const filePath = path.join(distDir, file);
     const content = await fs.promises.readFile(filePath, "utf8");
@@ -73,7 +36,8 @@ async function restoreDirectives() {
 
 export default defineConfig({
   entry: entryPoints,
-  format: ["esm", "cjs"],
+  // ESM only: no supported CJS consumer is recorded (TDD packaging).
+  format: ["esm"],
   dts: true,
   sourcemap: true,
   clean: true,

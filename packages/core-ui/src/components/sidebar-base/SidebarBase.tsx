@@ -15,7 +15,7 @@ SidebarBaseCompound.displayName = "SidebarBase";
  *
  * @example
  * ```tsx
- * import { SidebarBase, NavigationBase } from "@scnx/core-ui";
+ * import { SidebarBase, NavigationBase } from "@scnx/core-ui/components/sidebar-base";
  * 
  * const AppSidebar = () => (
  *   <SidebarBase>
