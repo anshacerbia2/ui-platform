@@ -5,6 +5,7 @@
 @use "sass:map";
 @use "sass:meta";
 @use "sass:string";
+@use "styles/abstracts/contrast";
 @use "styles/abstracts/core-token" as core;
 
 // ─── Private Ternary Helper ────────────────────────────────────────────────
@@ -82,23 +83,10 @@ $role-base-steps: (
   @if $state == "default" {
     @return $base-step;
   } @else if $state == "hover" {
-    @if $role == "solid" {
-      // Vercel Glow Logic: Hover is always LIGHTER
-      // In Light mode: lower step = lighter (e.g. 10 -> 9)
-      // In Dark mode: higher step = lighter (e.g. 9 -> 10)
-      $shifted: -if($mode == "light", $base-step - 1, $base-step + 1);
-      @return math-clamp($shifted, 1, 12);
-    }
-    
     $shifted: $base-step + 1;
     @if $shifted > 12 { @return 12; }
     @return $shifted;
   } @else if $state == "pressed" {
-    @if $role == "solid" {
-      // Pressed state goes slightly darker than default
-      $shifted: -if($mode == "light", $base-step + 1, $base-step - 1);
-      @return math-clamp($shifted, 1, 12);
-    }
     $shifted: $base-step + 2;
     @if $shifted > 12 { @return 12; }
     @return $shifted;
@@ -142,9 +130,65 @@ $role-states: (
   @return $scheme;
 }
 
+// ─── Solid fills: WCAG 2.2 SC 1.4.3 by construction ────────────────────────
+// Each scheme keeps its designed label polarity. The recipe picks the solid
+// step nearest the design step, moving away from the label by at most two
+// steps, whose contrast with the label meets the target; every interaction
+// state moves further from the label. If no step qualifies, the build fails.
+$solid-design-step: (light: 10, dark: 9);
+// SC 1.4.3 minimum 4.5:1 plus a margin: this recipe clips out-of-gamut
+// channels, while the token gate verifies with CSS Color 4 gamut mapping.
+$solid-contrast-target: 4.6;
+
+@function solid-label-polarity($scheme, $mode) {
+  @if $scheme == "warning" { @return "dark"; }
+  @if $scheme == "neutral" and $mode == "dark" { @return "dark"; }
+  @return "light";
+}
+
+@function -solid-label-channels($polarity, $mode) {
+  @if $polarity == "light" { @return (1 0 0); }
+  @return get-raw-channels("neutral", -if($mode == "light", 12, 1), $mode);
+}
+
+/// Label color of a solid fill: the `contrast` emphasis of text and icon.
+@function solid-label-color($scheme, $mode) {
+  @if solid-label-polarity($scheme, $mode) == "light" {
+    @return resolve-core-color("white", null, $mode);
+  }
+  @return resolve-core-color("neutral", -if($mode == "light", 12, 1), $mode);
+}
+
+@function solid-plan($scheme, $mode) {
+  $hue: get-scheme-hue($scheme);
+  $design: map.get($solid-design-step, $mode);
+  $polarity: solid-label-polarity($scheme, $mode);
+  $label: -solid-label-channels($polarity, $mode);
+  // Steps grow darker in the light scale and lighter in the dark scale.
+  $darker: -if($mode == "light", 1, -1);
+  $away: -if($polarity == "light", $darker, -1 * $darker);
+  @for $offset from 0 through 2 {
+    $step: $design + $offset * $away;
+    @if $step >= 1 and $step <= 12 {
+      @if contrast.ratio($label, get-raw-channels($hue, $step, $mode)) >= $solid-contrast-target {
+        @return (base: $step, away: $away);
+      }
+    }
+  }
+  @error "#{$scheme}/#{$mode}: no solid step within two steps of #{$design} gives its #{$polarity} label #{$solid-contrast-target}:1 contrast.";
+}
+
+@function solid-state-step($plan, $state) {
+  // Disabled controls are exempt from SC 1.4.3; they keep a quiet fill.
+  @if $state == "disabled" { @return 3; }
+  $shift: map.get((default: 0, hover: 1, selected: 1, pressed: 2), $state);
+  @return math-clamp(map.get($plan, base) + $shift * map.get($plan, away), 1, 12);
+}
+
 @function generate-scheme-matrix($scheme, $mode) {
   $role-map: ();
   $hue: get-scheme-hue($scheme);
+  $solid: solid-plan($scheme, $mode);
 
   @each $role, $emphases in $role-emphases {
     $emphasis-map: ();
@@ -167,24 +211,14 @@ $role-states: (
 
         @if $recipe-emphasis == "contrast" {
           @if $recipe-role == "text" or $recipe-role == "icon" {
-            @if $scheme == "warning" {
-              $value: -if($mode == "light", resolve-core-color("neutral", 12, $mode), resolve-core-color("neutral", 1, $mode));
-            } @else if $scheme == "neutral" and $mode == "dark" {
-              $value: resolve-core-color("neutral", 1, $mode);
-            } @else {
-              $value: resolve-core-color("white", null, $mode);
-            }
+            $value: solid-label-color($scheme, $mode);
           } @else if $recipe-role == "shadow" {
             $value: -if($mode == "light", resolve-core-color("white", null, $mode), resolve-core-color("black", null, $mode));
           }
+        } @else if $recipe-role == "solid" {
+          $value: resolve-core-color($hue, solid-state-step($solid, $state), $mode);
         } @else {
           $base-step: map.get($role-base-steps, $target-role, $recipe-emphasis);
-
-          // Override solid default for Vercel Glow
-          @if $recipe-role == "solid" and $recipe-emphasis == "default" {
-            $base-step: -if($mode == "light", 10, 9);
-          }
-
           $step: get-state-step($base-step, $state, $recipe-role, $mode);
 
           @if $recipe-role == "border" and $state == "focus" {

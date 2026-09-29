@@ -1,0 +1,43 @@
+@use "sass:list";
+@use "sass:math";
+
+// ============================================
+// WCAG 2.x CONTRAST FOR THE COLOR RECIPE
+// ============================================
+// Used by the Tier-2 recipe to choose fills that meet WCAG 2.2 SC 1.4.3 by
+// construction. Colors are Tier-1 OKLCH channel lists `L C H`. Out-of-gamut
+// linear sRGB channels are clipped here; the token gate re-verifies every
+// declared pair with CSS Color 4 gamut mapping (scripts/tokens).
+
+@function -clip($value) {
+  @return math.max(0, math.min(1, $value));
+}
+
+/// Relative luminance (WCAG 2.x) of an OKLCH channel list, via OKLab and
+/// linear sRGB.
+@function luminance($lch) {
+  $l: list.nth($lch, 1);
+  $c: list.nth($lch, 2);
+  $h: list.nth($lch, 3) * 1deg;
+  $a: $c * math.cos($h);
+  $b: $c * math.sin($h);
+
+  $l-: $l + 0.3963377774 * $a + 0.2158037573 * $b;
+  $m-: $l - 0.1055613458 * $a - 0.0638541728 * $b;
+  $s-: $l - 0.0894841775 * $a - 1.291485548 * $b;
+  $lms-l: $l- * $l- * $l-;
+  $lms-m: $m- * $m- * $m-;
+  $lms-s: $s- * $s- * $s-;
+
+  $red: -clip(4.0767416621 * $lms-l - 3.3077115913 * $lms-m + 0.2309699292 * $lms-s);
+  $green: -clip(-1.2684380046 * $lms-l + 2.6097574011 * $lms-m - 0.3413193965 * $lms-s);
+  $blue: -clip(-0.0041960863 * $lms-l - 0.7034186147 * $lms-m + 1.707614701 * $lms-s);
+  @return 0.2126 * $red + 0.7152 * $green + 0.0722 * $blue;
+}
+
+/// WCAG 2.x contrast ratio of two opaque OKLCH channel lists.
+@function ratio($first, $second) {
+  $a: luminance($first);
+  $b: luminance($second);
+  @return math.div(math.max($a, $b) + 0.05, math.min($a, $b) + 0.05);
+}
