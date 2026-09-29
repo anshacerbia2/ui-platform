@@ -1,19 +1,30 @@
 # UI Platform roadmap
 
-Status: **ratification candidate; implementation remains gated by exact-commit approval**.
+Status: **ratified architecture and TDD baseline; P0 repair in progress**.
 
 The architecture repository owns architecture and governance. The five
 [TDDs](docs/designs/) own local component design. [PLAN.md](PLAN.md) owns work
 order and acceptance. This roadmap owns phase state, target dates, and exit
 gates.
 
-| Phase                            | State              | Target date | Deliverable                                                                                                                                                       | Exit gate                                                                                                                                                            |
-| -------------------------------- | ------------------ | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 0. Architecture and TDD baseline | In ratification    | 2026-10-02  | Mature PAD-PLT-003 and SAD-003; five implementation-ready TDDs; one plan; one roadmap; review records separated by round                                          | Both repositories pass documentation/governance gates; human authority approves the exact ratification commits; no duplicate UI architecture authority remains |
-| 1. Deterministic bootstrap       | Next               | 2026-10-09  | Repaired Panda prepare resolution and required clean-install CI job                                                                                               | A clean checkout passes `pnpm install --frozen-lockfile` with scripts enabled, no bypass flag, and no lockfile mutation                                              |
-| 2. P0 repair and evidence        | Blocked by phase 1 | 2026-10-30  | Source tests, packed consumers, corrected tokens/CSS/provider/primitives, security evidence, strict-CSP standalone fixture, and conditional federation evaluation | Every applicable P0 PLAN row passes against exact commits and artifacts; failed capabilities remain outside stable exports                                           |
-| 3. Reference slice and beta      | Not started        | 2026-11-20  | Four-component reference slice, repeatable release pipeline, named consumer pilots, migration/support evidence                                                    | Source, packed, SSR/RSC, CSP, accessibility, visual, localization, performance, provenance, migration, and rollback gates pass for the supported scope               |
-| 4. Stable release                | Not started        | 2026-12-04  | Versioned packages and operating model                                                                                                                            | Human release authority accepts exact-version evidence and at least one real consumer completes migration and rollback rehearsal                                     |
+| Phase                            | State       | Target date | Deliverable                                                                                                                                                       | Exit gate                                                                                                                                                      |
+| -------------------------------- | ----------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0. Architecture and TDD baseline | Complete    | 2026-10-02  | Mature PAD-PLT-003 and SAD-003; five implementation-ready TDDs; one plan; one roadmap; review records separated by round                                          | Both repositories pass documentation/governance gates; human authority approves the exact ratification commits; no duplicate UI architecture authority remains |
+| 1. Deterministic bootstrap       | Complete    | 2026-10-09  | Repaired Panda prepare resolution and required clean-install CI job                                                                                               | A clean checkout passes `pnpm install --frozen-lockfile` with scripts enabled, no bypass flag, and no lockfile mutation                                        |
+| 2. P0 repair and evidence        | In progress | 2026-10-30  | Source tests, packed consumers, corrected tokens/CSS/provider/primitives, security evidence, strict-CSP standalone fixture, and conditional federation evaluation | Every applicable P0 PLAN row passes against exact commits and artifacts; failed capabilities remain outside stable exports                                     |
+| 3. Reference slice and beta      | Not started | 2026-11-20  | Four-component reference slice, repeatable release pipeline, named consumer pilots, migration/support evidence                                                    | Source, packed, SSR/RSC, CSP, accessibility, visual, localization, performance, provenance, migration, and rollback gates pass for the supported scope         |
+| 4. Stable release                | Not started | 2026-12-04  | Versioned packages and operating model                                                                                                                            | Human release authority accepts exact-version evidence and at least one real consumer completes migration and rollback rehearsal                               |
+
+Phase evidence:
+
+- **Phase 0:** architecture ratification merged as `cf748f6` (candidate
+  `84a99ae`, PR #17); TDD ratification merged as `03cdefe` (candidate
+  `56ba42b`, PR #6). Both merges were made on 2026-09-29.
+- **Phase 1:** the `Clean install` job passes on `main` at `281aae8` (PR #7)
+  with lifecycle scripts enabled and a frozen lockfile. The recorded Panda
+  `prepare` failure did not reproduce on a clean runner; it was caused by a
+  stray Yarn Plug'n'Play manifest in one developer's home directory, which
+  esbuild used while bundling `panda.config.ts`.
 
 ## Non-negotiable boundaries
 
