@@ -21,8 +21,10 @@ Use these documents in order:
 - [principal review records](docs/reviews/) — non-normative audit records split
   by review round.
 
-Markdown beside source is implementation commentary. It cannot override the
-central architecture, TDDs, PLAN, or ROADMAP. Current delivery state belongs
+No other Markdown is kept in this repository: each package has one
+navigation-only README, and the documentation gate rejects any other file.
+Source comments cannot override the central architecture, TDDs, PLAN, or
+ROADMAP. Current delivery state belongs
 only in ROADMAP; executable work and commands belong only in PLAN and the
 applicable TDD; package boundaries and dependency direction belong only in
 SAD-003.

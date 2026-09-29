@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 // Enforce the deliberately small UI Platform documentation boundary:
-// README + PLAN + ROADMAP, exactly five TDDs, and review records split by round.
+// README + PLAN + ROADMAP, exactly five TDDs, review records split by round,
+// and one navigation-only README per package.
 
+import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, join, normalize, relative } from "node:path";
 
@@ -40,7 +42,11 @@ for (const review of reviews) {
   }
 }
 
-const governing = ["README.md", "PLAN.md", "ROADMAP.md", ...tdds, ...reviews];
+const packageReadmes = readdirSync("packages", { withFileTypes: true })
+  .filter((entry) => entry.isDirectory() && existsSync(join("packages", entry.name, "package.json")))
+  .map((entry) => `packages/${entry.name}/README.md`);
+
+const governing = ["README.md", "PLAN.md", "ROADMAP.md", ...tdds, ...reviews, ...packageReadmes];
 
 const actualDocs = markdownBelow("docs").sort();
 const expectedDocs = [...tdds, ...reviews].sort();
@@ -48,6 +54,24 @@ if (actualDocs.join("\n") !== expectedDocs.join("\n")) {
   failures.push(
     `docs/: expected only five TDDs and review records split by round; found ${actualDocs.join(", ")}`,
   );
+}
+
+// Outside docs/, tracked Markdown is limited to the root navigation, PLAN,
+// ROADMAP, and one navigation-only README per package.
+const allowedMarkdown = new Set(["README.md", "PLAN.md", "ROADMAP.md", ...expectedDocs, ...packageReadmes]);
+const trackedMarkdown = execFileSync("git", ["ls-files", "-z", "*.md"], { encoding: "utf8" })
+  .split("\0")
+  .filter(Boolean);
+for (const file of trackedMarkdown) {
+  if (!allowedMarkdown.has(file)) {
+    failures.push(`${file}: Markdown outside the documentation boundary; move normative content to a TDD or remove it`);
+  }
+}
+for (const readme of packageReadmes.filter(existsSync)) {
+  const text = readFileSync(readme, "utf8");
+  if (/^#{2,6}\s/m.test(text) || /```/.test(text)) {
+    failures.push(`${readme}: package README is navigation only (one title, links; no sections or commands)`);
+  }
 }
 
 for (const file of governing) {
