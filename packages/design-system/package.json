@@ -95,6 +95,14 @@
       "default": "./dist/components/transition/index.js"
     },
     "./styles/components.css": "./dist/styles/components.css",
+    "./tokens/css/achromatic.css": "./dist/tokens/css/achromatic.css",
+    "./tokens/json/achromatic.json": "./dist/tokens/json/achromatic.json",
+    "./tokens/css/default.css": "./dist/tokens/css/default.css",
+    "./tokens/json/default.json": "./dist/tokens/json/default.json",
+    "./tokens/scss": "./dist/tokens/scss/_index.scss",
+    "./fonts/inter-italic-variable.woff2": "./dist/fonts/inter-italic-variable.woff2",
+    "./fonts/inter-ofl.txt": "./dist/fonts/inter-ofl.txt",
+    "./fonts/inter-variable.woff2": "./dist/fonts/inter-variable.woff2",
     "./package.json": "./package.json"
   },
   "sideEffects": [
@@ -104,7 +112,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && node scripts/tokens/emit.mjs --out dist",
     "build:css": "panda css -o src/styled-system",
     "codegen": "panda codegen",
     "prepare": "panda codegen",

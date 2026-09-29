@@ -21,7 +21,7 @@ function directories(dir) {
 }
 
 /**
- * @typedef {{ subpath: string, kind: "javascript" | "css", source: string, out: string }} Entry
+ * @typedef {{ subpath: string, kind: "javascript" | "css" | "asset", source: string, out: string }} Entry
  * `out` is the published file relative to the package root, without extension
  * for JavaScript entries (`.js` and `.d.ts` are both emitted).
  */
@@ -73,6 +73,22 @@ function systemEntries(packageDir) {
     // The barrel imports every component stylesheet; the build moves the
     // aggregate CSS it produces to this path.
     entries.push({ subpath: "./styles/components.css", kind: "css", source: barrel, out: "dist/styles/components.css" });
+  }
+
+  // Token outputs and fonts written by scripts/tokens/emit.mjs, declared by
+  // tokens.config.json (TDD tokens, API / Interface; TDD packaging fonts/<asset>).
+  const configFile = path.join(packageDir, "tokens.config.json");
+  if (fs.existsSync(configFile)) {
+    const config = JSON.parse(fs.readFileSync(configFile, "utf8"));
+    for (const themeId of Object.keys(config.themes).sort()) {
+      entries.push({ subpath: `./tokens/css/${themeId}.css`, kind: "asset", source: configFile, out: `dist/tokens/css/${themeId}.css` });
+      entries.push({ subpath: `./tokens/json/${themeId}.json`, kind: "asset", source: configFile, out: `dist/tokens/json/${themeId}.json` });
+    }
+    entries.push({ subpath: "./tokens/scss", kind: "asset", source: configFile, out: "dist/tokens/scss/_index.scss" });
+    const fonts = Object.values(config.fonts.assets).flatMap((asset) => [...asset.faces, asset.license]);
+    for (const file of fonts.map((f) => f.publish).sort()) {
+      entries.push({ subpath: `./${file}`, kind: "asset", source: configFile, out: `dist/${file}` });
+    }
   }
   return entries;
 }

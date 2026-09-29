@@ -124,6 +124,10 @@ jobs:
         run: node scripts/inspect-packages.mjs --out artifacts/packages
       - name: Isolated consumers at both React peer boundaries
         run: node scripts/packed-consumer.mjs --packs artifacts/packages
+      - name: Install Chromium for the browser verifier
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Packed token stylesheets in a browser
+        run: node scripts/browser-tokens.mjs --packs artifacts/packages
       - uses: actions/upload-artifact@v4
         if: always()
         with:

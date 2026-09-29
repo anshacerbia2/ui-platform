@@ -363,11 +363,14 @@ $default-token: (
       #{string.unquote("#{list.nth(map.get(core.$shadow-elevation, lg), 2)}")}
         var(--ds-color-neutral-shadow-strong-default),
     ),
+    // Page elevation uses the strongest neutral shadow. The `contrast`
+    // emphasis is for shadows on a solid fill (STD-UIP-TKN-001 usage
+    // doctrine) and resolves to white in light mode.
     overlay: (
       #{string.unquote("#{list.nth(map.get(core.$shadow-elevation, xl), 1)}")}
-        var(--ds-color-neutral-shadow-contrast-default),
+        var(--ds-color-neutral-shadow-strong-default),
       #{string.unquote("#{list.nth(map.get(core.$shadow-elevation, xl), 2)}")}
-        var(--ds-color-neutral-shadow-contrast-default),
+        var(--ds-color-neutral-shadow-strong-default),
     ),
     focus: (
       #{string.unquote("#{list.nth(map.get(core.$shadow-elevation, inner), 1)}")}

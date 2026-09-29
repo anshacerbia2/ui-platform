@@ -1,10 +1,14 @@
 // @vitest-environment node
+import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { describe, expect, it } from "vitest";
+import * as sass from "sass";
+import { beforeAll, describe, expect, it } from "vitest";
 import { loadConfig } from "./check.mjs";
 import { contrastRatio, parseColor } from "./color.mjs";
 import { parseTokenName, tokenType } from "./grammar.mjs";
+import { emit, serializeThemes, themeSelector } from "./emit.mjs";
 import { normalize } from "./normalize.mjs";
 import { assertDeclarationSafe, formatNumber, toCss } from "./serialize.mjs";
 import { contrastCases, fontFamilies, keySetFindings, stripComments, substitute, validForProperty } from "./validate.mjs";
@@ -193,5 +197,71 @@ describe("configuration", () => {
     const config = JSON.parse(fs.readFileSync(path.join(packageDir, "tokens.config.json"), "utf8"));
     fs.writeFileSync(file, JSON.stringify({ ...config, surprise: true }));
     expect(() => loadConfig(file)).toThrow('unknown key "surprise"');
+  });
+
+  it("rejects font publish paths outside fonts/ and duplicates", async () => {
+    const fs = await import("node:fs");
+    const os = await import("node:os");
+    const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "tokens-config-")), "tokens.config.json");
+    const config = JSON.parse(fs.readFileSync(path.join(packageDir, "tokens.config.json"), "utf8"));
+    const inter = config.fonts.assets.Inter;
+    inter.faces[1].publish = inter.faces[0].publish;
+    inter.license.publish = "../escape.txt";
+    fs.writeFileSync(file, JSON.stringify(config));
+    expect(() => loadConfig(file)).toThrow(/used twice[\s\S]*|publish path must be fonts/);
+  });
+});
+
+describe("emitters", () => {
+  it("stops when theme key sets differ", () => {
+    const records = (names) => ({ records: new Map(names.map((n) => [n, str("0")])), origin: new Map(), duplicates: [] });
+    const themes = { default: { light: records(["--ds-a", "--ds-b"]) }, brand: { light: records(["--ds-a"]) } };
+    expect(() => serializeThemes(themes)).toThrow("Token emission stopped");
+  });
+
+  describe("on the token source", () => {
+    const config = loadConfig(path.join(packageDir, "tokens.config.json"));
+    let dirs;
+    let runs;
+    const read = (file) => fs.readFileSync(path.join(dirs[0], file), "utf8");
+    beforeAll(() => {
+      dirs = [0, 1].map(() => fs.mkdtempSync(path.join(os.tmpdir(), "tokens-emit-")));
+      runs = dirs.map((outDir) => emit({ packageDir, outDir }));
+    });
+
+    it("is reproducible byte for byte", () => {
+      expect(runs[1]).toEqual(runs[0]);
+      expect(runs[0].length).toBeGreaterThan(0);
+    });
+
+    it("emits CSS and JSON with the same names and values per theme and mode", () => {
+      for (const themeId of Object.keys(config.themes)) {
+        const json = JSON.parse(read(`tokens/json/${themeId}.json`));
+        const css = read(`tokens/css/${themeId}.css`);
+        for (const mode of json.modes) {
+          const start = css.indexOf(`${themeSelector(themeId, mode)} {`);
+          expect(start).toBeGreaterThan(-1);
+          const block = css.slice(start, css.indexOf("}", start));
+          const declared = Object.fromEntries([...block.matchAll(/(--ds-[\w-]+): ([^;]+);/g)].map((m) => [m[1], m[2]]));
+          const expected = Object.fromEntries(json.tokens.map((t) => [t.cssName, t.themes[themeId][mode]]));
+          expect(declared).toEqual(expected);
+        }
+      }
+    });
+
+    it("loads declared font faces from files it writes", () => {
+      const css = read("tokens/css/default.css");
+      const urls = [...css.matchAll(/url\("([^"]+)"\)/g)].map((m) => m[1]);
+      expect(urls.length).toBeGreaterThan(0);
+      for (const url of urls) expect(fs.existsSync(path.join(dirs[0], "tokens/css", url))).toBe(true);
+    });
+
+    it("emits a Sass contract that references every custom property", () => {
+      const json = JSON.parse(read("tokens/json/default.json"));
+      const probe = json.tokens.map((t, i) => `.t${i} { v: tokens.$${t.cssName.slice(5)}; }`).join("\n");
+      const out = sass.compileString(`@use "tokens/scss" as tokens;\n${probe}`, { loadPaths: [dirs[0]] }).css;
+      for (const token of json.tokens) expect(out).toContain(`v: var(${token.cssName})`);
+      expect(() => sass.compileString('@use "tokens/scss" as tokens; a { v: tokens.token("nope"); }', { loadPaths: [dirs[0]] })).toThrow("Unknown token");
+    });
   });
 });
