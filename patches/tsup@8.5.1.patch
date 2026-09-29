@@ -1,0 +1,14 @@
+diff --git a/dist/rollup.js b/dist/rollup.js
+index e128b61..5b1f73a 100644
+--- a/dist/rollup.js
++++ b/dist/rollup.js
+@@ -4914,6 +4914,9 @@ var require_rollup_plugin_dts = _chunkTWFEYLU4js.__commonJS.call(void 0, {
+         }
+       } else {
+         logCache("HIT", cacheKey);
++        if (overrideConfigPath) {
++          dirName = path__namespace.dirname(path__namespace.resolve(process.cwd(), overrideConfigPath));
++        }
+       }
+       const { fileNames, options, errors } = configByPath.get(cacheKey);
+       dtsFiles = fileNames.filter((name) => DTS_EXTENSIONS.test(name));
