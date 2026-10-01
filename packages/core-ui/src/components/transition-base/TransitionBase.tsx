@@ -1,375 +1,231 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback, CSSProperties } from "react";
-import type { TransitionStatus, TransitionBaseProps } from "./types";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
+import { computedTiming, fallbackTimeout } from "./timing";
+import type { TransitionBaseProps, TransitionCompletion, TransitionIntent, TransitionPhase } from "./types";
+
+const EMPTY: CSSProperties = {};
+
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" && typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const kebab = (property: string) => property.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
+
+/** Drop an instant-branch `transition: none` so the element's own transition runs again. */
+const animatable = (style: CSSProperties): CSSProperties => {
+  if (style.transition !== "none") return style;
+  const { transition: _, ...rest } = style;
+  return rest;
+};
 
 /**
- * TransitionBase - High-performance Orthogonal Finite State Machine (OFSM)
- * for layout transitions.
+ * TransitionBase - one element-local, interruptible transition finite state
+ * machine (TDD theme, "Transition finite state machine"; THM-006..008).
  *
- * **Objective**: Provides deterministic lifecycle transition management,
- * ensuring that CSS transitions firing during component mount and right
- * before unmount are synchronized and stable.
+ * ```text
+ * closed --open--> entering --complete--> settled
+ * settled --close--> exiting --complete--> closed
+ * entering --close--> exiting      exiting --open--> entering
+ * ```
+ *
+ * - Each intent increments a generation; frames, events, and timeouts
+ *   capture it, so a stale completion does nothing.
+ * - Completion is the first of: a `transitionend`/`animationend` on this
+ *   element for a property it owns, or a timeout of the computed
+ *   duration + delay plus a safety margin, capped.
+ * - `disabled`, reduced motion, and zero duration settle synchronously
+ *   without reading layout.
+ * - `onOpened`/`onClosed` fire at most once per completed intent and never
+ *   after unmount.
  *
  * @example
  * ```tsx
- * <TransitionBase
- *   smoothClose={!isOpen}
- *   styleFrom={{ height: 0, opacity: 0 }}
- *   styleTo={{ height: 'auto', opacity: 1 }}
- *   onClosed={() => console.log('Transition complete')}
- * >
+ * <TransitionBase open={isOpen} styleFrom={{ height: 0, opacity: 0 }} styleTo={{ height: "auto", opacity: 1 }} onClosed={unmount}>
  *   <div className="content">...</div>
  * </TransitionBase>
  * ```
- * 
- * @remarks
- * **Architecture & Mechanics**
- * - **OFSM Primary Phase** [Output: `data-state`]: Manages lifecycle
- *   transitions between `closed`, `entering`, `settled`, and `exiting`.
- * - **Lifecycle Sync** [Output: `data-mounted`]: Signals when the component
- *   has completed its initial mount-transition sequence.
- * - **Interaction Intent** [Output: `data-interrupted`]: Tracks momentum
- *   reversal via `isResuming` to signal when an animation has been interrupted.
- * - **Dynamic Reconciliation**: Resolves `height: auto` by injecting fixed
- *   pixel measurements during active transitions.
- * - **Frame Sanitization**: Proactively clears the animation queue to
- *   prevent RAF stacking (Zero-Stack mechanism).
  */
 export const TransitionBase = ({
   ref,
-  className,
-  style,
-  styleFrom,
-  styleTo,
-  smoothClose,
-  disableAnimation,
-  onClosed,
+  open,
+  disabled = false,
+  styleFrom = EMPTY,
+  styleTo = EMPTY,
   onOpened,
+  onClosed,
+  style,
   children,
   ...rest
 }: TransitionBaseProps) => {
-  const nodeRef = useRef<HTMLDivElement>(null);
-  const propsRef = useRef({
-    style,
-    styleFrom,
-    styleTo,
-    disableAnimation,
-    onOpened,
-    onClosed,
-  });
-  const statusRef = useRef<TransitionStatus>(
-    disableAnimation ? (smoothClose ? "closed" : "settled") : "closed"
+  const nodeRef = useRef<HTMLDivElement | null>(null);
+  const settledAtMount = open && disabled;
+  const [phase, setPhase] = useState<TransitionPhase>(settledAtMount ? "settled" : "closed");
+  const [motionStyle, setMotionStyle] = useState<CSSProperties>(() =>
+    settledAtMount ? { ...styleTo, transition: "none" } : { ...styleFrom },
   );
-  const prevStylesSnapshot = useRef("");
-  const isInitRender = useRef(true);
-  const animFrameIds = useRef<number[]>([]);
+  const [interrupted, setInterrupted] = useState(false);
+  const [hasOpened, setHasOpened] = useState(settledAtMount);
 
-  const [status, setStatus] = useState<TransitionStatus>(
-    disableAnimation ? (smoothClose ? "closed" : "settled") : "closed"
-  );
-  const [isSettled, setIsSettled] = useState(!!disableAnimation && !smoothClose);
-  const [isResuming, setIsResuming] = useState(false);
-  const [currentStyle, setCurrentStyle] = useState({
-    ...style,
-    ...(disableAnimation
-      ? { ...(smoothClose ? styleFrom : styleTo), transition: "none" }
-      : !smoothClose
-        ? styleFrom
-        : styleTo),
+  const latest = useRef({ styleFrom, styleTo, onOpened, onClosed, disabled });
+  latest.current = { styleFrom, styleTo, onOpened, onClosed, disabled };
+
+  const machine = useRef({
+    generation: 0,
+    intent: null as TransitionIntent | null,
+    phase: (settledAtMount ? "settled" : "closed") as TransitionPhase,
+    done: true,
+    notify: false,
+    alive: false,
+    frame: 0,
+    timeout: 0 as ReturnType<typeof setTimeout> | 0,
+    detach: null as (() => void) | null,
+    completion: null as TransitionCompletion | null,
   });
 
   const setRef = useCallback(
     (node: HTMLDivElement | null) => {
       nodeRef.current = node;
-      if (typeof ref === "function") {
-        ref(node);
-      } else if (ref) {
-        ref.current = node;
-      }
+      if (typeof ref === "function") ref(node);
+      else if (ref) ref.current = node;
     },
-    []
+    [ref],
+  );
+
+  const cancel = useCallback(() => {
+    const m = machine.current;
+    if (m.frame) cancelAnimationFrame(m.frame);
+    if (m.timeout) clearTimeout(m.timeout);
+    m.detach?.();
+    m.frame = 0;
+    m.timeout = 0;
+    m.detach = null;
+  }, []);
+
+  const enter = useCallback((next: TransitionPhase) => {
+    machine.current.phase = next;
+    setPhase(next);
+  }, []);
+
+  const settle = useCallback(
+    (generation: number, completion: TransitionCompletion) => {
+      const m = machine.current;
+      if (!m.alive || generation !== m.generation || m.done) return;
+      m.done = true;
+      m.completion = completion;
+      cancel();
+      const opening = m.intent === "open";
+      enter(opening ? "settled" : "closed");
+      setInterrupted(false);
+      if (opening) {
+        setHasOpened(true);
+        if (latest.current.styleTo.height === "auto") setMotionStyle((s) => ({ ...s, height: "auto" }));
+      }
+      if (!m.notify) return;
+      m.notify = false;
+      (opening ? latest.current.onOpened : latest.current.onClosed)?.();
+    },
+    [cancel, enter],
   );
 
   /**
-   * Layout Reconciliation: Converts 'auto' height into fixed pixel values.
-   * Forces a reflow to measure scrollHeight accurately, enabling smooth 
-   * CSS transitions for dynamic content height.
+   * Start an intent. A retarget keeps the current intent (new styles while
+   * open or closing) and fires a callback only if that intent had not completed.
    */
-  const resolveHeight = useCallback((targetStyle: any) => {
-    if (!nodeRef.current) return targetStyle || {};
+  const run = useCallback(
+    (intent: TransitionIntent, retarget = false) => {
+      const m = machine.current;
+      cancel();
+      const generation = ++m.generation;
+      const reversing = !retarget && (m.phase === "entering" || m.phase === "exiting");
+      m.notify = retarget ? m.notify && !m.done : true;
+      m.intent = intent;
+      m.done = false;
+      const target = intent === "open" ? latest.current.styleTo : latest.current.styleFrom;
+      const node = nodeRef.current;
 
-    // Force Reflow (Manual Layout Flush for Deterministic Animation)
-    void nodeRef.current.offsetHeight;
-
-    if (targetStyle?.height === "auto") {
-      const sh = nodeRef.current.scrollHeight;
-
-      // Safety: If scrollHeight is still 0, the children might be hidden or not layouted.
-      if (sh === 0) return targetStyle;
-
-      return { ...targetStyle, height: `${sh}px` };
-    }
-    return targetStyle || {};
-  }, []);
-
-  /**
-   * Frame Purifier:
-   * Cleans up the render stack to prevent animation frame stacking (Zero-Stack mechanism).
-   */
-  const clearPendingFrames = useCallback(() => {
-    animFrameIds.current.forEach(cancelAnimationFrame);
-    animFrameIds.current = [];
-  }, []);
-
-  /**
-   * Stability Cascade:
-   * Snaps the current layout state to fixed pixels before initiating a momentum reversal.
-   * Includes a "Momentum Kickstart" by modifying the current value by 1px in the 
-   * direction of the new intent to bypass compositor frame coalescing.
-   */
-  const snapToCurrentPixels = useCallback((isOpening: boolean) => {
-    if (!nodeRef.current) return;
-
-    // Force Reflow (Manual Layout Flush for Deterministic Animation)
-    void nodeRef.current.offsetHeight;
-
-    const computed = window.getComputedStyle(nodeRef.current).height;
-    let heightVal =
-      computed === "auto" ? nodeRef.current.scrollHeight : parseFloat(computed);
-
-    // [SCNX Elite] Momentum Kickstart:
-    // We adjust by +/- 1px relative to the *new intent* to ensure the next frame 
-    // is visually distinct from any frame already in the GPU queue.
-    if (isOpening) {
-      heightVal = heightVal + 1; // Kickstart Opening
-    } else {
-      heightVal = Math.max(0, heightVal - 1); // Kickstart Closing
-    }
-
-    setCurrentStyle((prev: any) => ({ ...prev, height: `${heightVal}px` }));
-  }, []);
-
-  /**
-   * Atomic Transition Orchestrator:
-   * Manages the Double-Sync Invariant for high-performance layout reconciliation.
-   * Uses nested requestAnimationFrame to ensure the browser has registered the snap state
-   * before applying the transition target.
-   */
-  const applyAtomicTransition = useCallback(
-    (target: CSSProperties, isOpening: boolean, checkInstantSettle = false) => {
-      // 0. Frame Sanitization: Cancel any pending transition logic to prevent frame stacking.
-      clearPendingFrames();
-
-      // A. Performance Guard: If animation is disabled, sync instantly.
-      // Read from propsRef to ensure functional identity remains static.
-      if (propsRef.current.disableAnimation) {
-        const resolved = resolveHeight(target);
-        setCurrentStyle({
-          ...propsRef.current.style,
-          ...resolved,
-          transition: "none",
-        });
+      // Instant branch: no frames, no layout reads.
+      if (latest.current.disabled || prefersReducedMotion() || !node) {
+        setMotionStyle({ ...target, transition: "none" });
+        settle(generation, "instant");
         return;
       }
 
-      // B. Reactive Pivot: Snap and resolve the new target.
-      snapToCurrentPixels(isOpening);
+      enter(intent === "open" ? "entering" : "exiting");
+      setInterrupted(reversing);
 
-      const id1 = requestAnimationFrame(() => {
-        const id2 = requestAnimationFrame(() => {
-          if (!nodeRef.current) return;
+      // Read the current pixels once and write them as the start frame.
+      const start: CSSProperties = "height" in target ? { height: `${node.getBoundingClientRect().height}px` } : {};
+      setMotionStyle((s) => ({ ...animatable(s), ...start }));
 
-          // Force reflow to ensure the browser registers initial styles before transition
-          void nodeRef.current.offsetHeight;
+      m.frame = requestAnimationFrame(() => {
+        if (generation !== m.generation || !m.alive) return;
+        const resolved = target.height === "auto" ? { ...target, height: `${node.scrollHeight}px` } : target;
+        setMotionStyle((s) => ({ ...animatable(s), ...resolved }));
 
-          const resolved = resolveHeight(target);
-          setCurrentStyle({ ...propsRef.current.style, ...resolved });
-
-          // C. Professional Guard: Short-circuit if target reached instantly.
-          if (
-            checkInstantSettle &&
-            (nodeRef.current.scrollHeight === 0 || resolved.height === "auto")
-          ) {
-            setStatus("settled");
-            setIsSettled(true);
+        // Arm completion once the target styles are committed.
+        m.frame = requestAnimationFrame(() => {
+          m.frame = 0;
+          if (generation !== m.generation || !m.alive) return;
+          const timeout = fallbackTimeout(computedTiming(getComputedStyle(node)));
+          if (timeout === 0) {
+            settle(generation, "instant");
+            return;
           }
+          const owned = new Set(Object.keys(target).map(kebab));
+          const onEnd = (event: Event) => {
+            if (event.target !== node) return;
+            const property = (event as TransitionEvent).propertyName;
+            if (event.type === "transitionend" && owned.size > 0 && property && !owned.has(property)) return;
+            settle(generation, "event");
+          };
+          node.addEventListener("transitionend", onEnd);
+          node.addEventListener("animationend", onEnd);
+          m.detach = () => {
+            node.removeEventListener("transitionend", onEnd);
+            node.removeEventListener("animationend", onEnd);
+          };
+          m.timeout = setTimeout(() => settle(generation, "timeout"), timeout);
         });
-        animFrameIds.current.push(id2);
       });
-      animFrameIds.current.push(id1);
     },
-    [resolveHeight, snapToCurrentPixels, clearPendingFrames]
+    [cancel, enter, settle],
   );
 
-  const executeFadeIn = useCallback(
-    (interrupt = false) => {
-      setStatus("entering");
-      setIsResuming(interrupt);
-      applyAtomicTransition(propsRef.current.styleTo, true, true);
-    },
-    [applyAtomicTransition]
-  );
-
-  const executeFadeOut = useCallback(
-    (interrupt = false) => {
-      setStatus("exiting");
-      setIsResuming(interrupt);
-      applyAtomicTransition(propsRef.current.styleFrom, false);
-    },
-    [applyAtomicTransition]
-  );
-
-  // Synchronize statusRef for "Absolute Reality" tracking.
-  // This allows effects to read the real-time phase without being reactive dependencies.
+  // Intent: the mount and every change of `open`. A Strict Mode remount
+  // restarts an intent its cleanup cancelled but never repeats a completed one.
   useEffect(() => {
-    statusRef.current = status;
-  }, [status]);
-
-  // Prop-Ref Pattern: We track volatile props via ref to ensure internal
-  // handlers maintain a stable referential identity while always accessing latest data.
-  useEffect(() => {
-    propsRef.current = {
-      style,
-      styleTo,
-      styleFrom,
-      disableAnimation,
-      onOpened,
-      onClosed,
-    };
-  }, [style, styleTo, styleFrom, disableAnimation, onOpened, onClosed]);
-
-  useEffect(() => {
-    if (isInitRender.current) {
-      if (propsRef.current.disableAnimation) {
-        if (!smoothClose) {
-          setStatus("settled");
-          setIsSettled(true);
-          if (propsRef.current.onOpened) propsRef.current.onOpened();
-        }
-      } else {
-        if (!smoothClose) {
-          executeFadeIn();
-        }
-      }
+    const m = machine.current;
+    m.alive = true;
+    const intent: TransitionIntent = open ? "open" : "close";
+    if (m.intent === null && !open) {
+      // Mounted closed: nothing to complete.
+    } else if (m.intent !== intent || !m.done) {
+      run(intent);
     }
-  }, []); // Mount only, no deps.
-
-  // Synchronize smoothClose with OFSM Regions
-  useEffect(() => {
-    const isFirstRun = isInitRender.current;
-
-    if (isFirstRun) {
-      isInitRender.current = false;
-      return;
-    }
-
-    // B. Reactive Update Logic: Handle instant transitions when disabled
-    if (propsRef.current.disableAnimation) {
-      if (smoothClose) {
-        setStatus("closed");
-        setIsSettled(false);
-        applyAtomicTransition(propsRef.current.styleFrom, false);
-        if (propsRef.current.onClosed) propsRef.current.onClosed();
-      } else {
-        setStatus("settled");
-        setIsSettled(true);
-        applyAtomicTransition(propsRef.current.styleTo, true);
-        if (propsRef.current.onOpened) propsRef.current.onOpened();
-      }
-      return;
-    }
-
-    // C. ANIMATION MODE: Standard FSM logic for updates
-    const currentPhase = statusRef.current;
-
-    if (smoothClose) {
-      // Intent: Close. Only trigger if we aren't already closing or closed.
-      if (currentPhase !== "exiting" && currentPhase !== "closed") {
-        executeFadeOut(currentPhase === "entering");
-      }
-    } else {
-      // Intent: Open. Only trigger if we aren't already opening or opened.
-      if (currentPhase !== "entering" && currentPhase !== "settled") {
-        executeFadeIn(currentPhase === "exiting");
-      }
-    }
-  }, [smoothClose, executeFadeIn, executeFadeOut]);
-
-  // Global Bi-Directional Reconciliation Gate
-  // Monitor both targets for reactive layout pivots.
-  useEffect(() => {
-    const snapshot = JSON.stringify({ style, styleTo, styleFrom });
-    const isFirstRun = prevStylesSnapshot.current === "";
-
-    // 1. Strict Style Guard: Only proceed if style props have actually changed.
-    // We compare BEFORE updating the ref to detect the delta.
-    if (!isFirstRun && snapshot === prevStylesSnapshot.current) return;
-
-    // 2. Commit the new snapshot to memory.
-    prevStylesSnapshot.current = snapshot;
-
-    // 3. Initial Silence: Skip reconciliation on mount to avoid double-snapping with Effect 1.
-    if (isFirstRun) return;
-
-    const currentPhase = statusRef.current;
-
-    // A. Passive Sync: If closed, just ensure DOM is aligned with styleFrom.
-    if (currentPhase === "closed") {
-      setCurrentStyle({ ...style, ...styleFrom });
-      return;
-    }
-
-    // B. Reactive Target Selection
-    const isOpening = currentPhase === "entering" || currentPhase === "settled";
-    const targetStyles = isOpening ? styleTo : styleFrom;
-
-    applyAtomicTransition(targetStyles, isOpening, true);
-  }, [style, styleTo, styleFrom, applyAtomicTransition]);
-
-  // Unmount Cleanup
-  useEffect(() => {
     return () => {
-      clearPendingFrames();
+      m.alive = false;
+      cancel();
     };
-  }, [clearPendingFrames]);
+  }, [open, run, cancel]);
 
-  const onTransitionEnd = (e: React.TransitionEvent<HTMLDivElement>) => {
-    if (e.target !== e.currentTarget) return;
-
-    if (status === "entering") {
-      setStatus("settled");
-      setIsSettled(true);
-      setIsResuming(false);
-      if (propsRef.current.onOpened) propsRef.current.onOpened();
-    }
-
-    // Post-expansion cleanup for auto-height (Universal: handles entering OR settled reconciliation)
-    if (status === "entering" || status === "settled") {
-      if (styleTo?.height === "auto" || styleTo?.height === "100%") {
-        setCurrentStyle((prev: any) => ({ ...prev, height: "auto" }));
-      }
-    }
-
-    if (status === "exiting") {
-      setStatus("closed");
-      setIsResuming(false);
-      if (propsRef.current.onClosed) propsRef.current.onClosed();
-    }
-  };
+  // Retarget when the open or closed styles change.
+  const styleKey = JSON.stringify([styleFrom, styleTo]);
+  const previousStyleKey = useRef(styleKey);
+  useEffect(() => {
+    if (previousStyleKey.current === styleKey) return;
+    previousStyleKey.current = styleKey;
+    const m = machine.current;
+    if (m.phase === "closed") setMotionStyle({ ...latest.current.styleFrom });
+    else run(m.phase === "exiting" ? "close" : "open", true);
+  }, [styleKey, run]);
 
   return (
     <div
       ref={setRef}
-      className={className}
-      data-state={status}
-      data-mounted={isSettled || undefined}
-      data-interrupted={isResuming || undefined}
-      onTransitionEnd={onTransitionEnd}
-      style={{
-        ...style,
-        ...currentStyle,
-      }}
+      data-state={phase}
+      data-mounted={hasOpened || undefined}
+      data-interrupted={interrupted || undefined}
+      style={{ ...style, ...motionStyle }}
       {...rest}
     >
       {children}

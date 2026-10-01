@@ -32,8 +32,8 @@ export const CollapsibleBaseContent = ({
   return (
     <TransitionBase
       id={contentId}
-      disableAnimation={disabledAnimations}
-      smoothClose={isClosing}
+      disabled={disabledAnimations}
+      open={!isClosing}
       onClosed={() => setDisclosureState({ isOpen: false, isClosing: false })}
       styleFrom={{ height: 0, opacity: 0, overflow: "hidden" }}
       styleTo={{ height: "auto", opacity: 1, overflow: "visible" }}
