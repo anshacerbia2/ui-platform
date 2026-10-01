@@ -56,8 +56,8 @@ export const SidebarNavItem = ({
   const content =
     showContent && isValidElement(children) ? (
       <Transition
-        disableAnimation={initRender.current && showContent}
-        smoothClose={isClosing}
+        disabled={initRender.current && showContent}
+        open={!isClosing}
         onClosed={() => {
           setShowContent(false);
           setIsClosing(false);

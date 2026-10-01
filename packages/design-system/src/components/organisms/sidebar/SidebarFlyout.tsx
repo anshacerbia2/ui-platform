@@ -138,7 +138,7 @@ export const SidebarFlyout = ({
     <div ref={flyoutRef} className={cx("scnx-sidebar__flyout", className)} style={pos} data-variant={variant}>
       <Transition
         key={activeFlyout.ownerId}
-        smoothClose={isFlyoutClosing}
+        open={!isFlyoutClosing}
         onClosed={() => {
           cleanupFlyout();
         }}

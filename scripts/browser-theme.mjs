@@ -8,6 +8,9 @@
 // - hydration reports no mismatch and the page records zero CSP violations;
 // - the stored preference applies after hydration, a mode change updates
 //   only its own root, persists, and survives a reload;
+// - an Accordion opens and closes through its real transitionend
+//   (closed -> entering -> settled -> exiting -> unmounted), and under
+//   prefers-reduced-motion it settles without an entering/exiting phase;
 // - a negative page with an inline script is reported as a violation, which
 //   proves violations are detected at all.
 //
@@ -45,6 +48,7 @@ execSync(`pnpm install --ignore-workspace --strict-peer-dependencies --store-dir
 // One module renders the same tree on the server and hydrates it on the client.
 fs.writeFileSync(path.join(dir, "app.jsx"), `import { useEffect, useState } from "react";
 import { ThemeProvider, useTheme } from "@scnx/core-ui/providers/theme-provider-base";
+import { Accordion } from "@scnx/system/components/accordion";
 
 const Toggle = ({ id }) => {
   const theme = useTheme();
@@ -59,7 +63,15 @@ const Toggle = ({ id }) => {
 
 export const App = () => (
   <main>
-    <ThemeProvider themeId="default" defaultMode="light"><Toggle id="first" /></ThemeProvider>
+    <ThemeProvider themeId="default" defaultMode="light">
+      <Toggle id="first" />
+      <Accordion>
+        <Accordion.Item value="a">
+          <Accordion.Trigger id="accordion-trigger">Section</Accordion.Trigger>
+          <Accordion.Content id="accordion-content"><p>Body</p></Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+    </ThemeProvider>
     <ThemeProvider themeId="achromatic" defaultMode="light" storage={false}><Toggle id="second" /></ThemeProvider>
   </main>
 );
@@ -79,8 +91,12 @@ build("client.jsx", "client.js", "browser");
 build("server.jsx", "server.cjs", "node");
 const markup = execSync("node server.cjs", { cwd: dir, encoding: "utf8" });
 
+const systemDist = path.join(dir, "node_modules/@scnx/system");
+const manifest = JSON.parse(fs.readFileSync(path.join(systemDist, "package.json"), "utf8"));
+const assets = ["./styles/components.css", "./tokens/css/default.css", "./tokens/css/achromatic.css"].map((subpath) => manifest.exports[subpath].replace(/^\.\//, ""));
+const links = assets.map((file) => `<link rel="stylesheet" href="/pkg/${file}">`).join("");
 const pages = {
-  "/": `<!doctype html><html><head><meta charset="utf-8"><script type="module" src="/client.js"></script></head><body><div id="app">${markup}</div></body></html>`,
+  "/": `<!doctype html><html><head><meta charset="utf-8">${links}<script type="module" src="/client.js"></script></head><body><div id="app">${markup}</div></body></html>`,
   "/negative": `<!doctype html><html><head><meta charset="utf-8"></head><body><script>document.body.dataset.inline = "ran";</script></body></html>`,
 };
 const server = http.createServer((request, response) => {
@@ -88,6 +104,13 @@ const server = http.createServer((request, response) => {
   const headers = { "content-security-policy": CSP };
   if (pages[url]) return response.writeHead(200, { ...headers, "content-type": "text/html" }).end(pages[url]);
   if (url === "/favicon.ico") return response.writeHead(204, headers).end();
+  if (url.startsWith("/pkg/")) {
+    const file = path.join(systemDist, url.slice("/pkg/".length));
+    if (file.startsWith(systemDist) && fs.existsSync(file)) {
+      const type = file.endsWith(".css") ? "text/css" : file.endsWith(".woff2") ? "font/woff2" : "application/octet-stream";
+      return response.writeHead(200, { ...headers, "content-type": type }).end(fs.readFileSync(file));
+    }
+  }
   if (url === "/client.js") return response.writeHead(200, { ...headers, "content-type": "text/javascript" }).end(fs.readFileSync(path.join(dir, "client.js")));
   response.writeHead(404).end();
 });
@@ -140,6 +163,42 @@ try {
   await hydrated();
   now = await attrs();
   if (now.join() !== "default/light,achromatic/light") failures.push(`after reload, roots are ${now.join()}`);
+
+  // Transitions in the engine: record every data-state the content passes through.
+  const watch = () =>
+    page.evaluate(() => {
+      window.__phases = [];
+      const record = () => {
+        const content = document.getElementById("accordion-content");
+        const phase = content ? content.getAttribute("data-state") : "unmounted";
+        if (window.__phases[window.__phases.length - 1] !== phase) window.__phases.push(phase);
+      };
+      new MutationObserver(record).observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ["data-state"] });
+      record();
+    });
+  const phases = () => page.evaluate(() => window.__phases);
+  const settledTo = (phase) =>
+    page.waitForFunction((want) => window.__phases[window.__phases.length - 1] === want, phase, { timeout: 10000 });
+
+  await watch();
+  await page.click("#accordion-trigger");
+  await settledTo("settled");
+  await page.click("#accordion-trigger");
+  await settledTo("unmounted");
+  const animated = await phases();
+  if (animated.join(" ") !== "unmounted closed entering settled exiting unmounted") failures.push(`animated accordion passed through: ${animated.join(" ")}`);
+  checks.push({ check: "transition-events", phases: animated });
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await watch();
+  await page.click("#accordion-trigger");
+  await settledTo("settled");
+  await page.click("#accordion-trigger");
+  await settledTo("unmounted");
+  const reduced = await phases();
+  if (reduced.includes("entering") || reduced.includes("exiting")) failures.push(`reduced-motion accordion passed through: ${reduced.join(" ")}`);
+  checks.push({ check: "transition-reduced-motion", phases: reduced });
+  await page.emulateMedia({ reducedMotion: "no-preference" });
 
   const violations = await page.evaluate(() => window.__cspViolations);
   const hydrationErrors = await page.evaluate(() => window.__hydrationErrors);

@@ -15,7 +15,7 @@ import { cx } from "styled-system/css";
  * ```tsx
  * import { Transition } from "@scnx/system/components/transition";
  * 
- * <Transition smoothClose={isOpen} styleFrom={{ opacity: 0 }} styleTo={{ opacity: 1 }}>
+ * <Transition open={isOpen} styleFrom={{ opacity: 0 }} styleTo={{ opacity: 1 }}>
  *   <div>Animated Content</div>
  * </Transition>
  * ```
