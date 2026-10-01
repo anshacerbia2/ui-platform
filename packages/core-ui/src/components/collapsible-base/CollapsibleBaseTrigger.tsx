@@ -1,41 +1,35 @@
 "use client";
 
-import type { ReactNode } from "react";
-import type { CollapsibleBaseTriggerProps } from "./types";
+import type { MouseEvent } from "react";
 import { useDisclosureItem } from "../disclosure-base/DisclosureContext";
+import type { CollapsibleBaseTriggerProps } from "./types";
 
 /**
- * Headless trigger for the CollapsibleBase.
- * 
- * Toggles the open/close state of the associated content. 
- * Support "Render Props" pattern to expose internal state to children.
+ * CollapsibleBaseTrigger - a native button (Enter and Space activate it)
+ * with `aria-expanded` and `aria-controls`. The consumer's onClick runs
+ * first; `preventDefault` cancels the toggle (PRM-007). A disabled item's
+ * trigger is disabled; an open item that may not close carries
+ * `aria-disabled` (WAI-ARIA APG, Accordion).
  */
-export const CollapsibleBaseTrigger = ({
-  children,
-  ...rest
-}: CollapsibleBaseTriggerProps) => {
-  const { isOpen, isClosing, toggle, id } = useDisclosureItem();
-
-  const triggerId = `scnx-trigger-${id}`;
-  const contentId = `scnx-content-${id}`;
-
-  // Determine if children is a render function or a static node
-  const renderedChildren = typeof children === "function" 
-    ? (children as (props: { isOpen: boolean; isClosing: boolean }) => ReactNode)({ isOpen, isClosing })
-    : children;
-
+export const CollapsibleBaseTrigger = ({ children, onClick, ...rest }: CollapsibleBaseTriggerProps) => {
+  const { open, disabled, locked, triggerId, contentId, toggle } = useDisclosureItem("CollapsibleBase.Trigger");
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    onClick?.(event);
+    if (!event.defaultPrevented) toggle();
+  };
   return (
     <button
       id={triggerId}
-      type="button"
-      aria-controls={contentId}
-      aria-expanded={isOpen}
-      data-state={isOpen ? "open" : "closed"}
-      data-closing={isClosing || undefined}
-      onClick={toggle}
       {...rest}
+      type="button"
+      aria-expanded={open}
+      aria-controls={contentId}
+      aria-disabled={locked || undefined}
+      disabled={disabled}
+      data-state={open ? "open" : "closed"}
+      onClick={handleClick}
     >
-      {renderedChildren}
+      {typeof children === "function" ? children({ isOpen: open }) : children}
     </button>
   );
 };

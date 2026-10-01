@@ -7,7 +7,9 @@ import type { TransitionBaseProps, TransitionCompletion, TransitionIntent, Trans
 const EMPTY: CSSProperties = {};
 
 const prefersReducedMotion = () =>
-  typeof window !== "undefined" && typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  typeof window !== "undefined" &&
+  typeof window.matchMedia === "function" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)")?.matches === true;
 
 const kebab = (property: string) => property.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
 

@@ -1,21 +1,14 @@
-import type { ReactNode } from "react";
-import type { 
-  CodeShowcaseBaseRootProps as BaseRootProps, 
+import type {
+  CodeShowcaseBaseContentProps as BaseContentProps,
+  CodeShowcaseBaseNavProps as BaseNavProps,
   CodeShowcaseBasePreviewProps as BasePreviewProps,
-  CodeShowcaseBaseNavProps as BaseNavProps, 
+  CodeShowcaseBaseRootProps as BaseRootProps,
   CodeShowcaseBaseTriggerProps as BaseTriggerProps,
-  CodeShowcaseBaseContentProps as BaseContentProps
 } from "@scnx/core-ui/components/code-showcase-base";
 
-export type CodeShowcaseRootProps = BaseRootProps & {
-  defaultOpen?: boolean;
-  isOpen?: boolean;
-  onOpenChange?: (isOpen: boolean) => void;
-};
+/** `open`/`onOpenChange` control the code region; it starts open by default. */
+export type CodeShowcaseRootProps = BaseRootProps;
 export type CodeShowcasePreviewProps = BasePreviewProps;
 export type CodeShowcaseNavProps = BaseNavProps;
 export type CodeShowcaseContentProps = BaseContentProps;
-
-export type CodeShowcaseTriggerProps = Omit<BaseTriggerProps, "children"> & {
-  children: ReactNode | ((props: { isOpen: boolean; isClosing: boolean }) => ReactNode);
-};
+export type CodeShowcaseTriggerProps = BaseTriggerProps;

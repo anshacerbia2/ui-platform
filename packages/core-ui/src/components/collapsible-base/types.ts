@@ -1,46 +1,20 @@
-import type { ReactNode, HTMLAttributes } from "react";
-import type { DisclosureRegistryOptions } from "../disclosure-base/types";
+import type { ComponentPropsWithRef, ReactNode } from "react";
+import type { DisclosureItemOptions, DisclosureProviderProps } from "../disclosure-base/types";
 
-/**
- * Props for the CollapsibleBaseRoot component.
- */
-export type CollapsibleBaseRootProps = DisclosureRegistryOptions & HTMLAttributes<HTMLDivElement>;
+/** A disclosure scope; items are independent by default (`type="multiple"`). */
+export type CollapsibleBaseRootProps = DisclosureProviderProps & Omit<ComponentPropsWithRef<"div">, "defaultValue" | "onChange">;
 
-/**
- * Props for the CollapsibleBaseItem component.
- */
-export type CollapsibleBaseItemProps = {
-  /** The unique key for this item in the registry */
-  value?: string;
-  /** Initial open state (uncontrolled) */
-  defaultOpen?: boolean;
-  /** Open state (controlled) */
-  isOpen?: boolean;
-  /** Callback when open state changes */
-  onOpenChange?: (isOpen: boolean) => void;
-  /** Whether this item participates in the parent registry orchestration */
-  orchestrated?: boolean;
+export type CollapsibleBaseItemProps = DisclosureItemOptions & {
   children: ReactNode;
-  className?: string;
-} & HTMLAttributes<HTMLDivElement>;
+} & ComponentPropsWithRef<"div">;
 
-/**
- * Props for the CollapsibleBaseTrigger component.
- */
-export type CollapsibleBaseTriggerProps = Omit<HTMLAttributes<HTMLButtonElement>, "children"> & {
-  children: ReactNode | ((props: { isOpen: boolean; isClosing: boolean }) => ReactNode);
-  className?: string;
+/** A native button that controls one region (`aria-expanded`, `aria-controls`). */
+export type CollapsibleBaseTriggerProps = Omit<ComponentPropsWithRef<"button">, "children" | "type"> & {
+  children: ReactNode | ((state: { isOpen: boolean }) => ReactNode);
 };
 
-/**
- * Props for the CollapsibleBaseContent component.
- */
-export type CollapsibleBaseContentProps = HTMLAttributes<HTMLDivElement> & {
+export type CollapsibleBaseContentProps = ComponentPropsWithRef<"div"> & {
   children: ReactNode;
-  className?: string;
-  /** Whether to keep the content in the DOM even when closed */
+  /** Keep the region mounted while closed (hidden). */
   forceMount?: boolean;
-  /** Whether to disable height transitions for this specific content */
-  disabledAnimations?: boolean;
 };
-

@@ -18,6 +18,7 @@ export const CodeShowcaseRoot = ({
     <CodeShowcaseBaseRoot 
       className={cx("scnx-code-showcase", className)} 
       disabledAnimations={disabledAnimations}
+      defaultOpen={defaultOpen}
       {...rest}
     >
        {children}

@@ -1,61 +1,45 @@
-import type { ReactNode } from "react";
-
-/**
- * Disclosure Registry State.
- */
-export type DisclosureItemState = {
-  isOpen: boolean;
-  isClosing: boolean;
-  orchestrated?: boolean;
-};
-
-export type DisclosureState = Record<string, DisclosureItemState>;
-
-/**
- * Listener Map for Item-specific callbacks.
- */
-export type DisclosureListeners = Map<
-  string,
-  ((state: DisclosureItemState) => void)[]
->;
-
-/**
- * Configuration for the Disclosure Registry Engine.
- */
-export type DisclosureRegistryOptions = {
-  /** Mode: single (one open at a time) or multiple (many open) */
+/** Root props of a disclosure scope (TDD primitives, API / Interface: AccordionRootProps). */
+export type DisclosureProviderProps = {
+  /** `single`: opening one item closes the others. */
   type?: "single" | "multiple";
-  /** Internal: Full registry override (Advanced) */
-  registry?: DisclosureState;
-  /** Internal: Initial registry override (Advanced) */
-  defaultRegistry?: DisclosureState;
-  /** Internal: Registry change callback (Advanced) */
-  onRegistryChange?: (registry: DisclosureState) => void;
-  /** Whether to disable global animations */
+  /** Controlled open item value(s): a string in single mode, an array in multiple mode. */
+  value?: string | string[];
+  /** Initially open item value(s), uncontrolled. */
+  defaultValue?: string | string[];
+  /** Once per accepted user intent, with the next value(s). */
+  onValueChange?: (value: string | string[]) => void;
+  /** Single mode: whether the open item may close. @default true */
+  collapsible?: boolean;
+  /** Every item is disabled. */
+  disabled?: boolean;
+  /** Content opens and closes without a transition. */
   disabledAnimations?: boolean;
 };
 
-export type DisclosureStateContextValue = {
-  registry: DisclosureState;
+/** Item props (TDD primitives, API / Interface: DisclosureItemProps). */
+export type DisclosureItemOptions = {
+  /** Registry key; defaults to a useId-derived instance ID. Must be unique in its root. */
+  value?: string;
+  /** Controlled open state of this item. */
+  open?: boolean;
+  /** Initial open state, uncontrolled. */
+  defaultOpen?: boolean;
+  /** Once per accepted change of this item's open state. */
+  onOpenChange?: (open: boolean) => void;
+  /** The item does not change state. */
+  disabled?: boolean;
 };
 
-export type DisclosureAPIContextValue = {
-  defaultId?: string;
-  disabledAnimations?: boolean;
-  setRegistryItem: (id: string, state: Partial<DisclosureItemState>) => void;
-  detachRegistryItem: (id: string) => void;
-  regItemListener: (id: string, callback: (state: DisclosureItemState) => void) => () => void;
-  unregItemListener: (id: string, callback: (state: DisclosureItemState) => void) => void;
-};
-
-/**
- * Combined Context (for legacy/convenience usage)
- */
-export type DisclosureContextValue = DisclosureStateContextValue & DisclosureAPIContextValue;
-
-/**
- * Generic Props for the Disclosure Provider.
- */
-export type DisclosureProviderProps = DisclosureRegistryOptions & {
-  children: ReactNode;
+/** State and intents of one item, for its trigger and content parts. */
+export type DisclosureItemContextValue = {
+  value: string;
+  open: boolean;
+  disabled: boolean;
+  /** Open, and closing it is not allowed (single, not collapsible). */
+  locked: boolean;
+  triggerId: string;
+  contentId: string;
+  disabledAnimations: boolean;
+  setOpen(open: boolean): void;
+  toggle(): void;
 };

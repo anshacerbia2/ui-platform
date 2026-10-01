@@ -7,14 +7,14 @@ import { CollapsibleBaseRoot, CollapsibleBaseItem } from "../collapsible-base";
  */
 export const CodeShowcaseBaseRoot = ({
   children,
-  isOpen,
+  open,
   defaultOpen,
   onOpenChange,
   ...rest
 }: CodeShowcaseBaseRootProps) => (
   <CollapsibleBaseRoot {...rest}>
     <CollapsibleBaseItem
-      isOpen={isOpen}
+      open={open}
       defaultOpen={defaultOpen}
       onOpenChange={onOpenChange}
     >
