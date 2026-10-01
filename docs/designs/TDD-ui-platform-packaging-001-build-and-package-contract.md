@@ -14,6 +14,11 @@ doc_meta:
 
 # TDD-ui-platform-packaging-001: Build and Published Package Contract
 
+> **Revision pending exact-commit ratification.** The component-workshop
+> additions (proposed ADR-UIP-WKS-001) are pending under GDC-000 section 2.6.7;
+> the previously ratified revision remains binding until the authorized human
+> authority approves the exact commit containing them.
+
 ## Purpose
 
 Turn the extracted workspace into two reproducible, independently installable
@@ -188,6 +193,10 @@ tested React ranges across both packages.
 9. Parse packed manifests and enumerate tarball contents.
 10. Reject any unresolved export, wildcard, workspace range, absolute path,
     source map with private path leakage, missing license, or undeclared asset.
+    Workshop files (`*.stories.*`, `.storybook/`, `storybook-static/`) and
+    Storybook packages are never in a tarball or a package manifest; the
+    workshop is a development dependency of the private workspace root
+    (ADR-UIP-WKS-001).
 
 ### Entry classification
 
@@ -322,7 +331,7 @@ ranges. The affected capability remains unsupported until decided.
 ## Traceability
 
 Architecture authority: SAD-003; ADR-GLB-FE-010 through -013;
-ADR-UIP-PLT-001 and ADR-UIP-BLD-001; STD-GLB-FE-002/003/006/007/008 and
+ADR-UIP-PLT-001, ADR-UIP-BLD-001, and proposed ADR-UIP-WKS-001; STD-GLB-FE-002/003/006/007/008 and
 STD-UIP-ENG-001. Lifecycle status in `scnehaux-architecture` determines whether
 each record is binding or proposed. Execution: [PLAN](../../PLAN.md) P0 rows
 0–3 and 8–11. Related designs: tokens, styled CSS, theme runtime, and primitives.
