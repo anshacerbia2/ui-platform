@@ -1,6 +1,5 @@
 "use client";
 
-import "./TableOfContents.scss";
 import type { ReactNode } from "react";
 import { TableOfContentsBaseRoot } from "@scnx/core-ui/components/table-of-contents-base";
 

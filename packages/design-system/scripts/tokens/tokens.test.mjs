@@ -229,6 +229,12 @@ describe("theme parity and contrast", () => {
     expect(contrastRatio(parseColor("rgb(0 0 0 / 0.5)"), white, white)).toBeCloseTo(3.95, 1);
   });
 
+  it("tests every focus border on the neutral surfaces at the non-text minimum", () => {
+    const names = new Set(["--ds-color-primary-border-default-focus"]);
+    const cases = contrastCases(names, { contrast: { textMinimum: 4.5, nonTextMinimum: 3, neutralBackgrounds: ["--ds-bg"] } });
+    expect(cases).toContainEqual({ rule: "focus-on-neutral-surface", fg: "--ds-color-primary-border-default-focus", bg: "--ds-bg", minimum: 3 });
+  });
+
   it("pairs contrast text with the solid surface of its scheme per state", () => {
     const names = new Set(["--ds-color-primary-text-contrast-default", "--ds-color-primary-surface-solid-default"]);
     const cases = contrastCases(names, { contrast: { textMinimum: 4.5, nonTextMinimum: 3, neutralBackgrounds: [] } });

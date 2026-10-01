@@ -1,0 +1,4 @@
+// The composition root every shared reset and base rule lives below
+// (STD-GLB-FE-005 section 3.3; STD-UIP-STY-001 Global Selector Prohibition).
+// :where() keeps the scope at zero specificity; layers decide precedence.
+$theme-root: ":where([data-scnx-theme][data-scnx-resolved-mode])";

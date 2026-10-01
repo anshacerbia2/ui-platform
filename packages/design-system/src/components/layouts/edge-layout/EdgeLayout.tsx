@@ -1,4 +1,3 @@
-import "./EdgeLayout.scss";
 import type { EdgeLayoutRootProps } from "./types";
 import { EdgeLayoutRoot as Root } from "./EdgeLayoutRoot";
 import { EdgeLayoutNavbar as Navbar } from "./EdgeLayoutNavbar";

@@ -35,7 +35,6 @@
     @include typography(label, small);
     color: var(--select-text);
     width: 100%;
-    outline: none;
     
     &::placeholder {
       color: var(--select-text-muted);

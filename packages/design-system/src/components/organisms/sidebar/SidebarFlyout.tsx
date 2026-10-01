@@ -14,7 +14,7 @@ import { cx } from "styled-system/css";
  * 
  * Floating flyout menu for the Sidebar.
  * Displays sub-navigation items when the Sidebar is collapsed.
- * Renders via `React Portal` to the `document.body`.
+ * Renders via `React Portal` into the theme root that contains its trigger.
  * 
  * @example
  * ```tsx
@@ -123,6 +123,15 @@ export const SidebarFlyout = ({
 
   if (typeof document === "undefined" || !activeFlyout?.content) return null;
 
+  // Portaled UI stays inside the originating theme root (TDD CSS delivery,
+  // STY-006): tokens and scoped base rules exist only below it. There is no
+  // fallback to document.body.
+  const themeRoot = activeFlyout.triggerRef?.closest("[data-scnx-theme][data-scnx-resolved-mode]");
+  if (!themeRoot) {
+    console.error("SidebarFlyout: the trigger is not inside a [data-scnx-theme][data-scnx-resolved-mode] root; the flyout is not rendered.");
+    return null;
+  }
+
   return createPortal(
     <div ref={flyoutRef} className={cx("scnx-sidebar__flyout", className)} style={pos} data-variant={variant}>
       <Transition
@@ -141,7 +150,7 @@ export const SidebarFlyout = ({
         </div>
       </Transition>
     </div>,
-    document.body,
+    themeRoot,
   );
 };
 

@@ -120,7 +120,9 @@ export function keySetFindings(themes, aliases) {
 /**
  * Contrast cases required by STD-UIP-TKN-001 "Semantic Usage Doctrine":
  * - every text/icon `contrast` token on the `solid` surface of its scheme, per state;
- * - every text/icon `subtle|default|strong` token on the declared neutral surfaces.
+ * - every text/icon `subtle|default|strong` token on the declared neutral surfaces;
+ * - every border `focus` token on the declared neutral surfaces, because it
+ *   draws the focus indicator (STD-GLB-FE-005 section 3.9, SC 1.4.11).
  * Disabled states are exempt from SC 1.4.3 and 1.4.11 and are not evaluated.
  */
 export function contrastCases(names, config) {
@@ -149,6 +151,13 @@ export function contrastCases(names, config) {
             cases.push({ rule: "on-neutral-surface", fg, bg, minimum: minimum(role) });
           }
         }
+      }
+    }
+    for (const emphasis of ["subtle", "default", "strong"]) {
+      const fg = `--ds-color-${scheme}-border-${emphasis}-focus`;
+      if (!has(fg)) continue;
+      for (const bg of config.contrast.neutralBackgrounds) {
+        cases.push({ rule: "focus-on-neutral-surface", fg, bg, minimum: config.contrast.nonTextMinimum });
       }
     }
   }

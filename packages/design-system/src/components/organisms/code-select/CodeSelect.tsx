@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, type ReactNode } from "react";
-import "./CodeSelect.scss";
 
 export interface CodeSelectOption {
   id: string | number;
