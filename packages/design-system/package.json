@@ -112,8 +112,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup && node scripts/tokens/emit.mjs --out dist",
-    "build:css": "panda css -o src/styled-system",
+    "build": "tsup && node scripts/tokens/emit.mjs --out dist && node scripts/styles/assemble.mjs --out dist",
     "codegen": "panda codegen",
     "prepare": "panda codegen",
     "test": "vitest run",
@@ -136,7 +135,6 @@
     "css-tree": "^3.2.1",
     "esbuild-plugin-preserve-directives": "^0.0.11",
     "esbuild-plugin-tsconfig-paths": "^1.0.2",
-    "esbuild-sass-plugin": "^3.3.1",
     "jsdom": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",

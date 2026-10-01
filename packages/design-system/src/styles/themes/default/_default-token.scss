@@ -222,8 +222,10 @@ $solid-contrast-target: 4.6;
           $step: get-state-step($base-step, $state, $recipe-role, $mode);
 
           @if $recipe-role == "border" and $state == "focus" {
-            $raw: get-raw-channels($hue, $step, $mode);
-            $value: string.unquote("oklch(#{$raw} / 0.4)");
+            // Focus indicators are opaque and use the text steps, so they meet
+            // WCAG 2.2 SC 1.4.11 (3:1) on every neutral surface; the token
+            // gate verifies the pairs (STD-GLB-FE-005 section 3.9).
+            $value: resolve-core-color($hue, -if($recipe-emphasis == "strong", 12, 11), $mode);
           } @else if $recipe-role == "shadow" {
             $raw: get-raw-channels($hue, $step, $mode);
             $value: string.unquote("oklch(#{$raw} / 0.15)");

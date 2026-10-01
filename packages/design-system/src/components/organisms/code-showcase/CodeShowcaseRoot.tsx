@@ -1,5 +1,3 @@
-import "./CodeShowcase.scss";
-
 import { CodeShowcaseBaseRoot } from "@scnx/core-ui/components/code-showcase-base";
 
 import type { CodeShowcaseRootProps } from "./types";

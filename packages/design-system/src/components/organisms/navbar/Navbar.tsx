@@ -1,4 +1,3 @@
-import "./Navbar.scss";
 import type { NavbarProps } from "./types";
 import { NavbarRoot as Root } from "./NavbarRoot";
 import { NavbarStart as Start } from "./NavbarStart";

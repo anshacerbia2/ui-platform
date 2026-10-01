@@ -1,5 +1,4 @@
 import { ButtonBase } from "@scnx/core-ui/components/button-base";
-import "./Button.scss";
 
 import type { ButtonProps } from "./types";
 import { cx } from "styled-system/css";
