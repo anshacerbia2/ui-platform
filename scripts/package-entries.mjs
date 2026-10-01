@@ -70,9 +70,12 @@ function systemEntries(packageDir) {
   const barrel = findIndex(componentsDir);
   if (barrel) {
     entries.unshift({ subpath: "./components", kind: "javascript", source: barrel, out: "dist/components/index" });
-    // The barrel imports every component stylesheet; the build moves the
-    // aggregate CSS it produces to this path.
-    entries.push({ subpath: "./styles/components.css", kind: "css", source: barrel, out: "dist/styles/components.css" });
+  }
+  // One aggregate component stylesheet, assembled from this Sass bundle and
+  // the frozen Panda recipes by scripts/styles/assemble.mjs.
+  const bundle = path.join(packageDir, "src/styles/bundles/components.scss");
+  if (fs.existsSync(bundle)) {
+    entries.push({ subpath: "./styles/components.css", kind: "css", source: bundle, out: "dist/styles/components.css" });
   }
 
   // Token outputs and fonts written by scripts/tokens/emit.mjs, declared by

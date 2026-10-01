@@ -1,4 +1,3 @@
-import "./FloatingLayout.scss";
 import type { FloatingLayoutProps } from "./types";
 import { FloatingLayoutRoot as Root } from "./FloatingLayoutRoot";
 import { FloatingLayoutSidebar as Sidebar } from "./FloatingLayoutSidebar";

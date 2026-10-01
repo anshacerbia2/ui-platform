@@ -1,6 +1,4 @@
-
 import { DividerBase } from "@scnx/core-ui/components/divider-base";
-import "./Divider.scss";
 
 import type { DividerProps } from "./types";
 import { cx } from "styled-system/css";

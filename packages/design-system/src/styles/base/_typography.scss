@@ -1,4 +1,0 @@
-// Font loading is managed via Decoupled Architecture.
-// The Design System specifies the tokens (var(--font-inter)), 
-// while the Application handles asset optimization (e.g., next/font/google).
-// Zero-glitch performance is achieved by delegating delivery to the application bundler.

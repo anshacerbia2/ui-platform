@@ -117,6 +117,9 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Exports match source entries
         run: node scripts/sync-exports.mjs --check
+      - name: Stylesheet gate rejects known violations
+        run: node packages/design-system/scripts/styles/check-css.mjs --self-test
+      # The build runs the stylesheet gate on every published stylesheet.
       - run: pnpm run build
       - name: Inspector rejects known violations
         run: node scripts/inspect-packages.mjs --self-test
@@ -128,6 +131,8 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
       - name: Packed token stylesheets in a browser
         run: node scripts/browser-tokens.mjs --packs artifacts/packages
+      - name: Packed components in a browser (layers, isolation, focus, forced colors)
+        run: node scripts/browser-components.mjs --packs artifacts/packages
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -1,7 +1,6 @@
 import { CollapsibleBaseRoot } from "@scnx/core-ui/components/collapsible-base";
 import type { AccordionRootProps } from "./types";
 import { cx } from "styled-system/css";
-import "./Accordion.scss";
 
 /**
  * Accordion - Root component.

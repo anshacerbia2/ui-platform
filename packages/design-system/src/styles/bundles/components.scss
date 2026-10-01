@@ -1,21 +1,35 @@
 // ============================================
-// COMPONENTS — SCSS SOURCE BUNDLE
+// AGGREGATE COMPONENT STYLESHEET SOURCE
 // ============================================
-// Consumer: @use '@scnx/system/styles/components'
-// (For SCSS users who want to customize before compile)
-//
-// Import order matches tsup compile order:
-// Atoms → Layouts → Organisms
+// Published as @scnx/system/styles/components.css by
+// scripts/styles/assemble.mjs, which appends the frozen Panda recipes in the
+// `recipes` layer. Every rule sits in a canonical layer (STD-GLB-FE-005 3.4);
+// the assembler rejects anything else, and every component stylesheet must
+// be listed here.
+@use "sass:meta";
 
-// Atoms
-@forward "../../components/atoms/button/Button.scss";
-@forward "../../components/atoms/transition/Transition.scss";
+@layer reset, tokens, base, components, recipes, utilities, overrides;
 
-// Layouts
-@forward "../../components/layouts/floating-layout/FloatingLayout.scss";
+@layer reset {
+  @include meta.load-css("styles/base/reset");
+}
 
-// Organisms
-@forward "../../components/organisms/navbar/Navbar.scss";
-@forward "../../components/organisms/navigation/Navigation.scss";
-@forward "../../components/organisms/sidebar/Sidebar.scss";
-@forward "../../components/organisms/code-showcase/CodeShowcase.scss";
+@layer base {
+  @include meta.load-css("styles/base/base");
+}
+
+// Atoms -> Layouts -> Organisms
+@layer components {
+  @include meta.load-css("components/atoms/button/Button");
+  @include meta.load-css("components/atoms/divider/Divider");
+  @include meta.load-css("components/atoms/transition/Transition");
+  @include meta.load-css("components/layouts/edge-layout/EdgeLayout");
+  @include meta.load-css("components/layouts/floating-layout/FloatingLayout");
+  @include meta.load-css("components/organisms/accordion/Accordion");
+  @include meta.load-css("components/organisms/code-select/CodeSelect");
+  @include meta.load-css("components/organisms/code-showcase/CodeShowcase");
+  @include meta.load-css("components/organisms/navbar/Navbar");
+  @include meta.load-css("components/organisms/navigation/Navigation");
+  @include meta.load-css("components/organisms/sidebar/Sidebar");
+  @include meta.load-css("components/organisms/table-of-contents/TableOfContents");
+}

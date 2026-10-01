@@ -11,8 +11,6 @@ import { NavigationText as Text } from "./NavigationText";
 import { NavigationBadge as Badge } from "./NavigationBadge";
 import { NavigationTrailingIcon as TrailingIcon } from "./NavigationTrailingIcon";
 
-import "./Navigation.scss";
-
 const NavigationCompound = (props: NavigationProps) => <Root {...props} />;
 NavigationCompound.displayName = "Navigation";
 

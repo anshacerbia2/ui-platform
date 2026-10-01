@@ -252,10 +252,10 @@ export default defineConfig({
   preflight: false,
   presets: [], // Disable Panda's default tokens and theme
   jsxFramework: "react",
-  include: [
-    "src/**/*.{js,jsx,ts,tsx}",
-    "../core-ui/src/**/*.{js,jsx,ts,tsx}"
-  ],
+  // Only the styled components are scan input: @scnx/core-ui stays
+  // style-engine agnostic (ADR-GLB-FE-013 5.3.6), and Panda's generated
+  // src/styled-system is output, not source.
+  include: ["src/components/**/*.{ts,tsx}"],
   exclude: [],
   theme: {
     tokens: {
