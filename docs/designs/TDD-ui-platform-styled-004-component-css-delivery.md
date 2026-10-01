@@ -14,6 +14,11 @@ doc_meta:
 
 # TDD-ui-platform-styled-004: Styled Components and CSS Delivery
 
+> **Revision pending exact-commit ratification.** The component-workshop
+> additions (proposed ADR-UIP-WKS-001) are pending under GDC-000 section 2.6.7;
+> the previously ratified revision remains binding until the authorized human
+> authority approves the exact commit containing them.
+
 ## Purpose
 
 Define the exact seam between headless behavior, styled wrappers, token usage,
@@ -182,6 +187,14 @@ not replace computed-style and behavior assertions.
 - Accessibility: visible `:focus-visible` outline, forced colors, contrast,
   reduced motion, disabled and selected states.
 - Visual: stable reference scenarios across declared browsers and densities.
+- Workshop (ADR-UIP-WKS-001): every supported component has Storybook stories
+  for its documented variants and states. The preview loads the built
+  `styles/components.css` and `tokens/css/<theme-id>.css`, never Sass or Panda
+  source, and wraps each story in the ThemeProvider with a control for every
+  theme ID and mode. Each story runs as a Vitest browser-mode test in Chromium
+  with axe-core at `a11y.test: "error"`; a story downgraded to the warning
+  level records the reason and its owner. Chromatic compares every story on each push and blocks merge on
+  an unreviewed visual change.
 - Negative: missing theme asset, duplicate component asset, global reset,
   unlayered rule, invalid variable, unauthorized Tier-1 value.
 
@@ -221,8 +234,9 @@ documented parts and assets become the v1 compatibility boundary.
 
 ## Traceability
 
-Architecture authority: SAD-003; ADR-GLB-FE-013 and ADR-UIP-PLT-001;
+Architecture authority: SAD-003; ADR-GLB-FE-013, ADR-UIP-PLT-001, and
+proposed ADR-UIP-WKS-001;
 STD-GLB-FE-003/005/008/009 and STD-UIP-STY-001/ENG-001. Lifecycle status in
 `scnehaux-architecture` controls authority. Execution:
-[PLAN](../../PLAN.md) P0 rows 5, 9–11. Related designs: tokens, theme runtime,
+[PLAN](../../PLAN.md) P0 rows 5, 9–11 and the component workshop. Related designs: tokens, theme runtime,
 primitives, and packaging.
