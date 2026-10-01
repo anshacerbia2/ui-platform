@@ -6,7 +6,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import * as csstree from "css-tree";
-import { COLOR, consumingProperty, parseTokenName, tokenType } from "./grammar.mjs";
+import { COLOR, DIMENSION, MOTION, TYPOGRAPHY, consumingProperty, parseTokenName, tokenType } from "./grammar.mjs";
 import { contrastRatio, inSrgbGamut, parseColor } from "./color.mjs";
 import { assertDeclarationSafe, toCss } from "./serialize.mjs";
 
@@ -185,6 +185,88 @@ export function callsiteFindings(files, emitted, packageDir) {
   return findings;
 }
 
+/** A resolved length, duration, or plain number in comparable base units. */
+export function measure(value) {
+  const match = /^(-?\d*\.?\d+)(rem|px|ms|s)?$/.exec(value.trim());
+  if (!match) return null;
+  const number = Number(match[1]);
+  const scale = { rem: 16, px: 1, ms: 1, s: 1000 }[match[2]] ?? 1;
+  const unit = { rem: "px", px: "px", ms: "ms", s: "ms" }[match[2]] ?? "";
+  return { value: number * scale, unit };
+}
+
+/**
+ * Direction of a cubic-bezier easing: "decelerating" when both control points
+ * lie on or above the diagonal (progress leads time, as in ease-out),
+ * "accelerating" when both lie on or below it (as in ease-in), otherwise null.
+ */
+export function easingDirection(value) {
+  const keywords = { "ease-in": "accelerating", "ease-out": "decelerating" };
+  if (keywords[value.trim()]) return keywords[value.trim()];
+  const match = /^cubic-bezier\(([^)]*)\)$/.exec(value.trim());
+  if (!match) return null;
+  const [x1, y1, x2, y2] = match[1].split(",").map(Number);
+  if ([x1, y1, x2, y2].some(Number.isNaN) || (x1 === y1 && x2 === y2)) return null;
+  if (y1 >= x1 && y2 >= x2) return "decelerating";
+  if (y1 <= x1 && y2 <= x2) return "accelerating";
+  return null;
+}
+
+/**
+ * Value relationships the standard requires of every theme and mode
+ * (STD-UIP-TKN-001 section 3): spacing relationships ascend from compact to
+ * comfortable, z-index layers strictly ascend, heading sizes descend, weights
+ * ascend, enter decelerates and exit accelerates, exit is no longer than
+ * enter, and feedback is the shortest duration.
+ * @param {Map<string, string>} resolved resolved CSS value by name
+ * @returns {{ token: string, message: string }[]}
+ */
+export function orderFindings(resolved) {
+  const findings = [];
+  const read = (name) => (resolved.has(name) ? measure(resolved.get(name)) : null);
+  const sequence = (names, direction, rule) => {
+    const present = names.filter((name) => resolved.has(name));
+    for (let i = 1; i < present.length; i++) {
+      const [a, b] = [read(present[i - 1]), read(present[i])];
+      if (!a || !b || a.unit !== b.unit) {
+        findings.push({ token: present[i], message: `${rule}: cannot compare with ${present[i - 1]}` });
+      } else if (direction === "ascend" ? !(b.value > a.value) : !(b.value < a.value)) {
+        findings.push({ token: present[i], message: `${rule}: ${resolved.get(present[i])} does not ${direction} from ${present[i - 1]} (${resolved.get(present[i - 1])})` });
+      }
+    }
+  };
+
+  for (const relationship of ["inset", "stack", "inline"]) {
+    const names = ["compact", "default", "comfortable"].map((d) => `--ds-dimension-spacing-${relationship}-${d}`);
+    sequence(names, "ascend", `spacing ${relationship} ascends compact -> comfortable`);
+  }
+  sequence(DIMENSION["z-index"].map((i) => `--ds-dimension-z-index-${i}`), "ascend", "z-index strictly ascends");
+  sequence(TYPOGRAPHY.composites.heading.map((v) => `--ds-typography-heading-${v}-font-size`), "descend", "heading sizes descend");
+  sequence(TYPOGRAPHY.weight.map((w) => `--ds-typography-weight-${w}`), "ascend", "weights ascend");
+
+  for (const [action, expected] of [["enter", "decelerating"], ["exit", "accelerating"]]) {
+    const name = `--ds-motion-${action}-easing`;
+    if (resolved.has(name) && easingDirection(resolved.get(name)) !== expected) {
+      findings.push({ token: name, message: `motion.${action}.easing must be ${expected}: ${resolved.get(name)}` });
+    }
+  }
+  const duration = (action) => read(`--ds-motion-${action}-duration`);
+  const [enter, exit] = [duration("enter"), duration("exit")];
+  if (enter && exit && exit.value > enter.value) {
+    findings.push({ token: "--ds-motion-exit-duration", message: "motion.exit.duration exceeds motion.enter.duration" });
+  }
+  const feedback = duration("feedback");
+  if (feedback) {
+    for (const action of MOTION.actions.filter((a) => a !== "feedback")) {
+      const other = duration(action);
+      if (other && !(feedback.value < other.value)) {
+        findings.push({ token: "--ds-motion-feedback-duration", message: `motion.feedback.duration is not shorter than motion.${action}.duration` });
+      }
+    }
+  }
+  return findings;
+}
+
 /**
  * Validate normalized themes.
  * @returns {{ findings: object[], stats: object }}
@@ -246,7 +328,7 @@ export function validate({ themes, config, packageDir }) {
           add({ category: "property-value", theme: themeId, mode, token: name, message: "no legal token type (TDD tokens TokenRecord.type)" });
           continue;
         }
-        const property = consumingProperty(name, type);
+        const property = consumingProperty(name, type, aliases);
         const invalid = missing.length === 0 && property ? validForProperty(property, value) : null;
         if (invalid) {
           add({ category: "property-value", theme: themeId, mode, token: name, message: `"${value}" is not a valid ${property}: ${invalid}` });
@@ -273,6 +355,10 @@ export function validate({ themes, config, packageDir }) {
         if (type === "fontFamily" && missing.length > 0) {
           add({ category: "font", theme: themeId, mode, token: name, message: "font stack does not resolve (see reference findings)" });
         }
+      }
+
+      for (const finding of orderFindings(resolved)) {
+        add({ category: "property-value", theme: themeId, mode, ...finding });
       }
 
       const canvas = parseColor(resolved.get(config.contrast.canvas) ?? "");

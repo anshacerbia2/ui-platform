@@ -7,11 +7,11 @@ import * as sass from "sass";
 import { beforeAll, describe, expect, it } from "vitest";
 import { loadConfig } from "./check.mjs";
 import { contrastRatio, parseColor } from "./color.mjs";
-import { parseTokenName, tokenType } from "./grammar.mjs";
+import { consumingProperty, parseTokenName, tokenType } from "./grammar.mjs";
 import { emit, serializeThemes, themeSelector } from "./emit.mjs";
 import { normalize } from "./normalize.mjs";
 import { assertDeclarationSafe, formatNumber, toCss } from "./serialize.mjs";
-import { contrastCases, fontFamilies, keySetFindings, stripComments, substitute, validForProperty } from "./validate.mjs";
+import { contrastCases, easingDirection, fontFamilies, keySetFindings, measure, orderFindings, stripComments, substitute, validForProperty } from "./validate.mjs";
 
 const packageDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const str = (text) => ({ kind: "string", text, quoted: false });
@@ -56,8 +56,25 @@ describe("grammar (STD-UIP-TKN-001)", () => {
     ["--ds-effect-shadow-overlay", "shadow"],
     ["--ds-motion-enter-duration", "duration"],
     ["--ds-motion-disclosure-easing", "cubicBezier"],
+    ["--ds-motion-feedback-duration", "duration"],
+    ["--ds-dimension-spacing-inset-compact", "dimension"],
+    ["--ds-dimension-spacing-page", "dimension"],
+    ["--ds-dimension-radius-pill", "dimension"],
+    ["--ds-dimension-border-width-strong", "dimension"],
+    ["--ds-dimension-z-index-modal", "number"],
+    ["--ds-typography-body-default-font-size", "dimension"],
+    ["--ds-typography-heading-xxlarge-letter-spacing", "dimension"],
+    ["--ds-typography-code-small-font-family", "fontFamily"],
+    ["--ds-typography-data-compact-line-height", "number"],
+    ["--ds-typography-weight-semibold", "fontWeight"],
   ])("accepts %s", (name, type) => {
     expect(parseTokenName(name)).toMatchObject({ valid: true, tier: 2, type });
+  });
+
+  it("maps hyphenated properties, intents, and members to dotted paths", () => {
+    expect(parseTokenName("--ds-dimension-spacing-inset-compact").path).toBe("dimension.spacing.inset-compact");
+    expect(parseTokenName("--ds-dimension-z-index-modal").path).toBe("dimension.z-index.modal");
+    expect(parseTokenName("--ds-typography-heading-xlarge-font-size").path).toBe("typography.heading.xlarge.font-size");
   });
 
   it.each([
@@ -71,8 +88,17 @@ describe("grammar (STD-UIP-TKN-001)", () => {
     ["--ds-shadow-lg", "not a canonical"],
     ["--ds-effect-shadow-sm", "effect names are"],
     ["--ds-motion-duration-fast", "motion names are"],
-    ["--ds-dimension-z-index-modal", "pending a ratified revision"],
-    ["--ds-typography-data-compact", "pending a ratified revision"],
+    ["--ds-spacing-md", "not a canonical"],
+    ["--ds-z-modal", "not a canonical"],
+    ["--ds-transition-hover", "not a canonical"],
+    ["--ds-dimension-z-modal", "dimension names are"],
+    ["--ds-dimension-spacing-md", "dimension names are"],
+    ["--ds-dimension-spacing-inset", "dimension names are"],
+    ["--ds-dimension-size-control-md", "dimension names are"],
+    ["--ds-typography-data-compact", "typography names are"],
+    ["--ds-typography-body-default-color", "typography names are"],
+    ["--ds-typography-heading-1-font-size", "typography names are"],
+    ["--ds-typography-weight-thin", "typography names are"],
   ])("rejects %s", (name, error) => {
     const parsed = parseTokenName(name);
     expect(parsed.valid).toBe(false);
@@ -85,10 +111,16 @@ describe("grammar (STD-UIP-TKN-001)", () => {
     expect(parseTokenName("--ds-button-surface-hover", aliases)).toMatchObject({ valid: true, tier: 3 });
   });
 
-  it("types baseline names so value checks still run during migration", () => {
-    expect(tokenType("--ds-spacing-md")).toBe("dimension");
-    expect(tokenType("--ds-z-modal")).toBe("number");
+  it("types only canonical names", () => {
+    expect(tokenType("--ds-spacing-md")).toBeNull();
     expect(tokenType("--ds-transition-hover")).toBeNull();
+  });
+
+  it("validates each value against the property its path names", () => {
+    expect(consumingProperty("--ds-dimension-z-index-modal", "number")).toBe("z-index");
+    expect(consumingProperty("--ds-dimension-radius-control", "dimension")).toBe("border-radius");
+    expect(consumingProperty("--ds-typography-label-small-letter-spacing", "dimension")).toBe("letter-spacing");
+    expect(consumingProperty("--ds-typography-body-default-line-height", "number")).toBe("line-height");
   });
 });
 
@@ -129,6 +161,53 @@ describe("references and values", () => {
   it("ignores commented-out references at callsites", () => {
     expect(stripComments("a: var(--ds-x); // b: var(--ds-y)\n/* var(--ds-z) */")).not.toMatch(/ds-[yz]/);
     expect(stripComments("background: url(https://example.com/a.png);")).toContain("https://");
+  });
+});
+
+describe("value relationships (STD-UIP-TKN-001 section 3)", () => {
+  const valid = () => new Map([
+    ["--ds-dimension-spacing-inset-compact", "0.5rem"],
+    ["--ds-dimension-spacing-inset-default", "1rem"],
+    ["--ds-dimension-spacing-inset-comfortable", "24px"],
+    ["--ds-dimension-z-index-base", "0"],
+    ["--ds-dimension-z-index-dropdown", "1000"],
+    ["--ds-typography-heading-xxlarge-font-size", "3rem"],
+    ["--ds-typography-heading-xlarge-font-size", "2.5rem"],
+    ["--ds-typography-weight-regular", "400"],
+    ["--ds-typography-weight-bold", "700"],
+    ["--ds-motion-enter-duration", "300ms"],
+    ["--ds-motion-enter-easing", "cubic-bezier(0, 0, 0.2, 1)"],
+    ["--ds-motion-exit-duration", "0.2s"],
+    ["--ds-motion-exit-easing", "cubic-bezier(0.4, 0, 1, 1)"],
+    ["--ds-motion-feedback-duration", "150ms"],
+  ]);
+
+  it("accepts ordered values across units", () => {
+    expect(measure("1.5rem")).toEqual({ value: 24, unit: "px" });
+    expect(measure("0.2s")).toEqual({ value: 200, unit: "ms" });
+    expect(orderFindings(valid())).toEqual([]);
+  });
+
+  it.each([
+    ["--ds-dimension-spacing-inset-default", "0.5rem", "spacing inset ascends"],
+    ["--ds-dimension-z-index-dropdown", "0", "z-index strictly ascends"],
+    ["--ds-typography-heading-xlarge-font-size", "4rem", "heading sizes descend"],
+    ["--ds-typography-weight-bold", "300", "weights ascend"],
+    ["--ds-motion-exit-duration", "400ms", "exceeds motion.enter.duration"],
+    ["--ds-motion-feedback-duration", "200ms", "not shorter than motion.exit.duration"],
+    ["--ds-motion-enter-easing", "cubic-bezier(0.4, 0, 1, 1)", "must be decelerating"],
+    ["--ds-motion-exit-easing", "cubic-bezier(0.4, 0, 0.2, 1)", "must be accelerating"],
+  ])("rejects %s = %s", (name, value, message) => {
+    const values = valid();
+    values.set(name, value);
+    expect(orderFindings(values).map((f) => f.message).join("\n")).toContain(message);
+  });
+
+  it("classifies easing curves by their control points", () => {
+    expect(easingDirection("cubic-bezier(0, 0, 0.2, 1)")).toBe("decelerating");
+    expect(easingDirection("ease-in")).toBe("accelerating");
+    expect(easingDirection("cubic-bezier(0.4, 0, 0.2, 1)")).toBeNull();
+    expect(easingDirection("linear")).toBeNull();
   });
 });
 

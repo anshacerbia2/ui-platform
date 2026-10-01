@@ -44,9 +44,9 @@ const PROPERTY = {
   strokeStyle: "border-style",
 };
 const propertyFor = (token) =>
-  /-z-index-|^--ds-z-/.test(token.cssName) ? "z-index"
-    : /-line-height-/.test(token.cssName) ? "line-height"
-    : /-letter-spacing-/.test(token.cssName) ? "letter-spacing"
+  /^--ds-dimension-z-index-/.test(token.cssName) ? "z-index"
+    : /-line-height$/.test(token.cssName) ? "line-height"
+    : /-letter-spacing$/.test(token.cssName) ? "letter-spacing"
     : PROPERTY[token.type] ?? null;
 
 const cases = themes.map((theme) => {
@@ -65,7 +65,7 @@ const server = http.createServer((request, response) => {
   if (url === "/") {
     const links = cases.map((c) => `<link rel="stylesheet" href="${c.css}">`).join("");
     const roots = cases
-      .flatMap((c) => c.modes.map((mode) => `<div data-scnx-theme="${c.theme}" data-scnx-resolved-mode="${mode}"><p style="font-family: var(--ds-font-family-base)">Aa</p></div>`))
+      .flatMap((c) => c.modes.map((mode) => `<div data-scnx-theme="${c.theme}" data-scnx-resolved-mode="${mode}"><p style="font-family: var(--ds-typography-body-default-font-family)">Aa</p></div>`))
       .join("");
     response.writeHead(200, { "content-type": "text/html" }).end(`<!doctype html><html><head>${links}</head><body>${roots}</body></html>`);
     return;

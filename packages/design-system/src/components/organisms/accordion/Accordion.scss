@@ -4,11 +4,11 @@
   --accordion-bg: #{$color-surface-canvas};
   --accordion-border-color: #{$color-border-default};
   --accordion-focus-ring: #{$color-ring-focus};
-  --accordion-item-border-radius: #{$radius-md};
+  --accordion-item-border-radius: #{$dimension-radius-container};
 
   display: flex;
   flex-direction: column;
-  gap: $spacing-xs;
+  gap: $dimension-spacing-stack-default;
   width: 100%;
 
   // Variant: single border (stacked)
@@ -47,12 +47,12 @@
 
   &__trigger {
     width: 100%;
-    padding: $spacing-md 1.25rem;
+    padding: $dimension-spacing-inset-default 1.25rem;
     background-color: $color-surface-default;
     border: none;
     text-align: left;
-    font-size: $font-size-md;
-    font-weight: 500;
+    @include typography(body, default);
+    font-weight: $typography-weight-medium;
     color: $color-text-primary;
     cursor: pointer;
     display: flex;
@@ -76,14 +76,13 @@
   &__content {
     background-color: var(--accordion-bg);
     color: $color-text-secondary;
-    font-size: $font-size-sm;
-    line-height: $line-height-relaxed;
+    @include typography(body, small);
     transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
     
     // Internal wrapper for padding to allow smooth height transitions
     // without padding-box calculations interfering
     &-inner {
-      padding: $spacing-md 1.25rem;
+      padding: $dimension-spacing-inset-default 1.25rem;
       border-top: 1px solid var(--accordion-border-color);
     }
   }

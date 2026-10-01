@@ -4,42 +4,41 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  font-family: tokens.$font-family-base;
+  font-family: tokens.typography-member(body, default, font-family);
 
   &__label {
     // text-transform: uppercase;
-    font-size: tokens.$font-size-sm;
-    font-weight: tokens.$font-weight-semibold;
-    letter-spacing: tokens.$letter-spacing-wide;
+    @include tokens.typography(label, default);
+    font-weight: tokens.$typography-weight-semibold;
+    letter-spacing: tokens.typography-member(label, small, letter-spacing);
     color: tokens.$color-text-primary;
-    margin-bottom: tokens.$spacing-xs;
+    margin-bottom: tokens.$dimension-spacing-stack-default;
   }
 
   &__list {
     list-style: none;
     padding: 0;
     margin: 0;
-    margin-top: tokens.$spacing-xs;
+    margin-top: tokens.$dimension-spacing-stack-default;
     position: relative;
     
     // Nested lists receive automatic indentation margin
     .scnx-toc__item & {
-      margin-left: tokens.$spacing-md;
+      margin-left: tokens.$dimension-spacing-inline-comfortable;
     }
   }
 
   &__item {
     position: relative;
-    margin-bottom: tokens.$spacing-xs;
+    margin-bottom: tokens.$dimension-spacing-stack-default;
   }
 
   &__link {
       text-decoration: none;
       display: block;
-      font-size: tokens.$font-size-sm;
+      @include tokens.typography(body, small);
       color: tokens.$color-text-secondary;
-      transition: tokens.$transition-expand;
-      line-height: tokens.$line-height-tight;
+      transition: color tokens.$motion-feedback-duration tokens.$motion-feedback-easing;
       position: relative;
 
       &:hover {

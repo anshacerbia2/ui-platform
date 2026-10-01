@@ -26,12 +26,11 @@ $achromatic-light-token: (
     neutral: map.get(default.get-color-tokens("light"), neutral),
     primary: default.generate-scheme-matrix("neutral", "light")
   ),
-  radius: (
-    sm: 0.25rem,
-    md: 0.5rem,
-    lg: 0.75rem,
-    xl: 1rem,
-  ),
+  dimension: (radius: (
+    element: 0.25rem,
+    control: 0.5rem,
+    container: 0.75rem,
+  )),
   // Achromatic elevation, on the public shadow names (STD-UIP-TKN-001).
   effect: (shadow: (
     low: (0 1px 3px var(--ds-color-neutral-shadow-subtle-default)),

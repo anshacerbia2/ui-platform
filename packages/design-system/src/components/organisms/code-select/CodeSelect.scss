@@ -18,7 +18,7 @@
     align-items: center;
     background-color: var(--select-bg);
     border: 1px solid var(--select-border);
-    border-radius: var(--ds-radius-md);
+    border-radius: #{$dimension-radius-control};
     padding: 4px 10px;
     width: 100%;
     cursor: pointer;
@@ -32,11 +32,10 @@
   &__input {
     background: transparent;
     border: none;
-    font-size: var(--ds-font-size-2xs);
+    @include typography(label, small);
     color: var(--select-text);
     width: 100%;
     outline: none;
-    font-family: inherit;
     
     &::placeholder {
       color: var(--select-text-muted);
@@ -50,7 +49,7 @@
     pointer-events: none;
     display: flex;
     align-items: center;
-    font-size: var(--ds-font-size-xs);
+    @include typography(label, small);
     color: var(--select-text);
     white-space: nowrap;
     overflow: hidden;
@@ -58,7 +57,7 @@
   }
 
   &__icon {
-    margin-right: var(--ds-spacing-2);
+    margin-right: #{$dimension-spacing-inline-default};
     display: flex;
     align-items: center;
   }
@@ -79,10 +78,10 @@
     top: 100%;
     left: 0;
     right: 0;
-    margin-top: var(--ds-spacing-2);
+    margin-top: #{$dimension-spacing-stack-default};
     background-color: var(--select-dropdown-bg);
     border: 1px solid var(--select-border);
-    border-radius: var(--ds-radius-md);
+    border-radius: #{$dimension-radius-control};
     box-shadow: var(--ds-effect-shadow-overlay);
     z-index: 1000;
     max-height: 200px;
@@ -90,8 +89,8 @@
   }
 
   &__option {
-    padding: var(--ds-spacing-2) var(--ds-spacing-3);
-    font-size: var(--ds-font-size-xs);
+    padding: #{$dimension-spacing-inset-compact} #{$dimension-spacing-inset-default};
+    @include typography(label, small);
     color: var(--select-text);
     cursor: pointer;
     transition: background 0.2s ease;

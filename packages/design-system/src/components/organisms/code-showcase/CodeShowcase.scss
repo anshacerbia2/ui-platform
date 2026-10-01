@@ -10,7 +10,7 @@
   --showcase-preview-bg: #{$color-surface-default};
   --showcase-content-bg: #{$color-surface-sunken};
   --showcase-content-text: #{$color-text-secondary};
-  --showcase-radius: #{$radius-lg};
+  --showcase-radius: #{$dimension-radius-container};
   
   display: flex;
   flex-direction: column;
@@ -19,12 +19,12 @@
   border: 1px solid var(--showcase-border);
   border-radius: var(--showcase-radius);
   background-color: var(--showcase-bg);
-  box-shadow: $shadow-low;
+  box-shadow: $effect-shadow-low;
   transition: box-shadow 0.3s ease;
   overflow: hidden;
 
   &:hover {
-    box-shadow: $shadow-medium;
+    box-shadow: $effect-shadow-medium;
   }
 
   // Principal-grade internal border management
@@ -33,7 +33,7 @@
   }
 
   &__preview {
-    padding: $spacing-xl;
+    padding: $dimension-spacing-inset-comfortable;
     background-color: var(--showcase-preview-bg);
     background-image: conic-gradient(
       #{$color-surface-raised} 25%,
@@ -64,7 +64,7 @@
     display: flex;
     align-items: center;
     position: relative;
-    font-family: $font-family-base;
+    font-family: typography-member(body, default, font-family);
   }
 
   &__marker {
@@ -73,7 +73,7 @@
     bottom: 0;
     left: 0;
     width: 0;
-    border-radius: $radius-sm;
+    border-radius: $dimension-radius-element;
     background-color: var(--showcase-tab-active-bg); 
     transition: left 0.2s ease, width 0.2s ease;
     z-index: 1;
@@ -126,7 +126,7 @@
     align-items: center;
     justify-content: center;
     padding: 0.35em;
-    border-radius: $radius-sm;
+    border-radius: $dimension-radius-element;
     transition: all 0.2s ease;
 
     &:hover {
@@ -144,8 +144,7 @@
   &__code-inner {
     background-color: var(--showcase-content-bg);
     color: var(--showcase-content-text);
-    font-family: $font-family-mono;
-    font-size: $font-size-sm;
+    @include typography(code, default);
     overflow-x: auto;
 
     pre, code {
@@ -160,7 +159,7 @@
     }
 
     pre {
-      padding: $spacing-md $spacing-lg !important;
+      padding: $dimension-spacing-inset-default $dimension-spacing-inset-comfortable !important;
     }
 
     // Minimalist 3px scrollbar

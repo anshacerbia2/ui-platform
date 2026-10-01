@@ -27,7 +27,9 @@ export function useTableOfContentsTracker({
 
   const [navHeight, setNavHeight] = useState(explicitNavbarOffset ?? 0);
 
-  // Sync token dynamically from CSS on mount & resize
+  // Without an explicit offset, use the document's scroll-padding-top: the
+  // CSS-standard declaration of a fixed header's height (CSS Scroll Snap 1).
+  // A headless primitive reads no design token.
   useEffect(() => {
     if (explicitNavbarOffset !== undefined) {
       setNavHeight(explicitNavbarOffset);
@@ -35,29 +37,9 @@ export function useTableOfContentsTracker({
     }
 
     const updateNavHeight = () => {
-      const rawToken = getComputedStyle(document.documentElement)
-        .getPropertyValue("--ds-layout-navbar-height")
-        .trim();
-      
-      if (!rawToken) {
-        setNavHeight(0);
-        return;
-      }
-
-      // Robust Unit Parsing (Next.js/Enterprise standard)
-      let parsedValue = parseFloat(rawToken);
-      if (isNaN(parsedValue)) {
-        setNavHeight(0);
-        return;
-      }
-
-      if (rawToken.endsWith("rem") || rawToken.endsWith("em")) {
-        // Measure root font size for accurate conversion, fallback to 16
-        const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-        parsedValue *= rootFontSize;
-      }
-      
-      setNavHeight(parsedValue);
+      // Computed scroll-padding is either "auto" or a resolved length in px.
+      const padding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop);
+      setNavHeight(Number.isNaN(padding) ? 0 : padding);
     };
 
     updateNavHeight();

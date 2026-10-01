@@ -8,7 +8,7 @@ $achromatic-contract: (
     neutral: contract.$neutral-contract,
     primary: contract.$scheme-contract
   ),
-  radius: (sm, md, lg, xl),
+  dimension: (radius: (element, control, container)),
   effect: (
     shadow: (low, medium, high, overlay)
   )

@@ -1,8 +1,9 @@
 @use "styles/abstracts/variables" as *;
+@use "styles/abstracts/geometry";
 
 .scnx-edge-layout {
-  --layout-navbar-height: var(--ds-layout-navbar-height);
-  --layout-sidebar-width: var(--ds-layout-sidebar-width);
+  --layout-navbar-height: #{geometry.$navbar-height};
+  --layout-sidebar-width: #{geometry.$sidebar-width};
 
   display: grid;
   grid-template-columns: min-content 1fr;

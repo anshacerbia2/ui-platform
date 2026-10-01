@@ -1,8 +1,9 @@
 @use "styles/abstracts/variables" as *;
+@use "styles/abstracts/geometry";
 
 .scnx-navbar {
-  --navbar-height: var(--layout-navbar-height, var(--ds-layout-navbar-height));
-  --navbar-sidebar-width: var(--layout-sidebar-width, var(--ds-layout-sidebar-width));
+  --navbar-height: var(--layout-navbar-height, #{geometry.$navbar-height});
+  --navbar-sidebar-width: var(--layout-sidebar-width, #{geometry.$sidebar-width});
 
   background-color: #{$color-surface-default};
   
@@ -20,9 +21,9 @@
   &__end {
     display: flex;
     align-items: center;
-    gap: $spacing-md;
+    gap: $dimension-spacing-inline-comfortable;
     height: 100%;
-    padding: 0 $spacing-lg; // Add padding internally
+    padding: 0 $dimension-spacing-page; // Add padding internally
   }
 
   &__start {

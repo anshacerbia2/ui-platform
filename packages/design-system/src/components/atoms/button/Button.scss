@@ -5,13 +5,15 @@
   align-items: center;
   justify-content: center;
   padding: 0.6rem 1.25rem;
-  border-radius: $radius-md;
+  border-radius: $dimension-radius-control;
   border: 1px solid transparent;
   cursor: pointer;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
-  transition: $transition-hover;
-  gap: $spacing-xs;
+  @include typography(label, default);
+  font-weight: $typography-weight-semibold;
+  transition-property: background-color, border-color, box-shadow, color;
+  transition-duration: $motion-feedback-duration;
+  transition-timing-function: $motion-feedback-easing;
+  gap: $dimension-spacing-inline-default;
 
   &[data-variant="primary"] {
     background: $color-primary-default;
@@ -19,7 +21,7 @@
 
     &:hover {
       background: $color-primary-hover;
-      box-shadow: $shadow-low;
+      box-shadow: $effect-shadow-low;
     }
 
     &:active {

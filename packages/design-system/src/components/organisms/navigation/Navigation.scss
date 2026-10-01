@@ -20,7 +20,7 @@
   &__group {
     display: flex;
     flex-direction: column;
-    gap: $spacing-2xs;
+    gap: $dimension-spacing-stack-compact;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -30,27 +30,26 @@
     > li {
       list-style: none;
       margin: 0;
-      padding: 0 calc($spacing-sm + $spacing-3xs);
+      padding: 0 $dimension-spacing-inset-default;
 
       &.scnx-navigation__group-header {
         display: block; // Kembali ke block biasa
         // width: max-content;      // Paksa blok ini segede teksnya walau kontainer ngecil!
         min-width: max-content; // Tolak kompromi Flexbox
-        font-size: $font-size-xs;
-        line-height: normal;
-        font-weight: $font-weight-bold;
+        @include typography(label, small);
+        font-weight: $typography-weight-bold;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         color: var(--nav-group-header-color);
-        padding-block: $spacing-xs;
+        padding-block: $dimension-spacing-inset-compact;
         // white-space: nowrap !important; // Membiarkan teks meluber lurus tanpa wrap
         // word-break: keep-all !important;
         transition:
-          opacity $duration-normal $easing-standard,
-          visibility $duration-normal;
+          opacity $motion-disclosure-duration $motion-disclosure-easing,
+          visibility $motion-disclosure-duration;
 
         &:not(:first-child) {
-          margin-top: $spacing-md;
+          margin-top: $dimension-spacing-stack-comfortable;
         }
       }
 
@@ -61,7 +60,7 @@
       // Nested submenu group (sibling to nav-item within li)
       .scnx-navigation__group {
         height: 0;
-        margin-left: $spacing-md;
+        margin-left: $dimension-spacing-inline-comfortable;
         // overflow: hidden;
       }
 
@@ -69,7 +68,7 @@
         padding: 0;
 
         &:first-child {
-          margin-top: $spacing-2xs;
+          margin-top: $dimension-spacing-stack-compact;
         }
       }
     }
@@ -79,9 +78,9 @@
   &__item {
     display: flex;
     align-items: center;
-    padding: calc($spacing-2xs + $spacing-3xs) 0;
-    border-radius: $radius-md;
-    font-size: $font-size-sm;
+    padding: $dimension-spacing-inset-compact 0;
+    border-radius: $dimension-radius-control;
+    @include typography(body, small);
     // transition: margin-bottom $transition-base,
     //   background-color $transition-base;
     cursor: pointer;
@@ -89,8 +88,8 @@
     &::before {
       content: "";
       height: 1rem;
-      border-left: $stroke-medium solid transparent;
-      border-radius: $stroke-medium;
+      border-left: $dimension-border-width-strong solid transparent;
+      border-radius: $dimension-radius-element;
       // transition: border-left-color $transition-base;
     }
 
@@ -104,13 +103,13 @@
       position: relative;
       background-color: #{$color-primary-subtle};
       color: #{$color-primary-default};
-      font-weight: $font-weight-semibold;
+      font-weight: $typography-weight-semibold;
 
       &::before {
         // ⚡ ACCENT COLOR IMPLEMENTATION
         // We inject a local variable that grabs a high-contrast color (Electric Blue) from Tier 1,
         // intentionally separating this 'Focus Indicator' from the brand color (Purple/Black).
-        border-left: $stroke-medium solid
+        border-left: $dimension-border-width-strong solid
           var(--nav-item-active-borded-color);
       }
     }
@@ -133,7 +132,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding-left: calc($spacing-md - $stroke-medium);
+    padding-left: calc(#{$dimension-spacing-inset-default} - #{$dimension-border-width-strong});
     line-height: 1;
 
     svg {
@@ -148,8 +147,8 @@
     flex: 1;
     display: flex;
     align-items: center;
-    gap: $spacing-md;
-    padding-inline: $spacing-md;
+    gap: $dimension-spacing-inline-comfortable;
+    padding-inline: $dimension-spacing-inset-default;
     overflow: hidden;
   }
 
@@ -167,10 +166,10 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: $spacing-2xs $spacing-xs;
-    border-radius: $radius-full;
-    font-size: $font-size-xs;
-    font-weight: $font-weight-semibold;
+    padding: $dimension-spacing-stack-compact $dimension-spacing-inline-default;
+    border-radius: $dimension-radius-pill;
+    @include typography(label, small);
+    font-weight: $typography-weight-semibold;
     color: inherit;
     line-height: 1;
   }

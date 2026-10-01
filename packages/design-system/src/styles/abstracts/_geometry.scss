@@ -1,0 +1,13 @@
+// ============================================
+// COMPONENT GEOMETRY — documented structural values
+// ============================================
+// Component geometry is not a token (STD-UIP-TKN-001 section 3, "Values that
+// are not Tier-2 tokens"). These are build-time structural values of the
+// application-shell components (STD-UIP-TKN-002 section 3.1): they have no
+// --ds-* name and do not vary by theme or mode.
+
+/// Sidebar width: fits navigation labels at the shell's data density.
+$sidebar-width: 17.5rem;
+
+/// Navigation-bar height; the sticky sidebar starts below it.
+$navbar-height: 4rem;

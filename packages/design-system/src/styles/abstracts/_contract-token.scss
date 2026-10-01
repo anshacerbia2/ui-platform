@@ -128,16 +128,16 @@ $core: (
   opacity: (0, 4, 8, 12, 16, 24, 38, 60, 100),
   shadow: (none, sm, md, lg, xl, inner),
   motion: (
-    duration-fast,
-    duration-base,
-    duration-slow,
-    duration-natural,
+    duration-150,
+    duration-200,
+    duration-300,
+    duration-400,
     easing-standard,
     easing-in,
     easing-out,
     easing-sharp
   ),
-  z-index: (0, 10, 20, 30, 40, 50, 60),
+  z-index: (0, 10, 20, 30, 40, 50, 60, 70),
   // ==========================================
   // 5. TYPOGRAPHY
   // ==========================================
@@ -148,7 +148,6 @@ $core: (
   // ==========================================
   // 6. LAYOUT & MISC
   // ==========================================
-  layout: (sidebar-width, navbar-height),
   breakpoint: (xs, sm, md, lg, xl, 2xl),
   container-width: (prose, base, wide, fluid)
 );
@@ -204,6 +203,9 @@ $neutral-contract: map.set($scheme-contract, surface, map.merge(map.get($scheme-
   sunken: (default: ())
 )));
 
+$typography-members: (font-family, font-size, font-weight, line-height, letter-spacing);
+$motion-members: (duration, easing);
+
 $system: (
   color: (
     neutral: $neutral-contract,
@@ -214,73 +216,24 @@ $system: (
     danger: $scheme-contract
   ),
 
-  // Dimension Semantic Families
-  spacing: (
-    '3xs',
-    '2xs',
-    'xs',
-    'sm',
-    'md',
-    'lg',
-    'xl',
-    '2xl',
-    '3xl',
-    '4xl',
-  ),
-
-  size: (
-    control-xs,
-    control-sm,
-    control-md,
-    control-lg,
-    control-xl,
-    icon-xs,
-    icon-sm,
-    icon-md,
-    icon-lg,
-    avatar-xs,
-    avatar-sm,
-    avatar-md,
-    avatar-lg,
-  ),
-
-  radius: (
-    none,
-    sm,
-    md,
-    lg,
-    xl,
-    '2xl',
-    full,
-  ),
-
-  stroke: (
-    none,
-    hairline,
-    thin,
-    default,
-    medium,
-    thick,
-  ),
-
-  opacity: (
-    disabled,
-    subtle,
-    muted,
-    overlay,
-    scrim,
-  ),
-
-  z: (
-    base,
-    sticky,
-    dropdown,
-    popover,
-    toast,
-    tooltip,
-    overlay,
-    modal,
-    max,
+  // Dimension vocabulary (STD-UIP-TKN-001 section 3, Dimension vocabulary).
+  dimension: (
+    spacing: (
+      inset-compact,
+      inset-default,
+      inset-comfortable,
+      stack-compact,
+      stack-default,
+      stack-comfortable,
+      inline-compact,
+      inline-default,
+      inline-comfortable,
+      section,
+      page,
+    ),
+    radius: (element, control, container, pill),
+    border-width: (default, strong),
+    z-index: (base, dropdown, sticky, overlay, modal, popover, tooltip, toast),
   ),
 
   effect: (
@@ -293,86 +246,32 @@ $system: (
     ),
   ),
 
-  // Typography Semantic Families
-  font-family: (
-    base,
-    heading,
-    mono,
-    brand,
+  // Typography composites have exactly five members (STD-UIP-TKN-001,
+  // Semantic Reading Density); typography.weight is the single-member family.
+  typography: (
+    body: (large: $typography-members, default: $typography-members, small: $typography-members),
+    label: (default: $typography-members, small: $typography-members),
+    heading: (
+      xxlarge: $typography-members,
+      xlarge: $typography-members,
+      large: $typography-members,
+      medium: $typography-members,
+      small: $typography-members,
+      xsmall: $typography-members,
+    ),
+    code: (default: $typography-members, small: $typography-members),
+    data: (compact: $typography-members),
+    article: (readable: $typography-members),
+    metric: (display: $typography-members),
+    weight: (regular, medium, semibold, bold),
   ),
 
-  font-size: (
-    xs,
-    sm,
-    md,
-    lg,
-    xl,
-    '2xl',
-    '3xl',
-    '4xl',
-  ),
-
-  font-weight: (
-    regular,
-    medium,
-    semibold,
-    bold,
-  ),
-
-  line-height: (
-    tight,
-    normal,
-    relaxed,
-  ),
-
-  letter-spacing: (
-    tight,
-    normal,
-    wide,
-  ),
-
-  // Motion Semantic Families
-  duration: (
-    instant,
-    fast,
-    normal,
-    slow,
-    slower,
-  ),
-
-  easing: (
-    standard,
-    enter,
-    exit,
-    emphasized,
-  ),
-
-  transition: (
-    hover,
-    focus,
-    expand,
-    modal,
-    toast,
-  ),
-
-  layout: (
-    sidebar-width,
-    navbar-height,
-  ),
-
-  breakpoint: (
-    xs,
-    sm,
-    md,
-    lg,
-    xl,
-    '2xl',
-  ),
-
-  container: (
-    prose,
-    base,
-    wide,
-    fluid,
+  // Semantic Motion Language: one duration and one easing per action.
+  motion: (
+    enter: $motion-members,
+    exit: $motion-members,
+    attention: $motion-members,
+    disclosure: $motion-members,
+    feedback: $motion-members,
   ),
 );

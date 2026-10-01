@@ -13,7 +13,7 @@ import { Flex } from "../flex";
  * ```tsx
  * import { Stack } from "@scnx/system/components/stack";
  * 
- * <Stack gap="4">
+ * <Stack gap="comfortable">
  *   <input type="text" />
  *   <button>Submit</button>
  * </Stack>

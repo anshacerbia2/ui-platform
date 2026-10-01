@@ -22,7 +22,10 @@ export type TableOfContentsBaseRootProps = {
   items?: TableOfContentsItemState[];
   /** Margin applied above the active section interceptor (gap). */
   scrollOffsetExtended?: number;
-  /** Custom offset for navbar height or other top fixed elements */
+  /**
+   * Height in px of a fixed header above the content. Defaults to the
+   * document's computed `scroll-padding-top`, or 0 when that is `auto`.
+   */
   navbarOffset?: number;
   /** Initial active section ID */
   initialActiveId?: string;
