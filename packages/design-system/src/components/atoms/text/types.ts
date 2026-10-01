@@ -7,9 +7,9 @@ import type { ElementType } from "react";
 // src/components/recipe-variants.test.ts; published declarations must not
 // depend on generated Panda types.
 export type TextVariants = {
-  /** @default "body-base" */
+  /** @default "body-default" */
   variant?: "body-large" | "body-default" | "body-small" | "label-default" | "label-small";
-  /** @default "regular" */
+  /** Overrides the weight the variant's composite carries. */
   weight?: "bold" | "semibold" | "medium" | "regular";
   /** @default "left" */
   align?: "left" | "center" | "right";

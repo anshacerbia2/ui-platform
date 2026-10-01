@@ -130,6 +130,10 @@ export function inspectPackage(manifest, files, read) {
     }
     if (!reachable.has(file) && !ALWAYS_PACKED.test(file)) failures.push(`${name}: undeclared file ${file}`);
     if (file.startsWith("src/")) failures.push(`${name}: source file ${file} is packed`);
+    // The component workshop never ships (ADR-UIP-WKS-001; TDD packaging).
+    if (/(^|\/)(\.storybook|storybook-static)\/|\.stories\.[cm]?[jt]sx?$/.test(file)) {
+      failures.push(`${name}: workshop file ${file} is packed`);
+    }
   }
 
   return failures;
@@ -166,6 +170,7 @@ function selfTest() {
     ["missing LICENSE file", run(good, withoutLicenseFile), "no LICENSE file"],
     ["undeclared file", run(good, { ...goodFiles, "dist/extra.css": "a{}" }), "undeclared file dist/extra.css"],
     ["packed source", run(good, { ...goodFiles, "src/a.ts": "" }), "source file src/a.ts"],
+    ["packed story", run(good, { ...goodFiles, "dist/a.stories.js": "" }), "workshop file dist/a.stories.js"],
     ["absolute source-map path", run(good, { ...goodFiles, "dist/a.js.map": '{"sources":["C:/Users/me/a.ts"]}' }), "leaks absolute source path"],
     ["missing chunk", run(good, withoutChunk), 'references missing "./chunk.js"'],
     [

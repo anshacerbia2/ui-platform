@@ -100,7 +100,8 @@
     &[data-active="true"] {
       position: relative;
       background-color: $color-primary-subtle;
-      color: $color-primary-default;
+      // Text color, not the solid surface color: WCAG 2.2 SC 1.4.3.
+      color: $color-primary-text;
       font-weight: $typography-weight-semibold;
 
       &::before {

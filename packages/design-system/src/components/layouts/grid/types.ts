@@ -6,7 +6,7 @@ import type { GridBaseProps } from "@scnx/core-ui/components/grid-base";
 export type GridVariants = {
   /** @default "1" */
   columns?: "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11" | "12";
-  /** @default "0" */
+  /** @default "none" */
   gap?: "none" | "compact" | "default" | "comfortable" | "section";
 };
 

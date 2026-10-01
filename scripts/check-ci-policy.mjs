@@ -83,13 +83,17 @@ function check() {
     }
     failures.push(...vitestFindings(config, readFileSync(config, "utf8")));
   }
+  // The component workshop's story tests (ADR-UIP-WKS-001) run from the root.
+  const workshop = "vitest.storybook.config.ts";
+  if (existsSync(workshop)) failures.push(...vitestFindings(workshop, readFileSync(workshop, "utf8")));
+  const configs = packages.length + (existsSync(workshop) ? 1 : 0);
 
   if (failures.length > 0) {
     console.error(failures.join("\n"));
     process.exit(1);
   }
   console.log(
-    `CI policy passed: ${tracked.length} tracked files, ${packages.length} Vitest configs with retry: 0`,
+    `CI policy passed: ${tracked.length} tracked files, ${configs} Vitest configs with retry: 0`,
   );
 }
 

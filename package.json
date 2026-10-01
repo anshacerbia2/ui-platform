@@ -6,9 +6,25 @@
   "scripts": {
     "build": "pnpm --filter @scnx/core-ui build && pnpm --filter @scnx/system build",
     "typecheck": "pnpm --filter @scnx/core-ui exec tsc --noEmit && pnpm --filter @scnx/core-ui build && pnpm --filter @scnx/system exec tsc --noEmit",
-    "test:source": "pnpm --filter @scnx/core-ui test:run && pnpm --filter @scnx/system test"
+    "test:source": "pnpm --filter @scnx/core-ui test:run && pnpm --filter @scnx/system test",
+    "storybook": "pnpm run build && storybook dev -p 6006",
+    "build-storybook": "pnpm run build && storybook build -o storybook-static",
+    "test:stories": "vitest run --config vitest.storybook.config.ts"
   },
   "devDependencies": {
-    "playwright": "^1.63.0"
+    "@storybook/addon-a11y": "^10.6.1",
+    "@storybook/addon-docs": "^10.6.1",
+    "@storybook/addon-vitest": "^10.6.1",
+    "@storybook/react-vite": "^10.6.1",
+    "@types/react": "catalog:",
+    "@vitest/browser": "4.1.11",
+    "@vitest/browser-playwright": "4.1.11",
+    "playwright": "^1.63.0",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "storybook": "^10.6.1",
+    "typescript": "catalog:",
+    "vite": "^8.3.1",
+    "vitest": "catalog:"
   }
 }
