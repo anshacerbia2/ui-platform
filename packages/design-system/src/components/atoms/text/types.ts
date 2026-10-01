@@ -8,7 +8,7 @@ import type { ElementType } from "react";
 // depend on generated Panda types.
 export type TextVariants = {
   /** @default "body-base" */
-  variant?: "body-lg" | "body-base" | "body-sm" | "body-xs" | "label-sm";
+  variant?: "body-large" | "body-default" | "body-small" | "label-default" | "label-small";
   /** @default "regular" */
   weight?: "bold" | "semibold" | "medium" | "regular";
   /** @default "left" */

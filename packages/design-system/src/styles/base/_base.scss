@@ -5,8 +5,7 @@
     min-height: 100vh;
     background-color: $color-surface-canvas;
     color: $color-text-primary;
-    font-family: $font-family-base;
-    line-height: $line-height-normal;
+    @include typography(body, default);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -24,7 +23,7 @@
   }
 
   code, pre, kbd, samp {
-    font-family: $font-family-mono;
+    font-family: typography-member(code, default, font-family);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

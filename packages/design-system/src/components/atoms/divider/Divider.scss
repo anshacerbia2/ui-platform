@@ -8,7 +8,7 @@
   // Horizontal Orientation (Default)
   &[data-orientation="horizontal"] {
     width: 100%;
-    margin: $spacing-md 0;
+    margin: $dimension-spacing-stack-comfortable 0;
     
     &[data-weight="thin"]   { height: 0.5px; }
     &[data-weight="normal"] { height: 1px; }
@@ -19,7 +19,7 @@
   // Vertical Orientation
   &[data-orientation="vertical"] {
     height: 100%;
-    margin: 0 $spacing-md;
+    margin: 0 $dimension-spacing-inline-comfortable;
 
     &[data-weight="thin"]   { width: 0.5px; }
     &[data-weight="normal"] { width: 1px; }

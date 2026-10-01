@@ -273,76 +273,56 @@ $solid-contrast-target: 4.6;
   );
 }
 
+/// One typography composite: the five members of STD-UIP-TKN-001.
+@function -type($family, $size, $weight, $line-height, $letter-spacing) {
+  @return (
+    font-family: map.get(core.$font-family, $family),
+    font-size: map.get(core.$size, $size),
+    font-weight: map.get(core.$font-weight, $weight),
+    line-height: map.get(core.$line-height, $line-height),
+    letter-spacing: map.get(core.$letter-spacing, $letter-spacing),
+  );
+}
+
 $default-token: (
   // Color Semantic Families
   color: get-color-tokens("light"),
-  // Dimension Semantic Families
-  spacing: (
-    '3xs': map.get(core.$spacing, 0_5),
-    '2xs': map.get(core.$spacing, 1),
-    'xs': map.get(core.$spacing, 2),
-    'sm': map.get(core.$spacing, 3),
-    'md': map.get(core.$spacing, 4),
-    'lg': map.get(core.$spacing, 6),
-    'xl': map.get(core.$spacing, 8),
-    '2xl': map.get(core.$spacing, 12),
-    '3xl': map.get(core.$spacing, 16),
-    '4xl': map.get(core.$spacing, 20),
-  ),
-
-  size: (
-    control-xs: map.get(core.$spacing, 6),
-    control-sm: map.get(core.$spacing, 8),
-    control-md: map.get(core.$spacing, 10),
-    control-lg: map.get(core.$spacing, 12),
-    control-xl: map.get(core.$spacing, 16),
-    icon-xs: map.get(core.$spacing, 3),
-    icon-sm: map.get(core.$spacing, 4),
-    icon-md: map.get(core.$spacing, 5),
-    icon-lg: map.get(core.$spacing, 6),
-    avatar-xs: map.get(core.$spacing, 6),
-    avatar-sm: map.get(core.$spacing, 8),
-    avatar-md: map.get(core.$spacing, 10),
-    avatar-lg: map.get(core.$spacing, 12),
-  ),
-
-  radius: (
-    none: map.get(core.$radius, none),
-    sm: map.get(core.$radius, sm),
-    md: map.get(core.$radius, md),
-    lg: map.get(core.$radius, lg),
-    xl: map.get(core.$radius, xl),
-    '2xl': map.get(core.$radius, xl) * 1.5,
-    full: map.get(core.$radius, full),
-  ),
-
-  stroke: (
-    none: map.get(core.$width, 0),
-    hairline: 0.5px,
-    thin: map.get(core.$width, 1),
-    default: map.get(core.$width, 1),
-    medium: map.get(core.$width, 2),
-    thick: map.get(core.$width, 4),
-  ),
-
-  opacity: (
-    disabled: map.get(core.$opacity, 38),
-    subtle: map.get(core.$opacity, 4),
-    muted: map.get(core.$opacity, 60),
-    overlay: map.get(core.$opacity, 60),
-    scrim: map.get(core.$opacity, 60),
-  ),
-
-  z: (
-    base: map.get(core.$z-index, 0),
-    sticky: map.get(core.$z-index, 20),
-    dropdown: map.get(core.$z-index, 10),
-    popover: map.get(core.$z-index, 50),
-    toast: map.get(core.$z-index, 30),
-    tooltip: map.get(core.$z-index, 60),
-    overlay: map.get(core.$z-index, 30),
-    modal: map.get(core.$z-index, 40),
-    max: map.get(core.$z-index, 60),
+  // Dimension vocabulary (STD-UIP-TKN-001 section 3). Spacing ascends from
+  // compact to comfortable within each relationship; z-index strictly ascends.
+  dimension: (
+    spacing: (
+      inset-compact: map.get(core.$spacing, 2),
+      inset-default: map.get(core.$spacing, 4),
+      inset-comfortable: map.get(core.$spacing, 6),
+      stack-compact: map.get(core.$spacing, 1),
+      stack-default: map.get(core.$spacing, 2),
+      stack-comfortable: map.get(core.$spacing, 4),
+      inline-compact: map.get(core.$spacing, 1),
+      inline-default: map.get(core.$spacing, 2),
+      inline-comfortable: map.get(core.$spacing, 4),
+      section: map.get(core.$spacing, 8),
+      page: map.get(core.$spacing, 6),
+    ),
+    radius: (
+      element: map.get(core.$radius, sm),
+      control: map.get(core.$radius, md),
+      container: map.get(core.$radius, lg),
+      pill: map.get(core.$radius, full),
+    ),
+    border-width: (
+      default: map.get(core.$width, 1),
+      strong: map.get(core.$width, 2),
+    ),
+    z-index: (
+      base: map.get(core.$z-index, 0),
+      dropdown: map.get(core.$z-index, 10),
+      sticky: map.get(core.$z-index, 20),
+      overlay: map.get(core.$z-index, 30),
+      modal: map.get(core.$z-index, 40),
+      popover: map.get(core.$z-index, 50),
+      tooltip: map.get(core.$z-index, 60),
+      toast: map.get(core.$z-index, 70),
+    ),
   ),
 
   // Effect domain: the public shadow set of STD-UIP-TKN-001.
@@ -378,85 +358,48 @@ $default-token: (
     ),
   )),
 
-  font-family: (
-    base: map.get(core.$font-family, sans),
-    heading: map.get(core.$font-family, sans),
-    mono: map.get(core.$font-family, mono),
-    brand: map.get(core.$font-family, sans),
+  // Typography composites: five members each (STD-UIP-TKN-001, Semantic
+  // Reading Density). Heading sizes descend; weights ascend.
+  typography: (
+    body: (
+      large: -type(sans, '20', regular, normal, normal),
+      default: -type(sans, '16', regular, normal, normal),
+      small: -type(sans, '14', regular, normal, normal),
+    ),
+    label: (
+      default: -type(sans, '14', medium, tight, normal),
+      small: -type(sans, '12', medium, tight, wide),
+    ),
+    heading: (
+      xxlarge: -type(sans, '48', bold, tight, tight),
+      xlarge: -type(sans, '40', bold, tight, tight),
+      large: -type(sans, '32', bold, tight, tight),
+      medium: -type(sans, '24', bold, tight, tight),
+      small: -type(sans, '20', bold, tight, normal),
+      xsmall: -type(sans, '16', bold, tight, normal),
+    ),
+    code: (
+      default: -type(mono, '14', regular, normal, normal),
+      small: -type(mono, '12', regular, normal, normal),
+    ),
+    data: (compact: -type(sans, '14', regular, tight, normal)),
+    article: (readable: -type(sans, '16', regular, relaxed, normal)),
+    metric: (display: -type(sans, '40', semibold, tight, tight)),
+    weight: (
+      regular: map.get(core.$font-weight, regular),
+      medium: map.get(core.$font-weight, medium),
+      semibold: map.get(core.$font-weight, semibold),
+      bold: map.get(core.$font-weight, bold),
+    ),
   ),
 
-  font-size: (
-    xs: map.get(core.$size, '12'),
-    sm: map.get(core.$size, '14'),
-    md: map.get(core.$size, '16'),
-    lg: map.get(core.$size, '20'),
-    xl: map.get(core.$size, '24'),
-    '2xl': map.get(core.$size, '32'),
-    '3xl': map.get(core.$size, '40'),
-    '4xl': map.get(core.$size, '48'),
-  ),
-
-  font-weight: (
-    regular: map.get(core.$font-weight, normal),
-    medium: map.get(core.$font-weight, medium),
-    semibold: map.get(core.$font-weight, semibold),
-    bold: map.get(core.$font-weight, bold),
-  ),
-
-  line-height: (
-    tight: map.get(core.$line-height, tight),
-    normal: map.get(core.$line-height, normal),
-    relaxed: map.get(core.$line-height, relaxed),
-  ),
-
-  letter-spacing: (
-    tight: map.get(core.$letter-spacing, tight),
-    normal: map.get(core.$letter-spacing, normal),
-    wide: map.get(core.$letter-spacing, wide),
-  ),
-
-  // Motion Semantic Families
-  duration: (
-    instant: 0ms,
-    fast: map.get(core.$motion, duration-fast),
-    normal: map.get(core.$motion, duration-base),
-    slow: map.get(core.$motion, duration-slow),
-    slower: map.get(core.$motion, duration-natural),
-  ),
-
-  easing: (
-    standard:   map.get(core.$motion, easing-standard), // cubic-bezier(0.4, 0, 0.2, 1)
-    enter:      map.get(core.$motion, easing-in),        // cubic-bezier(0.4, 0, 1, 1)
-    exit:       map.get(core.$motion, easing-out),       // cubic-bezier(0, 0, 0.2, 1)
-    emphasized: map.get(core.$motion, easing-sharp),     // cubic-bezier(0.4, 0, 0.6, 1)
-  ),
-
-  transition: (
-    hover: all map.get(core.$motion, duration-fast) map.get(core.$motion, easing-standard),
-    focus: all map.get(core.$motion, duration-fast) map.get(core.$motion, easing-standard),
-    expand: all map.get(core.$motion, duration-base) map.get(core.$motion, easing-standard),
-    modal: all map.get(core.$motion, duration-slow) map.get(core.$motion, easing-standard),
-    toast: all map.get(core.$motion, duration-base) map.get(core.$motion, easing-standard),
-  ),
-
-  layout: (
-    sidebar-width: map.get(core.$layout, sidebar-width),
-    navbar-height: map.get(core.$layout, navbar-height),
-  ),
-
-  breakpoint: (
-    xs: map.get(core.$breakpoint, xs),
-    sm: map.get(core.$breakpoint, sm),
-    md: map.get(core.$breakpoint, md),
-    lg: map.get(core.$breakpoint, lg),
-    xl: map.get(core.$breakpoint, xl),
-    '2xl': map.get(core.$breakpoint, 2xl),
-  ),
-
-  container: (
-    prose: map.get(core.$container-width, prose),
-    base: map.get(core.$container-width, base),
-    wide: map.get(core.$container-width, wide),
-    fluid: map.get(core.$container-width, fluid),
+  // Semantic Motion Language: enter decelerates, exit accelerates and is no
+  // longer than enter, and feedback is the shortest duration.
+  motion: (
+    enter: (duration: map.get(core.$motion, duration-300), easing: map.get(core.$motion, easing-out)),
+    exit: (duration: map.get(core.$motion, duration-200), easing: map.get(core.$motion, easing-in)),
+    attention: (duration: map.get(core.$motion, duration-300), easing: map.get(core.$motion, easing-standard)),
+    disclosure: (duration: map.get(core.$motion, duration-300), easing: map.get(core.$motion, easing-standard)),
+    feedback: (duration: map.get(core.$motion, duration-150), easing: map.get(core.$motion, easing-standard)),
   ),
 );

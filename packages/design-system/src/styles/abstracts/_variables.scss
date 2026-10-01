@@ -56,162 +56,202 @@ $color-primary-border: var(--ds-color-primary-border-default-default);
 
 
 // ============================================
-// SPACING VARIABLES
+// DIMENSION VARIABLES (STD-UIP-TKN-001 Dimension vocabulary)
 // ============================================
-$spacing-3xs: var(--ds-spacing-3xs);
-$spacing-2xs: var(--ds-spacing-2xs);
-$spacing-xs: var(--ds-spacing-xs);
-$spacing-sm: var(--ds-spacing-sm);
-$spacing-md: var(--ds-spacing-md);
-$spacing-lg: var(--ds-spacing-lg);
-$spacing-xl: var(--ds-spacing-xl);
-$spacing-2xl: var(--ds-spacing-2xl);
-$spacing-3xl: var(--ds-spacing-3xl);
-$spacing-4xl: var(--ds-spacing-4xl);
+// Names equal the published Sass contract (@scnx/system/tokens/scss).
+// Component geometry, breakpoints, opacity, and transition shorthands are not
+// tokens; components declare them as documented structural values.
+$dimension-spacing-inset-compact: var(--ds-dimension-spacing-inset-compact);
+$dimension-spacing-inset-default: var(--ds-dimension-spacing-inset-default);
+$dimension-spacing-inset-comfortable: var(--ds-dimension-spacing-inset-comfortable);
+$dimension-spacing-stack-compact: var(--ds-dimension-spacing-stack-compact);
+$dimension-spacing-stack-default: var(--ds-dimension-spacing-stack-default);
+$dimension-spacing-stack-comfortable: var(--ds-dimension-spacing-stack-comfortable);
+$dimension-spacing-inline-compact: var(--ds-dimension-spacing-inline-compact);
+$dimension-spacing-inline-default: var(--ds-dimension-spacing-inline-default);
+$dimension-spacing-inline-comfortable: var(--ds-dimension-spacing-inline-comfortable);
+$dimension-spacing-section: var(--ds-dimension-spacing-section);
+$dimension-spacing-page: var(--ds-dimension-spacing-page);
 
+$dimension-radius-element: var(--ds-dimension-radius-element);
+$dimension-radius-control: var(--ds-dimension-radius-control);
+$dimension-radius-container: var(--ds-dimension-radius-container);
+$dimension-radius-pill: var(--ds-dimension-radius-pill);
 
-// ============================================
-// SIZE VARIABLES
-// ============================================
-$size-control-xs: var(--ds-size-control-xs);
-$size-control-sm: var(--ds-size-control-sm);
-$size-control-md: var(--ds-size-control-md);
-$size-control-lg: var(--ds-size-control-lg);
-$size-control-xl: var(--ds-size-control-xl);
-$size-icon-xs: var(--ds-size-icon-xs);
-$size-icon-sm: var(--ds-size-icon-sm);
-$size-icon-md: var(--ds-size-icon-md);
-$size-icon-lg: var(--ds-size-icon-lg);
-$size-avatar-xs: var(--ds-size-avatar-xs);
-$size-avatar-sm: var(--ds-size-avatar-sm);
-$size-avatar-md: var(--ds-size-avatar-md);
-$size-avatar-lg: var(--ds-size-avatar-lg);
+$dimension-border-width-default: var(--ds-dimension-border-width-default);
+$dimension-border-width-strong: var(--ds-dimension-border-width-strong);
 
-
-// ============================================
-// BORDER VARIABLES
-// ============================================
-$radius-none: var(--ds-radius-none);
-$radius-sm: var(--ds-radius-sm);
-$radius-md: var(--ds-radius-md);
-$radius-lg: var(--ds-radius-lg);
-$radius-xl: var(--ds-radius-xl);
-$radius-2xl: var(--ds-radius-2xl);
-$radius-full: var(--ds-radius-full);
-
-$stroke-none: var(--ds-stroke-none);
-$stroke-hairline: var(--ds-stroke-hairline);
-$stroke-thin: var(--ds-stroke-thin);
-$stroke-default: var(--ds-stroke-default);
-$stroke-medium: var(--ds-stroke-medium);
-$stroke-thick: var(--ds-stroke-thick);
-
-
-// ============================================
-// OPACITY VARIABLES
-// ============================================
-$opacity-disabled: var(--ds-opacity-disabled);
-$opacity-subtle: var(--ds-opacity-subtle);
-$opacity-muted: var(--ds-opacity-muted);
-$opacity-overlay: var(--ds-opacity-overlay);
-$opacity-scrim: var(--ds-opacity-scrim);
+$dimension-z-index-base: var(--ds-dimension-z-index-base);
+$dimension-z-index-dropdown: var(--ds-dimension-z-index-dropdown);
+$dimension-z-index-sticky: var(--ds-dimension-z-index-sticky);
+$dimension-z-index-overlay: var(--ds-dimension-z-index-overlay);
+$dimension-z-index-modal: var(--ds-dimension-z-index-modal);
+$dimension-z-index-popover: var(--ds-dimension-z-index-popover);
+$dimension-z-index-tooltip: var(--ds-dimension-z-index-tooltip);
+$dimension-z-index-toast: var(--ds-dimension-z-index-toast);
 
 
 // ============================================
 // SHADOW VARIABLES
 // ============================================
-$shadow-low: var(--ds-effect-shadow-low);
-$shadow-medium: var(--ds-effect-shadow-medium);
-$shadow-high: var(--ds-effect-shadow-high);
-$shadow-overlay: var(--ds-effect-shadow-overlay);
-$shadow-focus: var(--ds-effect-shadow-focus);
+$effect-shadow-low: var(--ds-effect-shadow-low);
+$effect-shadow-medium: var(--ds-effect-shadow-medium);
+$effect-shadow-high: var(--ds-effect-shadow-high);
+$effect-shadow-overlay: var(--ds-effect-shadow-overlay);
+$effect-shadow-focus: var(--ds-effect-shadow-focus);
 
 
 // ============================================
-// Z-INDEX VARIABLES
+// TYPOGRAPHY VARIABLES (Semantic Reading Density)
 // ============================================
-$z-base: var(--ds-z-base);
-$z-sticky: var(--ds-z-sticky);
-$z-dropdown: var(--ds-z-dropdown);
-$z-popover: var(--ds-z-popover);
-$z-toast: var(--ds-z-toast);
-$z-tooltip: var(--ds-z-tooltip);
-$z-overlay: var(--ds-z-overlay);
-$z-modal: var(--ds-z-modal);
-$z-max: var(--ds-z-max);
+$typography-weight-regular: var(--ds-typography-weight-regular);
+$typography-weight-medium: var(--ds-typography-weight-medium);
+$typography-weight-semibold: var(--ds-typography-weight-semibold);
+$typography-weight-bold: var(--ds-typography-weight-bold);
+
+// Every composite member, spelled out so each reference is checkable.
+$typography: (
+  "body-large": (
+    font-family: var(--ds-typography-body-large-font-family),
+    font-size: var(--ds-typography-body-large-font-size),
+    font-weight: var(--ds-typography-body-large-font-weight),
+    line-height: var(--ds-typography-body-large-line-height),
+    letter-spacing: var(--ds-typography-body-large-letter-spacing),
+  ),
+  "body-default": (
+    font-family: var(--ds-typography-body-default-font-family),
+    font-size: var(--ds-typography-body-default-font-size),
+    font-weight: var(--ds-typography-body-default-font-weight),
+    line-height: var(--ds-typography-body-default-line-height),
+    letter-spacing: var(--ds-typography-body-default-letter-spacing),
+  ),
+  "body-small": (
+    font-family: var(--ds-typography-body-small-font-family),
+    font-size: var(--ds-typography-body-small-font-size),
+    font-weight: var(--ds-typography-body-small-font-weight),
+    line-height: var(--ds-typography-body-small-line-height),
+    letter-spacing: var(--ds-typography-body-small-letter-spacing),
+  ),
+  "label-default": (
+    font-family: var(--ds-typography-label-default-font-family),
+    font-size: var(--ds-typography-label-default-font-size),
+    font-weight: var(--ds-typography-label-default-font-weight),
+    line-height: var(--ds-typography-label-default-line-height),
+    letter-spacing: var(--ds-typography-label-default-letter-spacing),
+  ),
+  "label-small": (
+    font-family: var(--ds-typography-label-small-font-family),
+    font-size: var(--ds-typography-label-small-font-size),
+    font-weight: var(--ds-typography-label-small-font-weight),
+    line-height: var(--ds-typography-label-small-line-height),
+    letter-spacing: var(--ds-typography-label-small-letter-spacing),
+  ),
+  "heading-xxlarge": (
+    font-family: var(--ds-typography-heading-xxlarge-font-family),
+    font-size: var(--ds-typography-heading-xxlarge-font-size),
+    font-weight: var(--ds-typography-heading-xxlarge-font-weight),
+    line-height: var(--ds-typography-heading-xxlarge-line-height),
+    letter-spacing: var(--ds-typography-heading-xxlarge-letter-spacing),
+  ),
+  "heading-xlarge": (
+    font-family: var(--ds-typography-heading-xlarge-font-family),
+    font-size: var(--ds-typography-heading-xlarge-font-size),
+    font-weight: var(--ds-typography-heading-xlarge-font-weight),
+    line-height: var(--ds-typography-heading-xlarge-line-height),
+    letter-spacing: var(--ds-typography-heading-xlarge-letter-spacing),
+  ),
+  "heading-large": (
+    font-family: var(--ds-typography-heading-large-font-family),
+    font-size: var(--ds-typography-heading-large-font-size),
+    font-weight: var(--ds-typography-heading-large-font-weight),
+    line-height: var(--ds-typography-heading-large-line-height),
+    letter-spacing: var(--ds-typography-heading-large-letter-spacing),
+  ),
+  "heading-medium": (
+    font-family: var(--ds-typography-heading-medium-font-family),
+    font-size: var(--ds-typography-heading-medium-font-size),
+    font-weight: var(--ds-typography-heading-medium-font-weight),
+    line-height: var(--ds-typography-heading-medium-line-height),
+    letter-spacing: var(--ds-typography-heading-medium-letter-spacing),
+  ),
+  "heading-small": (
+    font-family: var(--ds-typography-heading-small-font-family),
+    font-size: var(--ds-typography-heading-small-font-size),
+    font-weight: var(--ds-typography-heading-small-font-weight),
+    line-height: var(--ds-typography-heading-small-line-height),
+    letter-spacing: var(--ds-typography-heading-small-letter-spacing),
+  ),
+  "heading-xsmall": (
+    font-family: var(--ds-typography-heading-xsmall-font-family),
+    font-size: var(--ds-typography-heading-xsmall-font-size),
+    font-weight: var(--ds-typography-heading-xsmall-font-weight),
+    line-height: var(--ds-typography-heading-xsmall-line-height),
+    letter-spacing: var(--ds-typography-heading-xsmall-letter-spacing),
+  ),
+  "code-default": (
+    font-family: var(--ds-typography-code-default-font-family),
+    font-size: var(--ds-typography-code-default-font-size),
+    font-weight: var(--ds-typography-code-default-font-weight),
+    line-height: var(--ds-typography-code-default-line-height),
+    letter-spacing: var(--ds-typography-code-default-letter-spacing),
+  ),
+  "code-small": (
+    font-family: var(--ds-typography-code-small-font-family),
+    font-size: var(--ds-typography-code-small-font-size),
+    font-weight: var(--ds-typography-code-small-font-weight),
+    line-height: var(--ds-typography-code-small-line-height),
+    letter-spacing: var(--ds-typography-code-small-letter-spacing),
+  ),
+  "data-compact": (
+    font-family: var(--ds-typography-data-compact-font-family),
+    font-size: var(--ds-typography-data-compact-font-size),
+    font-weight: var(--ds-typography-data-compact-font-weight),
+    line-height: var(--ds-typography-data-compact-line-height),
+    letter-spacing: var(--ds-typography-data-compact-letter-spacing),
+  ),
+  "article-readable": (
+    font-family: var(--ds-typography-article-readable-font-family),
+    font-size: var(--ds-typography-article-readable-font-size),
+    font-weight: var(--ds-typography-article-readable-font-weight),
+    line-height: var(--ds-typography-article-readable-line-height),
+    letter-spacing: var(--ds-typography-article-readable-letter-spacing),
+  ),
+  "metric-display": (
+    font-family: var(--ds-typography-metric-display-font-family),
+    font-size: var(--ds-typography-metric-display-font-size),
+    font-weight: var(--ds-typography-metric-display-font-weight),
+    line-height: var(--ds-typography-metric-display-line-height),
+    letter-spacing: var(--ds-typography-metric-display-letter-spacing),
+  ),
+);
+
+/// One typography composite member, e.g. typography-member(body, default, font-family).
+@function typography-member($context, $variant, $member) {
+  $composite: map.get($typography, "#{$context}-#{$variant}");
+  @if not $composite { @error "Unknown typography composite #{$context}.#{$variant}"; }
+  @return map.get($composite, $member);
+}
+
+/// All five members of a typography composite, e.g. @include typography(label, small).
+@mixin typography($context, $variant) {
+  $composite: map.get($typography, "#{$context}-#{$variant}");
+  @if not $composite { @error "Unknown typography composite #{$context}.#{$variant}"; }
+  @each $member, $value in $composite {
+    #{$member}: $value;
+  }
+}
 
 
 // ============================================
-// TYPOGRAPHY VARIABLES
+// MOTION VARIABLES (Semantic Motion Language)
 // ============================================
-$font-family-base: var(--ds-font-family-base);
-$font-family-heading: var(--ds-font-family-heading);
-$font-family-mono: var(--ds-font-family-mono);
-$font-family-brand: var(--ds-font-family-brand);
-
-$font-size-xs: var(--ds-font-size-xs);
-$font-size-sm: var(--ds-font-size-sm);
-$font-size-md: var(--ds-font-size-md);
-$font-size-lg: var(--ds-font-size-lg);
-$font-size-xl: var(--ds-font-size-xl);
-$font-size-2xl: var(--ds-font-size-2xl);
-$font-size-3xl: var(--ds-font-size-3xl);
-$font-size-4xl: var(--ds-font-size-4xl);
-
-$font-weight-regular: var(--ds-font-weight-regular);
-$font-weight-medium: var(--ds-font-weight-medium);
-$font-weight-semibold: var(--ds-font-weight-semibold);
-$font-weight-bold: var(--ds-font-weight-bold);
-
-$line-height-tight: var(--ds-line-height-tight);
-$line-height-normal: var(--ds-line-height-normal);
-$line-height-relaxed: var(--ds-line-height-relaxed);
-
-$letter-spacing-tight: var(--ds-letter-spacing-tight);
-$letter-spacing-normal: var(--ds-letter-spacing-normal);
-$letter-spacing-wide: var(--ds-letter-spacing-wide);
-
-
-// ============================================
-// MOTION VARIABLES
-// ============================================
-$duration-instant: var(--ds-duration-instant);
-$duration-fast: var(--ds-duration-fast);
-$duration-normal: var(--ds-duration-normal);
-$duration-slow: var(--ds-duration-slow);
-$duration-slower: var(--ds-duration-slower);
-
-$easing-standard: var(--ds-easing-standard);
-$easing-enter: var(--ds-easing-enter);
-$easing-exit: var(--ds-easing-exit);
-$easing-emphasized: var(--ds-easing-emphasized);
-
-$transition-hover: var(--ds-transition-hover);
-$transition-focus: var(--ds-transition-focus);
-$transition-expand: var(--ds-transition-expand);
-$transition-modal: var(--ds-transition-modal);
-$transition-toast: var(--ds-transition-toast);
-
-
-// ============================================
-// LAYOUT VARIABLES
-// ============================================
-// Layout variables defined as semantic CSS properties
-$layout-sidebar-width: var(--ds-layout-sidebar-width);
-$layout-navbar-height: var(--ds-layout-navbar-height);
-
-// Container variables defined as semantic CSS properties
-$container-prose: var(--ds-container-prose);
-$container-base: var(--ds-container-base);
-$container-wide: var(--ds-container-wide);
-$container-fluid: var(--ds-container-fluid);
-
-// Breakpoint variables defined as semantic CSS properties
-$breakpoint-xs: var(--ds-breakpoint-xs);
-$breakpoint-sm: var(--ds-breakpoint-sm);
-$breakpoint-md: var(--ds-breakpoint-md);
-$breakpoint-lg: var(--ds-breakpoint-lg);
-$breakpoint-xl: var(--ds-breakpoint-xl);
-$breakpoint-2xl: var(--ds-breakpoint-2xl);
-
-
+$motion-enter-duration: var(--ds-motion-enter-duration);
+$motion-enter-easing: var(--ds-motion-enter-easing);
+$motion-exit-duration: var(--ds-motion-exit-duration);
+$motion-exit-easing: var(--ds-motion-exit-easing);
+$motion-attention-duration: var(--ds-motion-attention-duration);
+$motion-attention-easing: var(--ds-motion-attention-easing);
+$motion-disclosure-duration: var(--ds-motion-disclosure-duration);
+$motion-disclosure-easing: var(--ds-motion-disclosure-easing);
+$motion-feedback-duration: var(--ds-motion-feedback-duration);
+$motion-feedback-easing: var(--ds-motion-feedback-easing);

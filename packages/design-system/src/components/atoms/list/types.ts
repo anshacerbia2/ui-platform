@@ -10,7 +10,7 @@ export type ListVariants = {
   /** @default "unordered" */
   variant?: "unordered" | "ordered" | "unstyled";
   /** @default "1" */
-  spacing?: "1" | "2" | "3" | "4";
+  spacing?: "compact" | "default" | "comfortable";
 };
 
 export type ListProps = ListBaseRootProps & ListVariants & {

@@ -11,7 +11,7 @@ import { cx } from "styled-system/css";
  * ```tsx
  * import { Flex } from "@scnx/system/components/flex";
  * 
- * <Flex direction="row" align="center" gap="4">
+ * <Flex direction="row" align="center" gap="comfortable">
  *   <div>Item 1</div>
  *   <div>Item 2</div>
  * </Flex>

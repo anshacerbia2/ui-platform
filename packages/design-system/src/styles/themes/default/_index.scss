@@ -103,14 +103,6 @@
     line-height-scale: map.get(contract.$core, "line-height"),
   )
 );
-@include validator.validate-token(
-  (
-    layout-scale: core.$layout,
-  ),
-  (
-    layout-scale: map.get(contract.$core, "layout"),
-  )
-);
 
 @include validator.validate-token(
   (

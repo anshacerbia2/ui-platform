@@ -1,11 +1,8 @@
-// Canonical token grammar, transcribed from STD-UIP-TKN-001 v2.0.0 section 3
-// (scnehaux-architecture cf748f6). The standard is the single normative
+// Canonical token grammar, transcribed from STD-UIP-TKN-001 v2.1.0 section 3
+// (scnehaux-architecture af6462e). The standard is the single normative
 // definition; change this file only to follow a ratified revision of it.
-//
-// Domains whose Tier-2 vocabulary the standard does not yet define are `null`:
-// every name in them fails the grammar gate until the vocabulary is ratified.
 
-export const STANDARD = { id: "STD-UIP-TKN-001", version: "2.0.0", commit: "cf748f6" };
+export const STANDARD = { id: "STD-UIP-TKN-001", version: "2.1.0", commit: "af6462e" };
 
 const SURFACE_STATES = ["default", "hover", "pressed", "selected", "disabled"];
 
@@ -34,13 +31,50 @@ export const COLOR = {
 
 export const EFFECT_SHADOWS = ["low", "medium", "high", "overlay", "focus"];
 
-export const MOTION = { actions: ["enter", "exit", "attention", "disclosure"], properties: ["duration", "easing"] };
+// Dimension vocabulary. Lists are in the order the standard constrains:
+// spacing relationships ascend compact -> comfortable, z-index strictly ascends.
+export const DIMENSION = {
+  spacing: [
+    "inset-compact", "inset-default", "inset-comfortable",
+    "stack-compact", "stack-default", "stack-comfortable",
+    "inline-compact", "inline-default", "inline-comfortable",
+    "section", "page",
+  ],
+  radius: ["element", "control", "container", "pill"],
+  "border-width": ["default", "strong"],
+  "z-index": ["base", "dropdown", "sticky", "overlay", "modal", "popover", "tooltip", "toast"],
+};
+const DIMENSION_TYPES = { spacing: "dimension", radius: "dimension", "border-width": "dimension", "z-index": "number" };
 
-export const DIMENSION = null;
-export const TYPOGRAPHY = null;
+// Typography & Motion Semantic Families. Heading variants descend and weights
+// ascend in the listed order.
+export const TYPOGRAPHY = {
+  composites: {
+    body: ["large", "default", "small"],
+    label: ["default", "small"],
+    heading: ["xxlarge", "xlarge", "large", "medium", "small", "xsmall"],
+    code: ["default", "small"],
+    data: ["compact"],
+    article: ["readable"],
+    metric: ["display"],
+  },
+  members: {
+    "font-family": "fontFamily",
+    "font-size": "dimension",
+    "font-weight": "fontWeight",
+    "line-height": "number",
+    "letter-spacing": "dimension",
+  },
+  weight: ["regular", "medium", "semibold", "bold"],
+};
 
-const PENDING = (domain) =>
-  `Tier-2 ${domain} vocabulary is not defined by ${STANDARD.id} ${STANDARD.version}; pending a ratified revision`;
+export const MOTION = { actions: ["enter", "exit", "attention", "disclosure", "feedback"], properties: ["duration", "easing"] };
+
+/** Split `rest` as `<head>-<tail>` for the first head in `heads`, or null. */
+function splitHead(rest, heads) {
+  const head = heads.find((candidate) => rest.startsWith(`${candidate}-`));
+  return head ? [head, rest.slice(head.length + 1)] : null;
+}
 
 /**
  * Parse an emitted custom property name against the canonical grammar.
@@ -90,44 +124,50 @@ export function parseTokenName(cssName, aliases = {}) {
     return { valid: false, error: `motion names are motion.{${MOTION.actions.join("|")}}.{duration|easing}` };
   }
 
-  if (parts[0] === "dimension") return { valid: false, error: PENDING("dimension") };
-  if (parts[0] === "typography") return { valid: false, error: PENDING("typography") };
+  if (parts[0] === "dimension") {
+    const split = splitHead(rest.slice("dimension-".length), Object.keys(DIMENSION));
+    if (split && DIMENSION[split[0]].includes(split[1])) {
+      return { valid: true, tier: 2, type: DIMENSION_TYPES[split[0]], path: `dimension.${split[0]}.${split[1]}` };
+    }
+    return { valid: false, error: "dimension names are dimension.{property}.{intent} from the closed vocabulary" };
+  }
+
+  if (parts[0] === "typography") {
+    const body = rest.slice("typography-".length);
+    if (parts.length === 3 && parts[1] === "weight" && TYPOGRAPHY.weight.includes(parts[2])) {
+      return { valid: true, tier: 2, type: "fontWeight", path: `typography.weight.${parts[2]}` };
+    }
+    const context = splitHead(body, Object.keys(TYPOGRAPHY.composites));
+    const variant = context && splitHead(context[1], TYPOGRAPHY.composites[context[0]]);
+    if (variant && TYPOGRAPHY.members[variant[1]]) {
+      return {
+        valid: true,
+        tier: 2,
+        type: TYPOGRAPHY.members[variant[1]],
+        path: `typography.${context[0]}.${variant[0]}.${variant[1]}`,
+      };
+    }
+    return { valid: false, error: "typography names are typography.{context}.{variant}.{member} or typography.weight.{weight}" };
+  }
 
   return { valid: false, error: "not a canonical Tier-2 name and no Tier-3 alias review record" };
 }
 
-// Types of the pre-canonical baseline names, used so that value, reference, and
-// font checks still run while names are migrated. Order matters: first match.
-const LEGACY_TYPES = [
-  [/^--ds-color-/, "color"],
-  [/^--ds-shadow-/, "shadow"],
-  [/^--ds-duration-/, "duration"],
-  [/^--ds-easing-/, "cubicBezier"],
-  [/^--ds-font-family-/, "fontFamily"],
-  [/^--ds-font-weight-/, "fontWeight"],
-  [/^--ds-(line-height|opacity|z)-/, "number"],
-  [/^--ds-(font-size|letter-spacing|spacing|size|radius|stroke|layout|breakpoint|container)-/, "dimension"],
-];
-
-/** Token type from the canonical grammar, or from the baseline name when non-canonical. */
+/** Token type from the canonical grammar; null for a non-canonical name. */
 export function tokenType(cssName, aliases = {}) {
   const parsed = parseTokenName(cssName, aliases);
-  if (parsed.valid) return parsed.type;
-  if (/^--ds-dimension-z-index-/.test(cssName)) return "number";
-  if (/^--ds-dimension-/.test(cssName)) return "dimension";
-  return LEGACY_TYPES.find(([pattern]) => pattern.test(cssName))?.[1] ?? null;
+  return parsed.valid ? parsed.type : null;
 }
 
-// Representative consuming property for value validation, by name then type.
-const PROPERTY_BY_NAME = [
-  [/-(opacity)-/, "opacity"],
-  [/-(z|z-index)-/, "z-index"],
-  [/-line-height-/, "line-height"],
-  [/-letter-spacing-/, "letter-spacing"],
-  [/-font-size-/, "font-size"],
-  [/-radius-/, "border-radius"],
-  [/-stroke-/, "border-width"],
-  [/-spacing-/, "margin"],
+// Representative consuming property for value validation: the property a
+// canonical path names, otherwise the property for its type.
+const PROPERTY_BY_PATH = [
+  [/^dimension\.spacing\./, "margin"],
+  [/^dimension\.radius\./, "border-radius"],
+  [/^dimension\.border-width\./, "border-width"],
+  [/^dimension\.z-index\./, "z-index"],
+  [/^typography\.weight\./, "font-weight"],
+  [/^typography\.[^.]+\.[^.]+\.(font-family|font-size|font-weight|line-height|letter-spacing)$/, null],
 ];
 const PROPERTY_BY_TYPE = {
   color: "color",
@@ -141,6 +181,13 @@ const PROPERTY_BY_TYPE = {
   strokeStyle: "border-style",
 };
 
-export function consumingProperty(cssName, type) {
-  return PROPERTY_BY_NAME.find(([pattern]) => pattern.test(cssName))?.[1] ?? PROPERTY_BY_TYPE[type] ?? null;
+export function consumingProperty(cssName, type, aliases = {}) {
+  const parsed = parseTokenName(cssName, aliases);
+  if (parsed.valid) {
+    for (const [pattern, property] of PROPERTY_BY_PATH) {
+      const match = pattern.exec(parsed.path);
+      if (match) return property ?? match[1];
+    }
+  }
+  return PROPERTY_BY_TYPE[type] ?? null;
 }

@@ -1,5 +1,10 @@
 @use "styles/abstracts/variables" as *;
 @use "styles/abstracts/mixins" as *;
+@use "styles/abstracts/geometry";
+
+// Distance item labels slide while the sidebar expands or collapses: a
+// structural motion offset, not a spacing token (STD-UIP-TKN-002 3.1).
+$-item-slide-offset: 1.5rem;
 
 // ============================================
 // TIER 3: Sidebar Component Tokens (Semantic)
@@ -7,7 +12,7 @@
 // Sidebar inherently acts as an "Inverse" surface (Dark on Light canvas).
 // Passive items use primary-on-color text, active items act as solid surface pills.
 .scnx-sidebar {
-  --sidebar-width: var(--layout-sidebar-width, var(--ds-layout-sidebar-width));
+  --sidebar-width: var(--layout-sidebar-width, #{geometry.$sidebar-width});
   --sidebar-bg-color: #{$color-surface-default};
   --sidebar-group-header-color: #{$color-text-primary};
   --sidebar-item-color: #{$color-text-secondary};
@@ -36,7 +41,7 @@
   // border: 1px solid #{$color-border-muted};
   background-color: var(--sidebar-bg-color);
   color: #{$color-text-primary};
-  transition: width $duration-slow $easing-standard;
+  transition: width $motion-disclosure-duration $motion-disclosure-easing;
 
   &__navigation {
     flex-grow: 1;
@@ -61,10 +66,10 @@
     .scnx-navigation__item {
       position: relative;
       color: var(--sidebar-item-color);
-      border-radius: $radius-md;
+      border-radius: $dimension-radius-control;
       transition:
-        background-color $duration-fast $easing-standard,
-        color $duration-fast $easing-standard;
+        background-color $motion-feedback-duration $motion-feedback-easing,
+        color $motion-feedback-duration $motion-feedback-easing;
 
       &:hover,
       &:focus {
@@ -82,20 +87,20 @@
           content: "";
           position: absolute;
           left: 0;
-          top: $spacing-xs;
-          bottom: $spacing-xs;
+          top: $dimension-spacing-inset-compact;
+          bottom: $dimension-spacing-inset-compact;
           width: 2px;
           background-color: var(--sidebar-item-active-color);
-          border-radius: $radius-full;
+          border-radius: $dimension-radius-pill;
         }
       }
     }
 
     .scnx-navigation__item-content {
       transition:
-        translate $duration-slow $easing-standard,
-        opacity $duration-slow $easing-standard,
-        visibility $duration-slow;
+        translate $motion-disclosure-duration $motion-disclosure-easing,
+        opacity $motion-disclosure-duration $motion-disclosure-easing,
+        visibility $motion-disclosure-duration;
     }
 
     .scnx-navigation__badge {
@@ -103,11 +108,11 @@
     }
 
     .scnx-navigation__trailing-icon {
-      transition: rotate $duration-slow $easing-standard;
+      transition: rotate $motion-disclosure-duration $motion-disclosure-easing;
     }
 
     .scnx-transition {
-      transition: height $duration-slow $easing-standard;
+      transition: height $motion-disclosure-duration $motion-disclosure-easing;
       overflow: hidden;
     }
 
@@ -176,7 +181,7 @@
           .scnx-navigation__item-content {
             visibility: hidden;
             opacity: 0;
-            translate: $spacing-lg 0;
+            translate: $-item-slide-offset 0;
           }
         }
       }
@@ -195,7 +200,7 @@
       .scnx-navigation__item-content {
         visibility: hidden;
         opacity: 0;
-        translate: $spacing-lg 0;
+        translate: $-item-slide-offset 0;
       }
     }
   }
@@ -229,7 +234,7 @@
       width: 0.875rem;
       height: 0.875rem;
       // stroke-width: 2.5; // Boost stroke weight for visual matching
-      transition: transform $duration-slow $easing-standard;
+      transition: transform $motion-disclosure-duration $motion-disclosure-easing;
     }
 
   }
@@ -238,44 +243,44 @@
     flex-shrink: 0;
     padding: 1.25rem;
     border-bottom: none;
-    font-size: $font-size-xl;
-    font-weight: $font-weight-semibold;
+    @include typography(heading, small);
+    font-weight: $typography-weight-semibold;
     white-space: nowrap;
     overflow: hidden;
   }
 
   &__footer {
-    padding: $spacing-md;
+    padding: $dimension-spacing-inset-default;
     border-top: 1px solid #{$color-border-subtle};
     flex-shrink: 0;
   }
 
   &__flyout {
     width: var(--sidebar-width, 280px);
-    margin-left: $spacing-2xs;
+    margin-left: $dimension-spacing-inline-compact;
     color: #{$color-text-primary};
 
     > .scnx-transition {
-      border-radius: $radius-xl;
-      box-shadow: $shadow-high;
+      border-radius: $dimension-radius-container;
+      box-shadow: $effect-shadow-high;
 
       > div {
         // Creates non-scrollable padding space at top and bottom
-        padding-block: $spacing-md;
-        border-radius: $radius-xl;
+        padding-block: $dimension-spacing-inset-default;
+        border-radius: $dimension-radius-container;
         background-color: $color-surface-default;
 
         > div {
-          border-radius: $radius-xl;
+          border-radius: $dimension-radius-container;
           overflow: hidden;
           overflow-y: auto;
           @include thin-scrollbar($width: 0);
 
           > .scnx-navigation__group {
-            border-radius: $radius-xl;
+            border-radius: $dimension-radius-container;
 
             .scnx-navigation__group li {
-              padding-left: $spacing-xs;
+              padding-left: $dimension-spacing-inset-compact;
               padding-right: 0;
             }
           }
@@ -283,7 +288,7 @@
       }
 
       li {
-        padding-inline: $spacing-md;
+        padding-inline: $dimension-spacing-inset-default;
       }
 
       .scnx-navigation__group {
@@ -305,9 +310,9 @@
 
     .scnx-navigation__item-content {
       transition:
-        translate $duration-slow $easing-standard,
-        opacity $duration-slow $easing-standard,
-        visibility $duration-slow;
+        translate $motion-disclosure-duration $motion-disclosure-easing,
+        opacity $motion-disclosure-duration $motion-disclosure-easing,
+        visibility $motion-disclosure-duration;
     }
 
     .scnx-navigation__badge {
@@ -315,18 +320,18 @@
     }
 
     .scnx-navigation__trailing-icon {
-      transition: rotate $duration-slow $easing-standard;
+      transition: rotate $motion-disclosure-duration $motion-disclosure-easing;
     }
 
     .scnx-transition {
-      transition: height $duration-slow $easing-standard;
+      transition: height $motion-disclosure-duration $motion-disclosure-easing;
       overflow: hidden;
 
       &:not([data-state="entering"]):not([data-state="settled"]) {
         .scnx-navigation__item-content {
           visibility: hidden;
           opacity: 0;
-          translate: $spacing-lg 0;
+          translate: $-item-slide-offset 0;
         }
       }
     }

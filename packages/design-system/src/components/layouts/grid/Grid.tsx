@@ -14,7 +14,7 @@ import { cx } from "styled-system/css";
  * ```tsx
  * import { Grid } from "@scnx/system/components/grid";
  * 
- * <Grid columns="3" gap="4">
+ * <Grid columns="3" gap="comfortable">
  *   <p>Item 1</p>
  *   <p>Item 2</p>
  *   <p>Item 3</p>

@@ -7,7 +7,7 @@ describe("Heading", () => {
     render(<Heading>Title</Heading>);
     const heading = screen.getByRole("heading", { level: 2, name: "Title" });
 
-    expect(heading).toHaveClass("heading", "heading--size_xl", "heading--weight_bold");
+    expect(heading).toHaveClass("heading", "heading--size_medium", "heading--weight_bold");
   });
 
   it("renders the requested level", () => {

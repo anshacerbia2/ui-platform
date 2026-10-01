@@ -897,10 +897,12 @@ $shadow: (
 );
 
 $motion: (
-  duration-fast: 150ms,
-  duration-base: 200ms,
-  duration-slow: 300ms,
-  duration-natural: 400ms,
+  // Tier-1 steps are numeric: a Tier-1 name never reuses a Tier-2 intent
+  // word such as "fast" (STD-UIP-TKN-001 section 3).
+  duration-150: 150ms,
+  duration-200: 200ms,
+  duration-300: 300ms,
+  duration-400: 400ms,
   easing-standard: cubic-bezier(0.4, 0, 0.2, 1),
   easing-in: cubic-bezier(0.4, 0, 1, 1),
   easing-out: cubic-bezier(0, 0, 0.2, 1),
@@ -915,6 +917,7 @@ $z-index: (
   40: 1040,
   50: 1050,
   60: 1060,
+  70: 1070,
 );
 
 // ==========================================
@@ -952,11 +955,6 @@ $letter-spacing: (
 // ==========================================
 // 6. LAYOUT & MISC
 // ==========================================
-$layout: (
-  sidebar-width: 17.5rem, // Increased to 280px for better data density
-  navbar-height: 4rem,
-);
-
 // Viewport trigger values for media queries
 // These do NOT control element max-width, they control WHEN the layout shifts.
 // Follows: GitHub Primer / Vercel Design System convention

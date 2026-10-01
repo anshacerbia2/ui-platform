@@ -5,7 +5,7 @@ const containerRecipe = defineRecipe({
   base: {
     width: "100%",
     mx: "auto",
-    px: "var(--ds-spacing-md)",
+    px: "var(--ds-dimension-spacing-page)",
   },
   variants: {
     size: {
@@ -52,18 +52,14 @@ const flexRecipe = defineRecipe({
       wrap: { flexWrap: "wrap" },
       "wrap-reverse": { flexWrap: "wrap-reverse" },
     },
+    // Density names (STD-UIP-TKN-001 spacing): rows use the block-axis
+    // stack scale and columns the inline-axis scale.
     gap: {
-      "0": { gap: "0" },
-      "1": { gap: "var(--ds-spacing-2xs)" },
-      "2": { gap: "var(--ds-spacing-xs)" },
-      "3": { gap: "var(--ds-spacing-sm)" },
-      "4": { gap: "var(--ds-spacing-md)" },
-      "5": { gap: "1.25rem" },
-      "6": { gap: "var(--ds-spacing-lg)" },
-      "8": { gap: "var(--ds-spacing-xl)" },
-      "10": { gap: "2.5rem" },
-      "12": { gap: "var(--ds-spacing-2xl)" },
-      "16": { gap: "var(--ds-spacing-3xl)" },
+      none: { gap: "0" },
+      compact: { rowGap: "var(--ds-dimension-spacing-stack-compact)", columnGap: "var(--ds-dimension-spacing-inline-compact)" },
+      default: { rowGap: "var(--ds-dimension-spacing-stack-default)", columnGap: "var(--ds-dimension-spacing-inline-default)" },
+      comfortable: { rowGap: "var(--ds-dimension-spacing-stack-comfortable)", columnGap: "var(--ds-dimension-spacing-inline-comfortable)" },
+      section: { gap: "var(--ds-dimension-spacing-section)" },
     },
   },
   defaultVariants: {
@@ -71,7 +67,7 @@ const flexRecipe = defineRecipe({
     align: "start",
     justify: "start",
     wrap: "nowrap",
-    gap: "0",
+    gap: "none",
   },
 });
 
@@ -95,59 +91,46 @@ const gridRecipe = defineRecipe({
       "11": { gridTemplateColumns: "repeat(11, minmax(0, 1fr))" },
       "12": { gridTemplateColumns: "repeat(12, minmax(0, 1fr))" },
     },
+    // Density names (STD-UIP-TKN-001 spacing): rows use the block-axis
+    // stack scale and columns the inline-axis scale.
     gap: {
-      "0": { gap: "0" },
-      "1": { gap: "var(--ds-spacing-2xs)" },
-      "2": { gap: "var(--ds-spacing-xs)" },
-      "3": { gap: "var(--ds-spacing-sm)" },
-      "4": { gap: "var(--ds-spacing-md)" },
-      "5": { gap: "1.25rem" },
-      "6": { gap: "var(--ds-spacing-lg)" },
-      "8": { gap: "var(--ds-spacing-xl)" },
-      "10": { gap: "2.5rem" },
-      "12": { gap: "var(--ds-spacing-2xl)" },
-      "16": { gap: "var(--ds-spacing-3xl)" },
+      none: { gap: "0" },
+      compact: { rowGap: "var(--ds-dimension-spacing-stack-compact)", columnGap: "var(--ds-dimension-spacing-inline-compact)" },
+      default: { rowGap: "var(--ds-dimension-spacing-stack-default)", columnGap: "var(--ds-dimension-spacing-inline-default)" },
+      comfortable: { rowGap: "var(--ds-dimension-spacing-stack-comfortable)", columnGap: "var(--ds-dimension-spacing-inline-comfortable)" },
+      section: { gap: "var(--ds-dimension-spacing-section)" },
     },
   },
   defaultVariants: {
     columns: "1",
-    gap: "0",
+    gap: "none",
   },
 });
 
 const headingRecipe = defineRecipe({
   className: "heading",
   base: {
-    fontFamily: "var(--ds-font-family-sans)",
-    fontWeight: "var(--ds-font-weight-bold)",
     color: "var(--ds-color-neutral-text-default-default)",
-    lineHeight: "var(--ds-line-height-tight)",
   },
   variants: {
+    // typography.heading.*: the size is independent of the heading level.
     size: {
-      // Geist Numeric Scale
-      // Semantic T-shirt aliases (Single Axis API)
-      "7xl": { fontSize: "var(--ds-font-size-4xl)", letterSpacing: "var(--ds-letter-spacing-tight)" },
-      "6xl": { fontSize: "var(--ds-font-size-4xl)", letterSpacing: "var(--ds-letter-spacing-tight)" },
-      "5xl": { fontSize: "var(--ds-font-size-4xl)", letterSpacing: "var(--ds-letter-spacing-tight)" },
-      "4xl": { fontSize: "var(--ds-font-size-4xl)", letterSpacing: "var(--ds-letter-spacing-tight)" },
-      "3xl": { fontSize: "var(--ds-font-size-3xl)", letterSpacing: "var(--ds-letter-spacing-tight)" },
-      "2xl": { fontSize: "var(--ds-font-size-2xl)", letterSpacing: "var(--ds-letter-spacing-tight)" },
-      xl: { fontSize: "var(--ds-font-size-xl)", letterSpacing: "var(--ds-letter-spacing-tight)" },
-      lg: { fontSize: "var(--ds-font-size-lg)", letterSpacing: "var(--ds-letter-spacing-normal)" },
-      base: { fontSize: "var(--ds-font-size-md)", letterSpacing: "var(--ds-letter-spacing-normal)" },
-      sm: { fontSize: "var(--ds-font-size-sm)", letterSpacing: "var(--ds-letter-spacing-normal)" },
+      xxlarge: { fontFamily: "var(--ds-typography-heading-xxlarge-font-family)", fontSize: "var(--ds-typography-heading-xxlarge-font-size)", lineHeight: "var(--ds-typography-heading-xxlarge-line-height)", letterSpacing: "var(--ds-typography-heading-xxlarge-letter-spacing)" },
+      xlarge: { fontFamily: "var(--ds-typography-heading-xlarge-font-family)", fontSize: "var(--ds-typography-heading-xlarge-font-size)", lineHeight: "var(--ds-typography-heading-xlarge-line-height)", letterSpacing: "var(--ds-typography-heading-xlarge-letter-spacing)" },
+      large: { fontFamily: "var(--ds-typography-heading-large-font-family)", fontSize: "var(--ds-typography-heading-large-font-size)", lineHeight: "var(--ds-typography-heading-large-line-height)", letterSpacing: "var(--ds-typography-heading-large-letter-spacing)" },
+      medium: { fontFamily: "var(--ds-typography-heading-medium-font-family)", fontSize: "var(--ds-typography-heading-medium-font-size)", lineHeight: "var(--ds-typography-heading-medium-line-height)", letterSpacing: "var(--ds-typography-heading-medium-letter-spacing)" },
+      small: { fontFamily: "var(--ds-typography-heading-small-font-family)", fontSize: "var(--ds-typography-heading-small-font-size)", lineHeight: "var(--ds-typography-heading-small-line-height)", letterSpacing: "var(--ds-typography-heading-small-letter-spacing)" },
+      xsmall: { fontFamily: "var(--ds-typography-heading-xsmall-font-family)", fontSize: "var(--ds-typography-heading-xsmall-font-size)", lineHeight: "var(--ds-typography-heading-xsmall-line-height)", letterSpacing: "var(--ds-typography-heading-xsmall-letter-spacing)" },
     },
     weight: {
-      bold: { fontWeight: "var(--ds-font-weight-bold)" },
-      semibold: { fontWeight: "var(--ds-font-weight-semibold)" },
-      medium: { fontWeight: "var(--ds-font-weight-medium)" },
-      regular: { fontWeight: "var(--ds-font-weight-regular)" },
-      thin: { fontWeight: "var(--ds-font-weight-thin)" },
-    }
+      bold: { fontWeight: "var(--ds-typography-weight-bold)" },
+      semibold: { fontWeight: "var(--ds-typography-weight-semibold)" },
+      medium: { fontWeight: "var(--ds-typography-weight-medium)" },
+      regular: { fontWeight: "var(--ds-typography-weight-regular)" },
+    },
   },
   defaultVariants: {
-    size: "xl",
+    size: "medium",
     weight: "bold",
   },
 });
@@ -155,13 +138,13 @@ const headingRecipe = defineRecipe({
 const codeRecipe = defineRecipe({
   className: "code",
   base: {
-    fontFamily: "var(--ds-font-family-mono)",
+    fontFamily: "var(--ds-typography-code-default-font-family)",
     fontSize: "0.9em",
-    fontWeight: "var(--ds-font-weight-medium)",
+    fontWeight: "var(--ds-typography-weight-medium)",
     backgroundColor: "var(--ds-color-neutral-surface-subtle-default)",
     borderWidth: "1px",
     borderColor: "var(--ds-color-neutral-border-subtle-default)",
-    borderRadius: "var(--ds-radius-md)",
+    borderRadius: "var(--ds-dimension-radius-element)",
     px: "0.4em",
     py: "0.1em",
     whiteSpace: "nowrap",
@@ -201,23 +184,22 @@ const codeRecipe = defineRecipe({
 const textRecipe = defineRecipe({
   className: "text",
   base: {
-    fontFamily: "var(--ds-font-family-sans)",
     color: "var(--ds-color-neutral-text-default-default)",
-    lineHeight: "var(--ds-line-height-normal)",
   },
   variants: {
+    // One typography composite per variant; `weight` varies only the weight.
     variant: {
-      "body-lg": { fontSize: "var(--ds-font-size-lg)" },
-      "body-base": { fontSize: "var(--ds-font-size-md)" },
-      "body-sm": { fontSize: "var(--ds-font-size-sm)" },
-      "body-xs": { fontSize: "var(--ds-font-size-xs)" },
-      "label-sm": { fontSize: "var(--ds-font-size-xs)", fontWeight: "var(--ds-font-weight-medium)", textTransform: "uppercase", letterSpacing: "var(--ds-letter-spacing-wide)" },
+      "body-large": { fontFamily: "var(--ds-typography-body-large-font-family)", fontSize: "var(--ds-typography-body-large-font-size)", fontWeight: "var(--ds-typography-body-large-font-weight)", lineHeight: "var(--ds-typography-body-large-line-height)", letterSpacing: "var(--ds-typography-body-large-letter-spacing)" },
+      "body-default": { fontFamily: "var(--ds-typography-body-default-font-family)", fontSize: "var(--ds-typography-body-default-font-size)", fontWeight: "var(--ds-typography-body-default-font-weight)", lineHeight: "var(--ds-typography-body-default-line-height)", letterSpacing: "var(--ds-typography-body-default-letter-spacing)" },
+      "body-small": { fontFamily: "var(--ds-typography-body-small-font-family)", fontSize: "var(--ds-typography-body-small-font-size)", fontWeight: "var(--ds-typography-body-small-font-weight)", lineHeight: "var(--ds-typography-body-small-line-height)", letterSpacing: "var(--ds-typography-body-small-letter-spacing)" },
+      "label-default": { fontFamily: "var(--ds-typography-label-default-font-family)", fontSize: "var(--ds-typography-label-default-font-size)", fontWeight: "var(--ds-typography-label-default-font-weight)", lineHeight: "var(--ds-typography-label-default-line-height)", letterSpacing: "var(--ds-typography-label-default-letter-spacing)" },
+      "label-small": { fontFamily: "var(--ds-typography-label-small-font-family)", fontSize: "var(--ds-typography-label-small-font-size)", fontWeight: "var(--ds-typography-label-small-font-weight)", lineHeight: "var(--ds-typography-label-small-line-height)", letterSpacing: "var(--ds-typography-label-small-letter-spacing)", textTransform: "uppercase" },
     },
     weight: {
-      bold: { fontWeight: "var(--ds-font-weight-bold)" },
-      semibold: { fontWeight: "var(--ds-font-weight-semibold)" },
-      medium: { fontWeight: "var(--ds-font-weight-medium)" },
-      regular: { fontWeight: "var(--ds-font-weight-regular)" },
+      bold: { fontWeight: "var(--ds-typography-weight-bold)" },
+      semibold: { fontWeight: "var(--ds-typography-weight-semibold)" },
+      medium: { fontWeight: "var(--ds-typography-weight-medium)" },
+      regular: { fontWeight: "var(--ds-typography-weight-regular)" },
     },
     align: {
       left: { textAlign: "left" },
@@ -229,8 +211,7 @@ const textRecipe = defineRecipe({
     },
   },
   defaultVariants: {
-    variant: "body-base",
-    weight: "regular",
+    variant: "body-default",
     align: "left",
   },
 });
@@ -248,15 +229,14 @@ const listRecipe = defineRecipe({
       unstyled: { listStyleType: "none", pl: "0" },
     },
     spacing: {
-      "1": { gap: "var(--ds-spacing-2xs)" },
-      "2": { gap: "var(--ds-spacing-xs)" },
-      "3": { gap: "var(--ds-spacing-sm)" },
-      "4": { gap: "var(--ds-spacing-md)" },
+      compact: { gap: "var(--ds-dimension-spacing-stack-compact)" },
+      default: { gap: "var(--ds-dimension-spacing-stack-default)" },
+      comfortable: { gap: "var(--ds-dimension-spacing-stack-comfortable)" },
     },
   },
   defaultVariants: {
     variant: "unordered",
-    spacing: "1",
+    spacing: "compact",
   },
 });
 
@@ -264,7 +244,6 @@ const listItemRecipe = defineRecipe({
   className: "list-item",
   base: {
     display: "list-item",
-    lineHeight: "var(--ds-line-height-normal)",
     color: "inherit",
   },
 });
@@ -325,52 +304,44 @@ export default defineConfig({
         }
       },
       spacing: {
-        "2xs": { value: "var(--ds-spacing-2xs)" },
-        "xs": { value: "var(--ds-spacing-xs)" },
-        "sm": { value: "var(--ds-spacing-sm)" },
-        "md": { value: "var(--ds-spacing-md)" },
-        "lg": { value: "var(--ds-spacing-lg)" },
-        "xl": { value: "var(--ds-spacing-xl)" },
-        "2xl": { value: "var(--ds-spacing-2xl)" },
-        "3xl": { value: "var(--ds-spacing-3xl)" },
+        "inset-compact": { value: "var(--ds-dimension-spacing-inset-compact)" },
+        "inset-default": { value: "var(--ds-dimension-spacing-inset-default)" },
+        "inset-comfortable": { value: "var(--ds-dimension-spacing-inset-comfortable)" },
+        "stack-compact": { value: "var(--ds-dimension-spacing-stack-compact)" },
+        "stack-default": { value: "var(--ds-dimension-spacing-stack-default)" },
+        "stack-comfortable": { value: "var(--ds-dimension-spacing-stack-comfortable)" },
+        "inline-compact": { value: "var(--ds-dimension-spacing-inline-compact)" },
+        "inline-default": { value: "var(--ds-dimension-spacing-inline-default)" },
+        "inline-comfortable": { value: "var(--ds-dimension-spacing-inline-comfortable)" },
+        "section": { value: "var(--ds-dimension-spacing-section)" },
+        "page": { value: "var(--ds-dimension-spacing-page)" },
       },
       radii: {
-        "sm": { value: "var(--ds-radius-sm)" },
-        "md": { value: "var(--ds-radius-md)" },
-        "lg": { value: "var(--ds-radius-lg)" },
-        "full": { value: "var(--ds-radius-full)" },
-      },
-      fontSizes: {
-        "xs": { value: "var(--ds-font-size-xs)" },
-        "sm": { value: "var(--ds-font-size-sm)" },
-        "md": { value: "var(--ds-font-size-md)" },
-        "lg": { value: "var(--ds-font-size-lg)" },
-        "xl": { value: "var(--ds-font-size-xl)" },
-        "2xl": { value: "var(--ds-font-size-2xl)" },
-        "3xl": { value: "var(--ds-font-size-3xl)" },
-        "4xl": { value: "var(--ds-font-size-4xl)" },
+        element: { value: "var(--ds-dimension-radius-element)" },
+        control: { value: "var(--ds-dimension-radius-control)" },
+        container: { value: "var(--ds-dimension-radius-container)" },
+        pill: { value: "var(--ds-dimension-radius-pill)" },
       },
       fontWeights: {
-        "thin": { value: "var(--ds-font-weight-thin)" },
-        "regular": { value: "var(--ds-font-weight-regular)" },
-        "medium": { value: "var(--ds-font-weight-medium)" },
-        "semibold": { value: "var(--ds-font-weight-semibold)" },
-        "bold": { value: "var(--ds-font-weight-bold)" },
+        regular: { value: "var(--ds-typography-weight-regular)" },
+        medium: { value: "var(--ds-typography-weight-medium)" },
+        semibold: { value: "var(--ds-typography-weight-semibold)" },
+        bold: { value: "var(--ds-typography-weight-bold)" },
       },
       fonts: {
-        "sans": { value: "var(--ds-font-family-sans)" },
-        "mono": { value: "var(--ds-font-family-mono)" },
+        body: { value: "var(--ds-typography-body-default-font-family)" },
+        code: { value: "var(--ds-typography-code-default-font-family)" },
       },
-      lineHeights: {
-        "tight": { value: "var(--ds-line-height-tight)" },
-        "normal": { value: "var(--ds-line-height-normal)" },
-        "relaxed": { value: "var(--ds-line-height-relaxed)" },
+      zIndex: {
+        base: { value: "var(--ds-dimension-z-index-base)" },
+        dropdown: { value: "var(--ds-dimension-z-index-dropdown)" },
+        sticky: { value: "var(--ds-dimension-z-index-sticky)" },
+        overlay: { value: "var(--ds-dimension-z-index-overlay)" },
+        modal: { value: "var(--ds-dimension-z-index-modal)" },
+        popover: { value: "var(--ds-dimension-z-index-popover)" },
+        tooltip: { value: "var(--ds-dimension-z-index-tooltip)" },
+        toast: { value: "var(--ds-dimension-z-index-toast)" },
       },
-      letterSpacings: {
-        "tight": { value: "var(--ds-letter-spacing-tight)" },
-        "normal": { value: "var(--ds-letter-spacing-normal)" },
-        "wide": { value: "var(--ds-letter-spacing-wide)" },
-      }
     },
     extend: {
       recipes: {

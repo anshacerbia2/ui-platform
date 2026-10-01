@@ -146,10 +146,9 @@ jobs:
         with:
           node-version-file: .node-version
       - run: pnpm install --frozen-lockfile
-      # PLAN P0 row 4 runs in report mode until every category is fixed; a
-      # category that is already clean is listed in --block so it cannot regress.
+      # PLAN P0 row 4: every category is clean, so every finding blocks.
       - name: Validate tokens against STD-UIP-TKN-001
-        run: node packages/design-system/scripts/tokens/check.mjs --report artifacts/token-report.json --block key-set,font,contrast
+        run: node packages/design-system/scripts/tokens/check.mjs --report artifacts/token-report.json --blocking
       - name: Record token findings
         if: always()
         run: |

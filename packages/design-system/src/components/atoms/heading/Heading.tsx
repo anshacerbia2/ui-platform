@@ -15,8 +15,8 @@ import { cx } from "styled-system/css";
  * ```tsx
  * import { Heading } from "@scnx/system/components/heading";
  * 
- * <Heading as="h1" size="2xl">Page Title</Heading>
- * <Heading size="md" weight="bold">Section Header</Heading>
+ * <Heading as="h1" size="xlarge">Page Title</Heading>
+ * <Heading size="small" weight="bold">Section Header</Heading>
  * ```
  */
 export const Heading = <T extends HeadingTag = "h2">({
