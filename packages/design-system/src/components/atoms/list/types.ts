@@ -9,7 +9,7 @@ import type {
 export type ListVariants = {
   /** @default "unordered" */
   variant?: "unordered" | "ordered" | "unstyled";
-  /** @default "1" */
+  /** @default "compact" */
   spacing?: "compact" | "default" | "comfortable";
 };
 

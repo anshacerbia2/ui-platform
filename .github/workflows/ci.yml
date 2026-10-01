@@ -143,6 +143,54 @@ jobs:
             artifacts/packages/*.tgz
             artifacts/packages/*.json
 
+  storybook:
+    name: Storybook tests
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - run: pnpm install --frozen-lockfile
+      # The preview loads the built CSS assets (ADR-UIP-WKS-001).
+      - run: pnpm run build
+      - name: Install Chromium for story tests
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Every story in Chromium, axe-core at error level
+        run: pnpm test:stories
+      - name: Static Storybook
+        run: pnpm exec storybook build -o storybook-static --quiet
+      - uses: actions/upload-artifact@v4
+        with:
+          name: storybook-static
+          path: storybook-static
+
+  chromatic:
+    name: Chromatic visual review
+    # Chromatic keeps baselines per pushed commit; pull_request runs would
+    # snapshot the same commit twice.
+    if: github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - run: pnpm install --frozen-lockfile
+      - name: Static Storybook
+        run: pnpm run build-storybook
+      # Fails visibly until the CHROMATIC_PROJECT_TOKEN secret exists.
+      - uses: chromaui/action@v18.10.1
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          storybookBuildDir: storybook-static
+          exitZeroOnChanges: false
+          autoAcceptChanges: main
+
   token-gate:
     name: Token gate
     runs-on: ubuntu-24.04

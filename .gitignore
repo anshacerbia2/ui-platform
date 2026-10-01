@@ -13,3 +13,7 @@ node_modules/
 !.env.example
 .DS_Store
 artifacts/
+
+# Component workshop build output (ADR-UIP-WKS-001)
+storybook-static/
+*storybook.log

@@ -12,7 +12,7 @@ export type FlexVariants = {
   justify?: "start" | "center" | "end" | "between" | "around" | "evenly";
   /** @default "nowrap" */
   wrap?: "nowrap" | "wrap" | "wrap-reverse";
-  /** @default "0" */
+  /** @default "none" */
   gap?: "none" | "compact" | "default" | "comfortable" | "section";
 };
 

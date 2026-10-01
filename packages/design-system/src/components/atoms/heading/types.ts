@@ -4,7 +4,7 @@ import type { ComponentPropsWithRef } from "react";
 // by src/components/recipe-variants.test.ts; published declarations must not
 // depend on generated Panda types.
 export type HeadingVariants = {
-  /** @default "xl" */
+  /** @default "medium" */
   size?: "xxlarge" | "xlarge" | "large" | "medium" | "small" | "xsmall";
   /** @default "bold" */
   weight?: "bold" | "semibold" | "medium" | "regular";

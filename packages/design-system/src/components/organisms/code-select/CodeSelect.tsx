@@ -13,6 +13,8 @@ interface CodeSelectProps {
   onChange: (value: any) => void;
   placeholder?: string;
   icon?: ReactNode;
+  /** Accessible name of the search input. @default placeholder */
+  "aria-label"?: string;
 }
 
 /**
@@ -25,6 +27,7 @@ export function CodeSelect({
   onChange,
   placeholder = "Select...",
   icon,
+  "aria-label": ariaLabel,
 }: CodeSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchKey, setSearchKey] = useState("");
@@ -53,6 +56,7 @@ export function CodeSelect({
           ref={inputRef}
           type="text"
           className="scnx-code-select__input"
+          aria-label={ariaLabel ?? placeholder}
           placeholder={selectedOption ? "" : placeholder}
           value={searchKey}
           onChange={(e) => setSearchKey(e.target.value)}
