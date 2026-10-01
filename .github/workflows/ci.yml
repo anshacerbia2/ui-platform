@@ -133,6 +133,8 @@ jobs:
         run: node scripts/browser-tokens.mjs --packs artifacts/packages
       - name: Packed components in a browser (layers, isolation, focus, forced colors)
         run: node scripts/browser-components.mjs --packs artifacts/packages
+      - name: Packed ThemeProvider in a browser (SSR, hydration, isolation, strict CSP)
+        run: node scripts/browser-theme.mjs --packs artifacts/packages
       - uses: actions/upload-artifact@v4
         if: always()
         with:
