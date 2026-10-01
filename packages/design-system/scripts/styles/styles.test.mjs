@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 import { beforeAll, describe, expect, it } from "vitest";
 import { emit } from "../tokens/emit.mjs";
 import { assemble, pandaRecipes } from "./assemble.mjs";
-import { THEME_ROOT, checkStylesheet } from "./check-css.mjs";
+import { THEME_ROOT, checkStylesheet, loadStyleConfig } from "./check-css.mjs";
 import { LAYER_STATEMENT } from "./layers.mjs";
 
 const packageDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
@@ -79,5 +79,31 @@ describe("stylesheet gate", () => {
     const sheet = (name) => `${LAYER_STATEMENT}\n@layer components { .scnx-a { transition-delay: calc(var(${name}) * 1ms); } }`;
     expect(checkStylesheet(sheet("--item-index"), { tokenNames: new Set() }).findings).toEqual([]);
     expect(checkStylesheet(sheet("--item-order"), { tokenNames: new Set() }).findings.join()).toContain("var(--item-order)");
+  });
+});
+
+describe("style configuration", () => {
+  const write = (patch) => {
+    const config = JSON.parse(fs.readFileSync(path.join(packageDir, "styles.config.json"), "utf8"));
+    const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "scnx-style-config-")), "styles.config.json");
+    fs.writeFileSync(file, JSON.stringify(patch(config)));
+    return file;
+  };
+
+  it("rejects unknown keys", () => {
+    expect(() => loadStyleConfig(write((c) => ({ ...c, surprise: true })))).toThrow('unknown key "surprise"');
+  });
+
+  it("requires every exception to carry its standard, reason, and removal condition", () => {
+    const file = write((c) => ({ ...c, exceptions: [{ rule: "important", selector: ".scnx-a", properties: ["padding"] }] }));
+    expect(() => loadStyleConfig(file)).toThrow(/standard is required[\s\S]*reason is required[\s\S]*removal is required/);
+  });
+
+  it("applies a recorded exception only to its selector and property", () => {
+    const config = { ...loadStyleConfig(), exceptions: [{ rule: "important", selector: ".scnx-a", properties: ["padding"], standard: "s", reason: "r", removal: "m" }] };
+    const sheet = (rule) => `${LAYER_STATEMENT}\n@layer components { ${rule} }`;
+    expect(checkStylesheet(sheet(".scnx-a { padding: 0 !important }"), { tokenNames: new Set(), config }).findings).toEqual([]);
+    expect(checkStylesheet(sheet(".scnx-a { margin: 0 !important }"), { tokenNames: new Set(), config }).findings.join()).toContain("no recorded exception");
+    expect(checkStylesheet(sheet(".scnx-b { padding: 0 !important }"), { tokenNames: new Set(), config }).findings.join()).toContain("no recorded exception");
   });
 });

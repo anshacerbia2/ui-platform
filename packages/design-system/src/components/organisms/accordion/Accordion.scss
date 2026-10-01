@@ -1,10 +1,6 @@
 @use "styles/abstracts/variables" as *;
 
 .scnx-accordion {
-  --accordion-bg: #{$color-surface-canvas};
-  --accordion-border-color: #{$color-border-default};
-  --accordion-focus-ring: #{$color-ring-focus};
-  --accordion-item-border-radius: #{$dimension-radius-container};
 
   display: flex;
   flex-direction: column;
@@ -20,27 +16,27 @@
       border-bottom: 0;
       
       &:first-child {
-        border-top-left-radius: var(--accordion-item-border-radius);
-        border-top-right-radius: var(--accordion-item-border-radius);
+        border-top-left-radius: $dimension-radius-container;
+        border-top-right-radius: $dimension-radius-container;
       }
       
       &:last-child {
-        border-bottom-left-radius: var(--accordion-item-border-radius);
-        border-bottom-right-radius: var(--accordion-item-border-radius);
-        border-bottom: 1px solid var(--accordion-border-color);
+        border-bottom-left-radius: $dimension-radius-container;
+        border-bottom-right-radius: $dimension-radius-container;
+        border-bottom: 1px solid $color-border-default;
       }
     }
   }
 
   &__item {
-    border: 1px solid var(--accordion-border-color);
-    border-radius: var(--accordion-item-border-radius);
-    background-color: var(--accordion-bg);
+    border: 1px solid $color-border-default;
+    border-radius: $dimension-radius-container;
+    background-color: $color-surface-canvas;
     overflow: hidden;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
     &:focus-within {
-      border-color: var(--accordion-focus-ring);
+      border-color: $color-ring-focus;
       box-shadow: var(--ds-effect-shadow-focus);
     }
   }
@@ -73,7 +69,7 @@
   }
 
   &__content {
-    background-color: var(--accordion-bg);
+    background-color: $color-surface-canvas;
     color: $color-text-secondary;
     @include typography(body, small);
     transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
@@ -82,7 +78,7 @@
     // without padding-box calculations interfering
     &-inner {
       padding: $dimension-spacing-inset-default 1.25rem;
-      border-top: 1px solid var(--accordion-border-color);
+      border-top: 1px solid $color-border-default;
     }
   }
 

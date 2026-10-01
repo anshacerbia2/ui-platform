@@ -2,19 +2,17 @@
 @use "styles/abstracts/geometry";
 
 .scnx-navbar {
-  --navbar-height: var(--layout-navbar-height, #{geometry.$navbar-height});
-  --navbar-sidebar-width: var(--layout-sidebar-width, #{geometry.$sidebar-width});
 
-  background-color: #{$color-surface-default};
+  background-color: $color-surface-default;
   
-  border-bottom: 1px solid #{$color-border-subtle};
+  border-bottom: 1px solid $color-border-subtle;
   padding: 0; // Remove block padding, rely on height
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: var(--navbar-height);
-  max-height: var(--navbar-height);
+  height: geometry.$navbar-height;
+  max-height: geometry.$navbar-height;
 
   &__start,
   &__center,
@@ -27,7 +25,7 @@
   }
 
   &__start {
-    width: var(--navbar-sidebar-width);
+    width: geometry.$sidebar-width;
     flex-shrink: 0;
     // border-right: 1px solid rgb(var(--ds-color-border-muted)); // Add optional divider for edge layout
   }

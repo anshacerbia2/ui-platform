@@ -5,8 +5,6 @@
 // ============================================
 
 .scnx-navigation {
-  --nav-group-header-color: var(--sidebar-group-header-color);
-  --nav-item-active-borded-color: #{$color-primary-default};
 }
 
 .scnx-navigation {
@@ -40,7 +38,7 @@
         font-weight: $typography-weight-bold;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        color: var(--nav-group-header-color);
+        color: $color-text-primary;
         padding-block: $dimension-spacing-inset-compact;
         // white-space: nowrap !important; // Membiarkan teks meluber lurus tanpa wrap
         // word-break: keep-all !important;
@@ -95,14 +93,14 @@
 
     &:hover,
     &:focus {
-      background-color: #{$color-state-hover};
+      background-color: $color-state-hover;
     }
 
     // Modifier: Active state
     &[data-active="true"] {
       position: relative;
-      background-color: #{$color-primary-subtle};
-      color: #{$color-primary-default};
+      background-color: $color-primary-subtle;
+      color: $color-primary-default;
       font-weight: $typography-weight-semibold;
 
       &::before {
@@ -110,7 +108,7 @@
         // We inject a local variable that grabs a high-contrast color (Electric Blue) from Tier 1,
         // intentionally separating this 'Focus Indicator' from the brand color (Purple/Black).
         border-left: $dimension-border-width-strong solid
-          var(--nav-item-active-borded-color);
+          $color-primary-default;
       }
     }
 
@@ -132,7 +130,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding-left: calc(#{$dimension-spacing-inset-default} - #{$dimension-border-width-strong});
+    padding-left: calc($dimension-spacing-inset-default - $dimension-border-width-strong);
     line-height: 1;
 
     svg {
