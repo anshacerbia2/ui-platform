@@ -1,24 +1,14 @@
 @use "styles/abstracts/variables" as *;
 
 .scnx-code-showcase {
-  --showcase-bg: #{$color-surface-canvas};
-  --showcase-border: #{$color-border-default};
-  --showcase-nav-bg: #{$color-surface-raised};
-  --showcase-tab-active-bg: #{$color-state-selected};
-  --showcase-text-primary: #{$color-text-primary};
-  --showcase-text-secondary: #{$color-text-secondary};
-  --showcase-preview-bg: #{$color-surface-default};
-  --showcase-content-bg: #{$color-surface-sunken};
-  --showcase-content-text: #{$color-text-secondary};
-  --showcase-radius: #{$dimension-radius-container};
   
   display: flex;
   flex-direction: column;
   width: 100%;
   margin-block: 1.5em;
-  border: 1px solid var(--showcase-border);
-  border-radius: var(--showcase-radius);
-  background-color: var(--showcase-bg);
+  border: 1px solid $color-border-default;
+  border-radius: $dimension-radius-container;
+  background-color: $color-surface-canvas;
   box-shadow: $effect-shadow-low;
   transition: box-shadow 0.3s ease;
   overflow: hidden;
@@ -29,17 +19,17 @@
 
   // Principal-grade internal border management
   & > * + * {
-    border-top: 1px solid var(--showcase-border);
+    border-top: 1px solid $color-border-default;
   }
 
   &__preview {
     padding: $dimension-spacing-inset-comfortable;
-    background-color: var(--showcase-preview-bg);
+    background-color: $color-surface-default;
     background-image: conic-gradient(
-      #{$color-surface-raised} 25%,
-      #{$color-surface-canvas} 0 50%,
-      #{$color-surface-raised} 0 75%,
-      #{$color-surface-canvas} 0
+      $color-surface-raised 25%,
+      $color-surface-canvas 0 50%,
+      $color-surface-raised 0 75%,
+      $color-surface-canvas 0
     );
     background-size: 30px 30px;
     display: flex;
@@ -55,7 +45,7 @@
     column-gap: 2em;
     row-gap: 0.5em;
     padding: 0.5em 1em;
-    color: var(--showcase-text-secondary);
+    color: $color-text-secondary;
     font-size: 0.875em;
     background-color: $color-surface-default;
   }
@@ -67,6 +57,8 @@
     font-family: typography-member(body, default, font-family);
   }
 
+  // The marker precedes the tabs inside __tabs; both are positioned without a
+  // z-index, so the tabs paint above it in tree order.
   &__marker {
     position: absolute;
     top: 0;
@@ -74,9 +66,8 @@
     left: 0;
     width: 0;
     border-radius: $dimension-radius-element;
-    background-color: var(--showcase-tab-active-bg); 
+    background-color: $color-state-selected; 
     transition: left 0.2s ease, width 0.2s ease;
-    z-index: 1;
   }
 
   &__tab {
@@ -84,14 +75,13 @@
     padding: 0.25em 0.75em;
     transition: color 0.2s ease;
     cursor: pointer;
-    z-index: 2; 
     display: flex;
     align-items: center;
     gap: 0.5em;
-    color: var(--showcase-text-secondary);
+    color: $color-text-secondary;
 
     &[data-active="true"] {
-      color: var(--showcase-text-primary);
+      color: $color-text-primary;
     }
   }
 
@@ -120,7 +110,7 @@
   &__icon-button {
     background: transparent;
     border: none;
-    color: var(--showcase-text-secondary);
+    color: $color-text-secondary;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -130,29 +120,32 @@
     transition: all 0.2s ease;
 
     &:hover {
-      color: var(--showcase-text-primary);
+      color: $color-text-primary;
       background-color: $color-state-hover;
     }
   }
 
   &__content {
-    background-color: var(--showcase-content-bg);
+    background-color: $color-surface-sunken;
     overflow: hidden;
     transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
   }
 
   &__code-inner {
-    background-color: var(--showcase-content-bg);
-    color: var(--showcase-content-text);
+    background-color: $color-surface-sunken;
+    color: $color-text-secondary;
     @include typography(code, default);
     overflow-x: auto;
 
+    // Vendor-integration exception (STD-GLB-FE-005 section 4; styles.config.json):
+    // consumer syntax highlighters style pre/code inline or in unlayered CSS,
+    // which outranks every layered rule; only !important restores the frame.
     pre, code {
       margin: 0;
       padding: 0 !important;
       border: none;
       background: transparent !important;
-      color: var(--showcase-content-text);
+      color: $color-text-secondary;
       font-size: 0.925em;
       min-width: max-content;
       display: block;
@@ -173,7 +166,7 @@
     }
     
     &::-webkit-scrollbar-thumb {
-      background: var(--showcase-text-secondary);
+      background: $color-text-secondary;
       border-radius: 3px;
     }
   }

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "aggregate": { "source": "src/styles/bundles/components.scss", "publish": "styles/components.css" },
+  "themeRoot": ":where([data-scnx-theme][data-scnx-resolved-mode])",
+  "recipes": ["container", "flex", "grid", "heading", "code", "text", "list", "list-item"],
+  "runtimeProperties": {
+    "--item-index": {
+      "owner": "@scnx/core-ui NavigationBaseGroup",
+      "purpose": "Position of a navigation item, set inline at render for the staggered sidebar entry"
+    },
+    "--ancestors-index": {
+      "owner": "@scnx/system Sidebar",
+      "purpose": "The --item-index of the top-level ancestor, captured so nested items stagger after it"
+    }
+  },
+  "exceptions": [
+    {
+      "rule": "important",
+      "selector": ".scnx-code-showcase__code-inner pre",
+      "properties": ["padding", "background"],
+      "standard": "STD-GLB-FE-005 section 4 (vendor integration)",
+      "reason": "Consumer syntax highlighters (for example Shiki or Prism) style pre/code inline or in unlayered CSS, which outranks every layered rule",
+      "removal": "CodeShowcase renders highlighted code itself with token-bound colors"
+    },
+    {
+      "rule": "important",
+      "selector": ".scnx-code-showcase__code-inner code",
+      "properties": ["padding", "background"],
+      "standard": "STD-GLB-FE-005 section 4 (vendor integration)",
+      "reason": "Consumer syntax highlighters (for example Shiki or Prism) style pre/code inline or in unlayered CSS, which outranks every layered rule",
+      "removal": "CodeShowcase renders highlighted code itself with token-bound colors"
+    }
+  ]
+}

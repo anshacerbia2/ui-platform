@@ -12,20 +12,11 @@ $-item-slide-offset: 1.5rem;
 // Sidebar inherently acts as an "Inverse" surface (Dark on Light canvas).
 // Passive items use primary-on-color text, active items act as solid surface pills.
 .scnx-sidebar {
-  --sidebar-width: var(--layout-sidebar-width, #{geometry.$sidebar-width});
-  --sidebar-bg-color: #{$color-surface-default};
-  --sidebar-group-header-color: #{$color-text-primary};
-  --sidebar-item-color: #{$color-text-secondary};
-  --sidebar-item-hover-color: #{$color-primary-text-hover};
-  --sidebar-item-active-color: #{$color-primary-text};
-  --sidebar-item-hover-bg: #{$color-primary-subtle-hover};
-  --sidebar-item-active-bg: #{$color-primary-subtle};
-  --sidebar-item-active-weight: 600;
 
   &[data-variant="light"] {
     .scnx-sidebar__toggle {
-      color: #{$color-text-primary};
-      border-color: #{$color-border-subtle};
+      color: $color-text-primary;
+      border-color: $color-border-subtle;
     }
   }
 }
@@ -35,19 +26,21 @@ $-item-slide-offset: 1.5rem;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  width: var(--sidebar-width);
+  width: geometry.$sidebar-width;
   height: 100%;
   // border-radius: $border-radius-xl;
-  // border: 1px solid #{$color-border-muted};
-  background-color: var(--sidebar-bg-color);
-  color: #{$color-text-primary};
+  // border: 1px solid $color-border-muted;
+  background-color: $color-surface-default;
+  color: $color-text-primary;
   transition: width $motion-disclosure-duration $motion-disclosure-easing;
 
   &__navigation {
     flex-grow: 1;
     margin-block: 1rem;
-    padding-block: 0 !important;
-    color: #{$color-text-primary};
+    // Overrides the Navigation root padding: Sidebar loads after Navigation
+    // in the components layer, so source order decides at equal specificity.
+    padding-block: 0;
+    color: $color-text-primary;
     overflow-y: auto;
     overflow-x: hidden;
     user-select: none;
@@ -65,7 +58,7 @@ $-item-slide-offset: 1.5rem;
 
     .scnx-navigation__item {
       position: relative;
-      color: var(--sidebar-item-color);
+      color: $color-text-secondary;
       border-radius: $dimension-radius-control;
       transition:
         background-color $motion-feedback-duration $motion-feedback-easing,
@@ -73,14 +66,14 @@ $-item-slide-offset: 1.5rem;
 
       &:hover,
       &:focus {
-        background-color: var(--sidebar-item-hover-bg);
-        color: var(--sidebar-item-hover-color);
+        background-color: $color-primary-subtle-hover;
+        color: $color-primary-text-hover;
       }
 
       &[data-active="true"] {
-        background-color: var(--sidebar-item-active-bg);
-        color: var(--sidebar-item-active-color);
-        font-weight: var(--sidebar-item-active-weight);
+        background-color: $color-primary-subtle;
+        color: $color-primary-text;
+        font-weight: $typography-weight-semibold;
 
         // Expert Enterprise Standard: Vertical Indicator for cohesive nav language
         &::before {
@@ -90,7 +83,7 @@ $-item-slide-offset: 1.5rem;
           top: $dimension-spacing-inset-compact;
           bottom: $dimension-spacing-inset-compact;
           width: 2px;
-          background-color: var(--sidebar-item-active-color);
+          background-color: $color-primary-text;
           border-radius: $dimension-radius-pill;
         }
       }
@@ -214,21 +207,12 @@ $-item-slide-offset: 1.5rem;
     justify-content: center;
     width: 24px;
     height: 24px;
-    border: 1px solid #{$color-border-default};
+    border: 1px solid $color-border-default;
     border-radius: 50%;
-    color: #{$color-text-secondary};
+    color: $color-text-secondary;
     cursor: pointer;
     overflow: hidden;
-    z-index: 1;
-
-    &::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      background-color: var(--sidebar-bg-color);
-      z-index: -1;
-    }
+    background-color: $color-surface-default;
 
     svg {
       width: 0.875rem;
@@ -251,14 +235,14 @@ $-item-slide-offset: 1.5rem;
 
   &__footer {
     padding: $dimension-spacing-inset-default;
-    border-top: 1px solid #{$color-border-subtle};
+    border-top: 1px solid $color-border-subtle;
     flex-shrink: 0;
   }
 
   &__flyout {
-    width: var(--sidebar-width, 280px);
+    width: geometry.$sidebar-width;
     margin-left: $dimension-spacing-inline-compact;
-    color: #{$color-text-primary};
+    color: $color-text-primary;
 
     > .scnx-transition {
       border-radius: $dimension-radius-container;

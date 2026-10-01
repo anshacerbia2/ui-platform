@@ -1,13 +1,6 @@
 @use "styles/abstracts/variables" as *;
 
 .scnx-code-select {
-  --select-bg: #{$color-surface-default};
-  --select-border: #{$color-border-default};
-  --select-hover-bg: #{$color-state-hover};
-  --select-text: #{$color-text-primary};
-  --select-text-muted: #{$color-text-secondary};
-  --select-dropdown-bg: #{$color-surface-floating};
-  --select-option-hover-bg: #{$color-state-hover};
 
   position: relative;
   display: inline-flex;
@@ -16,16 +9,16 @@
   &__wrapper {
     display: flex;
     align-items: center;
-    background-color: var(--select-bg);
-    border: 1px solid var(--select-border);
-    border-radius: #{$dimension-radius-control};
+    background-color: $color-surface-default;
+    border: 1px solid $color-border-default;
+    border-radius: $dimension-radius-control;
     padding: 4px 10px;
     width: 100%;
     cursor: pointer;
     transition: all 0.2s ease;
 
     &:hover {
-      background-color: var(--select-hover-bg);
+      background-color: $color-state-hover;
     }
   }
 
@@ -33,11 +26,11 @@
     background: transparent;
     border: none;
     @include typography(label, small);
-    color: var(--select-text);
+    color: $color-text-primary;
     width: 100%;
     
     &::placeholder {
-      color: var(--select-text-muted);
+      color: $color-text-secondary;
     }
   }
 
@@ -49,20 +42,20 @@
     display: flex;
     align-items: center;
     @include typography(label, small);
-    color: var(--select-text);
+    color: $color-text-primary;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
   &__icon {
-    margin-right: #{$dimension-spacing-inline-default};
+    margin-right: $dimension-spacing-inline-default;
     display: flex;
     align-items: center;
   }
 
   &__chevron {
-    color: var(--select-text-muted);
+    color: $color-text-secondary;
     margin-left: auto;
     font-size: 10px;
     transition: transform 0.2s ease;
@@ -77,29 +70,29 @@
     top: 100%;
     left: 0;
     right: 0;
-    margin-top: #{$dimension-spacing-stack-default};
-    background-color: var(--select-dropdown-bg);
-    border: 1px solid var(--select-border);
-    border-radius: #{$dimension-radius-control};
+    margin-top: $dimension-spacing-stack-default;
+    background-color: $color-surface-floating;
+    border: 1px solid $color-border-default;
+    border-radius: $dimension-radius-control;
     box-shadow: var(--ds-effect-shadow-overlay);
-    z-index: 1000;
+    z-index: $dimension-z-index-dropdown;
     max-height: 200px;
     overflow-y: auto;
   }
 
   &__option {
-    padding: #{$dimension-spacing-inset-compact} #{$dimension-spacing-inset-default};
+    padding: $dimension-spacing-inset-compact $dimension-spacing-inset-default;
     @include typography(label, small);
-    color: var(--select-text);
+    color: $color-text-primary;
     cursor: pointer;
     transition: background 0.2s ease;
 
     &:hover {
-      background-color: var(--select-option-hover-bg);
+      background-color: $color-state-hover;
     }
     
     &[data-selected="true"] {
-      color: #{$color-primary-default}; // Use primary color for selected
+      color: $color-primary-default; // Use primary color for selected
     }
   }
 }

@@ -2,31 +2,29 @@
 @use "styles/abstracts/geometry";
 
 .scnx-edge-layout {
-  --layout-navbar-height: #{geometry.$navbar-height};
-  --layout-sidebar-width: #{geometry.$sidebar-width};
 
   display: grid;
   grid-template-columns: min-content 1fr;
-  grid-template-rows: var(--layout-navbar-height) 1fr;
+  grid-template-rows: geometry.$navbar-height 1fr;
   grid-template-areas:
     "header header"
     "sidebar content";
 
   min-height: 100vh;
   width: 100%;
-  border-left: 1px solid #{$color-border-default};
-  border-right: 1px solid #{$color-border-default};
+  border-left: 1px solid $color-border-default;
+  border-right: 1px solid $color-border-default;
 
   &__sidebar {
     grid-area: sidebar;
     position: sticky;
-    top: var(--layout-navbar-height);
-    height: calc(100vh - var(--layout-navbar-height));
-    z-index: 5;
+    top: geometry.$navbar-height;
+    height: calc(100vh - geometry.$navbar-height);
+    z-index: $dimension-z-index-sticky;
 
     .scnx-sidebar {
       height: 100%;
-      border-right: 1px solid #{$color-border-default};
+      border-right: 1px solid $color-border-default;
     }
   }
 
@@ -34,14 +32,14 @@
     position: sticky;
     top: 0;
     grid-area: header;
-    z-index: 10;
-    height: var(--layout-navbar-height);
+    z-index: $dimension-z-index-sticky;
+    height: geometry.$navbar-height;
 
     .scnx-navbar {
-      border-bottom: 1px solid #{$color-border-default};
+      border-bottom: 1px solid $color-border-default;
 
       .scnx-navbar__start {
-        border-right: 1px solid #{$color-border-default}; 
+        border-right: 1px solid $color-border-default; 
       }
     }
   }
