@@ -66,6 +66,16 @@ work may not.
 | 10    | Security Lead    | Run dependency, SBOM/provenance, license, side-effect, and strict-CSP gates. Propagate consumer-controlled nonces or hashes through any evaluated federation runtime and dynamic chunks.                                                               | High/critical applicable advisories block; every dependency/copied source has a license; public-entry import causes no DOM/global/network/style mutation; standalone and federation fixtures record zero CSP violations without `unsafe-eval` or `unsafe-inline`. |
 | 11    | Release Lead     | Produce the P0 evidence packet and perform the exit review against exact commits and artifact checksums.                                                                                                                                               | Every applicable row above has a current CI link and immutable artifact evidence; failed capabilities remain absent from stable exports; architecture statuses are reported exactly as stored in the architecture repository.                                     |
 
+## Component workshop
+
+Proposed in ADR-UIP-WKS-001; this work does not change the P0 rows above. W2
+becomes a required check once the `CHROMATIC_PROJECT_TOKEN` secret exists.
+
+| Order | Owner        | Work                                                                                                                                                                                                                                   | Pass/fail acceptance                                                                                                                                                                                                          |
+| ----- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| W1    | Styling Lead | Add Storybook 10 (react-vite) at the workspace root with stories for every supported component; preview the built CSS assets inside ThemeProvider with theme and mode controls; run every story through the Vitest addon and axe-core. | `pnpm test:stories` runs every story in Chromium with zero failures and zero `error`-level axe violations; the static build uploads as a CI artifact; the packed-artifact inspector finds no workshop file in either tarball. |
+| W2    | Release Lead | Run Chromatic on every push against the static Storybook build with `exitZeroOnChanges: false`.                                                                                                                                        | Every story has an approved Chromatic baseline; a pull request with an unreviewed visual change fails the visual-review check.                                                                                                |
+
 ## Measurement rules
 
 Measurements inform decisions; they do not become universal policy by being
