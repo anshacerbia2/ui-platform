@@ -1,33 +1,11 @@
-import type { ElementType, ReactElement } from "react";
+import type { ReactElement } from "react";
+import type { LayoutTag } from "../../types/polymorphic";
 import type { ContainerBaseProps } from "./types";
 
-/**
- * ContainerBase - Layout primitive for bounding content width and centering.
- * 
- * Supports polymorphic `as` prop for semantic HTML flexibility.
- * Broadcasts size information via `data-size` attribute for Design System styling.
- *
- * @example
- * ```tsx
- * import { ContainerBase } from "@scnx/core-ui/components/container-base";
- * 
- * <ContainerBase as="main" data-size="lg">
- *   <section>Content goes here</section>
- * </ContainerBase>
- * ```
- */
-export const ContainerBase = <E extends ElementType = "div">({
-  as,
-  children,
-  ...rest
-}: ContainerBaseProps<E>): ReactElement => {
-  const Component = as || "div";
-
-  return (
-    <Component {...rest}>
-      {children}
-    </Component>
-  );
+/** ContainerBase - headless page container; one tag of the closed {@link LayoutTag} union. */
+export const ContainerBase = <T extends LayoutTag = "div">({ as, ...rest }: ContainerBaseProps<T>): ReactElement => {
+  const Tag = (as ?? "div") as "div";
+  return <Tag {...(rest as ContainerBaseProps<"div">)} />;
 };
 
 ContainerBase.displayName = "ContainerBase";

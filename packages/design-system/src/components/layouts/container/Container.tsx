@@ -1,8 +1,7 @@
-import type { ElementType } from "react";
-
 import { ContainerBase } from "@scnx/core-ui/components/container-base";
 
 import type { ContainerProps } from "./types";
+import type { LayoutTag } from "@scnx/core-ui/components/container-base";
 import { containerRecipe } from "styled-system/recipes";
 import { cx } from "styled-system/css";
 
@@ -21,18 +20,15 @@ ilizing the Enterprise Layout System.
  * </Container>
  * ```
  */
-export const Container = <E extends ElementType = "div">({
+export const Container = <T extends LayoutTag = "div">({
   size = "base",
   className = "",
   ...rest
-}: ContainerProps<E>) => {
+}: ContainerProps<T>) => {
   const recipeClass = containerRecipe({ size });
 
   return (
-    <ContainerBase 
-      {...(rest as any)} 
-      className={cx(recipeClass, className)} 
-    />
+    <ContainerBase<T> {...(rest as ContainerProps<T>)} className={cx(recipeClass, className)} />
   );
 };
 

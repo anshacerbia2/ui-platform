@@ -1,14 +1,13 @@
-import type { ListBaseRootProps, ListBaseItemProps } from "./types";
-import { Slot } from "../../utils/Slot";
+import type { ComponentPropsWithRef, ReactElement } from "react";
+import type { ListBaseItemProps, ListBaseRootProps } from "./types";
 
-export const ListBaseRoot = ({ asChild, type = "unordered", ...props }: ListBaseRootProps) => {
-  if (asChild) return <Slot data-slot="list" {...props} />;
-  
-  const Tag = (type === "ordered" ? "ol" : "ul") as any;
-  return <Tag data-slot="list" {...props} />;
-};
+/** ListBaseRoot - a native `ul`, or `ol` when `type="ordered"`. */
+export const ListBaseRoot = ({ type = "unordered", ...rest }: ListBaseRootProps): ReactElement =>
+  type === "ordered" ? (
+    <ol data-slot="list" {...(rest as ComponentPropsWithRef<"ol">)} />
+  ) : (
+    <ul data-slot="list" {...rest} />
+  );
 
-export const ListBaseItem = ({ asChild, ...props }: ListBaseItemProps) => {
-  const Component = asChild ? Slot : "li";
-  return <Component data-slot="list-item" {...props} />;
-};
+/** ListBaseItem - a native `li`. */
+export const ListBaseItem = (props: ListBaseItemProps): ReactElement => <li data-slot="list-item" {...props} />;

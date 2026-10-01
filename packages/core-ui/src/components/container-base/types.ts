@@ -1,10 +1,4 @@
-import type { ComponentPropsWithRef, ElementType, ReactNode } from "react";
+import type { ClosedAsProps, LayoutTag } from "../../types/polymorphic";
 
-export type PolymorphicProps<E extends ElementType> = {
-  as?: E;
-} & Omit<ComponentPropsWithRef<E>, "as">;
-
-export type ContainerBaseProps<E extends ElementType = "div"> = {
-  /** The children to render. */
-  children?: ReactNode;
-} & PolymorphicProps<E>;
+/** A page container; `as` picks one tag from {@link LayoutTag} (default `div`). */
+export type ContainerBaseProps<T extends LayoutTag = "div"> = ClosedAsProps<T>;

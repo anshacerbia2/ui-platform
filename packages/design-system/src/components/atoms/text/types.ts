@@ -1,7 +1,4 @@
-import type {
-  TextBaseProps
-} from "@scnx/core-ui/components/text-base";
-import type { ElementType } from "react";
+import type { TextBaseProps, TextTag } from "@scnx/core-ui/components/text-base";
 
 // Owned public variant types. Kept equal to `textRecipe` in panda.config.ts by
 // src/components/recipe-variants.test.ts; published declarations must not
@@ -20,6 +17,6 @@ export type TextVariants = {
  * TextProps - Styled Typography Primitive.
  * Follows Tier 1 Governance for Polymorphic Primitives.
  */
-export type TextProps<E extends ElementType = "p"> = TextBaseProps<E> & TextVariants;
+export type TextProps<T extends TextTag = "p"> = Omit<TextBaseProps<T>, keyof TextVariants> & TextVariants;
 
-export type { TextBaseProps };
+export type { TextBaseProps, TextTag };

@@ -38,3 +38,18 @@ export const Disabled: Story = {
 
 /** Link mode keeps native link semantics. */
 export const Link: Story = { args: { variant: "secondary", href: "#docs", children: "Read the docs" } };
+
+/** asChild composes one element, for example a router Link, with button styling. */
+export const AsChild: Story = {
+  args: { asChild: true, children: <a href="#reports">Open reports</a> },
+};
+
+/** A disabled link has no href, leaves the tab order, and cancels activation. */
+export const DisabledLink: Story = {
+  args: { variant: "secondary", href: "#docs", disabled: true, children: "Read the docs" },
+  play: async ({ canvasElement }) => {
+    const link = within(canvasElement).getByText("Read the docs");
+    await expect(link).not.toHaveAttribute("href");
+    await expect(link).toHaveAttribute("aria-disabled", "true");
+  },
+};

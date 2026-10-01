@@ -5,7 +5,7 @@ import type { BoxProps } from "./types";
 /**
  * Box - Foundational Structural Primitive.
  * 
- * Uses `asChild` for polymorphism. Resolves into a standard `div` unless wrapped.
+ * Renders a `div`, or one tag of the closed LayoutTag union through `as`.
  * Acts as the base container for generic layout spacing integration.
  *
  * @example

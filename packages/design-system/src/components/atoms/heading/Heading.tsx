@@ -1,4 +1,4 @@
-import { HeadingBase } from "@scnx/core-ui/components/heading-base";
+import { HeadingBase, type HeadingBaseProps } from "@scnx/core-ui/components/heading-base";
 
 import type { HeadingProps, HeadingTag } from "./types";
 import { headingRecipe } from "styled-system/recipes";
@@ -28,10 +28,7 @@ export const Heading = <T extends HeadingTag = "h2">({
   const recipeClass = headingRecipe({ size, weight });
 
   return (
-    <HeadingBase<T>
-      className={cx(recipeClass, className)}
-      {...rest as any}
-    />
+    <HeadingBase<T> {...(rest as unknown as HeadingBaseProps<T>)} className={cx(recipeClass, className)} />
   );
 };
 
