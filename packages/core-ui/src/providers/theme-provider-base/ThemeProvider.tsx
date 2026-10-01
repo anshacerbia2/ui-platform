@@ -1,122 +1,136 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import type { ThemeContextValue, ThemeValue } from "./types";
+import { createContext, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { assertThemeId, createThemeStore, isThemeMode } from "./store";
+import type { ThemeContextValue, ThemeMode, ThemeProviderProps, ThemeSnapshot } from "./types";
 
-type ThemeProviderProps = {
-  children: React.ReactNode;
-};
+/** Context of the nearest ThemeProvider; null outside one. */
+export const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-// We use a React Context here so child components can access the current theme
-export const ThemeContext = React.createContext<ThemeContextValue>({
-  theme: "light",
-  isDark: false,
-  setTheme: (_newTheme: ThemeValue) => {}, // no-op default
-});
+const diagnostic = (message: string) => console.error(message);
 
-const scriptCode = `
-  (function() {
-    const transitionNoneStyles = "*, *::before, *::after { transition: none !important; }";
-    window.__onThemeChange = function() {};
-    function setTheme(newTheme) {
-      window.__theme = newTheme;
-      if (newTheme === "dark") {
-        document.documentElement.classList.add("dark");
-        document.documentElement.classList.remove("light");
-        document.documentElement.setAttribute("data-theme", "dark");
-      } else {
-        document.documentElement.classList.add("light");
-        document.documentElement.classList.remove("dark");
-        document.documentElement.setAttribute("data-theme", "light");
-      }
-      var styleTags = document.getElementsByTagName("style");
-      var hasTransitionNone = false;
-      for (var i = 0; i < styleTags.length; i++) {
-        if (styleTags[i].innerHTML.indexOf(transitionNoneStyles) !== -1) {
-          hasTransitionNone = true;
-          break;
-        }
-      }
-      if (!hasTransitionNone) {
-        var style = document.createElement("style");
-        style.innerHTML = transitionNoneStyles;
-        document.head.appendChild(style);
-        window.__onThemeChange(newTheme);
-        setTimeout(() => { if (style.parentNode) style.parentNode.removeChild(style); });
-      } else {
-        window.__onThemeChange(newTheme);
-      }
-    }
-    let preferredTheme;
-    try { preferredTheme = localStorage.getItem("scnx-theme"); } catch (err) {}
-    window.__setPreferredTheme = function(newTheme) {
-      setTheme(newTheme);
-      try { localStorage.setItem("scnx-theme", newTheme); } catch (err) {}
-    };
-    let initialTheme = preferredTheme;
-    let darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    if (!initialTheme) {
-      initialTheme = darkQuery.matches ? "dark" : "light";
-    }
-    setTheme(initialTheme);
-    darkQuery.addEventListener("change", function(e) {
-      if (!localStorage.getItem("scnx-theme")) {
-        setTheme(e.matches ? "dark" : "light");
-      }
-    });
-  })();
-`;
-
-// Evaluate the logic immediately during module initialization in the browser (SPA context).
-// This guarantees zero FOUC in Vite because the script runs before React even imports/mounts the app.
-if (typeof window !== "undefined" && typeof window.__setPreferredTheme !== "function") {
+/**
+ * ThemeProvider - scoped theme state for one theme root (TDD theme, THM-001..005).
+ *
+ * The root carries exactly `data-scnx-theme` and `data-scnx-resolved-mode`.
+ * State lives in a store owned by this provider, or in an explicit `store`
+ * shared on purpose; there is no global singleton, no `window` API, no
+ * injected script or style, and no dynamic code evaluation. The first client
+ * render reproduces the server snapshot; persisted and system preference
+ * apply after hydration.
+ *
+ * @example
+ * ```tsx
+ * <ThemeProvider themeId="default" defaultMode="system">
+ *   <App />
+ * </ThemeProvider>
+ * ```
+ */
+export const ThemeProvider = ({
+  children,
+  themeId,
+  mode,
+  defaultMode,
+  onModeChange,
+  store: explicitStore,
+  storage,
+  root: rootElement,
+  portalContainer: explicitPortal,
+}: ThemeProviderProps) => {
+  // Unknown theme: reject the update and keep the last valid ID.
+  const validThemeId = useRef<string | null>(null);
   try {
-    const scriptFn = new Function(
-      scriptCode
-        .replace(/^\s*\(\s*function\s*\(\)\s*\{/, "")
-        .replace(/\}\s*\)\s*\(\)\s*;\s*$/, "")
-    );
-    scriptFn();
-  } catch (e) {
-    console.warn("Failed to initialize SPA ThemeProvider logic natively", e);
+    assertThemeId(themeId);
+    validThemeId.current = themeId;
+  } catch (error) {
+    if (validThemeId.current === null) throw error;
+    diagnostic((error as Error).message);
   }
-}
+  const activeThemeId = validThemeId.current;
 
-export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  // Try to get initial state from the DOM if available (client-side only), otherwise default to light
-  const [theme, setThemeState] = useState<ThemeValue>("light");
+  const [ownedStore] = useState(() =>
+    explicitStore ? null : createThemeStore({ themeId: activeThemeId, defaultMode, storage, onDiagnostic: diagnostic }),
+  );
+  const store = explicitStore ?? ownedStore!;
 
-  const useIsomorphicLayoutEffect = typeof window !== "undefined" ? React.useLayoutEffect : useEffect;
+  const stored = useSyncExternalStore(store.subscribe, store.getSnapshot, store.getServerSnapshot);
+  const system = useSyncExternalStore(store.subscribe, store.getSystemMode, () => null);
+  useEffect(() => store.connect(), [store]);
 
-  useIsomorphicLayoutEffect(() => {
+  const controlled = mode !== undefined;
+  if (controlled && !isThemeMode(mode)) diagnostic(`ThemeProvider: ignored the invalid controlled mode "${String(mode)}"`);
+  const controlledMode = controlled && isThemeMode(mode) ? mode : null;
 
-    // 1. Sync initial state from HTML tag once mounted (to fix hydration mismatch)
-    const currentTheme = document.documentElement.getAttribute("data-theme") as ThemeValue;
-    if (currentTheme) {
-      setThemeState(currentTheme);
-    } else if (window.__theme) {
-      setThemeState(window.__theme);
-    }
+  const snapshot: ThemeSnapshot = useMemo(() => {
+    if (!controlledMode) return { ...stored, themeId: activeThemeId };
+    const resolvedMode = controlledMode === "system" ? (system ?? stored.resolvedMode) : controlledMode;
+    return { ...stored, themeId: activeThemeId, mode: controlledMode, resolvedMode, source: "controlled" };
+  }, [stored, system, controlledMode, activeThemeId]);
 
-    // 2. Listen to changes triggered by the ThemeScript or other instances
-    window.__onThemeChange = (newTheme: ThemeValue) => {
-      setThemeState(newTheme);
+  const onModeChangeRef = useRef(onModeChange);
+  useEffect(() => {
+    onModeChangeRef.current = onModeChange;
+  });
+
+  const setMode = useCallback(
+    (next: ThemeMode) => {
+      if (!isThemeMode(next)) {
+        diagnostic(`ThemeProvider: rejected the invalid mode "${String(next)}"`);
+        return;
+      }
+      if (controlledMode) {
+        const resolvedMode = next === "system" ? (store.getSystemMode() ?? "light") : next;
+        onModeChangeRef.current?.(next, { ...snapshot, mode: next, resolvedMode, revision: snapshot.revision });
+        return;
+      }
+      store.setMode(next);
+      onModeChangeRef.current?.(next, { ...store.getSnapshot(), themeId: activeThemeId });
+    },
+    [controlledMode, store, snapshot, activeThemeId],
+  );
+
+  // An existing root element receives the attributes; prior values are restored.
+  useEffect(() => {
+    if (!rootElement) return;
+    const previous = ["data-scnx-theme", "data-scnx-resolved-mode"].map((name) => [name, rootElement.getAttribute(name)] as const);
+    rootElement.setAttribute("data-scnx-theme", snapshot.themeId);
+    rootElement.setAttribute("data-scnx-resolved-mode", snapshot.resolvedMode);
+    return () => {
+      for (const [name, value] of previous) {
+        if (value === null) rootElement.removeAttribute(name);
+        else rootElement.setAttribute(name, value);
+      }
     };
-  }, []);
+  }, [rootElement, snapshot.themeId, snapshot.resolvedMode]);
 
-  // Function exposed to consumers to change the theme
-  const setTheme = (newTheme: ThemeValue) => {
-    // Calling the global setter from ThemeScript ensures localStorage and DOM are updated together
-    if (typeof window.__setPreferredTheme === "function") {
-      window.__setPreferredTheme(newTheme);
-    }
-  };
+  const [renderedRoot, setRenderedRoot] = useState<HTMLDivElement | null>(null);
+  const [ownedPortal, setOwnedPortal] = useState<HTMLDivElement | null>(null);
+  const root = rootElement ?? renderedRoot;
+  const portalContainer = explicitPortal ?? ownedPortal;
 
-  const isDark = theme === "dark";
+  const value: ThemeContextValue = useMemo(
+    () => ({ ...snapshot, root, portalContainer, setMode }),
+    [snapshot, root, portalContainer, setMode],
+  );
+
+  // The owned portal container is the root's last child; React removes it on unmount.
+  const content = (
+    <>
+      {children}
+      {explicitPortal === undefined || explicitPortal === null ? <div data-scnx-portal="" ref={setOwnedPortal} /> : null}
+    </>
+  );
 
   return (
-    <ThemeContext.Provider value={{ theme, isDark, setTheme }}>
-      <script suppressHydrationWarning dangerouslySetInnerHTML={{ __html: scriptCode }} />
-      {children}
+    <ThemeContext.Provider value={value}>
+      {rootElement ? (
+        content
+      ) : (
+        <div ref={setRenderedRoot} data-scnx-theme={snapshot.themeId} data-scnx-resolved-mode={snapshot.resolvedMode}>
+          {content}
+        </div>
+      )}
     </ThemeContext.Provider>
   );
 };
+
+ThemeProvider.displayName = "ThemeProvider";

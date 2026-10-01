@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { useOnClickOutside } from "@scnx/core-ui/hooks/use-on-click-outside";
+import { useOptionalTheme } from "@scnx/core-ui/providers/theme-provider-base";
 
 import type { SidebarFlyoutProps } from "./types";
 import { Transition } from "../../atoms/transition";
@@ -33,6 +34,7 @@ export const SidebarFlyout = ({
   const flyoutRef = useRef<HTMLDivElement>(null);
   const { activeFlyout, isFlyoutClosing, closeFlyout, cleanupFlyout } =
     useFlyout();
+  const theme = useOptionalTheme();
   const [pos, setPos] = useState<CSSProperties>({});
 
   const refs = useMemo(() => {
@@ -123,12 +125,12 @@ export const SidebarFlyout = ({
 
   if (typeof document === "undefined" || !activeFlyout?.content) return null;
 
-  // Portaled UI stays inside the originating theme root (TDD CSS delivery,
-  // STY-006): tokens and scoped base rules exist only below it. There is no
-  // fallback to document.body.
-  const themeRoot = activeFlyout.triggerRef?.closest("[data-scnx-theme][data-scnx-resolved-mode]");
+  // Portaled UI stays inside the originating theme root (TDD CSS delivery
+  // STY-006; TDD theme THM-005): the ThemeProvider's portal container, or the
+  // theme root around the trigger. There is no fallback to document.body.
+  const themeRoot = theme?.portalContainer ?? activeFlyout.triggerRef?.closest("[data-scnx-theme][data-scnx-resolved-mode]");
   if (!themeRoot) {
-    console.error("SidebarFlyout: the trigger is not inside a [data-scnx-theme][data-scnx-resolved-mode] root; the flyout is not rendered.");
+    console.error("SidebarFlyout: no ThemeProvider portal container or [data-scnx-theme][data-scnx-resolved-mode] root; the flyout is not rendered.");
     return null;
   }
 
