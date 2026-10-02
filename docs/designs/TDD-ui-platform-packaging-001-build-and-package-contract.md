@@ -15,8 +15,9 @@ doc_meta:
 # TDD-ui-platform-packaging-001: Build and Published Package Contract
 
 > **Revision pending exact-commit ratification.** The component-workshop
-> additions (proposed ADR-UIP-WKS-001) and the entry-environment decision
-> record (K1–K5) are pending under GDC-000 section 2.6.7;
+> additions (proposed ADR-UIP-WKS-001), the entry-environment decision
+> record (K1–K5), and the federation-evaluation decision record (F1–F9) are
+> pending under GDC-000 section 2.6.7;
 > the previously ratified revision remains binding until the authorized human
 > authority approves the exact commit containing them.
 
@@ -230,21 +231,45 @@ reused for a different tarball.
 ### Conditional federation evaluation
 
 For the P0 evaluation fixture and for any separately authorized federation
-scope, generate explicit share keys from context-bearing inventory records.
-`react`, `react-dom`, and `@scnx/core-ui` are singletons; every context-bearing
-`@scnx/core-ui` public entry resolves to that same shared identity. Each share
-uses strict compatible-range negotiation. Its `requiredVersion` is read from
-the consuming host or remote's declared dependency/peer range, never copied
-from a producer constant or silently widened.
+scope, generate explicit share keys from the packed export inventory: the React
+entries an application imports and every public JavaScript entry of both
+packages (F2). `react`, `react-dom`, `@scnx/core-ui`, and `@scnx/system` are
+singletons, so every context-bearing public entry resolves to one shared
+identity. Each share uses strict compatible-range negotiation. Its
+`requiredVersion` is read from the consuming host or remote's declared
+dependency/peer range, never copied from a producer constant or silently
+widened.
 
 The host owns React, React DOM, shared UI context, CSS, and nonce/hash
-propagation. Remotes stay lazy and cannot import UI CSS. Negotiation emits one
-versioned event per shared package with `host_version`, `remote_name`,
-`remote_version`, `shared_package`, `required_range`, `selected_version`,
-`outcome`, and `reason`. The event therefore preserves both participating
-application versions as well as the selected shared version. An absent share,
-duplicate singleton identity, or incompatible range produces a controlled
-route-local failure while the rest of the host remains usable.
+propagation; it is the only provider of a shared module (F3). Remotes stay lazy
+and cannot import UI CSS. Negotiation emits one versioned event per participant
+and shared package with `schema`, `host_version`, `remote_name`,
+`remote_version`, `shared_package`, `required_range`, `offered_versions`,
+`selected_version`, `outcome`, and `reason` (F6). The event therefore preserves
+both participating application versions, the versions offered, and the version
+selected (PKG-011). An absent share, duplicate singleton identity, or
+incompatible range produces a controlled route-local failure while the rest of
+the host remains usable.
+
+#### Decision record: federation evaluation
+
+This record configures the P0 evaluation fixture (PLAN row 9) only. Module
+Federation stays `assess`; nothing here authorizes adoption (ADR-GLB-FE-011
+section 5). Strict-CSP nonce and hash propagation through the federation
+runtime is PLAN row 10. Each decision names its sources (References under
+Traceability) and the tradeoff it accepts.
+
+| ID  | Decision                                                                                                                                                                                                                                                                                          | Sources                                                 | Tradeoff                                                                                                                                                                                                                                                                                                                                               |
+| :-- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| F1  | Host and remotes compile with `@rspack/core` and its built-in `rspack.container.ModuleFederationPlugin` (Module Federation 1.5 runtime from `@module-federation/runtime-tools`), with both versions pinned in the fixture.                                                                        | ADR-GLB-FE-011 section 5 item 1; [7]; [8]; [16]         | ADR-GLB-FE-011 section 3 records that the existing federated applications use this plugin directly, and 1.5 already has runtime plugins [7]. Module Federation 2.0 extras (type hints, devtools, manifest) are not evaluated; switching to `@module-federation/enhanced` needs a rerun.                                                                |
+| F2  | Share keys are `react`, `react/jsx-runtime`, `react-dom`, `react-dom/client`, and every public JavaScript subpath of both packages, generated from the pack report by `scripts/federation-share-map.mjs`.                                                                                         | ADR-GLB-FE-012 section 5 items 1–2; [11]                | A share key matches the request itself [11], so a bare package key misses every subpath. Sharing all public entries, stateless ones included, is a superset of "every context-bearing entry": no entry can be misclassified, at the cost of one negotiation per key.                                                                                   |
+| F3  | Only the host provides shared modules, with `version` from its installed package. Remotes declare every key with `import: false`. The host build includes a generated module that references every key through a lazy `import()`.                                                                 | ADR-GLB-FE-012 section 5 item 5; [11]; [12]; [13]       | `import: false` removes the remote's local fallback [11], so a remote can never fall back to its own copy. A bundler provides a non-relative key only when the build resolves an import of it [12]; without the generated references the fixture failed with RUNTIME-012 [13]. A newly shared entry needs a host rebuild before any remote can use it. |
+| F4  | Every key is `singleton: true` and `strictVersion: true`, and its `requiredVersion` is the range the consuming application declares in `peerDependencies` (else `dependencies`). A non-semver range such as `file:` is rejected.                                                                  | ADR-GLB-FE-012 section 5 items 1, 3, 5; [9]; [10]; [11] | Without `strictVersion`, an unsatisfied singleton only warns and still loads [9]; [10]; [11]. Strict mode fails a route when a remote needs a newer minor than the host offers; it does not degrade. Rspack describes `strictVersion` as an exact match [8], but the runtime checks range satisfaction [9].                                            |
+| F5  | `shareStrategy: "loaded-first"`. The host bootstraps through an async `import()`, no share is eager, and each remote loads on first use of its route.                                                                                                                                             | ADR-GLB-FE-012 section 5 item 4; [8]                    | `version-first` loads every remote entry at startup to register its versions [8], which defeats lazy remotes. Because remotes provide nothing (F3), `version-first` would gain no candidate versions.                                                                                                                                                  |
+| F6  | A runtime plugin wraps the `resolveShare` resolver and emits one `scnx.federation.share/1` event per participant, shared package, and outcome (`selected` or `rejected`). The fixture collects events in a page-global list and a `scnx:federation` DOM event; product transport is out of scope. | ADR-GLB-FE-012 section 5 item 5; [9]; [14]              | The hook receives the scope map, package name, selected version, and resolver, and its return value is used [9]; [14]. The plugin depends on that hook shape, which is why the runtime version is pinned (F1).                                                                                                                                         |
+| F7  | Each remote route renders inside its own error boundary and `Suspense`. A rejected share, an unavailable remote, and a duplicate React each render that route's fallback, and the host stays usable.                                                                                              | ADR-GLB-FE-012 section 5 items 5–6                      | Errors are contained per route, not per component inside a remote.                                                                                                                                                                                                                                                                                     |
+| F8  | Only the host imports `components.css` and the theme tokens. The fixture fails when a remote emits a stylesheet or when more than one applied stylesheet contains component rules.                                                                                                                | ADR-GLB-FE-012 section 5 item 7                         | The check counts stylesheets that contain a known component selector. A stylesheet injected some other way, without that selector, is not counted.                                                                                                                                                                                                     |
+| F9  | Identity is proven by reference: every remote's React shared internals and `useState`, and its `@scnx/core-ui` ThemeProvider module, must be the host's. A negative-control remote that bundles its own React must be reported as split.                                                          | ADR-GLB-FE-012 section 5 item 1; [15]                   | `react` is CommonJS, so each `import * as React` gets its own interop namespace; the fixture compares what React shares instead, as React's own duplicate check compares `require('react')` results [15]. The negative control proves the check detects a duplicate.                                                                                   |
 
 ## Configuration
 
@@ -376,3 +401,58 @@ References (retrieved 2026-10-02):
    A client reference proxy throws "Cannot access ${expression} on the server.
    You cannot dot into a client module from a server component. You can only
    pass the imported name through." The webpack variant carries the same text.
+7. Rspack guide, Module Federation, at commit
+   `179a0934f3091463419827fc2767af07b2fd38ed`:
+   <https://github.com/web-infra-dev/rspack/blob/179a0934f3091463419827fc2767af07b2fd38ed/website/docs/en/guide/advanced/module-federation.mdx#L34-L62>.
+   v1.5 is the "Version built into Rspack" and "adds runtime plugin
+   functionality"; v2.0 needs "the additional `@module-federation/enhanced`
+   plugin"; v1.0 is "No longer being iterated".
+8. Rspack `ModuleFederationPlugin`, same commit:
+   <https://github.com/web-infra-dev/rspack/blob/179a0934f3091463419827fc2767af07b2fd38ed/website/docs/en/plugins/module-federation-plugin.mdx#L88-L181>.
+   `version-first`: "all _remotes_ entry files will be automatically loaded and
+   **register** the corresponding shared dependencies"; `loaded-first`: "the
+   _remotes_ entry file will not be automatically loaded (it will only be
+   loaded when needed)"; `strictVersion`: "If set to `true`, the shared module
+   must match the version specified in requiredVersion exactly, otherwise an
+   error will be reported and the module will not be loaded."
+9. `@module-federation/runtime-core` 2.9.2 (npm tarball), `dist/utils/share.js`
+   lines 188–192 and 221–231. For a singleton whose required range is not
+   satisfied, it calls `error(msg)` (which throws) when
+   `shareConfig.strictVersion` is set and `warn(msg)` otherwise. It then emits
+   `resolveShare` with `shareScopeMap`, `scope`, `pkgName`, `version`,
+   `shareInfo`, and `resolver`, and calls the returned `resolver()`.
+10. Module Federation, Shared configuration, same commit as [13]:
+    <https://github.com/module-federation/core/blob/8a9677f3ea8515a5d81d729a0381955624e1e72b/apps/website-new/docs/en/configure/shared.mdx#L63>. "a higher version will
+    be loaded if the versions are inconsistent. A warning will be given for the
+    party with the lower version."
+11. webpack, ModuleFederationPlugin, sharing hints:
+    <https://webpack.js.org/plugins/module-federation-plugin/>. `strictVersion`
+    "defaults to `true` when local fallback module is available and shared
+    module is not a singleton, otherwise `false`"; `import` "also acts as
+    fallback module"; with `import: false` and `strictVersion: true`, "there is
+    no local version provided" and "it will throw an error"; `shareKey` "defaults
+    to the key you used in `shared`, i.e. the request itself".
+12. webpack `lib/sharing/ProvideSharedPlugin.js` at commit
+    `d37872d245f4d6bc21c36ee5297663d87452d51d`:
+    <https://github.com/webpack/webpack/blob/d37872d245f4d6bc21c36ee5297663d87452d51d/lib/sharing/ProvideSharedPlugin.js#L183-L272>.
+    A relative or absolute key is resolved up front; a module request goes to
+    `matchProvides` and is provided only in `normalModuleFactory.hooks.module`,
+    when the build resolves that request. That Rspack 2.2.8 behaves the same
+    way is this fixture's observation, not a quoted source.
+13. Module Federation troubleshooting, RUNTIME-012, at commit
+    `8a9677f3ea8515a5d81d729a0381955624e1e72b`:
+    <https://github.com/module-federation/core/blob/8a9677f3ea8515a5d81d729a0381955624e1e72b/apps/website-new/docs/en/guide/troubleshooting/runtime.mdx>.
+    "`import: false` is set for the shared module in one of the applications …
+    In this case the host app **must** provide the module".
+14. Module Federation runtime hooks, same commit as [13] (lines 242 and 472):
+    <https://github.com/module-federation/core/blob/8a9677f3ea8515a5d81d729a0381955624e1e72b/apps/website-new/docs/en/guide/runtime/runtime-hooks.mdx#L242>.
+    `resolveShare` "Allows overriding the final shared module selection
+    result"; `errorLoadRemote` is "Called if loading remotes fails".
+15. React, Invalid Hook Call Warning, "Duplicate React":
+    <https://react.dev/warnings/invalid-hook-call-warning>. "the `react` import
+    from your application code needs to resolve to the same module as the
+    `react` import from inside the `react-dom` package"; the suggested check is
+    `console.log(window.React1 === window.React2)`.
+16. npm registry, 2026-10-02: `@rspack/core` 2.2.8 (MIT), optional peer
+    `@module-federation/runtime-tools` `^0.24.1 || ^2.0.0`;
+    `@module-federation/runtime-tools` 2.9.2 (MIT).
