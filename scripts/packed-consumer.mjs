@@ -5,6 +5,8 @@
 // React versions. Every declared subpath must resolve: JavaScript entries
 // import in Node, asset entries resolve to non-empty files, and every entry
 // typechecks under `bundler` and `nodenext` resolution with skipLibCheck off.
+// Every server-safe entry imports and renders with `react-dom/server` while
+// browser globals and timers throw on access (TDD packaging K4).
 //
 //   node scripts/packed-consumer.mjs --packs <dir from inspect-packages.mjs> [--out <report dir>]
 
@@ -97,6 +99,46 @@ console.log(JSON.stringify(results));
 `;
 }
 
+// TDD packaging K4: React and react-dom/server load first; then browser globals
+// and timers throw on access, and every component a server-safe entry exports
+// must import and render. Compound parts (Item, Trigger, ...) are not rendered
+// alone: they need their root's context.
+function serverSafeScript(specifiers) {
+  return `import { createElement } from "react";
+import { renderToString } from "react-dom/server";
+
+const trapped = ["window", "document", "localStorage", "sessionStorage", "navigator", "setTimeout", "setInterval", "setImmediate", "requestAnimationFrame", "queueMicrotask", "matchMedia"];
+for (const name of trapped) {
+  Object.defineProperty(globalThis, name, {
+    configurable: true,
+    get() {
+      throw new Error("server-safe code touched " + name);
+    },
+  });
+}
+
+const isComponent = (value) =>
+  typeof value === "function" || (typeof value === "object" && value !== null && typeof value.$$typeof === "symbol");
+const results = [];
+for (const specifier of ${JSON.stringify(specifiers)}) {
+  const mod = await import(specifier);
+  const components = Object.entries(mod).filter(([name, value]) => /^[A-Z]/.test(name) && isComponent(value));
+  if (components.length === 0) throw new Error(specifier + " exports no component");
+  for (const [name, Component] of components) {
+    let html;
+    try {
+      html = renderToString(createElement(Component, null, "Content"));
+    } catch (error) {
+      throw new Error(specifier + " " + name + ": " + error.message);
+    }
+    if (!html.includes("Content")) throw new Error(specifier + " " + name + " did not render its children: " + html);
+  }
+  results.push({ specifier, components: components.length });
+}
+console.log(JSON.stringify(results));
+`;
+}
+
 // Token outputs from the consumer's side: every theme stylesheet has one
 // scoped root per mode declaring exactly the JSON token set, and the Sass
 // contract resolves through the package exports with Sass's pkg: importer.
@@ -156,8 +198,11 @@ const tsconfig = (moduleResolution) => ({
   files: ["types.ts"],
 });
 
-const entries = { javascript: [], assets: [] };
+const entries = { javascript: [], assets: [], serverSafe: [] };
 for (const pkg of packReport.packages) {
+  for (const [subpath, environment] of Object.entries(pkg.environments)) {
+    if (environment === "server-safe") entries.serverSafe.push(`${pkg.name}${subpath.slice(1)}`);
+  }
   const manifest = JSON.parse(
     fs.readFileSync(path.join(packsDir, pkg.tarball.replace(/\.tgz$/, ""), "package", "package.json"), "utf8"),
   );
@@ -193,6 +238,10 @@ for (const boundary of boundaries) {
     scenario.checks.push({ check: "import-and-resolve", result: "pass", entries: imported.length });
     scenario.checks.push({ check: "ssr-render", result: "pass" });
 
+    fs.writeFileSync(path.join(dir, "server-safe.mjs"), serverSafeScript(entries.serverSafe));
+    const serverSafe = JSON.parse(run("node server-safe.mjs", dir).trim());
+    scenario.checks.push({ check: "server-safe-render", result: "pass", entries: serverSafe.length });
+
     const tokenSubpaths = entries.assets.filter((specifier) => specifier.startsWith("@scnx/system/tokens/"));
     if (tokenSubpaths.length > 0) {
       fs.writeFileSync(path.join(dir, "tokens.mjs"), tokensScript(tokenSubpaths));
@@ -208,7 +257,7 @@ for (const boundary of boundaries) {
     }
     scenario.result = "pass";
     console.log(
-      `${scenario.scenario}: react ${scenario.versions.react}, ${imported.length} entries resolve, types pass (bundler, nodenext)`,
+      `${scenario.scenario}: react ${scenario.versions.react}, ${imported.length} entries resolve, ${serverSafe.length} server-safe entries render with browser globals trapped, types pass (bundler, nodenext)`,
     );
   } catch (error) {
     failed = true;

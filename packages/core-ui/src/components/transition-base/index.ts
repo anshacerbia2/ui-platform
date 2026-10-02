@@ -1,3 +1,5 @@
+"use client";
+
 export type { TransitionBaseProps, TransitionCompletion, TransitionIntent, TransitionPhase } from "./types";
 
 export { TransitionBase } from "./TransitionBase";

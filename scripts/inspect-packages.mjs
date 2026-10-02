@@ -2,8 +2,10 @@
 // PLAN P0 row 3 artifact inspector (TDD packaging PKG-004/PKG-005).
 // Packs both packages with `pnpm pack`, extracts each tarball, and rejects:
 // `workspace:` ranges, wildcard or non-relative export targets, missing export
-// targets, a missing license, files not reachable from a declared export, and
-// source maps that leak absolute paths. Writes a JSON report with digests.
+// targets, a missing license, files not reachable from a declared export,
+// source maps that leak absolute paths, and a client-only entry whose emitted
+// ESM does not start with "use client" or a server-safe entry whose does
+// (TDD packaging K3). Writes a JSON report with digests and entry environments.
 //
 //   node scripts/inspect-packages.mjs --out <dir>   pack, inspect, report
 //   node scripts/inspect-packages.mjs --self-test   prove each rule rejects
@@ -12,10 +14,27 @@ import { execFileSync, execSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
-import { packageDirs } from "./package-entries.mjs";
+import { packageDirs, packageEntries } from "./package-entries.mjs";
 
 const DEPENDENCY_FIELDS = ["dependencies", "peerDependencies", "optionalDependencies", "devDependencies"];
 const ALWAYS_PACKED = /^(package\.json|README(\.md)?|LICENSE(\.md|\.txt)?)$/i;
+
+/**
+ * The directive prologue of a module: the string-literal statements before any
+ * other statement, after leading comments and blank lines.
+ * @param {string} text
+ * @returns {string[]}
+ */
+export function directivePrologue(text) {
+  const directives = [];
+  const skip = /^(?:\s+|\/\/[^\n]*(?:\n|$)|\/\*[\s\S]*?\*\/)*/;
+  let rest = text.replace(skip, "");
+  for (let match; (match = /^(["'])([^"'\n]*)\1\s*;?/.exec(rest)); ) {
+    directives.push(match[2]);
+    rest = rest.slice(match[0].length).replace(skip, "");
+  }
+  return directives;
+}
 
 /** Every string target in an `exports` value. */
 function targets(value) {
@@ -58,9 +77,10 @@ function resolveReference(from, ref, files) {
  * @param {object} manifest packed package.json
  * @param {Set<string>} files packed file paths, POSIX, relative to the package root
  * @param {(file: string) => string} read reads a packed text file
+ * @param {Record<string, "client-only" | "server-safe">} [environments] subpath -> entry environment
  * @returns {string[]} failures
  */
-export function inspectPackage(manifest, files, read) {
+export function inspectPackage(manifest, files, read, environments = {}) {
   const failures = [];
   const name = manifest.name ?? "<unnamed>";
 
@@ -102,6 +122,22 @@ export function inspectPackage(manifest, files, read) {
     }
     if (typeof value === "object" && value && targets(value).some((t) => t.endsWith(".js")) && !value.types) {
       failures.push(`${name}: "${subpath}" has JavaScript but no types target`);
+    }
+  }
+
+  // K3: the emitted entry is what a consumer bundler reads.
+  for (const [subpath, environment] of Object.entries(environments)) {
+    const target = exportsField[subpath]?.default;
+    if (typeof target !== "string" || !files.has(path.posix.normalize(target))) {
+      failures.push(`${name}: ${environment} entry "${subpath}" has no JavaScript target`);
+      continue;
+    }
+    const prologue = directivePrologue(read(path.posix.normalize(target)));
+    if (environment === "client-only" && prologue[0] !== "use client") {
+      failures.push(`${name}: client-only entry "${subpath}" does not start with "use client"`);
+    }
+    if (environment === "server-safe" && prologue.includes("use client")) {
+      failures.push(`${name}: server-safe entry "${subpath}" starts with "use client"`);
     }
   }
 
@@ -156,8 +192,9 @@ function selfTest() {
   };
   const { LICENSE: _license, ...withoutLicenseFile } = goodFiles;
   const { "dist/chunk.js": _chunk, ...withoutChunk } = goodFiles;
-  const run = (manifest, files) =>
-    inspectPackage(manifest, new Set(Object.keys(files)), (file) => files[file]);
+  const run = (manifest, files, environments) =>
+    inspectPackage(manifest, new Set(Object.keys(files)), (file) => files[file], environments);
+  const clientEntry = { ...goodFiles, "dist/a.js": `"use client";\n${goodFiles["dist/a.js"]}` };
   // [label, failures, expected message fragment; null means no failures]
   const cases = [
     ["valid package", run(good, goodFiles), null],
@@ -173,6 +210,15 @@ function selfTest() {
     ["packed story", run(good, { ...goodFiles, "dist/a.stories.js": "" }), "workshop file dist/a.stories.js"],
     ["absolute source-map path", run(good, { ...goodFiles, "dist/a.js.map": '{"sources":["C:/Users/me/a.ts"]}' }), "leaks absolute source path"],
     ["missing chunk", run(good, withoutChunk), 'references missing "./chunk.js"'],
+    ["client-only entry with its directive", run(good, clientEntry, { "./a": "client-only" }), null],
+    ["server-safe entry without a directive", run(good, goodFiles, { "./a": "server-safe" }), null],
+    ["client-only entry without its directive", run(good, goodFiles, { "./a": "client-only" }), 'client-only entry "./a" does not start'],
+    [
+      "client-only entry with the directive after an import",
+      run(good, { ...goodFiles, "dist/a.js": `import "./chunk.js";\n"use client";\n${goodFiles["dist/a.js"]}` }, { "./a": "client-only" }),
+      'client-only entry "./a" does not start',
+    ],
+    ["server-safe entry with the directive", run(good, clientEntry, { "./a": "server-safe" }), 'server-safe entry "./a" starts with'],
     [
       "missing font behind a stylesheet url()",
       run(
@@ -227,7 +273,12 @@ function packAndInspect(outDir) {
     const root = path.join(extractDir, "package");
     const files = new Set(listFiles(root));
     const manifest = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
-    failures.push(...inspectPackage(manifest, files, (file) => fs.readFileSync(path.join(root, file), "utf8")));
+    const environments = Object.fromEntries(
+      packageEntries(path.resolve(dir))
+        .filter((entry) => entry.environment)
+        .map((entry) => [entry.subpath, entry.environment]),
+    );
+    failures.push(...inspectPackage(manifest, files, (file) => fs.readFileSync(path.join(root, file), "utf8"), environments));
 
     report.packages.push({
       name: manifest.name,
@@ -237,6 +288,7 @@ function packAndInspect(outDir) {
       manifestSha256: sha256(path.join(root, "package.json")),
       fileCount: files.size,
       exports: Object.keys(manifest.exports ?? {}),
+      environments,
       peerDependencies: manifest.peerDependencies ?? {},
     });
   }
