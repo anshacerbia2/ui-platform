@@ -143,6 +143,17 @@ their CI evidence, as of 2026-10-02.")
 Ratifying SAD-003 does not accept ADR-UIP-WKS-001 or ADR-UIP-SEC-001; both
 remain `proposed` until decision D2 is recorded. Decision D3 remains open.
 
+Second ratification, appended the same day: the TDD packaging revision adding
+the CI topology decision record C1–C4.
+
+| Repository  | Ratified revision    | Candidate commit (ratified)                | Merge commit | Pull request | CI at candidate and merge                       |
+| :---------- | :------------------- | :----------------------------------------- | :----------- | :----------- | :---------------------------------------------- |
+| ui-platform | TDD packaging, C1–C4 | `a260bf0ed01aec2db6ca1513574ef27ab8a743fb` | `a6df4c8`    | #44          | CI, Chromatic, and P0 evidence workflows passed |
+
+Authorization under GDC-000 section 2.6.7: asked to state "Saya, sebagai ARB
+dan UI Platform Lead, meratifikasi `a260bf0` (TDD packaging C1–C4) beserta
+bukti CI-nya, per 2026-10-02", Ansha Cerbia replied "gas" on 2026-10-02.
+
 ## D2 recommendation: `oklch`
 
 Appended 2026-10-02. The `oklch` trial ended on 2026-08-01 with no recorded
