@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 // PLAN P0 row 10c license gate (TDD packaging V4). Fails unless:
 // - every package in the workspace lockfile declares a license expression
-//   whose identifiers are on the SPDX license list (or `LicenseRef-*`);
+//   whose identifiers are on the SPDX license list (or `LicenseRef-*`); the
+//   license is read from each installed package's own package.json; a
+//   lockfile package not installed on this platform (another OS or CPU, or an
+//   optional dependency of one) is read from the registry's metadata for that
+//   exact version, and a failed lookup fails the gate;
 // - each packed tarball declares `license` and ships a LICENSE file;
 // - every copied asset in the tarball matches its provenance record
 //   (packages/design-system/assets/fonts/provenance.json) and ships its
@@ -13,14 +17,12 @@
 //   node scripts/security/licenses.mjs --self-test
 
 import { createHash } from "node:crypto";
-import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { vendoredSchema } from "../sbom/vendored.mjs";
 
-const here = path.dirname(fileURLToPath(import.meta.url));
 // The SPDX license list as synchronized into the official CycloneDX schema (V5).
-const SPDX_IDS = new Set(JSON.parse(fs.readFileSync(path.join(here, "../sbom/schema/spdx.schema.json"), "utf8")).enum);
+const SPDX_IDS = new Set(vendoredSchema("spdx.schema.json").enum);
 
 /** Problems with an SPDX license expression (`MIT`, `(MIT OR Apache-2.0)`, `GPL-2.0-only WITH Classpath-exception-2.0`). */
 export function expressionProblems(expression) {
@@ -42,6 +44,72 @@ export function expressionProblems(expression) {
 
 const sha256 = (file) => createHash("sha256").update(fs.readFileSync(file)).digest("hex");
 
+/** A package.json license field as one expression; legacy object and array forms are normalized. */
+export function declaredLicense(manifest) {
+  const one = (value) => (typeof value === "string" ? value : value?.type);
+  if (manifest.license !== undefined) return one(manifest.license);
+  if (Array.isArray(manifest.licenses) && manifest.licenses.length > 0) {
+    const ids = manifest.licenses.map(one);
+    return ids.length === 1 ? ids[0] : `(${ids.join(" OR ")})`;
+  }
+  return undefined;
+}
+
+/**
+ * Lockfile packages (`name@version`) and whether each is platform-specific,
+ * read from the `packages:` section of pnpm-lock.yaml (lockfile v9).
+ */
+export function lockfilePackages(text) {
+  const section = text.split(/^packages:\n/m)[1]?.split(/^snapshots:\n/m)[0] ?? "";
+  const packages = new Map();
+  for (const block of section.split(/\n(?=  \S)/)) {
+    const key = /^  '?([^':\n]+)'?:/.exec(block)?.[1];
+    if (key) packages.set(key, /^    (os|cpu|libc):/m.test(block));
+  }
+  return packages;
+}
+
+/** `name@version` -> license from the registry's per-version metadata; failures are recorded. */
+async function registryLicenseMap(keys, failures) {
+  const registry = (process.env.npm_config_registry ?? "https://registry.npmjs.org/").replace(/\/?$/, "/");
+  const result = new Map();
+  const queue = [...keys];
+  const worker = async () => {
+    for (let key = queue.shift(); key; key = queue.shift()) {
+      const at = key.lastIndexOf("@");
+      const name = key.slice(0, at);
+      const version = key.slice(at + 1);
+      try {
+        const response = await fetch(`${registry}${name.replace("/", "%2F")}/${version}`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        result.set(key, declaredLicense(await response.json()));
+      } catch (error) {
+        failures.push(`${key}: registry metadata lookup failed (${error.message})`);
+      }
+    }
+  };
+  await Promise.all(Array.from({ length: 16 }, worker));
+  return result;
+}
+
+/** Installed packages under node_modules/.pnpm: `name@version` -> license expression. */
+function installedLicenses(root) {
+  const store = path.join(root, "node_modules", ".pnpm");
+  const found = new Map();
+  for (const entry of fs.readdirSync(store)) {
+    const modules = path.join(store, entry, "node_modules");
+    if (!fs.existsSync(modules)) continue;
+    const at = entry.indexOf("@", 1);
+    if (at === -1) continue;
+    const name = entry.slice(0, at).replace("+", "/");
+    const manifestPath = path.join(modules, name, "package.json");
+    if (!fs.existsSync(manifestPath)) continue;
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+    found.set(`${manifest.name}@${manifest.version}`, declaredLicense(manifest));
+  }
+  return found;
+}
+
 function selfTest() {
   const cases = [
     ["MIT", 0],
@@ -54,13 +122,23 @@ function selfTest() {
     ["Unknown", 1],
     ["MIT OR Banana-1.0", 1],
   ];
+  const lock = "packages:\n\n  '@a/b@1.0.0':\n    resolution: {integrity: x}\n    os: [linux]\n\n  c@2.0.0:\n    resolution: {integrity: y}\n\nsnapshots:\n\n  c@2.0.0: {}\n";
+  const parsed = lockfilePackages(lock);
+  if (parsed.get("@a/b@1.0.0") !== true || parsed.get("c@2.0.0") !== false || parsed.size !== 2) {
+    console.error(`lockfilePackages: ${JSON.stringify([...parsed])}`);
+    process.exit(1);
+  }
+  if (declaredLicense({ licenses: [{ type: "MIT" }, { type: "Apache-2.0" }] }) !== "(MIT OR Apache-2.0)" || declaredLicense({ license: { type: "ISC" } }) !== "ISC") {
+    console.error("declaredLicense does not normalize legacy forms");
+    process.exit(1);
+  }
   const failed = cases.filter(([expression, expected]) => expressionProblems(expression).length !== expected);
   for (const [expression, expected] of failed) console.error(`${JSON.stringify(expression)}: expected ${expected} problems, got ${JSON.stringify(expressionProblems(expression))}`);
   if (failed.length > 0) process.exit(1);
-  console.log(`License gate self-test passed: ${cases.length} cases`);
+  console.log(`License gate self-test passed: ${cases.length + 2} cases`);
 }
 
-function main() {
+async function main() {
   const arg = (name, fallback) => {
     const index = process.argv.indexOf(name);
     return index > -1 ? process.argv[index + 1] : fallback;
@@ -69,19 +147,23 @@ function main() {
   const outDir = path.resolve(arg("--out", "artifacts/security"));
   const failures = [];
 
-  // Workspace lockfile: development and build dependencies included.
-  const listed = JSON.parse(execFileSync("pnpm", ["licenses", "list", "--json"], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 }));
+  // Workspace lockfile: development and build dependencies included. Licenses
+  // come from installed manifests, not from the package manager's store index.
+  const locked = lockfilePackages(fs.readFileSync("pnpm-lock.yaml", "utf8"));
+  const installed = installedLicenses(process.cwd());
+  const fromRegistry = [...locked.keys()].filter((key) => !installed.has(key));
+  const registryLicenses = await registryLicenseMap(fromRegistry, failures);
   const byLicense = {};
   let packages = 0;
-  for (const [license, entries] of Object.entries(listed)) {
-    byLicense[license] = entries.length;
-    packages += entries.length;
-    const problems = expressionProblems(license);
-    for (const entry of entries) {
-      for (const problem of problems) failures.push(`${entry.name}@${entry.versions.join(",")}: ${problem}`);
-    }
+  for (const key of locked.keys()) {
+    const known = installed.has(key) || registryLicenses.has(key);
+    if (!known) continue; // the lookup failure is already recorded
+    const license = installed.has(key) ? installed.get(key) : registryLicenses.get(key);
+    packages++;
+    byLicense[license ?? "<none>"] = (byLicense[license ?? "<none>"] ?? 0) + 1;
+    for (const problem of expressionProblems(license)) failures.push(`${key}: ${problem}`);
   }
-  if (packages === 0) failures.push("pnpm licenses list returned no packages");
+  if (locked.size === 0) failures.push("no packages found in pnpm-lock.yaml");
 
   // Published tarballs and their copied assets.
   const packReport = JSON.parse(fs.readFileSync(path.join(packsDir, "pack-report.json"), "utf8"));
@@ -112,7 +194,7 @@ function main() {
   }
   failures.push(...expressionProblems(provenance.component.license).map((p) => `${provenance.component.name}: ${p}`));
 
-  const report = { schemaVersion: 1, lockfilePackages: packages, byLicense, shipped, copiedAssets: { component: provenance.component, files: assets }, result: failures.length === 0 ? "pass" : "fail", failures };
+  const report = { schemaVersion: 1, lockfilePackages: packages, fromRegistry: fromRegistry.length, byLicense, shipped, copiedAssets: { component: provenance.component, files: assets }, result: failures.length === 0 ? "pass" : "fail", failures };
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(path.join(outDir, "license-report.json"), `${JSON.stringify(report, null, 2)}\n`);
   if (failures.length > 0) {
@@ -120,9 +202,9 @@ function main() {
     process.exit(1);
   }
   console.log(
-    `License gate passed: ${packages} lockfile packages declare SPDX licenses (${Object.entries(byLicense).map(([l, n]) => `${l} ${n}`).join(", ")}); ${shipped.length} tarballs declare a license and ship LICENSE; ${assets.length} copied font files match their provenance (${provenance.component.license})`,
+    `License gate passed: all ${packages} lockfile packages declare SPDX licenses (${fromRegistry.length} not installed on this platform, read from registry metadata) (${Object.entries(byLicense).map(([l, n]) => `${l} ${n}`).join(", ")}); ${shipped.length} tarballs declare a license and ship LICENSE; ${assets.length} copied font files match their provenance (${provenance.component.license})`,
   );
 }
 
 if (process.argv.includes("--self-test")) selfTest();
-else main();
+else await main();

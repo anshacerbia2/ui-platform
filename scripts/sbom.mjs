@@ -25,12 +25,10 @@ import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
+import { vendoredSchema } from "./sbom/vendored.mjs";
 
-const here = path.dirname(fileURLToPath(import.meta.url));
-const SCHEMA_DIR = path.join(here, "sbom", "schema");
 const SUPPLIER = { name: "UI Platform Team" };
 const TOOL = "scnx-sbom (scripts/sbom.mjs)";
 
@@ -43,10 +41,8 @@ export function cycloneDxValidator() {
   // non-ASCII): they reject whitespace and a missing "@", not every invalid value.
   ajv.addFormat("iri-reference", /^\S+$/u);
   ajv.addFormat("idn-email", /^[^\s@]+@[^\s@]+$/u);
-  for (const file of ["spdx.schema.json", "jsf-0.82.schema.json", "cryptography-defs.schema.json"]) {
-    ajv.addSchema(JSON.parse(fs.readFileSync(path.join(SCHEMA_DIR, file), "utf8")));
-  }
-  return ajv.compile(JSON.parse(fs.readFileSync(path.join(SCHEMA_DIR, "bom-1.7.schema.json"), "utf8")));
+  for (const file of ["spdx.schema.json", "jsf-0.82.schema.json", "cryptography-defs.schema.json"]) ajv.addSchema(vendoredSchema(file));
+  return ajv.compile(vendoredSchema("bom-1.7.schema.json"));
 }
 
 /** npm package URL (purl-spec): `@scope/name` -> `pkg:npm/%40scope/name`. */
