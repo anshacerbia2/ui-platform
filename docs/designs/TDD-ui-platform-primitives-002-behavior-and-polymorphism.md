@@ -14,6 +14,12 @@ doc_meta:
 
 # TDD-ui-platform-primitives-002: Primitive Behavior and Polymorphism
 
+> **Revision pending exact-commit ratification.** The decision record
+> (P1–P12), the Navigation and Sidebar interfaces, the behavior inventory,
+> and the References are pending under GDC-000 section 2.6.7; the previously
+> ratified revision remains binding until the authorized human authority
+> approves the exact commit containing them.
+
 ## Purpose
 
 Define an implementation-ready, style-agnostic contract for `@scnx/core-ui`:
@@ -83,6 +89,26 @@ graph LR
 Registries are scoped to the nearest provider and split state from imperative
 API contexts to avoid unrelated rerenders. Internal advanced registry mutation
 is not public v1 API.
+
+### Decision record
+
+Each decision names its sources (see References under Traceability) and the
+tradeoff it accepts. A statement marked _inference_ has no normative source.
+
+| ID  | Decision                                                                                                                                                                                                                                                                                                                                                                              | Sources                      | Tradeoff and residual risk                                                                                                                                                                                       |
+| :-- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| P1  | Layout primitives (Box, Flex, Grid, Container) render one tag of `LayoutTag`: `div`, `section`, `article`, `aside`, `header`, `footer`, `main`, `nav`, `span`. Headings use `HeadingTag` (`h1`–`h6`, `p`, `span`, `div`); text uses `TextTag` (`p`, `span`, `div`, `label`, `strong`, `em`, `small`, `figcaption`, `blockquote`, `cite`, `time`). No interactive tag is in any union. | PRM-006; [3]                 | A consumer needing another tag nests an element; no layout primitive can acquire button or link semantics.                                                                                                       |
+| P2  | `asChild` takes exactly one element child; child props win, `className` joins slot-then-child, style keys merge child-last, refs compose. For a handler on both, the consumer's runs first and `preventDefault` skips the library's.                                                                                                                                                  | PRM-007; [6]                 | No Slottable placeholder: a child cannot receive extra wrapper structure. The handler order matches Radix's `composeEventHandlers` [6].                                                                          |
+| P3  | Button link mode is a native `a href` with no `role="button"`. Disabled, it drops `href`, sets `aria-disabled`, leaves sequential focus, and cancels activation without stopping propagation.                                                                                                                                                                                         | [3]; API / Interface: Button | A disabled link is not reachable by Tab; its reason must be visible elsewhere.                                                                                                                                   |
+| P4  | `CollapsibleBase` defaults to `type="multiple"`, `AccordionBase` to `type="single"`; `collapsible` defaults to `true`.                                                                                                                                                                                                                                                                | [7]; baseline behavior       | Radix requires an explicit `type` and defaults `collapsible` to `false` [7]. The defaults here keep the baseline behavior; a consumer who expects Radix semantics passes both props. Disposes review finding D4. |
+| P5  | `AccordionBase.Header` wraps each trigger in a heading, `h3` by default, with a closed `HeadingTag` `as`.                                                                                                                                                                                                                                                                             | [2]                          | Radix sets the level through `asChild` [7]; a closed `as` keeps the header structural (PRM-006). The page owner chooses the level that fits its outline.                                                         |
+| P6  | Accordion content is `role="region"` labelled by its trigger by default; `region={false}` removes the role.                                                                                                                                                                                                                                                                           | [2]                          | APG advises against regions when more than about six panels can be open at once [2]. That case needs the opt-out, so landmark proliferation stays possible if the opt-out is not used.                           |
+| P7  | Accordion keyboard support is the native button (Enter, Space) and the Tab sequence. Arrow-key focus movement between headers is not implemented.                                                                                                                                                                                                                                     | [2]; [7]                     | APG lists Enter, Space, and Tab only [2]; Radix adds ArrowUp/ArrowDown/Home/End [7]. Long accordions need more Tab presses. Candidate for a later revision.                                                      |
+| P8  | A navigation item with a sub-group renders a native `button` with `aria-expanded` and `aria-controls`; a leaf renders a native `a href` with `aria-current="page"` when active. No `menu` role and no `aria-haspopup`. Router links compose through `asChild`.                                                                                                                        | [1]; [5]                     | The disclosure-navigation pattern [1] is not a menu, so arrow-key menu navigation is not offered. Disposes review finding D5 except arrow-key roving, which stays consumer-owned.                                |
+| P9  | No redundant role on native elements (`nav`, `ul`, `li`, `aside`). The styled `List` adds `role="list"` only to its `unstyled` variant, outside a `nav`.                                                                                                                                                                                                                              | [3]; [4]                     | ARIA in HTML marks redundant roles NOT RECOMMENDED [3]. Safari/VoiceOver drops list semantics under `list-style: none` except inside `nav` [4], so the unstyled list keeps an explicit role.                     |
+| P10 | A TOC item names its target heading by `targetId`; its link has `href="#<targetId>"` and its own optional `id`, never the heading's. The active link carries `aria-current="location"`.                                                                                                                                                                                               | [8]; [5]                     | IDs must be unique in a tree [8]. `location` follows the MDN definition [5]; no normative TOC guidance exists (_inference_).                                                                                     |
+| P11 | The sidebar toggle controls its sidebar (`aria-controls`) and takes a required accessible name; the flyout is non-modal: Escape closes it and returns focus to the item that opened it, and focus is not trapped.                                                                                                                                                                     | [1]; STD-UIP-PRM-001         | The toggle's name is localized by the consumer; no built-in English label remains.                                                                                                                               |
+| P12 | Every stable-candidate interactive primitive has a versioned record in `packages/core-ui/behavior-inventory.json` (the PrimitiveContract shape). Source and packed tests read it.                                                                                                                                                                                                     | PRM-002                      | The inventory is maintained with the component; a missing record fails the contract test rather than passing silently.                                                                                           |
 
 ## Data Model
 
@@ -163,6 +189,16 @@ matrix requires it. Disabled items do not change state.
   action.
 - Invalid child count/type throws a deterministic development diagnostic.
 
+### Navigation and Sidebar
+
+`NavigationBase.Item` with a nested group renders a disclosure `button`
+(`aria-expanded`, `aria-controls` = the group's ID); without one, it renders an
+`a href` or, with `asChild`, its single child link (P8). `isActive` sets
+`aria-current="page"`; a disabled item follows Button link mode (P3). The
+sidebar toggle requires `label` and sets `aria-controls` to the sidebar root;
+the collapsed flyout closes on Escape and outside click and restores focus to
+its opener (P11).
+
 ### TOC
 
 Items identify target heading IDs; links get their own optional DOM ID and
@@ -209,7 +245,9 @@ do not crash the navigation tree.
 
 The behavior inventory declares stability, semantic root, parts, state modes,
 keyboard pattern, focus rules, AT matrix, and supported React range per
-primitive. Runtime environment variables do not alter behavior. Optional motion
+primitive. It is `packages/core-ui/behavior-inventory.json` (P12): one
+PrimitiveContract record per stable-candidate interactive primitive, with a
+schema version. Runtime environment variables do not alter behavior. Optional motion
 uses the theme TDD contract and respects reduced motion.
 
 ## Failure Handling
@@ -290,6 +328,51 @@ an external consumer is proven.
 ## Traceability
 
 Architecture authority: SAD-003; ADR-UIP-PLT-001; STD-GLB-FE-006/008/009 and
-STD-UIP-PRM-001. Lifecycle status in `scnehaux-architecture` controls authority.
-Execution: [PLAN](../../PLAN.md) P0 rows 7, 8, and 11. Related designs: theme
-runtime, styled CSS, and packaging.
+STD-UIP-PRM-001.
+
+References (retrieved 2026-10-02):
+
+1. W3C WAI-ARIA APG, Example Disclosure Navigation Menu:
+   <https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/examples/disclosure-navigation/>.
+   It "does not use the WAI-ARIA menu role" because site navigation "does not
+   provide the complex functionality that assistive technologies expect"; the
+   button has `aria-expanded` and `aria-controls`, the current link
+   `aria-current="page"`, and "Escape … closes it and sets focus on the button
+   that controls that dropdown".
+2. W3C WAI-ARIA APG, Accordion Pattern:
+   <https://www.w3.org/WAI/ARIA/apg/patterns/accordion/>. The header button
+   "is wrapped in an element with role heading"; `aria-disabled` is true when
+   "the accordion does not permit the panel to be collapsed"; keyboard support
+   is Enter, Space, and Tab; "Avoid using the region role … in an accordion
+   that contains more than approximately 6 panels that can be expanded at the
+   same time".
+3. W3C, ARIA in HTML: <https://www.w3.org/TR/html-aria/>. "It is NOT
+   RECOMMENDED for authors to set the ARIA role and aria-\* attributes to values
+   that match the implicit ARIA semantics"; `nav`, `ul`, `li`, and `aside` list
+   their implicit roles as "allowed, but NOT RECOMMENDED".
+4. Scott O'Hara, "Fixing" Lists (2019):
+   <https://www.scottohara.me/blog/2019/01/12/lists-and-safari.html>.
+   "VoiceOver and Safari (Webkit) … remove list element semantics when
+   `list-style: none` is used"; `role="list"` restores them; "if a list is a
+   descendant of a `<nav>` element … Safari/VoiceOver will expose this as a
+   list".
+5. MDN, `aria-current`:
+   <https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-current>.
+   `page` "represents the current page within a set of pages"; `location`
+   "represents the current location within an environment or context".
+6. Radix UI, Composition guide
+   (<https://www.radix-ui.com/primitives/docs/guides/composition>): the child
+   "must spread props" and accept a `ref`. Radix `composeEventHandlers`
+   source (MIT, © 2022 WorkOS,
+   <https://github.com/radix-ui/primitives/blob/main/packages/core/primitive/src/primitive.tsx>)
+   calls the original handler first and its own only if
+   `!event.defaultPrevented`.
+7. Radix UI, Accordion: <https://www.radix-ui.com/primitives/docs/components/accordion>.
+   `type` is required with "No default value"; `collapsible` defaults to
+   `false`; Header uses `asChild` for the heading level; the keyboard table adds
+   ArrowDown, ArrowUp, Home, and End.
+8. WHATWG HTML Standard, the `id` attribute:
+   <https://html.spec.whatwg.org/multipage/dom.html#the-id-attribute>. The
+   value "must be unique amongst all the IDs in the element's tree". Lifecycle status in `scnehaux-architecture` controls authority.
+   Execution: [PLAN](../../PLAN.md) P0 rows 7, 8, and 11. Related designs: theme
+   runtime, styled CSS, and packaging.
