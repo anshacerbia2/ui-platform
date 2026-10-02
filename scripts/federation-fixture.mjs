@@ -20,11 +20,16 @@
 // - remote_x renders its route fallback;
 // - remote_d, which does not share React, is reported as a split identity,
 //   which proves the identity check detects a duplicate React;
-// - no error escapes to the page.
+// - no error escapes to the page;
+// - every page runs under a nonce-only CSP (no 'self', no 'strict-dynamic',
+//   no 'unsafe-*') with zero violations, so the consumer's nonce reaches every
+//   chunk, stylesheet, and remote entry the runtime inserts (S1-S2); the host
+//   page served without its nonce is blocked, which proves the policy applies.
 //
 //   node scripts/federation-fixture.mjs --packs <dir from inspect-packages.mjs> [--out <report dir>]
 
 import { execSync } from "node:child_process";
+import { randomBytes } from "node:crypto";
 import fs from "node:fs";
 import http from "node:http";
 import os from "node:os";
@@ -36,6 +41,10 @@ import { packageOf, REACT_KEYS, shareKeys, shareMap } from "./federation-share-m
 const RSPACK_VERSION = "2.2.8";
 const MF_RUNTIME_VERSION = "2.9.2";
 const EVENT_SCHEMA = "scnx.federation.share/1";
+// TDD packaging S1: nonce-only scripts and styles. A nonce-based page that also
+// sets 'strict-dynamic' admits a subset of what this policy admits.
+const NONCE = randomBytes(16).toString("base64");
+const CSP = `default-src 'self'; script-src 'nonce-${NONCE}'; style-src 'nonce-${NONCE}'; object-src 'none'; base-uri 'none'`;
 
 const arg = (name, fallback) => {
   const index = process.argv.indexOf(name);
@@ -129,6 +138,37 @@ export default function scnxShareTelemetry(options) {
         }
       };
       return args;
+    },
+  };
+}
+`);
+
+// TDD packaging S2: the consumer's nonce, read from the page's own nonced
+// script (the IDL attribute survives nonce hiding), applied to this build's
+// chunk loading and to every script and stylesheet the federation runtime
+// inserts. Every application registers it, so remote chunks carry it too.
+write("nonce-plugin.js", `const pageNonce = () => document.querySelector("script[nonce]")?.nonce || undefined;
+const withAttributes = (element, attrs, nonce) => {
+  for (const [name, value] of Object.entries(attrs ?? {})) element.setAttribute(name, value);
+  element.nonce = nonce;
+  return element;
+};
+export default function scnxNonce() {
+  const nonce = typeof document === "undefined" ? undefined : pageNonce();
+  if (nonce) import.meta.rspackNonce = nonce;
+  return {
+    name: "scnx-nonce",
+    createScript({ url, attrs }) {
+      if (!nonce) return;
+      const script = document.createElement("script");
+      script.src = url;
+      return { script: withAttributes(script, attrs, nonce) };
+    },
+    createLink({ url, attrs }) {
+      if (!nonce) return;
+      const link = document.createElement("link");
+      link.href = url;
+      return withAttributes(link, attrs, nonce);
     },
   };
 }
@@ -250,7 +290,7 @@ try {
     shared: Object.fromEntries(
       Object.entries(shareMap({ role: app.role, manifest: app, packReport, installedVersion })).filter(([key]) => !(app.ownReact && REACT_KEYS.includes(key))),
     ),
-    runtimePlugin: [path.join(dir, "telemetry-plugin.js"), { app: app.name, version: app.version, role: app.role }],
+    runtimePlugins: [path.join(dir, "nonce-plugin.js"), [path.join(dir, "telemetry-plugin.js"), { app: app.name, version: app.version, role: app.role }]],
   }));
   write("build.mjs", `import { rspack } from "@rspack/core";
 import path from "node:path";
@@ -288,10 +328,10 @@ const compilers = apps.map((app) => {
         remotes: isHost ? remotes : undefined,
         shared: app.shared,
         shareStrategy: "loaded-first",
-        runtimePlugins: [app.runtimePlugin],
+        runtimePlugins: app.runtimePlugins,
       }),
       ...(isHost
-        ? [new rspack.HtmlRspackPlugin({ templateContent: '<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="icon" href="data:,"><title>Federation fixture</title></head><body><div id="root"></div></body></html>' })]
+        ? [new rspack.HtmlRspackPlugin({ templateContent: '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Federation fixture</title></head><body><div id="root"></div></body></html>' })]
         : []),
     ],
   };
@@ -317,16 +357,31 @@ rspack(compilers).run((error, stats) => {
   const distRoot = path.join(dir, "dist");
   server = http.createServer((request, response) => {
     const url = new URL(request.url, "http://localhost").pathname;
-    const file = url === "/" ? path.join(distRoot, "host", "index.html") : path.join(distRoot, url);
-    if (!file.startsWith(distRoot) || !fs.existsSync(file) || !fs.statSync(file).isFile()) return response.writeHead(404).end();
+    const headers = { "content-security-policy": CSP };
+    if (url === "/favicon.ico") return response.writeHead(204, headers).end();
+    // The negative control serves the host page without its nonce.
+    const file = url === "/" || url === "/negative" ? path.join(distRoot, "host", "index.html") : path.join(distRoot, url);
+    if (!file.startsWith(distRoot) || !fs.existsSync(file) || !fs.statSync(file).isFile()) return response.writeHead(404, headers).end();
     const type = file.endsWith(".html") ? "text/html" : file.endsWith(".css") ? "text/css" : "text/javascript";
-    response.writeHead(200, { "content-type": type }).end(fs.readFileSync(file));
+    let body = fs.readFileSync(file);
+    if (type === "text/html" && url === "/") body = String(body).replace(/<(script|link) /g, `<$1 nonce="${NONCE}" `);
+    response.writeHead(200, { ...headers, "content-type": type }).end(body);
   });
   await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
   const origin = `http://127.0.0.1:${server.address().port}`;
 
+  // Collected outside the page's CSP: init scripts are injected by the driver.
+  const watchViolations = (page) =>
+    page.addInitScript(() => {
+      globalThis.__SCNX_CSP__ = [];
+      document.addEventListener("securitypolicyviolation", (event) =>
+        globalThis.__SCNX_CSP__.push(`${event.effectiveDirective} ${event.blockedURI}`),
+      );
+    });
+  const violations = (page) => page.evaluate(() => globalThis.__SCNX_CSP__);
   const visit = async () => {
     const page = await browser.newPage();
+    await watchViolations(page);
     const log = { pageErrors: [], errors: [], warnings: [] };
     page.on("pageerror", (error) => log.pageErrors.push(String(error)));
     page.on("console", (message) => {
@@ -382,7 +437,9 @@ rspack(compilers).run((error, stats) => {
     if (log.pageErrors.length + log.errors.length + federationWarnings.length > 0) {
       throw new Error(`Order ${order.join(" -> ")}: ${JSON.stringify({ ...log, warnings: federationWarnings })}`);
     }
-    report.scenarios.push({ scenario: `order ${order.join(" -> ")}`, result: "pass", identity, componentStylesheets: sheets, events: negotiated.length });
+    const blocked = await violations(page);
+    if (blocked.length > 0) throw new Error(`Order ${order.join(" -> ")}: CSP violations ${JSON.stringify(blocked)}`);
+    report.scenarios.push({ scenario: `order ${order.join(" -> ")}`, result: "pass", identity, componentStylesheets: sheets, events: negotiated.length, cspViolations: 0 });
     await page.close();
   }
 
@@ -420,14 +477,30 @@ rspack(compilers).run((error, stats) => {
     });
     if (!control.recorded || control.sameReact) throw new Error(`remote_d bundles its own React, but the identity check did not report it: ${JSON.stringify(control)}`);
     if (log.pageErrors.length > 0) throw new Error(`Failure scenario: errors escaped to the page ${JSON.stringify(log.pageErrors)}`);
+    const blocked = await violations(page);
+    if (blocked.length > 0) throw new Error(`Failure scenario: CSP violations ${JSON.stringify(blocked)}`);
     const remoteD = (await page.locator("[data-fallback='remote_d']").count()) > 0 ? "fallback" : "rendered";
     report.scenarios.push({ scenario: "incompatible and unavailable remotes", result: "pass", rejectedEvent: rejected[0], consoleErrors: log.errors.length, duplicateReactControl: { detected: true, remoteD } });
     await page.close();
   }
 
+  // Negative control: without the nonce the host's own script is blocked.
+  {
+    const page = await browser.newPage();
+    await watchViolations(page);
+    await page.goto(`${origin}/negative`);
+    await page.waitForFunction(() => globalThis.__SCNX_CSP__.length > 0, null, { timeout: 10_000 });
+    const blocked = await violations(page);
+    if (!blocked.some((v) => v.startsWith("script-src"))) throw new Error(`Negative control recorded no script-src violation: ${JSON.stringify(blocked)}`);
+    if ((await page.locator("[data-host='ready']").count()) > 0) throw new Error("Negative control: the host ran without its nonce");
+    report.scenarios.push({ scenario: "csp-negative-control", result: "pass", violations: blocked.length });
+    await page.close();
+  }
+
   report.result = "pass";
+  report.csp = CSP.replaceAll(NONCE, "<nonce>");
   console.log(
-    `Federation fixture passed (Rspack ${report.versions["@rspack/core"]}, MF runtime ${report.versions["@module-federation/runtime-tools"]}): both load orders keep one React and theme identity with one stylesheet; remote_c fails route-locally with one rejected event; remote_x falls back; the host stays usable; a duplicate React is detected`,
+    `Federation fixture passed (Rspack ${report.versions["@rspack/core"]}, MF runtime ${report.versions["@module-federation/runtime-tools"]}): both load orders keep one React and theme identity with one stylesheet; remote_c fails route-locally with one rejected event; remote_x falls back; the host stays usable; a duplicate React is detected; zero violations under ${report.csp}; a page without the nonce is blocked`,
   );
 } catch (error) {
   failed = true;
