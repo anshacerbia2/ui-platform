@@ -143,6 +143,36 @@ their CI evidence, as of 2026-10-02.")
 Ratifying SAD-003 does not accept ADR-UIP-WKS-001 or ADR-UIP-SEC-001; both
 remain `proposed` until decision D2 is recorded. Decision D3 remains open.
 
+## D2 recommendation: `oklch`
+
+Appended 2026-10-02. The `oklch` trial ended on 2026-08-01 with no recorded
+ARB transition. Recommendation: **extend the trial to 2026-12-31 and record
+explicit adoption criteria; do not adopt yet.** The ARB votes; this is not the
+vote.
+
+| Question                                    | Evidence                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Assessment                                                                                                                                                                                                                                 |
+| :------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Can browsers render what the packages ship? | The published token CSS uses `oklch()` 1,648 times and `color-mix()` 3 times, and no relative color syntax (`oklch(from …)`). In web-features 3.40.1, "Oklab and OkLCh" and `color-mix()` are Baseline high (newly available 2023-05-09, widely available 2025-11-09); relative colors are Baseline low (2024-09-16) [8]. Widely available means "30 months have passed since the newly interoperable date. The feature can be used by most sites without worrying about support" [9]. CSS Color Level 4 is a W3C Candidate Recommendation Draft (30 September 2026) [10]. | Yes, for the features used. Relative color syntax would not yet meet the same bar.                                                                                                                                                         |
+| Does the evidence meet `Adopted`?           | GDC-004 section 2.1: Adopted is "the default mandatory baseline. Deviations require an approved exception waiver"; Trial is "verified in pilot programs. It is recommended for new services, but existing services are exempt" [11]. No Product consumer runs the tokens; P3 pilots are planned for 2026-11-20 (ROADMAP). Every packed browser fixture runs Chromium only.                                                                                                                                                                                                 | No. Adoption would mandate OKLCH for every frontend from one unreleased library and a single browser engine.                                                                                                                               |
+| What would make adoption evidence-based?    | STD-UIP-STY-001 requires packed checks "in the supported browser matrix" and STD-UIP-ENG-001 visual regression "across the declared theme and browser matrix" [12]; the matrix is declared with the P1 support matrix (PLAN). Playwright "can run tests on Chromium, WebKit and Firefox browsers" [13].                                                                                                                                                                                                                                                                    | Adoption criteria: (1) the P1 support matrix is declared; (2) the packed token and component fixtures pass in Chromium, Firefox, and WebKit; (3) at least one named Product consumer runs the OKLCH tokens in production; (4) an ARB vote. |
+| Why not `Hold`?                             | GDC-004 section 2.2 reserves the sunset strategy for a technology that decays "due to security concerns, obsolescence, or vendor deprecation" [11].                                                                                                                                                                                                                                                                                                                                                                                                                        | None applies.                                                                                                                                                                                                                              |
+
+Sources (retrieved 2026-10-02):
+
+8. web-features 3.40.1 (W3C WebDX Community Group), `data.json`, features
+   `oklab`, `color-mix`, `relative-color`:
+   <https://github.com/web-platform-dx/web-features>.
+9. web.dev, Baseline: <https://web.dev/baseline>. The core browser set is
+   Chrome (desktop and Android), Edge, Firefox (desktop and Android), and
+   Safari (macOS and iOS).
+10. W3C, CSS Color Module Level 4: <https://www.w3.org/TR/css-color-4/>.
+11. GDC-004, Technology Lifecycle and Standards Governance, sections 2.1 and
+    2.2, in `scnehaux-architecture` at `f6da8ea`.
+12. STD-UIP-STY-001 (packed-package checks) and STD-UIP-ENG-001 (visual
+    regression), same commit as [11].
+13. Playwright, Browsers:
+    <https://github.com/microsoft/playwright/blob/main/docs/src/browsers.md>.
+
 ## Exit decision
 
 Not recorded. The P0 exit, and the ROADMAP phase-2 state, change only when the
