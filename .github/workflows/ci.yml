@@ -147,6 +147,11 @@ jobs:
         run: node scripts/browser-theme.mjs --packs artifacts/packages
       - name: Next.js App Router consumer (server-safe and client-only entries)
         run: node scripts/nextjs-consumer.mjs --packs artifacts/packages
+      # Evaluation only: Module Federation stays assess (TDD packaging F1-F9).
+      - name: Federation share map rejects known violations
+        run: node scripts/federation-share-map.mjs --self-test
+      - name: Federation evaluation (host and remotes from tarballs)
+        run: node scripts/federation-fixture.mjs --packs artifacts/packages
       - uses: actions/upload-artifact@v4
         if: always()
         with:
