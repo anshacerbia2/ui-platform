@@ -17,8 +17,9 @@ doc_meta:
 > **Revision pending exact-commit ratification.** The component-workshop
 > additions (proposed ADR-UIP-WKS-001), the entry-environment decision
 > record (K1–K5), the federation-evaluation decision record (F1–F9), and the
-> strict-CSP decision record (S1–S3), and the import side-effect decision record
-> (E1–E4) are pending under GDC-000 section 2.6.7;
+> strict-CSP decision record (S1–S3), the import side-effect decision record
+> (E1–E4), and the supply-chain decision record (V1–V6) are pending under
+> GDC-000 section 2.6.7;
 > the previously ratified revision remains binding until the authorized human
 > authority approves the exact commit containing them.
 
@@ -362,6 +363,21 @@ PLAN row 10, second part (PKG-008). Each decision names its sources
 | E3  | Twelve negative-control modules each perform one category of side effect (DOM, global, prototype, storage, cookie, network, timer, microtask, listener, custom element, stylesheet, eval), and each must be caught.                                                                                                                                                                                                                                                                                                                                               | this section  | A detector that cannot fail proves nothing. The controls cover the categories, not every API within them; an unlisted API (for example `BroadcastChannel`) is not wrapped.                                                                                                                                                                                                                                                                                                                                                                      |
 | E4  | The driver receives each result through a console message and never polls inside the page. The browser's own `/favicon.ico` request is excluded.                                                                                                                                                                                                                                                                                                                                                                                                                  | [22]          | Playwright's `waitForFunction` defaults to polling "in `requestAnimationFrame` callback" [22]. In the prototype, that polling registered frames and listeners that were reported as the entry's effects.                                                                                                                                                                                                                                                                                                                                        |
 
+#### Decision record: supply chain
+
+PLAN row 10, third part: dependency advisories, licenses, SBOM, and
+provenance. Each decision names its sources (References under Traceability) and
+the tradeoff it accepts.
+
+| ID  | Decision                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Sources                                       | Tradeoff                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| :-- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| V1  | The advisory gate covers every resolved graph: the workspace lockfile (published runtime graph, development tools, build toolchain) and the lockfile of each consumer fixture (both React peer boundaries, the Next.js fixture, the federation fixture), so the resolved React, React DOM, `react-server-dom-*`, and meta-framework versions are audited as STD-GLB-FE-006 section 3.10 requires. A high or critical advisory fails CI on every pull request and push, and a daily scheduled run catches advisories published between changes. A moderate advisory against the React family or a meta-framework fails once it has been published for 30 days. A registry error fails the gate.       | STD-GLB-FE-006 section 3.10; [23]; [24]; [25] | SSDF asks for "automatic detection of known vulnerabilities in software components" in the toolchain and for tools to be updated "to address tool vulnerabilities" [23]; OpenSSF recommends running the audit "periodically, e.g., in a GitHub workflow" [24]. The 30-day clock starts at the advisory's publication, because the gate keeps no state between runs. A new advisory in a development tool can block an unrelated change. A registry outage blocks CI rather than passing silently (`--ignore-registry-errors` is not used [25]). |
+| V2  | Remediation order: upgrade or remove the direct dependency; otherwise override a pinned transitive dependency only within its vulnerable range, with a removal condition recorded beside the override. A remediation must leave published output byte-identical, or be reviewed as a change. Unused dependencies are removed.                                                                                                                                                                                                                                                                                                                                                                        | [24]; [25]; [26]                              | npm documents overrides for "replacing the version of a dependency with a known security issue" [26], and `pnpm audit --fix` remediates by adding overrides [25]; OpenSSF recommends periodically removing unused dependencies [24]. An override runs a version the dependency's authors did not pin; the byte-identical build output is the evidence it is safe for this repository.                                                                                                                                                           |
+| V3  | An advisory may be excepted only by a CISA VEX `not_affected` statement in `security/vex.json` with one of the five CISA justifications, an impact statement, an owner, and an expiry at most 90 days ahead. A malformed or expired statement fails the gate. No statement can except a high or critical advisory against React, React DOM, `react-server-dom-*`, or a meta-framework: those block until the resolved version is patched (STD-GLB-FE-006 section 3.10).                                                                                                                                                                                                                              | STD-GLB-FE-006 section 3.10; [23]; [27]       | SSDF names risk acceptance as a risk response [23]; the CISA VEX minimum requirements define the status and justification values [27]. The 90-day limit is this project's policy, not a value from either source.                                                                                                                                                                                                                                                                                                                               |
+| V4  | Every package in the lockfile declares a license expression whose identifiers are on the SPDX license list. The license is read from each installed package's own manifest; a lockfile package not installed on the build platform (another OS or CPU, or an optional dependency of one) is read from the registry's metadata for that exact version, and a failed lookup fails the gate. A missing or unknown license fails the gate, and the report counts packages by license. Each tarball carries its `license` field and `LICENSE` file (PKG-004); every copied file (the Inter font, the vendored CycloneDX schema) has a provenance record with its SHA-256 and license, checked before use. | [29]                                          | CISA lists License as a minimum SBOM element [29]. The package manager's own license listing reads its store index and failed on the CI runner, and it omitted packages not installed locally; reading manifests covers every lockfile package. No allow or deny list is enforced yet: which licenses are acceptable is an organizational legal decision (Open Questions).                                                                                                                                                                      |
+| V5  | Each tarball gets a CycloneDX 1.7 JSON SBOM, validated against the official 1.7.2 schema. It records the NTIA minimum elements and the CISA 2025 draft additions: SHA-256 component hash, license, tool name, and the `build` lifecycle phase as generation context. Peers are `isExternal` components with a `versionRange`; the bundled Inter font is a component.                                                                                                                                                                                                                                                                                                                                 | [28]; [29]; [30]                              | CycloneDX 1.7 is ECMA-424 2nd edition [30]. The NTIA depth rule asks that "all top-level dependencies must be listed" [28]; the packages bundle no third-party code besides the font, so the SBOM is short by construction. The CISA 2025 document is a public comment draft [29].                                                                                                                                                                                                                                                              |
+| V6  | On every push to `main`, `actions/attest` signs SLSA build provenance for both tarballs and attests each SBOM. Consumers verify with `gh attestation verify`. Pull requests are not attested.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | [23]; [31]; [32]; [33]                        | SLSA Build L1 provenance is "trivial to bypass or forge" [31]; SSDF asks for a way to "verify provenance data integrity" [23]. Artifact attestations provide SLSA v1.0 Build Level 2 [32]. For a public repository the signed bundle is written to an "immutable transparency log that is publicly readable on the internet" [32]: the entry names the repository, workflow, commit, and digests, all already public, and it cannot be removed. Build Level 3 needs an isolated reusable workflow and is not attempted.                         |
+
 ## Operational Notes
 
 Runbooks cover clean-install failure, build-memory regression, corrupt artifact,
@@ -388,6 +404,8 @@ classified before removal.
 - What exact React peer range passes both package and SSR/RSC fixtures?
 - Which registry/provenance implementation will Developer Platform provide?
 - Is federation authorized by an owning system after its assessment passes?
+- Which dependency licenses are acceptable, and which require legal review
+  (V4)?
 
 None of these questions may be answered implicitly by widening exports or peer
 ranges. The affected capability remains unsupported until decided.
@@ -513,3 +531,82 @@ References (retrieved 2026-10-02):
     (`playwright-core/types/types.d.ts`): "If `polling` is `'raf'`, then
     `pageFunction` is constantly executed in `requestAnimationFrame` callback.
     … Defaults to `raf`."
+23. NIST SP 800-218, Secure Software Development Framework (SSDF) Version 1.1:
+    <https://doi.org/10.6028/NIST.SP.800-218>. PW.4.4 Example 2: "Build into
+    the toolchain automatic detection of known vulnerabilities in software
+    components." PO.3.2 Example 5: "Update, upgrade, or replace tools as needed
+    to address tool vulnerabilities". RV.2.2 Example 1: "Make a risk-based
+    decision as to whether each vulnerability will be remediated or if the risk
+    will be addressed through other means (e.g., risk acceptance, risk
+    transference)". PS.3.2: "Collect, safeguard, maintain, and share provenance
+    data for all components of each software release (e.g., in a software bill
+    of materials [SBOM])"; Example 3: "Protect the integrity of provenance
+    data, and provide a way for recipients to verify provenance data
+    integrity."
+24. OpenSSF, npm Best Practices Guide, "Maintenance", at commit
+    `f51988aee8a9a1ab0436bbba61c1e94d7270683a`:
+    <https://github.com/ossf/package-manager-best-practices/blob/f51988aee8a9a1ab0436bbba61c1e94d7270683a/published/npm.md#maintenance>.
+    "run npm-audit periodically, e.g., in a GitHub workflow"; "To remove
+    dependencies, periodically run `npm prune`".
+25. pnpm 10.23.0, `pnpm audit --help`: `--fix` "Add overrides to the
+    package.json file in order to force non-vulnerable versions of the
+    dependencies"; `--ignore-registry-errors` "Use exit code 0 if the registry
+    responds with an error."
+26. npm, `package.json` "overrides":
+    <https://docs.npmjs.com/cli/v11/configuring-npm/package-json#overrides>.
+    "If you need to make specific changes to dependencies of your dependencies,
+    for example replacing the version of a dependency with a known security
+    issue … then you may add an override." pnpm documents the same setting,
+    including range and parent selectors:
+    <https://pnpm.io/settings/dependency-resolution>.
+27. CISA, Minimum Requirements for Vulnerability Exploitability eXchange
+    (VEX), April 2023:
+    <https://www.cisa.gov/resources-tools/resources/minimum-requirements-vulnerability-exploitability-exchange-vex>.
+    Status values `not_affected`, `affected`, `fixed`,
+    `under_investigation`; for `not_affected`, the justification "MUST be one
+    of" `Component_not_present`, `Vulnerable_code_not_present`,
+    `Vulnerable_code_not_in_execute_path`,
+    `Vulnerable_code_cannot_be_controlled_by_adversary`,
+    `Inline_mitigations_already_exist`.
+28. NTIA, The Minimum Elements For a Software Bill of Materials (SBOM), July
+    2021:
+    <https://www.ntia.doc.gov/files/ntia/publications/sbom_minimum_elements_report.pdf>.
+    Fields: "Supplier, Component Name, Version of the Component, Other Unique
+    Identifiers, Dependency Relationship, Author of SBOM Data, and Timestamp";
+    depth: "At a minimum, all top-level dependencies must be listed with enough
+    detail to seek out the transitive dependencies recursively."
+29. CISA, 2025 Minimum Elements for a Software Bill of Materials, Public
+    Comment Draft, August 2025:
+    <https://www.cisa.gov/resources-tools/resources/2025-minimum-elements-software-bill-materials-sbom>.
+    "Additions introduced in this document (Component Hash, License, Tool
+    Name, and Generation Context)"; "This is a pre-decisional draft for public
+    comment."
+30. Ecma International, ECMA-424 2nd edition, December 2025: "This Standard
+    defines the CycloneDX v1.7 Bill of materials specification":
+    <https://ecma-international.org/publications-and-standards/standards/ecma-424/>.
+    Schema: CycloneDX specification tag 1.7.2, commit
+    `349314a9d7671d7d2ca5b711a725f49a73979da6`, `schema/bom-1.7.schema.json`.
+    `isExternal`: "An external component is one that is not part of an
+    assembly, but is expected to be provided by the environment";
+    `versionRange`: "For an external component, this specifies the accepted
+    version range."
+31. SLSA, Build: Track Basics, at commit
+    `82b296d49e4c8301e7db565f23620ffe89092a0c`:
+    <https://github.com/slsa-framework/slsa/blob/82b296d49e4c8301e7db565f23620ffe89092a0c/spec/build-track-basics.md>.
+    Build L1: "Can be used to prevent mistakes but is trivial to bypass or
+    forge"; "Provenance may be incomplete and/or unsigned at L1". Build L2:
+    "Signed provenance, generated by a hosted build platform".
+32. GitHub Docs, Artifact attestations, at commit
+    `0b8c768bf0d5a13560ec82fd3daa414137e2e436`
+    (`content/actions/concepts/security/artifact-attestations.md`,
+    `data/reusables/gated-features/attestations.md`): "Artifact attestations by
+    itself provides SLSA v1.0 Build Level 2"; public repositories use the
+    Sigstore Public Good Instance, and the bundle "is also written to an
+    immutable transparency log that is publicly readable on the internet"; on
+    Free, Pro, or Team plans "artifact attestations are only available for
+    public repositories".
+33. `actions/attest` v4.2.2 README:
+    <https://github.com/actions/attest/blob/v4.2.2/README.md>. With no
+    `sbom-path` or predicate input it "Auto-generates SLSA build provenance";
+    with `sbom-path` it "Creates attestation from SPDX or CycloneDX SBOM";
+    requires `id-token: write` and `attestations: write`.
