@@ -14,11 +14,6 @@ doc_meta:
 
 # TDD-ui-platform-packaging-001: Build and Published Package Contract
 
-> **Revision pending exact-commit ratification.** The CI topology decision
-> record (C1–C4) is pending under GDC-000 section 2.6.7; the revision ratified
-> on 2026-10-02 (`773a864`) remains binding until the authorized human
-> authority approves the exact commit containing it.
-
 ## Purpose
 
 Turn the extracted workspace into two reproducible, independently installable
