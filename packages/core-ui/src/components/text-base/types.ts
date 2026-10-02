@@ -1,3 +1,4 @@
-import type { As, PolymorphicProps } from "../../types/polymorphic";
+import type { ClosedAsProps, TextTag } from "../../types/polymorphic";
 
-export type TextBaseProps<E extends As = "p"> = PolymorphicProps<E>;
+/** Text; `as` picks one tag from {@link TextTag} (default `p`). */
+export type TextBaseProps<T extends TextTag = "p"> = ClosedAsProps<T>;

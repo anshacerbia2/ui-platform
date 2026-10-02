@@ -1,29 +1,11 @@
-import type { ElementType, ReactElement } from "react";
+import type { ReactElement } from "react";
+import type { HeadingTag } from "../../types/polymorphic";
 import type { HeadingBaseProps } from "./types";
 
-/**
- * HeadingBase - Typography primitive for semantic headings.
- * 
- * Supports polymorphic `as` prop for semantic SEO (h1-h6).
- * Broadcasts styling intentions via Data Contracts for Design System consumption.
- *
- * @example
- * ```tsx
- * import { HeadingBase, ContainerBase } from "@scnx/core-ui/components/heading-base";
- * 
- * <ContainerBase>
- *   <HeadingBase as="h1" data-size="2xl">Page Title</HeadingBase>
- *   <HeadingBase as="h2" data-size="lg">Section Title</HeadingBase>
- * </ContainerBase>
- * ```
- */
-export const HeadingBase = <E extends ElementType = "h2">({
-  as: Component = "h2" as E,
-  ...rest
-}: HeadingBaseProps<E>): ReactElement => {
-  return (
-    <Component {...rest as any} />
-  );
+/** HeadingBase - renders `h2`, or one tag of the closed {@link HeadingTag} union. */
+export const HeadingBase = <T extends HeadingTag = "h2">({ as, ...rest }: HeadingBaseProps<T>): ReactElement => {
+  const Tag = (as ?? "h2") as "h2";
+  return <Tag {...(rest as HeadingBaseProps<"h2">)} />;
 };
 
 HeadingBase.displayName = "HeadingBase";

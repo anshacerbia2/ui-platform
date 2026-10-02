@@ -4,7 +4,7 @@ import { Box } from "./Box";
 const meta = {
   title: "Layouts/Box",
   component: Box,
-  args: { children: "A Box renders a plain div, or its child with asChild." },
+  args: { children: "A Box renders a div, or one layout tag through as." },
 } satisfies Meta<typeof Box>;
 
 export default meta;

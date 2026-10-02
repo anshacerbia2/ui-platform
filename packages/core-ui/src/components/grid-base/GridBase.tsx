@@ -1,37 +1,20 @@
 import type { ReactElement } from "react";
-import { Slot } from "../../utils/Slot";
+import type { LayoutTag } from "../../types/polymorphic";
 import type { GridBaseProps } from "./types";
 
 /**
- * GridBase - Layout primitive for 2D grid layouts.
- * 
- * Supports polymorphic rendering via the `asChild` pattern.
- * Exposes layout intentions via Data Contracts (`data-*` attributes)
- * for Design System CSS targeting (columns, rows, gap, gap-x, gap-y).
+ * GridBase - headless layout element with no interaction (TDD primitives,
+ * Stable-candidate inventory). Renders a `div`, or one tag of the closed
+ * {@link LayoutTag} union through `as`.
  *
  * @example
  * ```tsx
- * import { GridBase } from "@scnx/core-ui/components/grid-base";
- * 
- * <GridBase data-columns="3" data-gap="4">
- *   <p>Column 1</p>
- *   <p>Column 2</p>
- *   <p>Column 3</p>
- * </GridBase>
+ * <GridBase as="section" aria-labelledby="title">...</GridBase>
  * ```
  */
-export const GridBase = ({
-  asChild,
-  children,
-  ...rest
-}: GridBaseProps): ReactElement => {
-  const Component = asChild ? Slot : "div";
-
-  return (
-    <Component data-slot="grid" {...rest}>
-      {children}
-    </Component>
-  );
+export const GridBase = <T extends LayoutTag = "div">({ as, ...rest }: GridBaseProps<T>): ReactElement => {
+  const Tag = (as ?? "div") as "div";
+  return <Tag data-slot="grid" {...(rest as GridBaseProps<"div">)} />;
 };
 
 GridBase.displayName = "GridBase";

@@ -1,3 +1,4 @@
-import type { SlotProps } from "../../utils/Slot";
+import type { ClosedAsProps, LayoutTag } from "../../types/polymorphic";
 
-export type GridBaseProps = SlotProps;
+/** A layout element; `as` picks one tag from {@link LayoutTag} (default `div`). */
+export type GridBaseProps<T extends LayoutTag = "div"> = ClosedAsProps<T>;

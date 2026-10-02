@@ -1,40 +1,20 @@
 import type { ReactElement } from "react";
-
+import type { LayoutTag } from "../../types/polymorphic";
 import type { FlexBaseProps } from "./types";
-import { Slot } from "../../utils/Slot";
 
 /**
- * FlexBase - Layout primitive for flexible 1D layouts.
- * 
- * Supports polymorphic rendering via the `asChild` pattern.
- * Exposes layout intentions via Data Contracts (`data-*` attributes)
- * for Design System CSS targeting (direction, align, justify, wrap, gap).
+ * FlexBase - headless layout element with no interaction (TDD primitives,
+ * Stable-candidate inventory). Renders a `div`, or one tag of the closed
+ * {@link LayoutTag} union through `as`.
  *
  * @example
  * ```tsx
- * import { FlexBase, ButtonBase } from "@scnx/core-ui/components/flex-base";
- * 
- * <FlexBase data-justify="between" data-align="center">
- *   <h1>Dashboard</h1>
- *   <FlexBase data-gap="4">
- *     <ButtonBase>Cancel</ButtonBase>
- *     <ButtonBase>Submit</ButtonBase>
- *   </FlexBase>
- * </FlexBase>
+ * <FlexBase as="section" aria-labelledby="title">...</FlexBase>
  * ```
  */
-export const FlexBase = ({
-  asChild,
-  children,
-  ...rest
-}: FlexBaseProps): ReactElement => {
-  const Component = asChild ? Slot : "div";
-
-  return (
-    <Component data-slot="flex" {...rest}>
-      {children}
-    </Component>
-  );
+export const FlexBase = <T extends LayoutTag = "div">({ as, ...rest }: FlexBaseProps<T>): ReactElement => {
+  const Tag = (as ?? "div") as "div";
+  return <Tag data-slot="flex" {...(rest as FlexBaseProps<"div">)} />;
 };
 
 FlexBase.displayName = "FlexBase";

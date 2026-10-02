@@ -1,4 +1,4 @@
-import { ButtonBase } from "@scnx/core-ui/components/button-base";
+import { ButtonBase, type ButtonBaseProps } from "@scnx/core-ui/components/button-base";
 
 import type { ButtonProps } from "./types";
 import { cx } from "styled-system/css";
@@ -25,15 +25,9 @@ export const Button = ({
   className = "",
   ...rest
 }: ButtonProps) => {
-  // Cast needed: ButtonBase uses function overloads (ButtonMode | AnchorMode)
-  // that TS can't resolve from a union type. Runtime discrimination is safe.
-  return (
-    <ButtonBase
-      className={cx("scnx-btn", className)}
-      data-variant={variant}
-      {...(rest as any)}
-    />
-  );
+  // Destructuring a union loses its discriminant; the props are still one
+  // ButtonBase mode, which ButtonBase discriminates at runtime.
+  return <ButtonBase {...(rest as ButtonBaseProps)} className={cx("scnx-btn", className)} data-variant={variant} />;
 };
 
 Button.displayName = "Button";

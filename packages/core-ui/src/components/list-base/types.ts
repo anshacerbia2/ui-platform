@@ -1,7 +1,5 @@
-import type { SlotProps } from "../../utils/Slot";
+import type { ComponentPropsWithRef } from "react";
 
-export type ListBaseRootProps = SlotProps<"ul"> & {
-  /** list semantic type. Default: "unordered" (ul) */
-  type?: "unordered" | "ordered";
-};
-export type ListBaseItemProps = SlotProps<"li">;
+/** A list; `type` picks `ul` (default) or `ol`. */
+export type ListBaseRootProps = { type?: "unordered" | "ordered" } & Omit<ComponentPropsWithRef<"ul">, "type">;
+export type ListBaseItemProps = ComponentPropsWithRef<"li">;

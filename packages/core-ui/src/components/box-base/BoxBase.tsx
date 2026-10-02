@@ -1,35 +1,20 @@
 import type { ReactElement } from "react";
-
+import type { LayoutTag } from "../../types/polymorphic";
 import type { BoxBaseProps } from "./types";
-import { Slot } from "../../utils/Slot";
 
 /**
- * BoxBase - The most foundational structural layout wrapper.
- * 
- * Supports polymorphic rendering via the `asChild` pattern.
- * Contains zero styles, exposing structural identity via `data-slot="box"`.
+ * BoxBase - headless layout element with no interaction (TDD primitives,
+ * Stable-candidate inventory). Renders a `div`, or one tag of the closed
+ * {@link LayoutTag} union through `as`.
  *
  * @example
  * ```tsx
- * import { BoxBase } from "@scnx/core-ui/components/box-base";
- * 
- * <BoxBase data-state="collapsed">
- *   <p>Content</p>
- * </BoxBase>
+ * <BoxBase as="section" aria-labelledby="title">...</BoxBase>
  * ```
  */
-export const BoxBase = ({
-  asChild,
-  children,
-  ...rest
-}: BoxBaseProps): ReactElement => {
-  const Component = asChild ? Slot : "div";
-
-  return (
-    <Component data-slot="box" {...rest}>
-      {children}
-    </Component>
-  );
+export const BoxBase = <T extends LayoutTag = "div">({ as, ...rest }: BoxBaseProps<T>): ReactElement => {
+  const Tag = (as ?? "div") as "div";
+  return <Tag data-slot="box" {...(rest as BoxBaseProps<"div">)} />;
 };
 
 BoxBase.displayName = "BoxBase";
