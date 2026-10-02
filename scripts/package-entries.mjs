@@ -21,7 +21,18 @@ function directories(dir) {
 }
 
 /**
- * @typedef {{ subpath: string, kind: "javascript" | "css" | "asset", source: string, out: string }} Entry
+ * The directive a module starts with, ignoring leading comments and blank
+ * lines: "client-only" for "use client" (TDD packaging K1), else "server-safe".
+ * @param {string} text
+ * @returns {"client-only" | "server-safe"}
+ */
+export function entryEnvironment(text) {
+  const body = text.replace(/^(?:\s+|\/\/[^\n]*\n|\/\*[\s\S]*?\*\/)*/, "");
+  return /^["']use client["']/.test(body) ? "client-only" : "server-safe";
+}
+
+/**
+ * @typedef {{ subpath: string, kind: "javascript" | "css" | "asset", source: string, out: string, environment?: "client-only" | "server-safe" }} Entry
  * `out` is the published file relative to the package root, without extension
  * for JavaScript entries (`.js` and `.d.ts` are both emitted).
  */
@@ -106,16 +117,23 @@ export function packageEntries(packageDir) {
   const manifest = JSON.parse(fs.readFileSync(path.join(packageDir, "package.json"), "utf8"));
   const spec = PACKAGES[manifest.name];
   if (!spec) throw new Error(`No entry specification for ${manifest.name}`);
-  return spec
-    .entries(packageDir)
-    .map((entry) => ({ ...entry, source: path.relative(packageDir, entry.source).replaceAll("\\", "/") }));
+  return spec.entries(packageDir).map((entry) => ({
+    ...entry,
+    source: path.relative(packageDir, entry.source).replaceAll("\\", "/"),
+    ...(entry.kind === "javascript" ? { environment: entryEnvironment(fs.readFileSync(entry.source, "utf8")) } : {}),
+  }));
 }
 
-/** tsup `entry` map (output name without `dist/` -> source) for JavaScript entries. */
-export function tsupEntries(packageDir) {
+/**
+ * tsup `entry` map (output name without `dist/` -> source) for the JavaScript
+ * entries of one environment, or all of them (TDD packaging K2).
+ * @param {string} packageDir
+ * @param {"client-only" | "server-safe"} [environment]
+ */
+export function tsupEntries(packageDir, environment) {
   return Object.fromEntries(
     packageEntries(packageDir)
-      .filter((entry) => entry.kind === "javascript")
+      .filter((entry) => entry.kind === "javascript" && (!environment || entry.environment === environment))
       .map((entry) => [entry.out.slice("dist/".length), entry.source]),
   );
 }

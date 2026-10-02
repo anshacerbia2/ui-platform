@@ -1,3 +1,5 @@
+"use client";
+
 // Atoms
 export * from "./atoms/button";
 export * from "./atoms/code";

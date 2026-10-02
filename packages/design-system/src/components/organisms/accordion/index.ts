@@ -1,3 +1,5 @@
+"use client";
+
 export * from "./Accordion";
 export * from "./AccordionRoot";
 export * from "./AccordionItem";
