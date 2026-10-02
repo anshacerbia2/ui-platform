@@ -14,6 +14,7 @@ import { execFileSync, execSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
+import { gunzipSync } from "node:zlib";
 import { packageDirs, packageEntries } from "./package-entries.mjs";
 
 const DEPENDENCY_FIELDS = ["dependencies", "peerDependencies", "optionalDependencies", "devDependencies"];
@@ -243,6 +244,14 @@ function sha256(file) {
   return createHash("sha256").update(fs.readFileSync(file)).digest("hex");
 }
 
+/**
+ * SHA-256 of the uncompressed tar (TDD packaging R3): reproducible across
+ * machines, unlike the gzip stream that wraps it.
+ */
+function contentSha256(file) {
+  return createHash("sha256").update(gunzipSync(fs.readFileSync(file))).digest("hex");
+}
+
 function listFiles(root) {
   return fs
     .readdirSync(root, { recursive: true, withFileTypes: true })
@@ -285,6 +294,7 @@ function packAndInspect(outDir) {
       version: manifest.version,
       tarball,
       tarballSha256: sha256(tarballPath),
+      contentSha256: contentSha256(tarballPath),
       manifestSha256: sha256(path.join(root, "package.json")),
       fileCount: files.size,
       exports: Object.keys(manifest.exports ?? {}),
