@@ -1,0 +1,4 @@
+{
+  "$comment": "TDD packaging V3. CISA VEX not_affected statements only (vul_id, product, status, justification, impact_statement, owner, timestamp, expires within 90 days). High or critical advisories against React, React DOM, react-server-dom-*, or a meta-framework cannot be excepted (STD-GLB-FE-006 section 3.10).",
+  "statements": []
+}

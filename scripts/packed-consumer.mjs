@@ -53,6 +53,12 @@ const boundaries = [
 ];
 
 const run = (command, cwd) => execSync(command, { cwd, stdio: ["ignore", "pipe", "pipe"], encoding: "utf8" });
+/** TDD packaging V1: keep this fixture's resolved graph for the advisory gate. */
+function saveLockfile(projectDir, name) {
+  const target = path.join(outDir, "lockfiles", name);
+  fs.mkdirSync(target, { recursive: true });
+  for (const file of ["package.json", "pnpm-lock.yaml"]) fs.copyFileSync(path.join(projectDir, file), path.join(target, file));
+}
 
 function writeJson(file, value) {
   fs.writeFileSync(file, `${JSON.stringify(value, null, 2)}\n`);
@@ -234,6 +240,7 @@ for (const boundary of boundaries) {
   report.scenarios.push(scenario);
   try {
     run(`pnpm install --ignore-workspace --strict-peer-dependencies --store-dir ${JSON.stringify(path.join(dir, ".store"))}`, dir);
+    saveLockfile(dir, `packed-consumer-${boundary.label}`);
     const consumerRequire = createRequire(path.join(dir, "package.json"));
     for (const name of ["react", "react-dom", "typescript", ...packReport.packages.map((pkg) => pkg.name)]) {
       scenario.versions[name] = consumerRequire(`${name}/package.json`).version;

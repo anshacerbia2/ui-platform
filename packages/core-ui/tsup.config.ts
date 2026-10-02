@@ -13,7 +13,7 @@ const shared: Options = {
   dts: true,
   sourcemap: true,
   clean: false,
-  external: ["react", "react-dom", "react-router-dom"],
+  external: ["react", "react-dom"],
   splitting: true,
   treeshake: false,
   minify: false,

@@ -19,6 +19,8 @@
     "@types/react": "catalog:",
     "@vitest/browser": "4.1.11",
     "@vitest/browser-playwright": "4.1.11",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
     "playwright": "^1.63.0",
     "react": "catalog:",
     "react-dom": "catalog:",
