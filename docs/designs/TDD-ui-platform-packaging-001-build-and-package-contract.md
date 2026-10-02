@@ -15,7 +15,8 @@ doc_meta:
 # TDD-ui-platform-packaging-001: Build and Published Package Contract
 
 > **Revision pending exact-commit ratification.** The component-workshop
-> additions (proposed ADR-UIP-WKS-001) are pending under GDC-000 section 2.6.7;
+> additions (proposed ADR-UIP-WKS-001) and the entry-environment decision
+> record (K1–K5) are pending under GDC-000 section 2.6.7;
 > the previously ratified revision remains binding until the authorized human
 > authority approves the exact commit containing them.
 
@@ -205,6 +206,19 @@ not inferred from hook names or filenames. Client-only entries begin with
 `"use client"` in the source entry and the emitted ESM. Server-safe entries are
 loaded by a fixture that denies `window`, `document`, storage, and timers.
 
+#### Decision record: entry environments
+
+Each decision names its sources (References under Traceability) and the
+tradeoff it accepts.
+
+| ID  | Decision                                                                                                                                                                                                                                                                                                                                            | Sources           | Tradeoff and residual risk                                                                                                                                                                                                                                                                              |
+| :-- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| K1  | An entry is `client-only` exactly when its source entry file begins with the `"use client"` directive; otherwise it is `server-safe`. The entry list records the environment from that directive.                                                                                                                                                   | [1]; this section | The author states the boundary once, where React reads it. A missing directive on an entry that needs client features is caught by K4 and K5, not inferred.                                                                                                                                             |
+| K2  | Each package builds its client-only entries and its server-safe entries as two separate builds. The client build adds `"use client"` as an output banner; the server-safe build adds none. Rollup tree shaking is off, so no directive is dropped; esbuild still tree-shakes.                                                                       | [2]; [3]; [4]     | Next.js warns that "some bundlers might strip out" the directive [2]. Its two cited references use an esbuild banner [3] and `treeshake: false` [4]. Stateless helpers shared by both environments are emitted twice; React contexts live only in client-only entries, so no context identity is split. |
+| K3  | The packed-artifact inspector requires the directive as the first statement of every client-only entry's ESM and rejects it in every server-safe entry. The build fails on any "directive … was ignored" warning.                                                                                                                                   | [1]; PKG-007      | The directive must be "at the very beginning of a file, above any imports" [1]; checking the emitted file proves what a consumer bundler reads.                                                                                                                                                         |
+| K4  | A server-safe fixture imports every server-safe entry and renders it with `react-dom/server` while `window`, `document`, `localStorage`, `sessionStorage`, and timers throw on access.                                                                                                                                                              | this section      | Proves no environment leakage at import and render; it does not prove RSC compatibility, which K5 covers.                                                                                                                                                                                               |
+| K5  | A Next.js App Router fixture installs the packed tarballs, renders every server-safe entry and every client-only entry (with serializable props) from a Server Component page, runs `next build` and `next start`, and in Chromium requires zero hydration errors and one working client interaction. The Next.js version is pinned in the fixture. | [1]; [2]; [5]     | Next.js is the named App Router consumer for P0; other RSC frameworks are not covered. Props from a Server Component must be serializable [1], so client entries whose required props are functions are rendered inside a client island instead.                                                        |
+
 ### Isolated consumer evaluation
 
 Each fixture starts with an empty store and installs exact tarball paths with
@@ -335,3 +349,24 @@ ADR-UIP-PLT-001, ADR-UIP-BLD-001, and proposed ADR-UIP-WKS-001; STD-GLB-FE-002/0
 STD-UIP-ENG-001. Lifecycle status in `scnehaux-architecture` determines whether
 each record is binding or proposed. Execution: [PLAN](../../PLAN.md) P0 rows
 0–3 and 8–11. Related designs: tokens, styled CSS, theme runtime, and primitives.
+
+References (retrieved 2026-10-02):
+
+1. React, `'use client'`: <https://react.dev/reference/rsc/use-client>. It
+   "must be at the very beginning of a file, above any imports or other code";
+   it marks "the module and its transitive dependencies as client code"; "When
+   a `'use client'` module is imported from another client-rendered module, the
+   directive has no effect"; "Prop values passed from a Server Component to
+   Client Component must be serializable".
+2. Next.js 16.3, Server and Client Components, "Advice for Library Authors":
+   <https://nextjs.org/docs/app/getting-started/server-and-client-components>.
+   "add the `"use client"` directive to entry points that rely on client-only
+   features"; "some bundlers might strip out `"use client"` directives".
+3. React Wrap Balancer `tsup.config.ts`, cited by [2]:
+   <https://github.com/shuding/react-wrap-balancer/blob/main/tsup.config.ts>
+   sets `options.banner = { js: '"use client"' }` in `esbuildOptions`.
+4. Vercel Analytics `packages/web/tsup.config.js`, cited by [2]:
+   <https://github.com/vercel/analytics/blob/main/packages/web/tsup.config.js>
+   builds with `splitting: false` and `treeshake: false`.
+5. npm registry, 2026-10-02: `next` 16.3.8 (MIT), peer `react` and
+   `react-dom` `^18.2.0 || ^19.0.0`.
