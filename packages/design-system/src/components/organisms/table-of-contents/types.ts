@@ -6,14 +6,10 @@ import type {
   TableOfContentsItemState 
 } from "@scnx/core-ui/components/table-of-contents-base";
 
-/**
- * TableOfContentsProps - Extended with Registry Injection for Tier 1 Convenience.
- */
+/** The styled table of contents: base root props plus its visible label. */
 export type TableOfContentsProps = TableOfContentsBaseRootProps & {
-  /** Optional: The custom link component to use globally (e.g. Next.js Link) */
-  linkAs?: any;
-  /** Optional: Props to pass to the LinkComponent */
-  linkProps?: any;
+  /** Visible label and accessible name of the navigation. @default "Contents" */
+  label?: string;
 };
 
 export type { 

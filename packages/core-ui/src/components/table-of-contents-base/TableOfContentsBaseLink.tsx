@@ -1,48 +1,34 @@
-import type { ElementType, MouseEvent, ReactElement } from "react";
-
-import type { TableOfContentsBaseLinkProps } from "./types";
+import type { MouseEvent, ReactElement } from "react";
+import { Slot } from "../../utils/Slot";
 import { useTableOfContents } from "./TableOfContentsContext";
+import type { TableOfContentsBaseLinkProps } from "./types";
 
 /**
- * TableOfContentsBaseLink - High-performance link component.
- * Uses the expert 'as' prop pattern for React 19.
+ * TableOfContentsBaseLink - an in-page link to a heading (TDD primitives
+ * P10). It points to `#<targetId>` and never takes the heading's ID (IDs
+ * must be unique in a tree, WHATWG HTML). The active link carries
+ * `aria-current="location"`. The consumer's onClick runs first;
+ * `preventDefault` keeps the library from scrolling.
  */
-export const TableOfContentsBaseLink = <E extends ElementType = "a">({ 
-  as,
-  children, 
-  id,
-  onClick,
-  ...rest 
-}: TableOfContentsBaseLinkProps<E>): ReactElement => {
+export const TableOfContentsBaseLink = ({ targetId, asChild, children, onClick, ...rest }: TableOfContentsBaseLinkProps): ReactElement => {
   const { activeId, scrollTo } = useTableOfContents();
-  const isActive = activeId === id;
-
-  const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
-    // 1. Give users priority to handle/prevent the event
-    if (onClick) onClick(e);
-    
-    // 2. Optimization: If user called e.preventDefault(), we skip the internal scroll
-    if (e.defaultPrevented) return;
-
-    // 3. Native scroll tracking
-    if (id) scrollTo(id);
+  const isActive = activeId === targetId;
+  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    onClick?.(event);
+    if (event.defaultPrevented) return;
+    event.preventDefault();
+    scrollTo(targetId);
   };
-
-  const Component = as || "a";
-
-  return (
-    <Component 
-      data-part="link"
-      id={id}
-      href={id ? `#${id}` : undefined}
-      data-active={isActive || undefined}
-      aria-current={isActive ? "location" : undefined}
-      onClick={handleClick}
-      {...(rest as any)}
-    >
-      {children}
-    </Component>
-  );
+  const props = {
+    ...rest,
+    "data-part": "link",
+    href: `#${targetId}`,
+    "data-active": isActive || undefined,
+    "aria-current": isActive ? ("location" as const) : undefined,
+    onClick: handleClick,
+  };
+  if (asChild) return <Slot {...props}>{children as ReactElement}</Slot>;
+  return <a {...props}>{children}</a>;
 };
 
 TableOfContentsBaseLink.displayName = "TableOfContentsBaseLink";

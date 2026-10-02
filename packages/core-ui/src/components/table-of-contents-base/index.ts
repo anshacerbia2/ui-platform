@@ -7,6 +7,7 @@ export type {
   TableOfContentsContextValue,
 } from "./types";
 
+export { TableOfContentsBase } from "./TableOfContentsBase";
 export { TableOfContentsBaseRoot } from "./TableOfContentsBaseRoot";
 export { TableOfContentsBaseList } from "./TableOfContentsBaseList";
 export { TableOfContentsBaseItem } from "./TableOfContentsBaseItem";

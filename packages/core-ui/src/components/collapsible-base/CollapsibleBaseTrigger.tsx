@@ -19,8 +19,8 @@ export const CollapsibleBaseTrigger = ({ children, onClick, ...rest }: Collapsib
   };
   return (
     <button
-      id={triggerId}
       {...rest}
+      id={triggerId}
       type="button"
       aria-expanded={open}
       aria-controls={contentId}

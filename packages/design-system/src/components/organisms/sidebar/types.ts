@@ -15,6 +15,8 @@ export type FlyoutState = {
 };
 
 export type SidebarContextValue = {
+  /** ID of the sidebar root, for the toggle's aria-controls. */
+  sidebarId: string;
   activePath: string;
   isOpen: boolean;
   expandedMap: Record<string, boolean>;

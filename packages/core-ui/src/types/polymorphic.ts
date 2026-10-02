@@ -1,4 +1,4 @@
-import type { ComponentPropsWithRef, ElementType, JSX } from "react";
+import type { ComponentPropsWithRef, JSX } from "react";
 
 // Closed `as` unions (TDD primitives PRM-006): layout and typography
 // primitives render one tag from a component-specific list, never any
@@ -15,13 +15,3 @@ export type TextTag = "p" | "span" | "div" | "label" | "strong" | "em" | "small"
 
 /** Props of a component that renders `T`, one tag of a closed union, plus its own props `P`. */
 export type ClosedAsProps<T extends keyof JSX.IntrinsicElements, P = {}> = P & { as?: T } & Omit<ComponentPropsWithRef<T>, keyof P | "as">;
-
-/**
- * Unrestricted polymorphism, kept only for NavigationBaseItem and
- * TableOfContentsBaseLink until PLAN P0 row 7 part c moves them to `asChild`.
- * @internal
- */
-export type As = ElementType;
-
-/** @internal See {@link As}. */
-export type PolymorphicProps<E extends As, P = {}> = P & Omit<ComponentPropsWithRef<E>, keyof P | "as"> & { as?: E };

@@ -1,3 +1,4 @@
+import type { MouseEvent } from "react";
 import { SidebarBaseToggle } from "@scnx/core-ui/components/sidebar-base";
 import type { SidebarToggleProps } from "./types";
 import { cx } from "styled-system/css";
@@ -9,8 +10,8 @@ export const SidebarToggle = ({
   onClick,
   ...rest
 }: SidebarToggleProps) => {
-  const { toggleOpen } = useSidebar();
-  const handleClick = (e: any) => {
+  const { toggleOpen, isOpen, sidebarId } = useSidebar();
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     onClick?.(e);
     if (!e.defaultPrevented) {
       toggleOpen();
@@ -21,9 +22,11 @@ export const SidebarToggle = ({
     <SidebarBaseToggle
       className={cx("scnx-sidebar__toggle", className)}
       onClick={handleClick}
+      isOpen={isOpen}
+      controls={sidebarId}
       {...rest}
     >
-      {children || "☰"}
+      {children || <span aria-hidden="true">☰</span>}
     </SidebarBaseToggle>
   );
 };

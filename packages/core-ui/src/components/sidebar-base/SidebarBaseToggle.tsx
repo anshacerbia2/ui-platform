@@ -1,34 +1,14 @@
 import type { SidebarBaseToggleProps } from "./types";
 
 /**
- * Toggle button for the Sidebar.
- * Typically used to expand or collapse the sidebar.
- *
- * @example
- * ```tsx
- * <SidebarBase.Root>
- *   <SidebarBase.Toggle onClick={toggleSidebar}>
- *      <MenuIcon />
- *   </SidebarBase.Toggle>
- * </SidebarBase.Root>
- * ```
+ * SidebarBaseToggle - a native button that expands or collapses its sidebar:
+ * `aria-expanded`, `aria-controls` to the sidebar, and a required accessible
+ * name (TDD primitives P11).
  */
-export const SidebarBaseToggle = ({ 
-  isOpen,
-  children,
-  ...rest 
-}: SidebarBaseToggleProps) => {
-  return (
-    <button 
-      type="button" 
-      data-slot="toggle"
-      aria-expanded={isOpen}
-      aria-label="Toggle sidebar" 
-      {...rest}
-    >
-      {children || "☰"}
-    </button>
-  );
-};
+export const SidebarBaseToggle = ({ isOpen, label, controls, children, ...rest }: SidebarBaseToggleProps) => (
+  <button type="button" data-slot="toggle" aria-expanded={isOpen} aria-controls={controls} aria-label={label} {...rest}>
+    {children}
+  </button>
+);
 
 SidebarBaseToggle.displayName = "SidebarBaseToggle";

@@ -17,7 +17,7 @@ export const NavigationBaseRoot = ({
   ...rest 
 }: NavigationBaseRootProps) => {
   return (
-    <nav role="navigation" data-part="root" {...rest} />
+    <nav data-part="root" {...rest} />
   );
 };
 
