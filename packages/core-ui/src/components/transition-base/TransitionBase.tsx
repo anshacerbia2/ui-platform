@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
+import { useHydrated } from "../../utils/use-hydrated";
 import { computedTiming, fallbackTimeout } from "./timing";
 import type { TransitionBaseProps, TransitionCompletion, TransitionIntent, TransitionPhase } from "./types";
 
@@ -56,9 +57,14 @@ export const TransitionBase = ({
   onOpened,
   onClosed,
   style,
+  hidden,
   children,
   ...rest
 }: TransitionBaseProps) => {
+  // Server markup and hydration carry no computed style: a strict CSP blocks
+  // style attributes. Until hydration, a closed transition is `hidden` instead
+  // (TDD theme THM-009).
+  const hydrated = useHydrated();
   const nodeRef = useRef<HTMLDivElement | null>(null);
   const settledAtMount = open && disabled;
   const [phase, setPhase] = useState<TransitionPhase>(settledAtMount ? "settled" : "closed");
@@ -227,7 +233,8 @@ export const TransitionBase = ({
       data-state={phase}
       data-mounted={hasOpened || undefined}
       data-interrupted={interrupted || undefined}
-      style={{ ...style, ...motionStyle }}
+      style={hydrated ? { ...style, ...motionStyle } : style}
+      hidden={hidden || (!hydrated && phase === "closed") || undefined}
       {...rest}
     >
       {children}

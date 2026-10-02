@@ -59,14 +59,6 @@ import { TableOfContentsBase } from "@scnx/core-ui/components/table-of-contents-
 import { SidebarBaseRoot, SidebarBaseToggle } from "@scnx/core-ui/components/sidebar-base";
 import { BehaviorFixtures } from "./behavior-fixtures.tsx";
 
-// Client-only: inline styles React writes through the CSSOM are allowed by
-// style-src 'self'; server-rendered style attributes are not.
-const ClientOnly = ({ children }) => {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-  return mounted ? <div data-behavior-matrix="">{children}</div> : null;
-};
-
 const Toggle = ({ id }) => {
   const theme = useTheme();
   const [hydrated, setHydrated] = useState(false);
@@ -90,9 +82,10 @@ export const App = () => (
       </Accordion>
     </ThemeProvider>
     <ThemeProvider themeId="achromatic" defaultMode="light" storage={false}><Toggle id="second" /></ThemeProvider>
-    <ClientOnly>
+    {/* Server-rendered: its markup carries no style attribute (TDD theme THM-009). */}
+    <div data-behavior-matrix="">
       <BehaviorFixtures components={{ ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle }} />
-    </ClientOnly>
+    </div>
   </main>
 );
 `);
