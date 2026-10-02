@@ -1,0 +1,126 @@
+name: P0 evidence
+
+# TDD packaging R1-R5 and C3: the P0 evidence packet of each completed CI run
+# of a push to main, with any conclusion. A scheduled run is not covered: it
+# attests no tarball, so its packet could only fail. workflow_run separates
+# this privileged workflow from CI. The tarball attestations stay in CI,
+# because provenance must come from the run that built the tarballs.
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    name: P0 evidence packet
+    if: github.event.workflow_run.event == 'push'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      actions: read
+      attestations: read
+    env:
+      RUN_ID: ${{ github.event.workflow_run.id }}
+      RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+      HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+      RUN_EVENT: ${{ github.event.workflow_run.event }}
+      RUN_URL: ${{ github.event.workflow_run.html_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+      - name: Architecture repository at main (R4)
+        uses: actions/checkout@v4
+        with:
+          repository: anshacerbia2/scnehaux-architecture
+          path: architecture
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - run: pnpm install --frozen-lockfile
+      # A missing artifact is recorded as missing evidence; the packet then fails.
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: packed-packages
+          path: artifacts/evidence-input/packed-packages
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: rebuild
+          path: artifacts/evidence-input/rebuild
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: token-report
+          path: artifacts/evidence-input/token-report
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: build-memory
+          path: artifacts/evidence-input/build-memory
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+      # The CI run's jobs, plus the Chromatic run of the same commit (C2),
+      # which is awaited for at most 30 minutes.
+      - name: Jobs of the CI run and the Chromatic run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/attempts/$RUN_ATTEMPT/jobs?per_page=100" > artifacts/ci-jobs.json
+          deadline=$((SECONDS + 1800))
+          until chromatic=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/chromatic.yml/runs?head_sha=$HEAD_SHA&per_page=1" -q '.workflow_runs[0] | select(.status == "completed") | .id') && [ -n "$chromatic" ]; do
+            [ "$SECONDS" -lt "$deadline" ] || { echo "::warning::no completed Chromatic run for $HEAD_SHA"; break; }
+            sleep 30
+          done
+          if [ -n "${chromatic:-}" ]; then
+            gh api "repos/$GITHUB_REPOSITORY/actions/runs/$chromatic/jobs?per_page=100" > artifacts/chromatic-jobs.json
+          else
+            echo '{"jobs":[]}' > artifacts/chromatic-jobs.json
+          fi
+          jq -s '{jobs: (map(.jobs) | add)}' artifacts/ci-jobs.json artifacts/chromatic-jobs.json > artifacts/jobs.json
+      - name: Evidence packet rejects known violations
+        run: node scripts/evidence.mjs --self-test
+      - name: Build, verify, and validate the packet
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          node scripts/evidence.mjs --artifacts artifacts/evidence-input --jobs artifacts/jobs.json
+          --architecture architecture --verify-attestations --out artifacts/evidence
+          --source-sha "$HEAD_SHA" --run-id "$RUN_ID" --run-attempt "$RUN_ATTEMPT"
+          --event "$RUN_EVENT" --run-url "$RUN_URL"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: p0-evidence
+          path: artifacts/evidence/p0-evidence.json
+
+  # TDD packaging R2: the packet is attested by a job that installs nothing.
+  evidence-attest:
+    name: P0 evidence attestation
+    needs: evidence
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: p0-evidence
+          path: artifacts/evidence
+      - uses: actions/attest@v4.2.2
+        with:
+          subject-path: artifacts/evidence/p0-evidence.json

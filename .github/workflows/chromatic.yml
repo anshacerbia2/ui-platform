@@ -1,0 +1,34 @@
+name: Chromatic
+
+# TDD packaging C2 and ADR-UIP-WKS-001: Chromatic's visual review runs on push
+# to every branch, as Chromatic recommends; pull_request events can lose
+# baselines. The job name is a required check (C4).
+
+on:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  chromatic:
+    name: Chromatic visual review
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - run: pnpm install --frozen-lockfile
+      - name: Static Storybook
+        run: pnpm run build-storybook
+      # Fails visibly until the CHROMATIC_PROJECT_TOKEN secret exists.
+      - uses: chromaui/action@v18.10.1
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          storybookBuildDir: storybook-static
+          exitZeroOnChanges: false
+          autoAcceptChanges: main

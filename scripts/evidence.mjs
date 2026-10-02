@@ -8,7 +8,10 @@
 // Anything missing makes the packet fail (exit 1); the packet is still written.
 //
 //   node scripts/evidence.mjs --artifacts <dir> --jobs <jobs.json> --architecture <checkout>
+//     [--source-sha <sha>] [--run-id <id>] [--run-attempt <n>] [--event <name>]
 //     [--run-url <url>] [--verify-attestations] [--out <dir>]
+// Under workflow_run (TDD packaging C3) the source commit and run are the
+// triggering CI run's, passed explicitly; GITHUB_SHA is not that commit.
 //   node scripts/evidence.mjs --self-test
 
 import { createHash } from "node:crypto";
@@ -302,8 +305,13 @@ function main() {
     jobs: jobsFile.jobs ?? jobsFile,
     architectureDir: path.resolve(arg("--architecture", "../scnehaux-architecture")),
     uiDir: process.cwd(),
-    source: { repository, commit: process.env.GITHUB_SHA ?? gitHead(process.cwd()), ref: process.env.GITHUB_REF ?? null },
-    run: { id: Number(process.env.GITHUB_RUN_ID ?? 0) || null, attempt: Number(process.env.GITHUB_RUN_ATTEMPT ?? 0) || null, url: arg("--run-url", null), event: process.env.GITHUB_EVENT_NAME ?? null },
+    source: { repository, commit: arg("--source-sha", process.env.GITHUB_SHA ?? gitHead(process.cwd())), ref: process.env.GITHUB_REF ?? null },
+    run: {
+      id: Number(arg("--run-id", process.env.GITHUB_RUN_ID ?? 0)) || null,
+      attempt: Number(arg("--run-attempt", process.env.GITHUB_RUN_ATTEMPT ?? 0)) || null,
+      url: arg("--run-url", null),
+      event: arg("--event", process.env.GITHUB_EVENT_NAME ?? null),
+    },
     verifyAttestations: process.argv.includes("--verify-attestations"),
   });
   const validate = validator();

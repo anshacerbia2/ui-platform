@@ -1,12 +1,16 @@
 name: CI
 
-# Documentation and governance gates run on every pull request and every push.
+# Documentation and governance gates run on every pull request and on main.
 # PLAN P0 rows extend this workflow with source, build, packed-consumer,
 # fixture, and security jobs; each job added becomes a required check.
+# TDD packaging C1: a pull request runs once; a branch push does not start
+# this workflow. Chromatic runs in chromatic.yml (C2) and the evidence packet
+# in evidence.yml (C3).
 
 on:
   pull_request:
   push:
+    branches: [main]
   # TDD packaging V1: a daily run catches advisories published between changes.
   schedule:
     - cron: "17 3 * * *"
@@ -229,89 +233,6 @@ jobs:
           subject-path: ${{ steps.files.outputs.system_tgz }}
           sbom-path: ${{ steps.files.outputs.system_sbom }}
 
-  # TDD packaging R1-R5: the P0 evidence packet of this run. It runs after
-  # every other job, also when one failed, and records every job's result.
-  evidence:
-    name: P0 evidence packet
-    if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [docs, clean-install, policy, source-tests, build, packed-consumer, attest, storybook, chromatic, token-gate, governance]
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: read
-      actions: read
-      attestations: read
-    steps:
-      - uses: actions/checkout@v4
-      - name: Architecture repository at main (R4)
-        uses: actions/checkout@v4
-        with:
-          repository: anshacerbia2/scnehaux-architecture
-          path: architecture
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-      - run: pnpm install --frozen-lockfile
-      # A missing artifact is recorded as missing evidence; the packet then fails.
-      - uses: actions/download-artifact@v4
-        continue-on-error: true
-        with:
-          name: packed-packages
-          path: artifacts/evidence-input/packed-packages
-      - uses: actions/download-artifact@v4
-        continue-on-error: true
-        with:
-          name: rebuild
-          path: artifacts/evidence-input/rebuild
-      - uses: actions/download-artifact@v4
-        continue-on-error: true
-        with:
-          name: token-report
-          path: artifacts/evidence-input/token-report
-      - uses: actions/download-artifact@v4
-        continue-on-error: true
-        with:
-          name: build-memory
-          path: artifacts/evidence-input/build-memory
-      - name: Jobs of this run attempt
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/attempts/$GITHUB_RUN_ATTEMPT/jobs?per_page=100" > artifacts/jobs.json
-      - name: Evidence packet rejects known violations
-        run: node scripts/evidence.mjs --self-test
-      - name: Build, verify, and validate the packet
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: >-
-          node scripts/evidence.mjs --artifacts artifacts/evidence-input --jobs artifacts/jobs.json
-          --architecture architecture --verify-attestations --out artifacts/evidence
-          --run-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: p0-evidence
-          path: artifacts/evidence/p0-evidence.json
-
-  # TDD packaging R2: the packet is attested like the tarballs, by a job that
-  # installs nothing.
-  evidence-attest:
-    name: P0 evidence attestation
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: evidence
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: read
-      id-token: write
-      attestations: write
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: p0-evidence
-          path: artifacts/evidence
-      - uses: actions/attest@v4.2.2
-        with:
-          subject-path: artifacts/evidence/p0-evidence.json
-
   storybook:
     name: Storybook tests
     runs-on: ubuntu-24.04
@@ -334,31 +255,6 @@ jobs:
         with:
           name: storybook-static
           path: storybook-static
-
-  chromatic:
-    name: Chromatic visual review
-    # Chromatic keeps baselines per pushed commit; pull_request runs would
-    # snapshot the same commit twice.
-    if: github.event_name == 'push'
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-      - run: pnpm install --frozen-lockfile
-      - name: Static Storybook
-        run: pnpm run build-storybook
-      # Fails visibly until the CHROMATIC_PROJECT_TOKEN secret exists.
-      - uses: chromaui/action@v18.10.1
-        with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          storybookBuildDir: storybook-static
-          exitZeroOnChanges: false
-          autoAcceptChanges: main
 
   token-gate:
     name: Token gate
