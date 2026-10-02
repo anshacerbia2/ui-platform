@@ -9,16 +9,10 @@ doc_meta:
   parent_sad: SAD-003
   review_cycle_days: 30
   created_date: 2026-09-28
-  last_reviewed: 2026-09-29
+  last_reviewed: 2026-10-02
 ---
 
 # TDD-ui-platform-primitives-002: Primitive Behavior and Polymorphism
-
-> **Revision pending exact-commit ratification.** The decision record
-> (P1–P12), the Navigation and Sidebar interfaces, the behavior inventory,
-> and the References are pending under GDC-000 section 2.6.7; the previously
-> ratified revision remains binding until the authorized human authority
-> approves the exact commit containing them.
 
 ## Purpose
 
