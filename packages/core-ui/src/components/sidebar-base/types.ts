@@ -4,8 +4,13 @@ export type SidebarBaseRootProps = ComponentPropsWithRef<"aside"> & {
   isOpen?: boolean;
 };
 
-export type SidebarBaseToggleProps = ComponentPropsWithRef<"button"> & {
+/** The button that expands and collapses a sidebar (TDD primitives P11). */
+export type SidebarBaseToggleProps = Omit<ComponentPropsWithRef<"button">, "aria-label"> & {
   isOpen?: boolean;
+  /** Accessible name, localized by the consumer; there is no built-in label. */
+  label: string;
+  /** ID of the sidebar the toggle controls. */
+  controls?: string;
 };
 export type SidebarBaseHeaderProps = ComponentPropsWithRef<"header">;
 export type SidebarBaseNavProps = ComponentPropsWithRef<"nav">;

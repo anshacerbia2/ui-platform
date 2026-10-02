@@ -1,5 +1,4 @@
 import type { ComponentPropsWithRef, ReactNode } from "react";
-import type { As, PolymorphicProps } from "../../types/polymorphic";
 
 /**
  * TableOfContentsItemState - Represents a single heading in the TOC.
@@ -43,11 +42,16 @@ export type TableOfContentsBaseListProps = ComponentPropsWithRef<"ul">;
  */
 export type TableOfContentsBaseItemProps = ComponentPropsWithRef<"li">;
 
-/** 
- * Props for Base Link.
- * Uses the global PolymorphicProps utility for architectural consistency.
+/**
+ * Props for Base Link (TDD primitives P10): `targetId` names the heading the
+ * link points to; the link's own `id`, if any, is a different ID.
  */
-export type TableOfContentsBaseLinkProps<E extends As = "a"> = PolymorphicProps<E>;
+export type TableOfContentsBaseLinkProps = {
+  /** ID of the target heading; the link's href is `#<targetId>`. */
+  targetId: string;
+  /** Render the single child element (for example a router Link) as the link. */
+  asChild?: boolean;
+} & Omit<ComponentPropsWithRef<"a">, "href">;
 
 /**
  * TableOfContentsContextValue - Shared state for TOC sub-components.

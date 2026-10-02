@@ -1,4 +1,3 @@
-import type { ElementType } from "react";
 import type {
   NavigationBaseBadgeProps,
   NavigationBaseGroupHeaderProps,
@@ -17,7 +16,7 @@ export type NavigationGroupProps = NavigationBaseGroupProps;
 
 export type NavigationGroupHeaderProps = NavigationBaseGroupHeaderProps;
 
-export type NavigationItemProps<E extends ElementType = "a"> = NavigationBaseItemProps<E>;
+export type NavigationItemProps = NavigationBaseItemProps;
 
 export type NavigationIconProps = NavigationBaseIconProps;
 

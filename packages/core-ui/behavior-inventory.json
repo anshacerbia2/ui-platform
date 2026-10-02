@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "contractVersion": "0.1.0",
+  "source": "TDD-ui-platform-primitives-002 (PRM-002, P12)",
+  "primitives": [
+    {
+      "name": "ButtonBase",
+      "entry": "@scnx/core-ui/components/button-base",
+      "stability": "candidate",
+      "root": "button",
+      "parts": [
+        { "name": "button", "element": "button", "selector": "[data-inventory='ButtonBase'] button" },
+        { "name": "link", "element": "a", "selector": "[data-inventory='ButtonBase'] a[href]" },
+        { "name": "disabled-link", "element": "a", "selector": "[data-inventory='ButtonBase'] a[aria-disabled='true']" }
+      ],
+      "controlledProps": ["pressed"],
+      "states": ["default", "pressed", "disabled"],
+      "keys": [
+        { "key": "Enter", "part": "button", "condition": "focused", "effect": "activates the native button", "expect": { "part": "button", "attribute": "aria-pressed", "value": "true" } },
+        { "key": "Space", "part": "button", "condition": "focused", "effect": "activates the native button", "expect": { "part": "button", "attribute": "aria-pressed", "value": "false" } },
+        { "key": "Tab", "part": "disabled-link", "condition": "disabled link", "effect": "is not in the sequential focus order", "expect": { "part": "disabled-link", "attribute": "tabindex", "value": "-1" } }
+      ],
+      "focus": { "initial": "none", "movement": "native Tab order", "restoration": "not applicable" },
+      "accessibleName": "text content",
+      "dataHooks": ["data-disabled"]
+    },
+    {
+      "name": "AccordionBase",
+      "entry": "@scnx/core-ui/components/accordion-base",
+      "stability": "candidate",
+      "root": "div",
+      "parts": [
+        { "name": "header", "element": "h3", "selector": "[data-inventory='AccordionBase'] [data-part='header']" },
+        { "name": "trigger", "element": "button", "selector": "[data-inventory='AccordionBase'] button[aria-controls]" },
+        { "name": "content", "element": "div", "selector": "[data-inventory='AccordionBase'] [role='region']" }
+      ],
+      "controlledProps": ["value", "open"],
+      "states": ["closed", "open"],
+      "keys": [
+        { "key": "Enter", "part": "trigger", "condition": "collapsed", "effect": "expands the panel", "expect": { "part": "trigger", "attribute": "aria-expanded", "value": "true" } },
+        { "key": "Space", "part": "trigger", "condition": "expanded and collapsible", "effect": "collapses the panel", "expect": { "part": "trigger", "attribute": "aria-expanded", "value": "false" } }
+      ],
+      "focus": { "initial": "none", "movement": "native Tab order through headers and open panels", "restoration": "focus stays on the trigger" },
+      "accessibleName": "trigger text; region labelled by its trigger",
+      "dataHooks": ["data-state", "data-disabled", "data-type"]
+    },
+    {
+      "name": "NavigationBase",
+      "entry": "@scnx/core-ui/components/navigation-base",
+      "stability": "candidate",
+      "root": "nav",
+      "parts": [
+        { "name": "link", "element": "a", "selector": "[data-inventory='NavigationBase'] a[href]" },
+        { "name": "disclosure", "element": "button", "selector": "[data-inventory='NavigationBase'] button[aria-expanded]" },
+        { "name": "group", "element": "ul", "selector": "[data-inventory='NavigationBase'] ul" }
+      ],
+      "controlledProps": ["isExpanded", "isActive"],
+      "states": ["collapsed", "expanded", "current"],
+      "keys": [
+        { "key": "Enter", "part": "disclosure", "condition": "collapsed", "effect": "shows the nested group", "expect": { "part": "disclosure", "attribute": "aria-expanded", "value": "true" } },
+        { "key": "Space", "part": "disclosure", "condition": "expanded", "effect": "hides the nested group", "expect": { "part": "disclosure", "attribute": "aria-expanded", "value": "false" } }
+      ],
+      "focus": { "initial": "none", "movement": "native Tab order; arrow-key roving is consumer-owned", "restoration": "focus stays on the disclosure button" },
+      "accessibleName": "item label; current page link has aria-current=page",
+      "dataHooks": ["data-active", "data-expanded", "data-level", "data-index"]
+    },
+    {
+      "name": "TableOfContentsBase",
+      "entry": "@scnx/core-ui/components/table-of-contents-base",
+      "stability": "candidate",
+      "root": "nav",
+      "parts": [
+        { "name": "link", "element": "a", "selector": "[data-inventory='TableOfContentsBase'] a[href^='#']" }
+      ],
+      "controlledProps": ["initialActiveId"],
+      "states": ["inactive", "active"],
+      "keys": [
+        { "key": "Enter", "part": "link", "condition": "focused", "effect": "scrolls to the target heading and marks the link current", "expect": { "part": "link", "attribute": "aria-current", "value": "location" } }
+      ],
+      "focus": { "initial": "none", "movement": "native Tab order", "restoration": "focus stays on the link" },
+      "accessibleName": "link text; navigation labelled by the visible TOC label",
+      "dataHooks": ["data-active"]
+    },
+    {
+      "name": "SidebarBase",
+      "entry": "@scnx/core-ui/components/sidebar-base",
+      "stability": "candidate",
+      "root": "aside",
+      "parts": [
+        { "name": "toggle", "element": "button", "selector": "[data-inventory='SidebarBase'] button[aria-controls]" }
+      ],
+      "controlledProps": ["isOpen"],
+      "states": ["expanded", "collapsed"],
+      "keys": [
+        { "key": "Enter", "part": "toggle", "condition": "expanded", "effect": "collapses the sidebar", "expect": { "part": "toggle", "attribute": "aria-expanded", "value": "false" } }
+      ],
+      "focus": { "initial": "none", "movement": "native Tab order", "restoration": "flyout Escape returns focus to its opener" },
+      "accessibleName": "toggle label prop (required, localized by the consumer)",
+      "dataHooks": ["data-state"]
+    }
+  ]
+}

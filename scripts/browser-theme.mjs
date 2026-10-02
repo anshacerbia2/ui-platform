@@ -11,6 +11,9 @@
 // - an Accordion opens and closes through its real transitionend
 //   (closed -> entering -> settled -> exiting -> unmounted), and under
 //   prefers-reduced-motion it settles without an entering/exiting phase;
+// - the behavior inventory (packages/core-ui/behavior-inventory.json) holds
+//   for the packed entries: every part resolves to its element and every
+//   key produces its expected ARIA state (TDD primitives P12);
 // - a negative page with an inline script is reported as a violation, which
 //   proves violations are detected at all.
 //
@@ -49,6 +52,20 @@ execSync(`pnpm install --ignore-workspace --strict-peer-dependencies --store-dir
 fs.writeFileSync(path.join(dir, "app.jsx"), `import { useEffect, useState } from "react";
 import { ThemeProvider, useTheme } from "@scnx/core-ui/providers/theme-provider-base";
 import { Accordion } from "@scnx/system/components/accordion";
+import { ButtonBase } from "@scnx/core-ui/components/button-base";
+import { AccordionBase } from "@scnx/core-ui/components/accordion-base";
+import { NavigationBase } from "@scnx/core-ui/components/navigation-base";
+import { TableOfContentsBase } from "@scnx/core-ui/components/table-of-contents-base";
+import { SidebarBaseRoot, SidebarBaseToggle } from "@scnx/core-ui/components/sidebar-base";
+import { BehaviorFixtures } from "./behavior-fixtures.tsx";
+
+// Client-only: inline styles React writes through the CSSOM are allowed by
+// style-src 'self'; server-rendered style attributes are not.
+const ClientOnly = ({ children }) => {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  return mounted ? <div data-behavior-matrix="">{children}</div> : null;
+};
 
 const Toggle = ({ id }) => {
   const theme = useTheme();
@@ -67,15 +84,20 @@ export const App = () => (
       <Toggle id="first" />
       <Accordion>
         <Accordion.Item value="a">
-          <Accordion.Trigger id="accordion-trigger">Section</Accordion.Trigger>
-          <Accordion.Content id="accordion-content"><p>Body</p></Accordion.Content>
+          <Accordion.Trigger data-fixture="accordion-trigger">Section</Accordion.Trigger>
+          <Accordion.Content data-fixture="accordion-content"><p>Body</p></Accordion.Content>
         </Accordion.Item>
       </Accordion>
     </ThemeProvider>
     <ThemeProvider themeId="achromatic" defaultMode="light" storage={false}><Toggle id="second" /></ThemeProvider>
+    <ClientOnly>
+      <BehaviorFixtures components={{ ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle }} />
+    </ClientOnly>
   </main>
 );
 `);
+fs.copyFileSync(path.resolve("packages/core-ui/test/behavior-fixtures.tsx"), path.join(dir, "behavior-fixtures.tsx"));
+const inventory = JSON.parse(fs.readFileSync(path.resolve("packages/core-ui/behavior-inventory.json"), "utf8"));
 fs.writeFileSync(path.join(dir, "client.jsx"), `import { hydrateRoot } from "react-dom/client";
 import { App } from "./app.jsx";
 window.__hydrationErrors = [];
@@ -169,7 +191,7 @@ try {
     page.evaluate(() => {
       window.__phases = [];
       const record = () => {
-        const content = document.getElementById("accordion-content");
+        const content = document.querySelector("[data-fixture='accordion-content']");
         const phase = content ? content.getAttribute("data-state") : "unmounted";
         if (window.__phases[window.__phases.length - 1] !== phase) window.__phases.push(phase);
       };
@@ -181,9 +203,9 @@ try {
     page.waitForFunction((want) => window.__phases[window.__phases.length - 1] === want, phase, { timeout: 10000 });
 
   await watch();
-  await page.click("#accordion-trigger");
+  await page.click("[data-fixture='accordion-trigger']");
   await settledTo("settled");
-  await page.click("#accordion-trigger");
+  await page.click("[data-fixture='accordion-trigger']");
   await settledTo("unmounted");
   const animated = await phases();
   if (animated.join(" ") !== "unmounted closed entering settled exiting unmounted") failures.push(`animated accordion passed through: ${animated.join(" ")}`);
@@ -191,14 +213,37 @@ try {
 
   await page.emulateMedia({ reducedMotion: "reduce" });
   await watch();
-  await page.click("#accordion-trigger");
+  await page.click("[data-fixture='accordion-trigger']");
   await settledTo("settled");
-  await page.click("#accordion-trigger");
+  await page.click("[data-fixture='accordion-trigger']");
   await settledTo("unmounted");
   const reduced = await phases();
   if (reduced.includes("entering") || reduced.includes("exiting")) failures.push(`reduced-motion accordion passed through: ${reduced.join(" ")}`);
   checks.push({ check: "transition-reduced-motion", phases: reduced });
   await page.emulateMedia({ reducedMotion: "no-preference" });
+
+  // Packed behavior matrix from the inventory.
+  await page.waitForSelector("[data-behavior-matrix]");
+  const PRESS = { Enter: "Enter", Space: "Space" };
+  let keysChecked = 0;
+  for (const record of inventory.primitives) {
+    const selectorOf = (name) => record.parts.find((p) => p.name === name).selector;
+    for (const p of record.parts) {
+      const tag = await page.evaluate((s) => document.querySelector(s)?.tagName.toLowerCase() ?? null, p.selector);
+      if (tag !== p.element) failures.push(`behavior matrix: ${record.name} part ${p.name} is ${tag}, expected ${p.element}`);
+    }
+    for (const key of record.keys) {
+      if (!key.expect) continue;
+      if (PRESS[key.key]) {
+        await page.focus(selectorOf(key.part));
+        await page.keyboard.press(PRESS[key.key]);
+      }
+      const value = await page.evaluate(([s, a]) => document.querySelector(s)?.getAttribute(a) ?? null, [selectorOf(key.expect.part), key.expect.attribute]);
+      keysChecked++;
+      if (value !== key.expect.value) failures.push(`behavior matrix: ${record.name} ${key.key} on ${key.part} (${key.effect}): ${key.expect.attribute}=${value}, expected ${key.expect.value}`);
+    }
+  }
+  checks.push({ check: "packed-behavior-matrix", primitives: inventory.primitives.length, keys: keysChecked });
 
   const violations = await page.evaluate(() => window.__cspViolations);
   const hydrationErrors = await page.evaluate(() => window.__hydrationErrors);

@@ -174,6 +174,22 @@ describe("AccordionBase behavior matrix", () => {
     error.mockRestore();
   });
 
+  it("keeps the trigger/region pair resolvable when a consumer passes an id (PRM-004)", () => {
+    const stray = { id: "consumer-id" } as object;
+    render(
+      <AccordionBase disabledAnimations defaultValue="a">
+        <AccordionBase.Item value="a">
+          <AccordionBase.Trigger {...stray}>Section a</AccordionBase.Trigger>
+          <AccordionBase.Content {...stray}>Body a</AccordionBase.Content>
+        </AccordionBase.Item>
+      </AccordionBase>,
+    );
+    const button = trigger("a");
+    const region = document.getElementById(button.getAttribute("aria-controls")!);
+    expect(region).not.toBeNull();
+    expect(document.getElementById(region!.getAttribute("aria-labelledby")!)).toBe(button);
+  });
+
   it("throws a named error for a part outside its item", () => {
     vi.spyOn(console, "error").mockImplementation(() => {});
     expect(() => render(<AccordionBase.Trigger>Orphan</AccordionBase.Trigger>)).toThrow("must be used within a disclosure item");
