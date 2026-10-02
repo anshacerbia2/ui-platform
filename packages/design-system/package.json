@@ -112,7 +112,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup && node scripts/tokens/emit.mjs --out dist && node scripts/styles/assemble.mjs --out dist",
+    "build": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\" && tsup && node scripts/tokens/emit.mjs --out dist && node scripts/styles/assemble.mjs --out dist",
     "codegen": "panda codegen",
     "prepare": "panda codegen",
     "test": "vitest run",

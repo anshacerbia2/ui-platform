@@ -84,8 +84,16 @@ jobs:
           test "pnpm@$(pnpm --version)" = "$(node -p "require('./package.json').packageManager")"
           test -z "${NODE_OPTIONS:-}"
       - run: pnpm install --frozen-lockfile
+      # TDD packaging K3: a bundler that drops a module directive fails the build.
       - name: Build both packages, including declarations
-        run: /usr/bin/time -v -o build-time.txt pnpm run build
+        shell: bash
+        run: |
+          set -o pipefail
+          /usr/bin/time -v -o build-time.txt pnpm run build 2>&1 | tee build.log
+          if grep -nE 'directive.*was ignored|was ignored.*directive|Module level directives' build.log; then
+            echo "::error::A module-level directive was dropped by the build"
+            exit 1
+          fi
       - name: Record peak memory
         if: always()
         run: |
@@ -103,7 +111,9 @@ jobs:
         if: always()
         with:
           name: build-memory
-          path: build-time.txt
+          path: |
+            build-time.txt
+            build.log
 
   packed-consumer:
     name: Packed consumer
@@ -135,6 +145,8 @@ jobs:
         run: node scripts/browser-components.mjs --packs artifacts/packages
       - name: Packed ThemeProvider in a browser (SSR, hydration, isolation, strict CSP)
         run: node scripts/browser-theme.mjs --packs artifacts/packages
+      - name: Next.js App Router consumer (server-safe and client-only entries)
+        run: node scripts/nextjs-consumer.mjs --packs artifacts/packages
       - uses: actions/upload-artifact@v4
         if: always()
         with:

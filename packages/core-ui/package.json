@@ -103,7 +103,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\" && tsup",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",

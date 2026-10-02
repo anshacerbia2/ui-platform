@@ -1,56 +1,33 @@
-import fs from "node:fs";
-import path from "node:path";
-import { defineConfig } from "tsup";
+import { defineConfig, type Options } from "tsup";
 import { tsupEntries } from "../../scripts/package-entries.mjs";
 
-// Entries and package `exports` come from one list (scripts/package-entries.mjs).
-const entryPoints = tsupEntries(process.cwd());
-
-/**
- * Robust "use client" restoration for tsup splitting.
- * Due to tsup's chunking algorithm, esbuild plugins drop directives during the linking phase.
- * We safely identify client chunks via React imports.
- */
-async function restoreDirectives() {
-  const distDir = path.resolve("dist");
-  if (!fs.existsSync(distDir)) return;
-
-  const files = fs.readdirSync(distDir, { recursive: true });
-  const reactImportRe = /(?:import\s+.*?from\s+['"]react['"]|require\(['"]react['"]\))/;
-  const hooksRe = /\b(useState|useEffect|useRef|useContext|useMemo|useCallback|useReducer|useLayoutEffect)\b/;
-
-  for (const file of files) {
-    if (typeof file !== 'string') continue;
-    if (!file.endsWith('.js')) continue;
-
-    const filePath = path.join(distDir, file);
-    const content = await fs.promises.readFile(filePath, "utf8");
-
-    if (content.includes('"use client"') || content.includes("'use client'")) continue;
-
-    if (reactImportRe.test(content) && hooksRe.test(content)) {
-      await fs.promises.writeFile(filePath, `"use client";\n${content}`);
-    }
-  }
-}
-
-export default defineConfig({
-  entry: entryPoints,
+// Entries and package `exports` come from one list (scripts/package-entries.mjs),
+// which classifies each entry from its source directive (TDD packaging K1).
+// Two builds (K2): client-only entries and their chunks carry a "use client"
+// banner; server-safe entries never do. Rollup tree-shaking is off because it
+// drops module-level directives. `dist` is cleared once by the build script,
+// since the two builds run concurrently.
+const shared: Options = {
   // ESM only: no supported CJS consumer is recorded (TDD packaging).
   format: ["esm"],
   dts: true,
   sourcemap: true,
-  clean: true,
+  clean: false,
   external: ["react", "react-dom", "react-router-dom"],
   splitting: true,
-  treeshake: {
-    preset: "smallest",
-    moduleSideEffects: false,
-  },
+  treeshake: false,
   minify: false,
   target: "es2020",
   platform: "neutral",
-  onSuccess: async () => {
-    await restoreDirectives();
+};
+
+export default defineConfig([
+  {
+    ...shared,
+    entry: tsupEntries(process.cwd(), "client-only"),
+    esbuildOptions(options) {
+      options.banner = { js: '"use client";' };
+    },
   },
-});
+  { ...shared, entry: tsupEntries(process.cwd(), "server-safe") },
+]);
