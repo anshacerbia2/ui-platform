@@ -9,15 +9,10 @@ doc_meta:
   parent_sad: SAD-003
   review_cycle_days: 30
   created_date: 2026-09-28
-  last_reviewed: 2026-09-29
+  last_reviewed: 2026-10-02
 ---
 
 # TDD-ui-platform-theme-005: Theme Provider and Transition Runtime
-
-> **Revision pending exact-commit ratification.** THM-009 and the server-markup
-> decision record (T1–T3) are pending under GDC-000 section 2.6.7; the
-> previously ratified revision remains binding until the authorized human
-> authority approves the exact commit containing them.
 
 ## Purpose
 

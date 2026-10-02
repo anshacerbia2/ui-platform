@@ -9,19 +9,10 @@ doc_meta:
   parent_sad: SAD-003
   review_cycle_days: 30
   created_date: 2026-09-28
-  last_reviewed: 2026-09-29
+  last_reviewed: 2026-10-02
 ---
 
 # TDD-ui-platform-packaging-001: Build and Published Package Contract
-
-> **Revision pending exact-commit ratification.** The component-workshop
-> additions (proposed ADR-UIP-WKS-001), the entry-environment decision
-> record (K1–K5), the federation-evaluation decision record (F1–F9), and the
-> strict-CSP decision record (S1–S3), the import side-effect decision record
-> (E1–E4), the supply-chain decision record (V1–V6), and the P0 evidence
-> decision record (R1–R6) are pending under GDC-000 section 2.6.7;
-> the previously ratified revision remains binding until the authorized human
-> authority approves the exact commit containing them.
 
 ## Purpose
 

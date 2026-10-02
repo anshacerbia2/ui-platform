@@ -9,15 +9,10 @@ doc_meta:
   parent_sad: SAD-003
   review_cycle_days: 30
   created_date: 2026-09-28
-  last_reviewed: 2026-09-29
+  last_reviewed: 2026-10-02
 ---
 
 # TDD-ui-platform-styled-004: Styled Components and CSS Delivery
-
-> **Revision pending exact-commit ratification.** The component-workshop
-> additions (proposed ADR-UIP-WKS-001) are pending under GDC-000 section 2.6.7;
-> the previously ratified revision remains binding until the authorized human
-> authority approves the exact commit containing them.
 
 ## Purpose
 
