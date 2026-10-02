@@ -12,13 +12,11 @@ catalog:
   '@vitejs/plugin-react': ^5.1.2
   '@vitest/coverage-v8': ^4.0.16
   '@vitest/ui': ^4.0.16
-  esbuild-plugin-preserve-directives: ^0.0.11
   eslint: ^9.39.1
   eslint-plugin-format: ^1.2.0
   jsdom: ^27.4.0
   react: ^19.2.0
   react-dom: ^19.2.0
-  react-router-dom: 7.9.6
   tsup: ^8.5.1
   typescript: ^5.9.3
   vitest: ^4.0.16
@@ -34,3 +32,12 @@ catalogs:
 # pnpm fails the install if the patch stops matching an installed tsup.
 patchedDependencies:
   tsup@8.5.1: patches/tsup@8.5.1.patch
+
+# TDD packaging V3: @pandacss/dev 1.12.1 pins postcss 8.5.14 and browserslist
+# 4.28.1 exactly; both have high-severity advisories (GHSA-r28c-9q8g-f849,
+# GHSA-c83g-rgw3-j3cx, GHSA-73wf-gq98-2v4g). Each override applies only to the
+# vulnerable range. Remove them when a Panda release no longer pins those
+# versions; the generated stylesheet must stay byte-identical.
+overrides:
+  'postcss@<8.5.23': ^8.5.28
+  'browserslist@<4.28.7': ^4.29.3

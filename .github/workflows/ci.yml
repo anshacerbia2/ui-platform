@@ -7,6 +7,9 @@ name: CI
 on:
   pull_request:
   push:
+  # TDD packaging V1: a daily run catches advisories published between changes.
+  schedule:
+    - cron: "17 3 * * *"
 
 permissions:
   contents: read
@@ -154,6 +157,18 @@ jobs:
         run: node scripts/federation-share-map.mjs --self-test
       - name: Federation evaluation (host and remotes from tarballs)
         run: node scripts/federation-fixture.mjs --packs artifacts/packages
+      # TDD packaging V1-V5. The fixtures above saved their lockfiles.
+      - name: Supply-chain gates reject known violations
+        run: |
+          node scripts/security/audit.mjs --self-test
+          node scripts/security/licenses.mjs --self-test
+          node scripts/sbom.mjs --self-test
+      - name: CycloneDX 1.7 SBOM per tarball
+        run: node scripts/sbom.mjs --packs artifacts/packages
+      - name: Licenses of the lockfile, the tarballs, and copied assets
+        run: node scripts/security/licenses.mjs --packs artifacts/packages --out artifacts/packages/security
+      - name: Advisories in the workspace and every fixture graph
+        run: node scripts/security/audit.mjs --lockfiles artifacts/packages/lockfiles --out artifacts/packages/security
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -161,6 +176,50 @@ jobs:
           path: |
             artifacts/packages/*.tgz
             artifacts/packages/*.json
+            artifacts/packages/sbom/
+            artifacts/packages/lockfiles/
+            artifacts/packages/security/
+
+  # TDD packaging V6: SLSA Build L2 provenance and SBOM attestations for the
+  # tarballs the packed-consumer job verified. Only pushes to main are attested;
+  # this job installs nothing, so the OIDC token never reaches dependency code.
+  # The repository is public, so each attestation is also written to the
+  # Sigstore public-good transparency log.
+  attest:
+    name: Provenance and SBOM attestations
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: packed-consumer
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: packed-packages
+          path: artifacts/packages
+      - name: Locate tarballs and SBOMs
+        id: files
+        run: |
+          echo "core_tgz=$(ls artifacts/packages/scnx-core-ui-*.tgz)" >> "$GITHUB_OUTPUT"
+          echo "core_sbom=$(ls artifacts/packages/sbom/scnx-core-ui-*.cdx.json)" >> "$GITHUB_OUTPUT"
+          echo "system_tgz=$(ls artifacts/packages/scnx-system-*.tgz)" >> "$GITHUB_OUTPUT"
+          echo "system_sbom=$(ls artifacts/packages/sbom/scnx-system-*.cdx.json)" >> "$GITHUB_OUTPUT"
+      - name: SLSA build provenance for both tarballs
+        uses: actions/attest@v4.2.2
+        with:
+          subject-path: artifacts/packages/*.tgz
+      - name: SBOM attestation for @scnx/core-ui
+        uses: actions/attest@v4.2.2
+        with:
+          subject-path: ${{ steps.files.outputs.core_tgz }}
+          sbom-path: ${{ steps.files.outputs.core_sbom }}
+      - name: SBOM attestation for @scnx/system
+        uses: actions/attest@v4.2.2
+        with:
+          subject-path: ${{ steps.files.outputs.system_tgz }}
+          sbom-path: ${{ steps.files.outputs.system_sbom }}
 
   storybook:
     name: Storybook tests

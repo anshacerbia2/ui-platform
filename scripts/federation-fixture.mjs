@@ -273,6 +273,13 @@ export default function Widget() {
 `);
 }
 
+/** TDD packaging V1: keep this fixture's resolved graph for the advisory gate. */
+function saveLockfile(projectDir, name) {
+  const target = path.join(outDir, "lockfiles", name);
+  fs.mkdirSync(target, { recursive: true });
+  for (const file of ["package.json", "pnpm-lock.yaml"]) fs.copyFileSync(path.join(projectDir, file), path.join(target, file));
+}
+
 const installedVersion = (pkg) => JSON.parse(fs.readFileSync(path.join(dir, "node_modules", pkg, "package.json"), "utf8")).version;
 
 const report = { schemaVersion: 1, rspack: RSPACK_VERSION, mfRuntime: MF_RUNTIME_VERSION, scenarios: [] };
@@ -281,6 +288,7 @@ let server;
 const browser = await chromium.launch();
 try {
   execSync(`pnpm install --ignore-workspace --strict-peer-dependencies --store-dir ${JSON.stringify(path.join(dir, ".store"))}`, { cwd: dir, stdio: ["ignore", "pipe", "pipe"] });
+  saveLockfile(dir, "federation-fixture");
   report.versions = Object.fromEntries(["@rspack/core", "@module-federation/runtime-tools", "react", "react-dom", "@scnx/core-ui", "@scnx/system"].map((pkg) => [pkg, installedVersion(pkg)]));
 
   // F1: one Rspack configuration per application, built through the JS API.

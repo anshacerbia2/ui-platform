@@ -1,0 +1,17 @@
+{
+  "$comment": "Copied asset provenance (TDD packaging V4/V5). The version and copyright come from each font's OpenType name table (IDs 5 and 0); the license text is OFL.txt beside these files. scripts/security/licenses.mjs checks every digest against the packed tarball.",
+  "component": {
+    "name": "Inter",
+    "version": "4.001",
+    "versionDetail": "Version 4.001;git-66647c0bb",
+    "supplier": "The Inter Project Authors",
+    "copyright": "Copyright 2016 The Inter Project Authors (https://github.com/rsms/inter)",
+    "license": "OFL-1.1",
+    "licenseText": "OFL.txt",
+    "source": "https://github.com/rsms/inter"
+  },
+  "files": {
+    "Inter-VariableFont_opsz,wght.woff2": "3cf030b17068d35dbde686c0ebd302df3cbf56ce7234911921841c3735149976",
+    "Inter-Italic-VariableFont_opsz,wght.woff2": "695b67b6dab611c44ad05e2f8f8ac6810256b41ca053d32c6d47220537e924aa"
+  }
+}

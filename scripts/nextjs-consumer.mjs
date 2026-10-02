@@ -255,12 +255,19 @@ if (unrendered.length > 0) throw new Error(`Client-only entries missing from the
 
 const env = { ...process.env, NEXT_TELEMETRY_DISABLED: "1" };
 const run = (command) => execSync(command, { cwd: dir, env, stdio: ["ignore", "pipe", "pipe"], encoding: "utf8" });
+/** TDD packaging V1: keep this fixture's resolved graph for the advisory gate. */
+function saveLockfile(projectDir, name) {
+  const target = path.join(outDir, "lockfiles", name);
+  fs.mkdirSync(target, { recursive: true });
+  for (const file of ["package.json", "pnpm-lock.yaml"]) fs.copyFileSync(path.join(projectDir, file), path.join(target, file));
+}
 const report = { schemaVersion: 1, next: NEXT_VERSION, checks: [] };
 let failed = false;
 let server;
 const browser = await chromium.launch();
 try {
   run(`pnpm install --ignore-workspace --strict-peer-dependencies --store-dir ${JSON.stringify(path.join(dir, ".store"))}`);
+  saveLockfile(dir, "nextjs-consumer");
   report.versions = Object.fromEntries(
     ["next", "react", "react-dom", ...packReport.packages.map((pkg) => pkg.name)].map((name) => [
       name,
