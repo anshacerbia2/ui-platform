@@ -94,6 +94,36 @@ implemented (#35) before its ADR and SAD-003 revision (architecture #38); the
 row 8 and row 11 implementations (#27, #37) merged before their decision
 records (#26, #36).
 
+## Decision basis
+
+Three decisions remain, each owned by a human authority. This section records
+the practice each follows, with its sources, and a recommendation. A
+recommendation is not a decision.
+
+| Decision                                                                                           | Practice and sources                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Recommendation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| :------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| D1. Ratify the five pending revisions                                                              | A baseline is a set of specifications "formally reviewed and agreed on at a given point in time, and which can be changed only through change control procedures" [1]. GDC-000 section 2.6.7: a changed revision "becomes effective only when the human authority … explicitly approves the exact commit or ratification manifest containing the revision", and "At ratification, the artifact's `last_reviewed` date and any required lifecycle metadata are updated in the exact approved commit or manifest" [2]. | Prepare one ratification-manifest commit per repository that removes the pending notices and updates `last_reviewed`, as the 2026-09-29 ratification did; the authority approves those exact commits before merge. Ratify first, so D3 is judged against an approved baseline.                                                                                                                                                                                                                                                   |
+| D2. Accept or reject ADR-UIP-WKS-001 and ADR-UIP-SEC-001; transition the pending-ARB radar entries | A decision is "'proposed' if the project stakeholders haven't agreed with it yet, or 'accepted' once it is agreed" [3]. "If the team approves the ADR, the owner adds a timestamp, version, and list of stakeholders. The owner then updates the state to Accepted"; "When the team accepts an ADR, it becomes immutable" [4]. Radar maturity transitions are an ARB vote (GDC-004 section 3.2) [5]; a trial technology is "ready for use, but not as completely proven as those in the Adopt ring" [6].             | Review both ADRs; on acceptance, record date, version, and stakeholders in each Status table. Vote each pending radar entry separately: `oklch` first, because its trial ended on 2026-08-01 and its transition is overdue.                                                                                                                                                                                                                                                                                                      |
+| D3. P0 exit                                                                                        | Phases are "separated by Key Decision Points (KDPs)", events "at which the decision authority determines the readiness of a program/project to progress to the next phase"; "Decisions to proceed may be qualified by liens that should be removed within an agreed-to time period" [7]. ROADMAP: CI, merge, and linter success are evidence, not approval.                                                                                                                                                          | After D1, a "go with liens" decision for packet `1263488f…`, each lien with an owner and a date: L1 license acceptance policy (V4), Security Lead with legal, before the reference slice (2026-11-20); L2 Next.js App Router nonce-CSP fixture (S1), Packaging Lead, 2026-11-20; L3 long-term package storage and Developer Platform signing (R2; ADR-UIP-SEC-001 item 6), Release Lead, before stable (2026-12-04); L4 stability classification of the 39 unclassified entries, Interaction Lead, with the P1 release contract. |
+
+Sources (retrieved 2026-10-02):
+
+1. NIST SP 800-128, Guide for Security-Focused Configuration Management of
+   Information Systems (August 2011, with later errata):
+   <https://doi.org/10.6028/NIST.SP.800-128>, "Baseline Configuration".
+2. GDC-000, Governance Policy, section 2.6 item 7, in `scnehaux-architecture`
+   at `2aedd35d556f9f06de4d25d46a91357d1cf860a8`.
+3. Michael Nygard, "Documenting Architecture Decisions", 15 November 2011:
+   <https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions>.
+4. AWS Prescriptive Guidance, "Architectural decision record process":
+   <https://docs.aws.amazon.com/prescriptive-guidance/latest/architectural-decision-records/adr-process.html>.
+5. GDC-004, Technology Lifecycle and Standards Governance, section 3.2, same
+   commit as [2]: "The ARB manually evaluates and votes to transition
+   technologies between `Assessed`, `Trial`, `Adopted`, and `Hold` phases."
+6. Thoughtworks Technology Radar, FAQ: <https://www.thoughtworks.com/radar/faq>.
+7. NASA Systems Engineering Handbook, NASA/SP-2016-6105 Rev2, section 3.0:
+   <https://www.nasa.gov/wp-content/uploads/2018/09/nasa_systems_engineering_handbook_0.pdf>.
+
 ## Exit decision
 
 Not recorded. The P0 exit, and the ROADMAP phase-2 state, change only when the
