@@ -1,24 +1,14 @@
-import { CollapsibleBaseRoot } from "@scnx/core-ui/components/collapsible-base";
+import { AccordionBaseRoot } from "@scnx/core-ui/components/accordion-base";
+
 import type { AccordionRootProps } from "./types";
 import { cx } from "styled-system/css";
 
 /**
- * Accordion - Root component.
- * Acts as the registry provider for accordion items.
+ * Accordion root: single by default (opening a section closes the open one).
+ * Pass `type="multiple"` for independent sections.
  */
-export const AccordionRoot = ({
-  className,
-  disabledAnimations = false,
-  ...rest
-}: AccordionRootProps) => {
-  return (
-    <CollapsibleBaseRoot
-      className={cx("scnx-accordion", className)}
-      disabledAnimations={disabledAnimations}
-      {...rest}
-    />
-  );
-};
+export const AccordionRoot = ({ className, ...rest }: AccordionRootProps) => (
+  <AccordionBaseRoot className={cx("scnx-accordion", className)} {...rest} />
+);
 
 AccordionRoot.displayName = "Accordion";
-
