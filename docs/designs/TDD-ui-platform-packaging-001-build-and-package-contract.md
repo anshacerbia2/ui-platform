@@ -16,8 +16,8 @@ doc_meta:
 
 > **Revision pending exact-commit ratification.** The component-workshop
 > additions (proposed ADR-UIP-WKS-001), the entry-environment decision
-> record (K1–K5), and the federation-evaluation decision record (F1–F9) are
-> pending under GDC-000 section 2.6.7;
+> record (K1–K5), the federation-evaluation decision record (F1–F9), and the
+> strict-CSP decision record (S1–S3) are pending under GDC-000 section 2.6.7;
 > the previously ratified revision remains binding until the authorized human
 > authority approves the exact commit containing them.
 
@@ -337,6 +337,18 @@ block. Every dependency and copied asset has license/provenance. Import-only
 tests prove no evaluation, DOM/global/storage/network/style mutation. Strict CSP
 applies equally to standalone and evaluated federation scenarios.
 
+#### Decision record: strict CSP
+
+PLAN row 10, first part. Dependency, license, SBOM/provenance, and import
+side-effect gates follow in their own records. Each decision names its sources
+(References under Traceability) and the tradeoff it accepts.
+
+| ID  | Decision                                                                                                                                                                                                                                                                                                                                                                                                        | Sources          | Tradeoff                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| :-- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| S1  | Fixture policies never contain `'unsafe-inline'` or `'unsafe-eval'`, and each fixture has a negative control that must record a violation. The standalone theme fixture uses `script-src 'self'; style-src 'self'`. The federation fixture uses a fresh random nonce per run with `script-src 'nonce-…'; style-src 'nonce-…'` and neither `'self'` nor `'strict-dynamic'`.                                      | [17]             | Strict CSP is "nonce source-expression and/or hash source-expression with the `'strict-dynamic'` keyword-source", and `'strict-dynamic'` "should be avoided when possible" [17]. Without it, every script and stylesheet the runtime inserts must carry the nonce, which is what S2 must prove. That a `'strict-dynamic'` deployment then also passes is an inference: that keyword only adds trust. The Next.js fixture (K5) runs without a CSP; an App Router nonce fixture is an open question. |
+| S2  | Every federated application registers a nonce runtime plugin. It reads the consumer's nonce from the page's first nonced `<script>` through the `nonce` IDL attribute, assigns it to `import.meta.rspackNonce` for that build's chunk loading, and sets it on every script and stylesheet the federation runtime creates (`createScript`, `createLink`). The library never generates a nonce or reads a policy. | [18]; [19]; [20] | Rspack adds the nonce "to all scripts that it loads" once `import.meta.rspackNonce` is set (Rspack 2.1.2 or later) [18]. The runtime hooks let a plugin supply the element [19]. Browsers hide the content attribute but keep the IDL value for script [20], so any page script can read it already; the plugin adds no exposure. Without the plugin, the prototype's chunks and stylesheets were blocked.                                                                                         |
+| S3  | Server markup carries no `style` attribute the library computes (TDD theme THM-009, T1–T3). The standalone theme fixture server-renders the behavior matrix under its policy instead of mounting it client-only.                                                                                                                                                                                                | TDD theme [2]    | A strict policy blocks style attributes in server markup. Computed values apply after hydration (TDD theme T1).                                                                                                                                                                                                                                                                                                                                                                                    |
+
 ## Operational Notes
 
 Runbooks cover clean-install failure, build-memory regression, corrupt artifact,
@@ -456,3 +468,26 @@ References (retrieved 2026-10-02):
 16. npm registry, 2026-10-02: `@rspack/core` 2.2.8 (MIT), optional peer
     `@module-federation/runtime-tools` `^0.24.1 || ^2.0.0`;
     `@module-federation/runtime-tools` 2.9.2 (MIT).
+17. W3C, Content Security Policy Level 3, Editor's Draft, 16 September 2026,
+    section 8.5 "Strict CSP": <https://w3c.github.io/webappsec-csp/#strict-csp>.
+    "script-src: Only use nonce source-expression and/or hash
+    source-expression with the 'strict-dynamic' keyword-source. Note: While
+    'strict-dynamic' allows ease of deployment …, it should be avoided when
+    possible."
+18. Rspack, module variables, `import.meta.rspackNonce` (added in 2.1.2), at
+    commit `179a0934f3091463419827fc2767af07b2fd38ed`:
+    <https://github.com/web-infra-dev/rspack/blob/179a0934f3091463419827fc2767af07b2fd38ed/website/docs/en/api/runtime-api/module-variables.mdx#L526-L545>.
+    "Rspack is capable of adding a nonce to all scripts that it loads. To
+    activate this feature, set `import.meta.rspackNonce` in your entry script."
+19. Module Federation runtime hooks, `createScript` and `createLink`, same
+    commit as [13]:
+    <https://github.com/module-federation/core/blob/8a9677f3ea8515a5d81d729a0381955624e1e72b/apps/website-new/docs/en/guide/runtime/runtime-hooks.mdx#L774-L925>.
+    `createScript` is "Used to modify the script when loading resources" and may
+    return an `HTMLScriptElement`.
+20. WHATWG HTML, Nonce attributes:
+    <https://html.spec.whatwg.org/multipage/urls-and-fetching.html#nonce-attributes>.
+    The cryptographic nonce is "only exposed to script (and not to side-channels
+    like CSS attribute selectors) by taking the value from the content
+    attribute, moving it into an internal slot … exposing it to script via the
+    HTMLOrSVGOrMathMLElement interface mixin, and setting the content attribute
+    to the empty string."

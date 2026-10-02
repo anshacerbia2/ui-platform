@@ -14,6 +14,11 @@ doc_meta:
 
 # TDD-ui-platform-theme-005: Theme Provider and Transition Runtime
 
+> **Revision pending exact-commit ratification.** THM-009 and the server-markup
+> decision record (T1–T3) are pending under GDC-000 section 2.6.7; the
+> previously ratified revision remains binding until the authorized human
+> authority approves the exact commit containing them.
+
 ## Purpose
 
 Specify the client-runtime infrastructure for scoped theme state, SSR-safe
@@ -37,16 +42,17 @@ callbacks to `window`, injects an inline script/style, targets the document root
 and can let multiple providers overwrite each other. Transition completion
 depends on an event that may never arrive and performs synchronous layout reads.
 
-| ID      | Contract                                                                                                |
-| :------ | :------------------------------------------------------------------------------------------------------ |
-| THM-001 | Provider state is scoped to its root or explicit host-owned store; no implicit global singleton.        |
-| THM-002 | Server markup and first client render agree; initialization causes no hydration mismatch.               |
-| THM-003 | Prepaint behavior is an external asset or uses a consumer-controlled nonce/hash; no dynamic evaluation. |
-| THM-004 | Multiple providers/stores coexist and clean all subscriptions/listeners.                                |
-| THM-005 | Portals mount under the originating theme root.                                                         |
-| THM-006 | Transition callbacks fire at most once per completed intent, including interruption and timeout.        |
-| THM-007 | Reduced motion and disabled animation settle synchronously without layout work.                         |
-| THM-008 | Missing completion events settle through a bounded timeout derived from computed timing.                |
+| ID      | Contract                                                                                                          |
+| :------ | :---------------------------------------------------------------------------------------------------------------- |
+| THM-001 | Provider state is scoped to its root or explicit host-owned store; no implicit global singleton.                  |
+| THM-002 | Server markup and first client render agree; initialization causes no hydration mismatch.                         |
+| THM-003 | Prepaint behavior is an external asset or uses a consumer-controlled nonce/hash; no dynamic evaluation.           |
+| THM-004 | Multiple providers/stores coexist and clean all subscriptions/listeners.                                          |
+| THM-005 | Portals mount under the originating theme root.                                                                   |
+| THM-006 | Transition callbacks fire at most once per completed intent, including interruption and timeout.                  |
+| THM-007 | Reduced motion and disabled animation settle synchronously without layout work.                                   |
+| THM-008 | Missing completion events settle through a bounded timeout derived from computed timing.                          |
+| THM-009 | Server markup carries no `style` attribute the library computes; a closed transition is `hidden` until hydration. |
 
 ## Component Design
 
@@ -176,6 +182,25 @@ maximum. Zero duration, reduced motion, or disabled animation takes the instant
 branch and performs no forced layout. Completion cancels frames/timeouts and
 fires the matching callback once.
 
+### Server markup under strict CSP
+
+A policy without `'unsafe-inline'` blocks `style` attributes, so a value the
+library computes must not reach server markup (THM-009) [2]. The browser applies
+the server HTML before hydration, and React gives "no guarantees that attribute
+differences will be patched up" during hydration [4], so a blocked attribute can
+stay missing until that value next changes.
+
+#### Decision record: server markup
+
+Each decision names its sources (References under Traceability) and the
+tradeoff it accepts.
+
+| ID  | Decision                                                                                                                                                                                                                                                                       | Sources           | Tradeoff                                                                                                                                                                                                                                                                                                              |
+| :-- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| T1  | An internal `useHydrated()` hook, `useSyncExternalStore` with a client snapshot of `true` and a server snapshot of `false`, gates every computed style. `TransitionBase` renders its motion style, and `NavigationBase.Group` its `--item-index`, only once it returns `true`. | [1]; [2]          | React uses the server snapshot "only during server rendering and during hydration" [1], so server markup and the first client render agree (THM-002). Each gated component renders once more after hydration, and its computed values are absent until then; the stagger delay and motion matter only on interaction. |
+| T2  | Until hydration, a transition in the `closed` phase renders the `hidden` attribute. After hydration, the state machine is unchanged.                                                                                                                                           | [2]; this section | Before this change a closed transition was hidden by its `styleFrom` style attribute, which a strict CSP blocks, leaving the content visible. A transition that is open at load still starts in `closed` and stays hidden until hydration, which is unchanged: `styleFrom` hid it before.                             |
+| T3  | After hydration, values are applied through React's style updates (CSSOM property setters), never through `cssText` or `insertRule`. A consumer-provided `style` prop passes through unchanged and is the consumer's CSP decision.                                             | [2]; [3]          | CSP gates `cssText` setters and `insertRule` on `'unsafe-eval'` [2]; `setProperty` parses one value for one property [3], which is not among the gated algorithms. That browsers do not block CSSOM property setters under this policy is observed in the packed CSP fixtures, not quoted.                            |
+
 ## Configuration
 
 Versioned configuration contains allowed theme IDs/modes, default mode,
@@ -216,7 +241,9 @@ callback duplicates.
 - Isolation: two independent providers, shared explicit store, nested roots,
   two brands, portal inheritance, mount/unmount cycles.
 - CSP: external bootstrap and nonce path, zero violations, no eval/inline style,
-  invalid/missing nonce negative cases.
+  invalid/missing nonce negative cases; the server markup of every interactive
+  primitive contains no `style` attribute and is rendered under strict CSP in
+  the packed theme fixture (THM-009).
 - Transition: event completion, timeout, zero duration, reduced motion,
   interruption both directions, content resize, unmount, Strict Mode.
 - Packed/federated: one context identity, both remote orders, host-owned nonce
@@ -267,3 +294,25 @@ STD-GLB-FE-003/008/009 and STD-UIP-ENG-001/STY-001/PRM-001. Lifecycle status in
 `scnehaux-architecture` controls authority. Execution:
 [PLAN](../../PLAN.md) P0 rows 6, 9–11. Related designs: tokens, styled CSS,
 primitives, and packaging.
+
+References (retrieved 2026-10-02):
+
+1. React, `useSyncExternalStore`:
+   <https://react.dev/reference/react/useSyncExternalStore>.
+   `getServerSnapshot` "will be used only during server rendering and during
+   hydration of server-rendered content on the client."
+2. W3C, Content Security Policy Level 3, Editor's Draft, 16 September 2026:
+   <https://w3c.github.io/webappsec-csp/>. "The style-src-attr directive
+   governs the behaviour of style attributes." "The following CSS algorithms
+   are gated on the unsafe-eval source expression: insert a CSS rule, parse a
+   CSS rule, parse a CSS declaration block, parse a group of selectors. This
+   would include, for example, all invocations of CSSOM's various cssText
+   setters and insertRule methods" (w3c/webappsec-csp issue 212).
+3. CSSWG, CSS Object Model, Editor's Draft, 31 August 2026:
+   <https://drafts.csswg.org/cssom/>. In the `setProperty()` steps, "Let
+   component value list be the result of parsing value for property
+   property."
+4. React, `hydrateRoot`:
+   <https://react.dev/reference/react-dom/client/hydrateRoot>. "There are no
+   guarantees that attribute differences will be patched up in case of
+   mismatches."
