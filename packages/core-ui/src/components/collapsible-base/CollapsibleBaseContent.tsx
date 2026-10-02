@@ -1,43 +1,35 @@
 "use client";
 
-import type { CollapsibleBaseContentProps } from "./types";
+import { useEffect, useState } from "react";
 import { useDisclosureItem } from "../disclosure-base/DisclosureContext";
 import { TransitionBase } from "../transition-base";
+import type { CollapsibleBaseContentProps } from "./types";
 
 /**
- * Headless content wrapper for the CollapsibleBase.
- * 
- * Acts as a "Presence Protector" that manages DOM mounting/unmounting based 
- * on both the logical `isOpen` state and the terminal `isClosing` signal 
- * from the Global Registry.
- * 
- * Automatically detects the target item ID from its parent (e.g. Accordion.Item).
+ * CollapsibleBaseContent - the region a trigger controls (`role="region"`,
+ * labelled by its trigger). It mounts when the item opens and unmounts when
+ * its close transition settles; the logical open state never waits for the
+ * animation (TDD primitives, Controlled-state reducer step 6).
  */
-export const CollapsibleBaseContent = ({
-  children,
-  forceMount = false,
-  style,
-  ...rest
-}: CollapsibleBaseContentProps) => {
-  const { isOpen, isClosing, setDisclosureState, id, disabledAnimations } = useDisclosureItem();
-  const contentId = `scnx-content-${id}`;
+export const CollapsibleBaseContent = ({ children, forceMount = false, ...rest }: CollapsibleBaseContentProps) => {
+  const { open, triggerId, contentId, disabledAnimations } = useDisclosureItem("CollapsibleBase.Content");
+  const [present, setPresent] = useState(open);
+  useEffect(() => {
+    if (open) setPresent(true);
+  }, [open]);
 
-  /**
-   * The "Presence Gate": ONLY render if open, force-mounted, or currently closing.
-   */
-  const shouldRender = isOpen || forceMount || isClosing;
-
-  if (!shouldRender) return null;
-
+  if (!open && !present && !forceMount) return null;
   return (
     <TransitionBase
       id={contentId}
+      role="region"
+      aria-labelledby={triggerId}
+      hidden={!open && !present ? true : undefined}
+      open={open}
       disabled={disabledAnimations}
-      open={!isClosing}
-      onClosed={() => setDisclosureState({ isOpen: false, isClosing: false })}
+      onClosed={() => setPresent(false)}
       styleFrom={{ height: 0, opacity: 0, overflow: "hidden" }}
       styleTo={{ height: "auto", opacity: 1, overflow: "visible" }}
-      style={style}
       {...rest}
     >
       {children}

@@ -1,13 +1,15 @@
 import type { ComponentPropsWithRef } from "react";
-import type { 
+import type {
+  CollapsibleBaseContentProps,
+  CollapsibleBaseItemProps,
   CollapsibleBaseRootProps,
   CollapsibleBaseTriggerProps,
-  CollapsibleBaseContentProps,
-  CollapsibleBaseItemProps
 } from "../collapsible-base/types";
 
-export type CodeShowcaseBaseRootProps = CollapsibleBaseRootProps & Pick<CollapsibleBaseItemProps, "isOpen" | "defaultOpen" | "onOpenChange">;
-export type CodeShowcaseBasePreviewProps = CodeShowcaseBaseRootProps;
+/** A code showcase is one disclosure: the code region and the trigger that shows it. */
+export type CodeShowcaseBaseRootProps = Omit<CollapsibleBaseRootProps, "type" | "value" | "defaultValue" | "onValueChange" | "collapsible"> &
+  Pick<CollapsibleBaseItemProps, "open" | "defaultOpen" | "onOpenChange">;
+export type CodeShowcaseBasePreviewProps = ComponentPropsWithRef<"div">;
 export type CodeShowcaseBaseNavProps = ComponentPropsWithRef<"div">;
 export type CodeShowcaseBaseTriggerProps = CollapsibleBaseTriggerProps;
 export type CodeShowcaseBaseContentProps = CollapsibleBaseContentProps;

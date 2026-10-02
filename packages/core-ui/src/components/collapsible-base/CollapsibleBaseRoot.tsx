@@ -1,55 +1,21 @@
 "use client";
 
+import { DisclosureProvider } from "../disclosure-base/DisclosureContext";
 import type { CollapsibleBaseRootProps } from "./types";
-import {
-  DisclosureProvider,
-  useHasDisclosureContext,
-} from "../disclosure-base/DisclosureContext";
 
-/**
- * PATH 1: STANDALONE ROOT
- * Bikin Registry baru (Boss). Gak punya ID dan gak ngerender data-state.
- */
-const CollapsibleStandaloneManager = ({
-  type,
-  defaultRegistry,
-  registry,
-  disabledAnimations,
-  onRegistryChange,
-  ...rest
-}: CollapsibleBaseRootProps) => {
-  return (
-    <DisclosureProvider
-      type={type}
-      defaultRegistry={defaultRegistry}
-      registry={registry}
-      disabledAnimations={disabledAnimations}
-      onRegistryChange={onRegistryChange}
-    >
-      <div {...rest} />
-    </DisclosureProvider>
-  );
-};
-
-/**
- * PATH 2: NESTED BRIDGE
- * Passthrough ke registry bapaknya. Gak perlu logic apapun, return div langsung.
- */
-const CollapsibleRegistryBridge = (props: CollapsibleBaseRootProps) => (
-  <div {...props} />
+/** CollapsibleBaseRoot - a disclosure scope; every root owns its own registry. */
+export const CollapsibleBaseRoot = ({ type = "multiple", value, defaultValue, onValueChange, collapsible, disabled, disabledAnimations, ...rest }: CollapsibleBaseRootProps) => (
+  <DisclosureProvider
+    type={type}
+    value={value}
+    defaultValue={defaultValue}
+    onValueChange={onValueChange}
+    collapsible={collapsible}
+    disabled={disabled}
+    disabledAnimations={disabledAnimations}
+  >
+    <div data-type={type} data-disabled={disabled ? "" : undefined} {...rest} />
+  </DisclosureProvider>
 );
-
-/**
- * ATOMIC DISPATCHER: CollapsibleBaseRoot
- */
-export const CollapsibleBaseRoot = (props: CollapsibleBaseRootProps) => {
-  const hasParentContext = useHasDisclosureContext();
-
-  if (hasParentContext) {
-    return <CollapsibleRegistryBridge {...props} />;
-  }
-
-  return <CollapsibleStandaloneManager {...props} />;
-};
 
 CollapsibleBaseRoot.displayName = "CollapsibleBaseRoot";

@@ -1,21 +1,7 @@
-import type { ReactNode } from "react";
-import type { 
-  DisclosureRegistryOptions,
-} from "@scnx/core-ui/components/disclosure-base";
-import type { 
-  CollapsibleBaseRootProps,
-  CollapsibleBaseItemProps,
-  CollapsibleBaseTriggerProps,
-  CollapsibleBaseContentProps 
-} from "@scnx/core-ui/components/collapsible-base";
+import type { AccordionBaseItemProps, AccordionBaseRootProps } from "@scnx/core-ui/components/accordion-base";
+import type { CollapsibleBaseContentProps, CollapsibleBaseTriggerProps } from "@scnx/core-ui/components/collapsible-base";
 
-export type AccordionRootProps = CollapsibleBaseRootProps;
-
-export type AccordionItemProps = CollapsibleBaseItemProps;
-
-
-export type AccordionTriggerProps = Omit<CollapsibleBaseTriggerProps, "children"> & {
-  children: ReactNode | ((props: { isOpen: boolean; isClosing: boolean }) => ReactNode);
-};
-
+export type AccordionRootProps = AccordionBaseRootProps;
+export type AccordionItemProps = AccordionBaseItemProps;
+export type AccordionTriggerProps = CollapsibleBaseTriggerProps;
 export type AccordionContentProps = CollapsibleBaseContentProps;
