@@ -16,7 +16,7 @@ export const SidebarRoot = ({
   className = "",
   ...rest
 }: SidebarProps) => {
-  const { isOpen: contextIsOpen, setIsOpen } = useSidebar();
+  const { isOpen: contextIsOpen, setIsOpen, sidebarId } = useSidebar();
   const finalIsOpen = isOpen ?? contextIsOpen;
 
   useEffect(() => {
@@ -28,6 +28,7 @@ export const SidebarRoot = ({
   return (
     <>
       <SidebarBaseRoot
+        id={sidebarId}
         className={cx("scnx-sidebar", className)}
         isOpen={finalIsOpen}
         {...rest}

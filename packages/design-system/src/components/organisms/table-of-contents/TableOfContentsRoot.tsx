@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useId, type ReactNode } from "react";
 import { TableOfContentsBaseRoot } from "@scnx/core-ui/components/table-of-contents-base";
 
 import type { TableOfContentsProps, TableOfContentsItemState } from "./types";
@@ -13,23 +13,17 @@ import { TableOfContentsLink as Link } from "./TableOfContentsLink";
  * Recursive renderer for TOC items with component injection support.
  * Uses the expert 'as' prop pattern for clean, functional injection.
  */
-const renderTocItems = (
-  items: TableOfContentsItemState[], 
-  LinkComponent: any = "a", 
-  linkProps: any = {}
-): ReactNode => {
+const renderTocItems = (items: TableOfContentsItemState[]): ReactNode => {
   if (!items || items.length === 0) return null;
-  console.log(items,"ASU")
   return (
     <List>
       {items.map((item) => (
         <Item key={item.id}>
-          {/* Injecting LinkComponent directly as the rendered component */}
-          <Link id={item.id} as={LinkComponent} {...linkProps}>
+          <Link targetId={item.id}>
             {item.title}
           </Link>
           {item.subcontent && item.subcontent?.length > 0 && 
-            renderTocItems(item.subcontent, LinkComponent, linkProps)}
+            renderTocItems(item.subcontent)}
         </Item>
       ))}
     </List>
@@ -40,31 +34,32 @@ const renderTocItems = (
  * Root container for the Table of Contents.
  * Manages active section tracking via intersection observer.
  * 
+ * Items name their target headings by `id`; each link points to `#<id>`
+ * and keeps its own distinct ID (TDD primitives P10). `label` is the visible
+ * label and accessible name.
+ *
  * @example
- * <TableOfContents 
- *   items={docs.toc} 
- *   linkAs={Link} 
- *   linkProps={{ prefetch: false }} 
- * />
+ * <TableOfContents items={docs.toc} label="On this page" />
  */
 export const TableOfContentsRoot = ({ 
   children,
   className = "", 
   items = [],
-  linkAs,
-  linkProps,
+  label = "Contents",
   ...rest 
 }: TableOfContentsProps) => {
+  const labelId = `${useId()}-label`;
   const hasItems = items.length > 0;
 
   return (
     <TableOfContentsBaseRoot
       className={cx("scnx-toc", className)}
       items={items}
+      aria-labelledby={hasItems ? labelId : undefined}
       {...rest}
     >
-      {hasItems && <div className="scnx-toc__label">Contents</div>}
-      {children || (hasItems && renderTocItems(items, linkAs, linkProps))}
+      {hasItems && <div id={labelId} className="scnx-toc__label">{label}</div>}
+      {children || (hasItems && renderTocItems(items))}
     </TableOfContentsBaseRoot>
   );
 };

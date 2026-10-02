@@ -1,6 +1,7 @@
-import { Children, cloneElement, CSSProperties, isValidElement, ReactElement } from "react";
+import { cloneElement, isValidElement, useContext, type CSSProperties, type ReactElement } from "react";
+import { SubgroupIdContext } from "./NavigationBaseItem";
 import { useNavigationLevel } from "./NavigationLevelContext";
-import type { NavigationBaseGroupProps, NavigationBaseItemProps } from "./types";
+import type { NavigationBaseGroupProps } from "./types";
 import { flattenChildren } from "./utils";
 
 /**
@@ -17,20 +18,23 @@ import { flattenChildren } from "./utils";
  */
 export const NavigationBaseGroup = ({ 
   children, 
+  id,
   ...rest 
 }: NavigationBaseGroupProps) => {
+  // A group nested in an item takes the ID its disclosure button controls.
+  const subgroupId = useContext(SubgroupIdContext);
   const flatChildren = flattenChildren(children);
   let validItemIndex = 0;
 
   return (
     <ul
-      role="list"
+      id={id ?? subgroupId ?? undefined}
       data-part="group"
       {...rest}
     >
       {flatChildren.map((child) => {
         if (isValidElement(child)) {
-          const element = child as ReactElement<NavigationBaseItemProps<any>>; // TYPED
+          const element = child as ReactElement<{ style?: CSSProperties } & Record<string, unknown>>;
           const childTypeName = (element.type as any)?.displayName || "";
           const isHeaderOrDivider = 
             childTypeName.includes("GroupHeader") || 

@@ -5,6 +5,7 @@ import {
   use,
   useCallback,
   useEffect,
+  useId,
   useMemo,
   useState,
 } from "react";
@@ -27,6 +28,7 @@ export const useSidebarContextValue = ({
   );
   const [internalIsOpen, setInternalIsOpen] = useState(defaultIsOpen);
   const [expandedMap, setExpandedMap] = useState<Record<string, boolean>>({});
+  const sidebarId = `${useId()}-sidebar`;
 
   useEffect(() => {
     setInternalActivePath(activePath || "");
@@ -56,6 +58,7 @@ export const useSidebarContextValue = ({
 
   return useMemo(
     () => ({
+      sidebarId,
       activePath: internalActivePath,
       isOpen: internalIsOpen,
       expandedMap,
@@ -65,6 +68,7 @@ export const useSidebarContextValue = ({
       toggleExpanded,
     }),
     [
+      sidebarId,
       internalActivePath,
       internalIsOpen,
       expandedMap,

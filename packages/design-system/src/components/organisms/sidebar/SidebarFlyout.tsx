@@ -51,6 +51,21 @@ export const SidebarFlyout = ({
 
   useOnClickOutside(refs, activeFlyout ? handleClickOutside : undefined);
 
+  // Non-modal flyout (TDD primitives P11; WAI-ARIA APG Disclosure Navigation):
+  // Escape closes it and returns focus to the item that opened it. Focus is
+  // never trapped.
+  useEffect(() => {
+    const trigger = activeFlyout?.triggerRef;
+    if (!trigger) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || event.defaultPrevented) return;
+      closeFlyout();
+      trigger.focus();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [activeFlyout?.triggerRef, closeFlyout]);
+
   useEffect(() => {
     if (!activeFlyout?.triggerRef || !flyoutRef.current) return;
 
