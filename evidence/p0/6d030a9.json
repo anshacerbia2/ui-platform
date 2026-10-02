@@ -1,0 +1,883 @@
+{
+  "schema": "scnx.p0-evidence/1",
+  "source": {
+    "repository": "anshacerbia2/ui-platform",
+    "commit": "6d030a920c3b0e2031d80503c6c6335efd693708",
+    "ref": "refs/heads/main"
+  },
+  "run": {
+    "id": 37050521714,
+    "attempt": 1,
+    "url": "https://github.com/anshacerbia2/ui-platform/actions/runs/37050521714",
+    "event": "push"
+  },
+  "jobs": [
+    {
+      "name": "Packed consumer",
+      "conclusion": "success",
+      "url": "https://github.com/anshacerbia2/ui-platform/actions/runs/37050521714/job/110982491290"
+    },
+    {
+      "name": "Build with default heap",
+      "conclusion": "success",
+      "url": "https://github.com/anshacerbia2/ui-platform/actions/runs/37050521714/job/110982491414"
+    },
+    {
+      "name": "Clean install",
+      "conclusion": "success",
+      "url": "https://github.com/anshacerbia2/ui-platform/actions/runs/37050521714/job/110982491415"
+    },
+    {
+      "name": "Storybook tests",
+      "conclusion": "success",
+      "url": "https://github.com/anshacerbia2/ui-platform/actions/runs/37050521714/job/110982491463"
+    },
+    {
+      "name": "CI policy",
+      "conclusion": "success",
+      "url": "https://github.com/anshacerbia2/ui-platform/actions/runs/37050521714/job/110982491557"
+    },
+    {
+      "name": "Source tests",
+      "conclusion": "success",
+      "url": "https://github.com/anshacerbia2/ui-platform/actions/runs/37050521714/job/110982491618"
+    },
+    {
+      "name": "Token gate",
+      "conclusion": "success",
+      "url": "https://github.com/anshacerbia2/ui-platform/actions/runs/37050521714/job/110982491635"
+    },
+    {
+      "name": "Chromatic visual review",
+      "conclusion": "success",
+      "url": "https://github.com/anshacerbia2/ui-platform/actions/runs/37050521714/job/110982491639"
+    },
+    {
+      "name": "Documentation gates",
+      "conclusion": "success",
+      "url": "https://github.com/anshacerbia2/ui-platform/actions/runs/37050521714/job/110982491680"
+    },
+    {
+      "name": "Central governance linter / Enforce GDC Compliance",
+      "conclusion": "success",
+      "url": "https://github.com/anshacerbia2/ui-platform/actions/runs/37050521714/job/110982491836"
+    },
+    {
+      "name": "Provenance and SBOM attestations",
+      "conclusion": "success",
+      "url": "https://github.com/anshacerbia2/ui-platform/actions/runs/37050521714/job/110983190717"
+    }
+  ],
+  "rows": [
+    {
+      "row": "0",
+      "title": "Clean install gate and required CI",
+      "result": "pass",
+      "jobs": [
+        {
+          "name": "Clean install",
+          "conclusion": "success"
+        },
+        {
+          "name": "CI policy",
+          "conclusion": "success"
+        }
+      ],
+      "reports": [],
+      "failures": []
+    },
+    {
+      "row": "1",
+      "title": "Central architecture linter and document contract",
+      "result": "pass",
+      "jobs": [
+        {
+          "name": "Documentation gates",
+          "conclusion": "success"
+        },
+        {
+          "name": "Central governance linter / Enforce GDC Compliance",
+          "conclusion": "success"
+        }
+      ],
+      "reports": [],
+      "failures": []
+    },
+    {
+      "row": "2",
+      "title": "Source tests and declaration heap",
+      "result": "pass",
+      "jobs": [
+        {
+          "name": "Source tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build with default heap",
+          "conclusion": "success"
+        }
+      ],
+      "reports": [
+        {
+          "file": "build-memory/build-time.txt",
+          "sha256": "6b25ed89bc303b8d941e0490b37a875c9b853a5740fa33f6dd3050519eaeafaa"
+        },
+        {
+          "file": "build-memory/build.log",
+          "sha256": "8fa1cfc1d6886b7061e604a581f45b3208be7baa7d4c2c77a4b8c2ae527d98fd"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "row": "3",
+      "title": "Packaging and isolated consumers",
+      "result": "pass",
+      "jobs": [
+        {
+          "name": "Packed consumer",
+          "conclusion": "success"
+        }
+      ],
+      "reports": [
+        {
+          "file": "packed-packages/pack-report.json",
+          "sha256": "5d8d8b0b0983e000675903bc8df0ca2ada915e99044052b67e268e80c490242b"
+        },
+        {
+          "file": "packed-packages/consumer-report.json",
+          "sha256": "cb9e7c0202d82b1015a15d015abb7e2e1c7846d64a18f0057f548fe971a29898"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "row": "4",
+      "title": "Token output",
+      "result": "pass",
+      "jobs": [
+        {
+          "name": "Token gate",
+          "conclusion": "success"
+        }
+      ],
+      "reports": [
+        {
+          "file": "token-report/token-report.json",
+          "sha256": "549f7bfb710a435c11d6f117e702291ee6cfc0378bce3dc8dcda2300fc2a0325"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "row": "5",
+      "title": "Component CSS delivery",
+      "result": "pass",
+      "jobs": [
+        {
+          "name": "Packed consumer",
+          "conclusion": "success"
+        }
+      ],
+      "reports": [
+        {
+          "file": "packed-packages/browser-components-report.json",
+          "sha256": "c43a8219d30a6f0d4de09dc6d227d6f785bbfed1ba49e579d7f88d0ee4afed45"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "row": "6",
+      "title": "Theme provider and transitions",
+      "result": "pass",
+      "jobs": [
+        {
+          "name": "Packed consumer",
+          "conclusion": "success"
+        }
+      ],
+      "reports": [
+        {
+          "file": "packed-packages/browser-theme-report.json",
+          "sha256": "86b7f49b1b8b2bc083f0f11ca0a490c5b3ea2569d726ea8fea0d40290dd567f8"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "row": "7",
+      "title": "Primitive behavior",
+      "result": "pass",
+      "jobs": [
+        {
+          "name": "Source tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "Packed consumer",
+          "conclusion": "success"
+        }
+      ],
+      "reports": [
+        {
+          "file": "packed-packages/browser-theme-report.json",
+          "sha256": "86b7f49b1b8b2bc083f0f11ca0a490c5b3ea2569d726ea8fea0d40290dd567f8"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "row": "8",
+      "title": "Entry environments and Next.js App Router",
+      "result": "pass",
+      "jobs": [
+        {
+          "name": "Packed consumer",
+          "conclusion": "success"
+        }
+      ],
+      "reports": [
+        {
+          "file": "packed-packages/nextjs-report.json",
+          "sha256": "af7f803bd9d20ea94a1f242ce9025fd088236d9893c97e2dd6aed168a6a2a67d"
+        },
+        {
+          "file": "packed-packages/pack-report.json",
+          "sha256": "5d8d8b0b0983e000675903bc8df0ca2ada915e99044052b67e268e80c490242b"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "row": "9",
+      "title": "Conditional federation evaluation",
+      "result": "pass",
+      "jobs": [
+        {
+          "name": "Packed consumer",
+          "conclusion": "success"
+        }
+      ],
+      "reports": [
+        {
+          "file": "packed-packages/federation-report.json",
+          "sha256": "72cd9d2394db2fcfe59582ff47179e22dc754e7da6bd03373651bb16ebbf172c"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "row": "10",
+      "title": "Security, supply chain, side effects, strict CSP",
+      "result": "pass",
+      "jobs": [
+        {
+          "name": "Packed consumer",
+          "conclusion": "success"
+        },
+        {
+          "name": "Provenance and SBOM attestations",
+          "conclusion": "success"
+        }
+      ],
+      "reports": [
+        {
+          "file": "packed-packages/imports-report.json",
+          "sha256": "ff9d5e3f519c8ef7940be6e74bd8e224cc432772caac904ba49e5bdd37a9ee17"
+        },
+        {
+          "file": "packed-packages/security/audit-report.json",
+          "sha256": "c0b964cf70881a72eeeebfad473a8fff799bd85a181ad488dc33147a8a5a5333"
+        },
+        {
+          "file": "packed-packages/security/license-report.json",
+          "sha256": "a44f1c480e11178c48e09a8cd7d99681bcbd01061f56be80aaf54290775c99f3"
+        },
+        {
+          "file": "packed-packages/sbom-report.json",
+          "sha256": "21648f0a7c2c750c876c145ac4192f0fb40f5030274158b2cb4750a5d2fa0c28"
+        }
+      ],
+      "failures": []
+    },
+    {
+      "row": "W1-W2",
+      "title": "Component workshop",
+      "result": "pass",
+      "jobs": [
+        {
+          "name": "Storybook tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "Chromatic visual review",
+          "conclusion": "success"
+        }
+      ],
+      "reports": [],
+      "failures": []
+    }
+  ],
+  "packages": [
+    {
+      "name": "@scnx/core-ui",
+      "version": "1.0.0",
+      "tarball": "scnx-core-ui-1.0.0.tgz",
+      "tarballSha256": "c30ebd827455a45c94864375dc37096d9a64c35572320b25aea817727733372a",
+      "contentSha256": "7d5466e7cd4ea4fa9e524d60c33ec91f0a399efd424031eb6959efb552a27c81",
+      "rebuildContentSha256": "7d5466e7cd4ea4fa9e524d60c33ec91f0a399efd424031eb6959efb552a27c81",
+      "reproducible": true,
+      "sbom": "sbom/scnx-core-ui-1.0.0.cdx.json",
+      "sbomSha256": "01ec6a947fbe4dff9532942d6d34057674a2cdae5375bcb5a88755ef5589943e",
+      "attestations": {
+        "provenance": {
+          "verified": true,
+          "signer": "https://github.com/anshacerbia2/ui-platform/.github/workflows/ci.yml@refs/heads/main"
+        },
+        "sbom": {
+          "verified": true,
+          "signer": "https://github.com/anshacerbia2/ui-platform/.github/workflows/ci.yml@refs/heads/main"
+        }
+      }
+    },
+    {
+      "name": "@scnx/system",
+      "version": "1.1.0",
+      "tarball": "scnx-system-1.1.0.tgz",
+      "tarballSha256": "55ccfe0b307239e550a57a6bcb31b215207e92d1409d03172a7c0d7f387fb318",
+      "contentSha256": "ddf40da2db614a0ed539179a8c7f7b22bb4c0ee76a6e17dab322bc81589a8bdb",
+      "rebuildContentSha256": "ddf40da2db614a0ed539179a8c7f7b22bb4c0ee76a6e17dab322bc81589a8bdb",
+      "reproducible": true,
+      "sbom": "sbom/scnx-system-1.1.0.cdx.json",
+      "sbomSha256": "57090a4e01c3916d4538494061c42ba4aa8799f0822ef710410b19ef2522a48c",
+      "attestations": {
+        "provenance": {
+          "verified": true,
+          "signer": "https://github.com/anshacerbia2/ui-platform/.github/workflows/ci.yml@refs/heads/main"
+        },
+        "sbom": {
+          "verified": true,
+          "signer": "https://github.com/anshacerbia2/ui-platform/.github/workflows/ci.yml@refs/heads/main"
+        }
+      }
+    }
+  ],
+  "architecture": {
+    "repository": "anshacerbia2/scnehaux-architecture",
+    "commit": "2aedd35d556f9f06de4d25d46a91357d1cf860a8",
+    "records": [
+      {
+        "id": "SAD-003",
+        "path": "04-system/scnehaux-ui-platform/scnehaux-ui-platform.sad.md",
+        "status": "approved",
+        "version": "2.1.0",
+        "pendingRatification": true
+      },
+      {
+        "id": "PAD-PLT-003",
+        "path": "03-domain/PAD-PLT-003-scnehaux-ui-platform/PAD-PLT-003-scnehaux-ui-platform.pad.md",
+        "status": "approved",
+        "version": "1.4.0",
+        "pendingRatification": false
+      },
+      {
+        "id": "ADR-GLB-FE-010",
+        "path": "05-decisions/_global/ADR-GLB-FE-010-evidence-based-frontend-contracts.md",
+        "status": "accepted",
+        "version": null,
+        "pendingRatification": false
+      },
+      {
+        "id": "ADR-GLB-FE-011",
+        "path": "05-decisions/_global/ADR-GLB-FE-011-rspack-based-federated-toolchains.md",
+        "status": "accepted",
+        "version": null,
+        "pendingRatification": false
+      },
+      {
+        "id": "ADR-GLB-FE-012",
+        "path": "05-decisions/_global/ADR-GLB-FE-012-module-federation-runtime-contract.md",
+        "status": "accepted",
+        "version": null,
+        "pendingRatification": false
+      },
+      {
+        "id": "ADR-GLB-FE-013",
+        "path": "05-decisions/_global/ADR-GLB-FE-013-static-css-output-and-token-bound-styling.md",
+        "status": "accepted",
+        "version": null,
+        "pendingRatification": false
+      },
+      {
+        "id": "ADR-UIP-PLT-001",
+        "path": "05-decisions/ui-platform/ADR-UIP-PLT-001-verifiable-platform-contract.md",
+        "status": "accepted",
+        "version": null,
+        "pendingRatification": false
+      },
+      {
+        "id": "ADR-UIP-TKN-001",
+        "path": "05-decisions/ui-platform/ADR-UIP-TKN-001-three-tier-isolation-architecture.md",
+        "status": "accepted",
+        "version": null,
+        "pendingRatification": false
+      },
+      {
+        "id": "ADR-UIP-TKN-002",
+        "path": "05-decisions/ui-platform/ADR-UIP-TKN-002-oklch-and-dual-engine-alpha.md",
+        "status": "accepted",
+        "version": null,
+        "pendingRatification": false
+      },
+      {
+        "id": "ADR-UIP-TKN-003",
+        "path": "05-decisions/ui-platform/ADR-UIP-TKN-003-token-taxonomy-and-naming-convention.md",
+        "status": "accepted",
+        "version": null,
+        "pendingRatification": false
+      },
+      {
+        "id": "ADR-UIP-BLD-001",
+        "path": "05-decisions/ui-platform/ADR-UIP-BLD-001-deferred-minification.md",
+        "status": "accepted",
+        "version": null,
+        "pendingRatification": false
+      },
+      {
+        "id": "ADR-UIP-WKS-001",
+        "path": "05-decisions/ui-platform/ADR-UIP-WKS-001-storybook-component-workshop.md",
+        "status": "proposed",
+        "version": null,
+        "pendingRatification": false
+      },
+      {
+        "id": "ADR-UIP-SEC-001",
+        "path": "05-decisions/ui-platform/ADR-UIP-SEC-001-supply-chain-evidence.md",
+        "status": "proposed",
+        "version": null,
+        "pendingRatification": false
+      },
+      {
+        "id": "STD-UIP-ENG-001",
+        "path": "02-standards/ui-platform/STD-UIP-ENG-001-build-and-delivery.md",
+        "status": "approved",
+        "version": "2.0.0",
+        "pendingRatification": false
+      },
+      {
+        "id": "STD-UIP-PRM-001",
+        "path": "02-standards/ui-platform/STD-UIP-PRM-001-primitive-components.md",
+        "status": "approved",
+        "version": "2.0.0",
+        "pendingRatification": false
+      },
+      {
+        "id": "STD-UIP-STY-001",
+        "path": "02-standards/ui-platform/STD-UIP-STY-001-styled-components.md",
+        "status": "approved",
+        "version": "2.0.0",
+        "pendingRatification": false
+      },
+      {
+        "id": "STD-UIP-TKN-001",
+        "path": "02-standards/ui-platform/STD-UIP-TKN-001-design-tokens.md",
+        "status": "approved",
+        "version": "2.1.0",
+        "pendingRatification": false
+      },
+      {
+        "id": "STD-UIP-TKN-002",
+        "path": "02-standards/ui-platform/STD-UIP-TKN-002-consumption-governance.md",
+        "status": "approved",
+        "version": "2.0.0",
+        "pendingRatification": false
+      }
+    ],
+    "radar": [
+      {
+        "name": "react",
+        "ring": "adopt",
+        "owner": "UI Platform Team",
+        "comments": [],
+        "pendingArb": false
+      },
+      {
+        "name": "rsbuild",
+        "ring": "adopt",
+        "owner": "UI Platform Team",
+        "comments": [
+          "ADR-GLB-FE-002 was superseded by ADR-GLB-FE-011 (accepted 2026-09-29),",
+          "which keeps Rsbuild as one Rspack-based toolchain for federated apps."
+        ],
+        "pendingArb": false
+      },
+      {
+        "name": "vitest",
+        "ring": "adopt",
+        "owner": "UI Platform Team",
+        "comments": [],
+        "pendingArb": false
+      },
+      {
+        "name": "playwright",
+        "ring": "adopt",
+        "owner": "UI Platform Team",
+        "comments": [],
+        "pendingArb": false
+      },
+      {
+        "name": "oklch",
+        "ring": "trial",
+        "owner": "UI Platform Team",
+        "comments": [
+          "Trial expired on 2026-08-01; the ARB transition decision is pending ARB."
+        ],
+        "pendingArb": true
+      },
+      {
+        "name": "sass",
+        "ring": "trial",
+        "owner": "UI Platform Team",
+        "comments": [
+          "pending ARB: sass, panda-css, and tsup trial entries."
+        ],
+        "pendingArb": true
+      },
+      {
+        "name": "panda-css",
+        "ring": "trial",
+        "owner": "UI Platform Team",
+        "comments": [],
+        "pendingArb": true
+      },
+      {
+        "name": "tsup",
+        "ring": "trial",
+        "owner": "UI Platform Team",
+        "comments": [],
+        "pendingArb": true
+      },
+      {
+        "name": "storybook",
+        "ring": "trial",
+        "owner": "UI Platform Team",
+        "comments": [
+          "pending ARB: storybook and chromatic trial entries, proposed 2026-10-01."
+        ],
+        "pendingArb": true
+      },
+      {
+        "name": "chromatic",
+        "ring": "trial",
+        "owner": "UI Platform Team",
+        "comments": [],
+        "pendingArb": true
+      },
+      {
+        "name": "cyclonedx",
+        "ring": "trial",
+        "owner": "UI Platform Team",
+        "comments": [
+          "pending ARB: cyclonedx and github-artifact-attestations trial entries,",
+          "proposed 2026-10-02 with ADR-UIP-SEC-001."
+        ],
+        "pendingArb": true
+      },
+      {
+        "name": "github-artifact-attestations",
+        "ring": "trial",
+        "owner": "UI Platform Team",
+        "comments": [],
+        "pendingArb": true
+      },
+      {
+        "name": "vite",
+        "ring": "trial",
+        "owner": "UI Platform Team",
+        "comments": [
+          "Permitted for non-federated applications and libraries by ADR-GLB-FE-011",
+          "section 5 item 2 (superseding ADR-GLB-FE-002); trial review is pending ARB."
+        ],
+        "pendingArb": true
+      },
+      {
+        "name": "bun",
+        "ring": "assess",
+        "owner": "UI Platform Team",
+        "comments": [],
+        "pendingArb": false
+      },
+      {
+        "name": "module-federation",
+        "ring": "assess",
+        "owner": "UI Platform Team",
+        "comments": [
+          "Remains assess. ADR-GLB-FE-011 constrains the toolchain only when a",
+          "bounded SAD/ADR separately authorizes federation; ADR-GLB-FE-012 defines",
+          "the evaluation contract. Neither ADR promotes this radar entry. A ring",
+          "transition requires the P0 federation/CSP fixture evidence and a separate",
+          "recorded ARB decision."
+        ],
+        "pendingArb": false
+      },
+      {
+        "name": "rspack",
+        "ring": "assess",
+        "owner": "UI Platform Team",
+        "comments": [
+          "pending ARB: rspack assess entry, proposed 2026-10-02. ADR-GLB-FE-011",
+          "names @rspack/core with its Module Federation plugin as a federated",
+          "toolchain; the UI Platform uses it only in the P0 federation evaluation",
+          "fixture, so it stays assess with module-federation."
+        ],
+        "pendingArb": true
+      },
+      {
+        "name": "react-aria",
+        "ring": "assess",
+        "owner": "UI Platform Team",
+        "comments": [
+          "pending ARB: react-aria and dtcg-design-tokens assess entries."
+        ],
+        "pendingArb": true
+      },
+      {
+        "name": "dtcg-design-tokens",
+        "ring": "assess",
+        "owner": "UI Platform Team",
+        "comments": [],
+        "pendingArb": true
+      }
+    ]
+  },
+  "pendingRatification": [
+    {
+      "repository": "scnehaux-architecture",
+      "id": "SAD-003",
+      "path": "04-system/scnehaux-ui-platform/scnehaux-ui-platform.sad.md"
+    },
+    {
+      "repository": "ui-platform",
+      "id": "TDD-ui-platform-packaging-001-build-and-package-contract",
+      "path": "docs/designs/TDD-ui-platform-packaging-001-build-and-package-contract.md"
+    },
+    {
+      "repository": "ui-platform",
+      "id": "TDD-ui-platform-primitives-002-behavior-and-polymorphism",
+      "path": "docs/designs/TDD-ui-platform-primitives-002-behavior-and-polymorphism.md"
+    },
+    {
+      "repository": "ui-platform",
+      "id": "TDD-ui-platform-styled-004-component-css-delivery",
+      "path": "docs/designs/TDD-ui-platform-styled-004-component-css-delivery.md"
+    },
+    {
+      "repository": "ui-platform",
+      "id": "TDD-ui-platform-theme-005-provider-and-transitions",
+      "path": "docs/designs/TDD-ui-platform-theme-005-provider-and-transitions.md"
+    }
+  ],
+  "entries": [
+    {
+      "entry": "@scnx/core-ui/components/accordion-base",
+      "stability": "candidate"
+    },
+    {
+      "entry": "@scnx/core-ui/components/box-base",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/core-ui/components/button-base",
+      "stability": "candidate"
+    },
+    {
+      "entry": "@scnx/core-ui/components/code-showcase-base",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/core-ui/components/collapsible-base",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/core-ui/components/container-base",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/core-ui/components/disclosure-base",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/core-ui/components/divider-base",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/core-ui/components/edge-layout-base",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/core-ui/components/flex-base",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/core-ui/components/floating-layout-base",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/core-ui/components/grid-base",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/core-ui/components/heading-base",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/core-ui/components/list-base",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/core-ui/components/navigation-bar-base",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/core-ui/components/navigation-base",
+      "stability": "candidate"
+    },
+    {
+      "entry": "@scnx/core-ui/components/sidebar-base",
+      "stability": "candidate"
+    },
+    {
+      "entry": "@scnx/core-ui/components/table-of-contents-base",
+      "stability": "candidate"
+    },
+    {
+      "entry": "@scnx/core-ui/components/text-base",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/core-ui/components/transition-base",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/core-ui/hooks/use-on-click-outside",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/core-ui/providers/theme-provider-base",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components/accordion",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components/box",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components/button",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components/code",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components/code-select",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components/code-showcase",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components/container",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components/divider",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components/edge-layout",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components/flex",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components/floating-layout",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components/grid",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components/heading",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components/list",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components/navbar",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components/navigation",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components/sidebar",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components/stack",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components/table-of-contents",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components/text",
+      "stability": "unclassified"
+    },
+    {
+      "entry": "@scnx/system/components/transition",
+      "stability": "unclassified"
+    }
+  ],
+  "knownLimits": [
+    {
+      "limit": "No CommonJS output",
+      "absentFromExports": true
+    },
+    {
+      "limit": "Module Federation is evaluated, not adopted: no federation entry",
+      "absentFromExports": true
+    },
+    {
+      "limit": "The Next.js fixture runs without a nonce CSP (TDD packaging S1)",
+      "absentFromExports": true
+    },
+    {
+      "limit": "No license allow-list is enforced (TDD packaging V4)",
+      "absentFromExports": true
+    },
+    {
+      "limit": "Tarball bytes are retained for at most 90 days (TDD packaging R2)",
+      "absentFromExports": true
+    }
+  ],
+  "result": "pass",
+  "failures": []
+}
