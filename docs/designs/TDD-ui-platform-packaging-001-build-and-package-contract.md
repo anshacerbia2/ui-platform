@@ -14,6 +14,11 @@ doc_meta:
 
 # TDD-ui-platform-packaging-001: Build and Published Package Contract
 
+> **Revision pending exact-commit ratification.** The CI topology decision
+> record (C1–C4) is pending under GDC-000 section 2.6.7; the revision ratified
+> on 2026-10-02 (`773a864`) remains binding until the authorized human
+> authority approves the exact commit containing it.
+
 ## Purpose
 
 Turn the extracted workspace into two reproducible, independently installable
@@ -383,6 +388,18 @@ and the tradeoff it accepts.
 | R5  | The packet lists every public entry with its stability from the behavior inventory, and fails if an entry is `stable` while a row it depends on failed. Unsupported capabilities (CJS output, federation adoption, a Next.js nonce CSP fixture, a license allow-list) are listed as known limits, and the packet checks that no export condition or entry provides them.                                                                                                                                            | PLAN row 11                        | P0 has no stable entry, so the first rule is vacuous until a stable channel exists; the check is kept so it binds then.                                                                                                                                                                                                                                                                                    |
 | R6  | The exit review is a record `docs/reviews/YYYY-MM-DD-p0-exit-review.md` (audit record, non-normative) with one disposition per PLAN row against an exact packet digest, source commit, and attestation, plus every revision still pending exact-commit ratification in either repository. The P0 exit decision, and the ROADMAP phase-2 state, are recorded only after the authorized human states the decision for that packet digest.                                                                             | ROADMAP; GDC-000 section 2.6.7     | "CI, merge, and linter success are evidence, not human lifecycle approval" (ROADMAP): merging the review record does not decide the exit.                                                                                                                                                                                                                                                                  |
 
+#### Decision record: CI topology
+
+Where each CI job runs and which checks block a merge. Each decision names its
+sources (References under Traceability) and the tradeoff it accepts.
+
+| ID  | Decision                                                                                                                                                                                                                                                                                                                  | Sources               | Tradeoff                                                                                                                                                                                                                                                                                                                                                       |
+| :-- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :-------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| C1  | The CI workflow runs on `pull_request`, on `push` to `main`, and on its daily schedule (V1). A push to another branch does not start it.                                                                                                                                                                                  | [36]                  | A pull request previously ran every job twice, once per event, and showed every main-only job as skipped twice. A skipped job "will report its status as "Success". It will not prevent a pull request from merging, even if it is a required check" [36], so a skipped entry looks like a pass while checking nothing.                                        |
+| C2  | Chromatic runs in its own workflow on `push` to every branch, so a pull request's branch is still reviewed.                                                                                                                                                                                                               | [37]; ADR-UIP-WKS-001 | Chromatic recommends "to run Chromatic's step on push events", warning that `pull_request` "can cause Chromatic's baselines to be lost in certain scenarios or lead to Chromatic using an unexpected baseline from the main branch" [37]. The workflow builds Storybook a second time.                                                                         |
+| C3  | The evidence packet and its attestation (R1–R2) run in a separate workflow started by `workflow_run` when the CI workflow completes on `main`, with any conclusion. It reads the triggering run's jobs and artifacts by run ID and records that run's head commit. The tarball attestations (V6) stay in the CI workflow. | [38]; [31]            | For `workflow_run`, "This is useful in cases where the previous workflow is intentionally not privileged, but you need to take a privileged action in a later workflow" [38]. SLSA provenance must describe "how the artifact was built" [31], so the tarballs are attested in the run that built them; that one job still shows as skipped on a pull request. |
+| C4  | Every gate job is a required status check in the `protect-main` ruleset: Documentation gates, Clean install, CI policy, Source tests, Build with default heap, Packed consumer, Token gate, Storybook tests, Central governance linter, and Chromatic visual review. Main-only jobs are not required checks.              | PLAN row 0; [36]      | PLAN row 0 requires "every implemented P0 gate required on pull requests and `main`"; on 2026-10-02 the ruleset required only the first seven. The ruleset is repository configuration that the repository owner changes; this record does not change it.                                                                                                      |
+
 ## Operational Notes
 
 Runbooks cover clean-install failure, build-memory regression, corrupt artifact,
@@ -628,3 +645,20 @@ References (retrieved 2026-10-02):
     reproducible if given the same source code, build environment and build
     instructions, any party can recreate bit-by-bit identical copies of all
     specified artifacts."
+36. GitHub Docs, skipped job status, at commit
+    `0b8c768bf0d5a13560ec82fd3daa414137e2e436`
+    (`data/reusables/actions/workflows/skipped-job-status-checks-passing.md`):
+    "A job that is skipped will report its status as "Success". It will not
+    prevent a pull request from merging, even if it is a required check."
+37. Chromatic, GitHub Actions: <https://www.chromatic.com/docs/github-actions/>.
+    "Our recommendation is to run Chromatic's step on push events. While the
+    pull_request event also works, it can cause Chromatic's baselines to be
+    lost in certain scenarios or lead to Chromatic using an unexpected
+    baseline from the main branch."
+38. GitHub Docs, Events that trigger workflows, `workflow_run`, same commit as
+    [36] (`content/actions/reference/workflows-and-actions/events-that-trigger-workflows.md`):
+    "The workflow started by the `workflow_run` event is able to access
+    secrets and write tokens, even if the previous workflow was not. This is
+    useful in cases where the previous workflow is intentionally not
+    privileged, but you need to take a privileged action in a later
+    workflow."
