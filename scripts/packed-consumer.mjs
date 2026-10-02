@@ -5,7 +5,8 @@
 // React versions. Every declared subpath must resolve: JavaScript entries
 // import in Node, asset entries resolve to non-empty files, and every entry
 // typechecks under `bundler` and `nodenext` resolution with skipLibCheck off.
-// Every server-safe entry imports and renders with `react-dom/server` while
+// No entry adds a global when imported in Node, and every server-safe entry
+// imports and renders with `react-dom/server` while
 // browser globals and timers throw on access (TDD packaging K4).
 //
 //   node scripts/packed-consumer.mjs --packs <dir from inspect-packages.mjs> [--out <report dir>]
@@ -80,8 +81,13 @@ import { createElement } from "react";
 import { renderToString } from "react-dom/server";
 
 const results = [];
+// TDD packaging E2: importing an entry adds no global in Node.
+const globals = () => new Set(Reflect.ownKeys(globalThis).map(String));
 for (const specifier of ${JSON.stringify(entries.javascript)}) {
+  const before = globals();
   const mod = await import(specifier);
+  const added = [...globals()].filter((key) => !before.has(key));
+  if (added.length > 0) throw new Error(specifier + " adds globals on import: " + added.join(", "));
   const names = Object.keys(mod);
   if (names.length === 0) throw new Error(specifier + " exports nothing");
   results.push({ specifier, kind: "javascript", exports: names.length });
