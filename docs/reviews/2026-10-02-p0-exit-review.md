@@ -124,6 +124,25 @@ Sources (retrieved 2026-10-02):
 7. NASA Systems Engineering Handbook, NASA/SP-2016-6105 Rev2, section 3.0:
    <https://www.nasa.gov/wp-content/uploads/2018/09/nasa_systems_engineering_handbook_0.pdf>.
 
+## Ratification record
+
+Appended after the ratification candidates merged. Earlier sections are kept
+as written; the D1 candidates listed under Open items are now ratified.
+
+| Repository            | Ratified revisions                       | Candidate commit (ratified)                | Merge commit | Pull request | CI at candidate and merge |
+| :-------------------- | :--------------------------------------- | :----------------------------------------- | :----------- | :----------- | :------------------------ |
+| ui-platform           | TDD packaging, primitives, styled, theme | `773a86434ed71610531359c2f8db1c50697721dc` | `96d48de`    | #40          | All jobs passed           |
+| scnehaux-architecture | SAD-003                                  | `19a14428bc4bbb87830c07b7a26ce10b28cfc169` | `f6da8ea`    | #39          | Linter passed             |
+
+Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+2026-10-02: "Saya, sebagai ARB dan UI Platform Lead, meratifikasi 773a864
+(4 TDD) dan 19a1442 (SAD-003) beserta bukti CI-nya, per 2026-10-02." ("As ARB
+and UI Platform Lead, I ratify 773a864 (four TDDs) and 19a1442 (SAD-003) with
+their CI evidence, as of 2026-10-02.")
+
+Ratifying SAD-003 does not accept ADR-UIP-WKS-001 or ADR-UIP-SEC-001; both
+remain `proposed` until decision D2 is recorded. Decision D3 remains open.
+
 ## Exit decision
 
 Not recorded. The P0 exit, and the ROADMAP phase-2 state, change only when the
