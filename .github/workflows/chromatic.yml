@@ -32,3 +32,7 @@ jobs:
           storybookBuildDir: storybook-static
           exitZeroOnChanges: false
           autoAcceptChanges: main
+          # ADR-UIP-WKS-001: TurboSnap captures only affected stories and copies
+          # the rest at 1/5 of a snapshot; the Free plan pauses testing at
+          # 5,000 billed snapshots a month (128 per full build).
+          onlyChanged: true
