@@ -1,0 +1,171 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/anshacerbia2/ui-platform/scripts/evidence/schema.json",
+  "title": "UI Platform P0 evidence packet (TDD packaging R1-R5)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "source", "run", "jobs", "rows", "packages", "architecture", "pendingRatification", "entries", "knownLimits", "result", "failures"],
+  "definitions": {
+    "sha256": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+    "attestation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["verified", "signer"],
+      "properties": { "verified": { "type": "boolean" }, "signer": { "type": ["string", "null"] }, "error": { "type": "string" } }
+    }
+  },
+  "properties": {
+    "schema": { "const": "scnx.p0-evidence/1" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "commit", "ref"],
+      "properties": {
+        "repository": { "type": "string", "pattern": "^[\\w.-]+/[\\w.-]+$" },
+        "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "ref": { "type": ["string", "null"] }
+      }
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "attempt", "url", "event"],
+      "properties": {
+        "id": { "type": ["integer", "null"] },
+        "attempt": { "type": ["integer", "null"] },
+        "url": { "type": ["string", "null"] },
+        "event": { "type": ["string", "null"] }
+      }
+    },
+    "jobs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "conclusion", "url"],
+        "properties": { "name": { "type": "string" }, "conclusion": { "type": ["string", "null"] }, "url": { "type": ["string", "null"] } }
+      }
+    },
+    "rows": {
+      "type": "array",
+      "minItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["row", "title", "result", "jobs", "reports", "failures"],
+        "properties": {
+          "row": { "type": "string" },
+          "title": { "type": "string" },
+          "result": { "enum": ["pass", "fail"] },
+          "jobs": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "object", "additionalProperties": false, "required": ["name", "conclusion"], "properties": { "name": { "type": "string" }, "conclusion": { "type": "string" } } }
+          },
+          "reports": {
+            "type": "array",
+            "items": { "type": "object", "additionalProperties": false, "required": ["file", "sha256"], "properties": { "file": { "type": "string" }, "sha256": { "$ref": "#/definitions/sha256" } } }
+          },
+          "failures": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "packages": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "version", "tarball", "tarballSha256", "contentSha256", "rebuildContentSha256", "reproducible", "sbom", "sbomSha256", "attestations"],
+        "properties": {
+          "name": { "type": "string" },
+          "version": { "type": "string" },
+          "tarball": { "type": "string" },
+          "tarballSha256": { "$ref": "#/definitions/sha256" },
+          "contentSha256": { "$ref": "#/definitions/sha256" },
+          "rebuildContentSha256": { "$ref": "#/definitions/sha256" },
+          "reproducible": { "type": "boolean" },
+          "sbom": { "type": ["string", "null"] },
+          "sbomSha256": { "$ref": "#/definitions/sha256" },
+          "attestations": {
+            "type": ["object", "null"],
+            "additionalProperties": false,
+            "required": ["provenance", "sbom"],
+            "properties": { "provenance": { "$ref": "#/definitions/attestation" }, "sbom": { "$ref": "#/definitions/attestation" } }
+          }
+        }
+      }
+    },
+    "architecture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "commit", "records", "radar"],
+      "properties": {
+        "repository": { "type": "string" },
+        "commit": { "type": ["string", "null"], "pattern": "^[0-9a-f]{40}$" },
+        "records": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "path", "status", "version", "pendingRatification"],
+            "properties": {
+              "id": { "type": "string" },
+              "path": { "type": ["string", "null"] },
+              "status": { "type": ["string", "null"] },
+              "version": { "type": ["string", "null"] },
+              "pendingRatification": { "type": "boolean" }
+            }
+          }
+        },
+        "radar": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "ring", "owner", "comments", "pendingArb"],
+            "properties": {
+              "name": { "type": "string" },
+              "ring": { "enum": ["adopt", "trial", "assess", "hold"] },
+              "owner": { "type": ["string", "null"] },
+              "comments": { "type": "array", "items": { "type": "string" } },
+              "pendingArb": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "pendingRatification": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["repository", "id", "path"],
+        "properties": { "repository": { "enum": ["scnehaux-architecture", "ui-platform"] }, "id": { "type": "string" }, "path": { "type": "string" } }
+      }
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["entry", "stability"],
+        "properties": { "entry": { "type": "string" }, "stability": { "enum": ["candidate", "stable", "unclassified"] } }
+      }
+    },
+    "knownLimits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["limit", "absentFromExports"],
+        "properties": { "limit": { "type": "string" }, "absentFromExports": { "type": "boolean" } }
+      }
+    },
+    "result": { "enum": ["pass", "fail"] },
+    "failures": { "type": "array", "items": { "type": "string" } }
+  }
+}
