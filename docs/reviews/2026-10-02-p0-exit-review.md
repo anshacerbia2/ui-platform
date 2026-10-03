@@ -225,3 +225,11 @@ section 3.0):
 Obligations from D2 that are not liens of this decision: the `tsup` successor
 record (due 2026-11-01, GDC-004 section 2.2), and the trial reviews ending
 2026-12-31.
+
+Update, 2026-10-03: the `tsup` successor obligation is met. Ansha Cerbia
+stated "Saya, sebagai ARB, menerima ADR-UIP-BLD-002 per 2026-10-03." ("As
+ARB, I accept ADR-UIP-BLD-002 as of 2026-10-03."), and the radar names
+`tsdown` as successor with ADR-UIP-BLD-002 as migration guide
+(`scnehaux-architecture` #51). The implementation merged in this repository
+as #51 (`e42a9cf`). The TDD packaging and SAD-003 revisions for it remain
+pending exact-commit ratification.
