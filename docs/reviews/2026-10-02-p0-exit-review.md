@@ -154,6 +154,24 @@ Authorization under GDC-000 section 2.6.7: asked to state "Saya, sebagai ARB
 dan UI Platform Lead, meratifikasi `a260bf0` (TDD packaging C1–C4) beserta
 bukti CI-nya, per 2026-10-02", Ansha Cerbia replied "gas" on 2026-10-02.
 
+Third ratification, appended 2026-10-03: the SAD-003 and GDC-001 revisions
+that followed decision D2.
+
+| Repository            | Ratified revisions                                                       | Candidate commit (ratified)                | Merge commit | Pull request | CI at candidate |
+| :-------------------- | :----------------------------------------------------------------------- | :----------------------------------------- | :----------- | :----------- | :-------------- |
+| scnehaux-architecture | SAD-003 (ADRs no longer "proposed"); GDC-001 (`technology_sunset_grace`) | `a98e9bc208373a42c37d97eea9e8096b1d5eadd6` | `9441228`    | #47          | Linter passed   |
+
+Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+2026-10-03: "Saya, sebagai ARB, meratifikasi a98e9bc (SAD-003 + GDC-001)
+beserta bukti CI-nya, per 2026-10-03." ("As ARB, I ratify a98e9bc (SAD-003 +
+GDC-001) with its CI evidence, as of 2026-10-03.")
+
+D2 outcome: the ARB decision is recorded in `scnehaux-architecture` #44 (merge
+`5c3dccd`). ADR-UIP-WKS-001 and ADR-UIP-SEC-001 are accepted; `tsup` is on
+hold, with its successor record due 2026-11-01 and its grace window ending
+2027-03-31; the other radar positions follow the D2 recommendations record
+(`docs/reviews/2026-10-02-d2-arb-recommendations.md`).
+
 ## D2 recommendation: `oklch`
 
 Appended 2026-10-02. The `oklch` trial ended on 2026-08-01 with no recorded
@@ -189,3 +207,21 @@ Sources (retrieved 2026-10-02):
 Not recorded. The P0 exit, and the ROADMAP phase-2 state, change only when the
 authorized human states the decision for packet SHA-256
 `1263488f863510a50933cd0a707ef345cec1c583dd9c4a5db4939bdd1950e141`.
+
+**Decision recorded 2026-10-03: go with liens.** Stated by Ansha Cerbia
+(Architecture Review Board and UI Platform Lead) on 2026-10-03, after decision
+D1: "go with liens", for the packet above (main `6d030a9`, run `37050521714`,
+attested). The decision to proceed is qualified by these liens, each to be
+removed by its owner within the agreed time (D3 basis, NASA SP-2016-6105 Rev2
+section 3.0):
+
+| Lien | Item                                                                                  | Owner (PLAN role)         | Due                          |
+| :--- | :------------------------------------------------------------------------------------ | :------------------------ | :--------------------------- |
+| L1   | License acceptance policy for dependencies (TDD packaging V4)                         | Security Lead, with legal | 2026-11-20                   |
+| L2   | Next.js App Router nonce-CSP fixture (TDD packaging S1)                               | Packaging Lead            | 2026-11-20                   |
+| L3   | Long-term package storage and Developer Platform signing (R2; ADR-UIP-SEC-001 item 6) | Release Lead              | before stable (2026-12-04)   |
+| L4   | Stability classification of the 39 unclassified entries                               | Interaction Lead          | with the P1 release contract |
+
+Obligations from D2 that are not liens of this decision: the `tsup` successor
+record (due 2026-11-01, GDC-004 section 2.2), and the trial reviews ending
+2026-12-31.
