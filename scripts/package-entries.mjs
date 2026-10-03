@@ -152,3 +152,10 @@ export function exportsMap(packageDir) {
 }
 
 export const packageDirs = Object.values(PACKAGES).map((spec) => spec.dir);
+
+/** Repository-relative source directory of a published package. */
+export function packageDirOf(name) {
+  const spec = PACKAGES[name];
+  if (!spec) throw new Error(`Unknown package ${name}`);
+  return spec.dir;
+}

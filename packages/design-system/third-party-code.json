@@ -1,0 +1,14 @@
+{
+  "$comment": "Third-party code compiled into dist/ (TDD packaging V7). Each sources prefix is package-relative; every sourcemap source git does not track must fall under one. The packed LICENSE carries each component's license text.",
+  "components": [
+    {
+      "name": "@pandacss/generator",
+      "version": "1.12.1",
+      "license": "MIT",
+      "supplier": "Segun Adebayo",
+      "copyright": "Copyright (c) 2023 Segun Adebayo",
+      "source": "https://github.com/chakra-ui/panda",
+      "sources": "src/styled-system/"
+    }
+  ]
+}

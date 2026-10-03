@@ -9,7 +9,9 @@
 // - each packed tarball declares `license` and ships a LICENSE file;
 // - every copied asset in the tarball matches its provenance record
 //   (packages/design-system/assets/fonts/provenance.json) and ships its
-//   license text.
+//   license text;
+// - third-party code compiled into a tarball is recorded and its license text
+//   ships in the packed LICENSE (TDD packaging V7, third-party-code.mjs).
 // The report counts packages by license. No allow or deny list is enforced:
 // which licenses are acceptable is an open organizational decision.
 //
@@ -19,7 +21,9 @@
 import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
+import { packageDirOf } from "../package-entries.mjs";
 import { vendoredSchema } from "../sbom/vendored.mjs";
+import { selfTest as thirdPartySelfTest, sourcemapSources, thirdPartyCode, thirdPartyCodeProblems, trackedFiles, workspaceInstall } from "./third-party-code.mjs";
 
 // The SPDX license list as synchronized into the official CycloneDX schema (V5).
 const SPDX_IDS = new Set(vendoredSchema("spdx.schema.json").enum);
@@ -134,8 +138,9 @@ function selfTest() {
   }
   const failed = cases.filter(([expression, expected]) => expressionProblems(expression).length !== expected);
   for (const [expression, expected] of failed) console.error(`${JSON.stringify(expression)}: expected ${expected} problems, got ${JSON.stringify(expressionProblems(expression))}`);
-  if (failed.length > 0) process.exit(1);
-  console.log(`License gate self-test passed: ${cases.length + 2} cases`);
+  const thirdParty = thirdPartySelfTest();
+  if (failed.length > 0 || thirdParty.failed > 0) process.exit(1);
+  console.log(`License gate self-test passed: ${cases.length + 2 + thirdParty.count} cases`);
 }
 
 async function main() {
@@ -168,12 +173,28 @@ async function main() {
   // Published tarballs and their copied assets.
   const packReport = JSON.parse(fs.readFileSync(path.join(packsDir, "pack-report.json"), "utf8"));
   const shipped = [];
+  const installedCopy = workspaceInstall(process.cwd());
   for (const pkg of packReport.packages) {
     const root = path.join(packsDir, pkg.tarball.replace(/\.tgz$/, ""), "package");
     const manifest = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
     if (!manifest.license) failures.push(`${pkg.name}: package.json declares no license`);
-    if (!fs.readdirSync(root).some((file) => /^LICENSE(\.md|\.txt)?$/i.test(file))) failures.push(`${pkg.name}: no LICENSE file in the tarball`);
-    shipped.push({ name: pkg.name, version: pkg.version, license: manifest.license ?? null });
+    const licenseFile = fs.readdirSync(root).find((file) => /^LICENSE(\.md|\.txt)?$/i.test(file));
+    if (!licenseFile) failures.push(`${pkg.name}: no LICENSE file in the tarball`);
+    // V7: sourcemap sources resolve against the package's source directory.
+    const packageDir = path.resolve(packageDirOf(pkg.name));
+    const record = thirdPartyCode(packageDir);
+    const sources = sourcemapSources(path.join(root, "dist"), path.join(root));
+    failures.push(
+      ...thirdPartyCodeProblems({
+        name: pkg.name,
+        sources,
+        tracked: trackedFiles(packageDir),
+        record,
+        license: licenseFile ? fs.readFileSync(path.join(root, licenseFile), "utf8") : "",
+        installed: installedCopy,
+      }),
+    );
+    shipped.push({ name: pkg.name, version: pkg.version, license: manifest.license ?? null, thirdPartyCode: record.components.map((c) => ({ name: c.name, version: c.version, license: c.license })) });
   }
   const system = packReport.packages.find((pkg) => pkg.name === "@scnx/system");
   const systemDir = path.resolve("packages/design-system");
