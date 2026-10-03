@@ -9,7 +9,12 @@
 // - the page hydrates with zero console errors and zero page errors;
 // - an Accordion trigger opens its panel (one working client interaction);
 // - a negative page that renders different text on the server and the client
-//   reports a hydration error, which proves hydration errors are detected.
+//   reports a hydration error, which proves hydration errors are detected;
+// - every route runs under a per-request nonce CSP set by a Next.js proxy
+//   (TDD packaging S4): each response carries a fresh nonce, every script in
+//   the server HTML carries it, and the fixture page records zero violations;
+// - negative controls, an inline script and a style attribute served without
+//   the nonce, each record a violation, which proves the policy applies.
 //
 //   node scripts/nextjs-consumer.mjs --packs <dir from inspect-packages.mjs> [--out <report dir>]
 
@@ -19,6 +24,9 @@ import net from "node:net";
 import os from "node:os";
 import path from "node:path";
 import { chromium } from "playwright";
+
+// TDD packaging S4: the policy, with {nonce} replaced per request by proxy.js.
+const POLICY = "default-src 'self'; script-src 'nonce-{nonce}'; style-src 'nonce-{nonce}'; object-src 'none'; base-uri 'none'";
 
 // Pinned (TDD packaging K5, reference [5]); bump deliberately, with a run of this fixture.
 const NEXT_VERSION = "16.3.8";
@@ -46,14 +54,43 @@ const dependencies = { next: NEXT_VERSION, react: system.peerDependencies.react,
 for (const pkg of packReport.packages) dependencies[pkg.name] = `file:${path.join(packsDir, pkg.tarball).replaceAll("\\", "/")}`;
 write("package.json", JSON.stringify({ name: "scnx-nextjs-consumer", private: true, type: "module", dependencies }, null, 2));
 write("next.config.mjs", "export default {};\n");
+// Next.js reads the nonce from the request's Content-Security-Policy header and
+// applies it to its own scripts; nonces need dynamic rendering (layout below).
+write("proxy.js", `import { NextResponse } from "next/server";
+
+export function proxy(request) {
+  const nonce = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(16))));
+  const policy = ${JSON.stringify(POLICY)}.replaceAll("{nonce}", nonce);
+  const headers = new Headers(request.headers);
+  headers.set("x-nonce", nonce);
+  headers.set("Content-Security-Policy", policy);
+  const response = NextResponse.next({ request: { headers } });
+  response.headers.set("Content-Security-Policy", policy);
+  return response;
+}
+
+export const config = {
+  matcher: [
+    {
+      source: "/((?!_next/static|_next/image|favicon.ico).*)",
+      missing: [
+        { type: "header", key: "next-router-prefetch" },
+        { type: "header", key: "purpose", value: "prefetch" },
+      ],
+    },
+  ],
+};
+`);
 // An app icon keeps the browser's default /favicon.ico request from logging a 404.
 write("app/icon.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><rect width="1" height="1"/></svg>\n');
 
 write("app/layout.jsx", `import "@scnx/system/styles/components.css";
 import "@scnx/system/tokens/css/default.css";
 import { ThemeProvider } from "@scnx/core-ui/providers/theme-provider-base";
+import { connection } from "next/server";
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  await connection();
   return (
     <html lang="en">
       <body>
@@ -248,6 +285,16 @@ export function Mismatch() {
 }
 `);
 
+// CSP negative controls: markup served without the nonce must be blocked.
+write("app/csp-negative/script/page.jsx", `export default function Script() {
+  return <main><script dangerouslySetInnerHTML={{ __html: "globalThis.__SCNX_RAN__ = true;" }} /></main>;
+}
+`);
+write("app/csp-negative/style/page.jsx", `export default function Style() {
+  return <main><p style={{ color: "rgb(255, 0, 0)" }}>Inline style attribute</p></main>;
+}
+`);
+
 // Every client-only entry is imported by the page, the layout, or the island.
 const sources = ["app/layout.jsx", "app/page.jsx", "app/island.jsx"].map((file) => fs.readFileSync(path.join(dir, file), "utf8")).join("\n");
 const unrendered = specifiers["client-only"].filter((specifier) => !sources.includes(`from "${specifier}"`));
@@ -294,13 +341,28 @@ try {
     await new Promise((resolve) => setTimeout(resolve, 250));
   }
 
-  const html = await (await fetch(origin)).text();
+  const response = await fetch(origin);
+  const html = await response.text();
+  const policy = response.headers.get("content-security-policy") ?? "";
+  const nonce = /'nonce-([^']+)'/.exec(policy)?.[1];
+  if (!nonce || policy !== POLICY.replaceAll("{nonce}", nonce)) throw new Error(`Unexpected Content-Security-Policy: ${policy}`);
+  const second = /'nonce-([^']+)'/.exec((await fetch(origin)).headers.get("content-security-policy") ?? "")?.[1];
+  if (second === nonce) throw new Error("Two responses carry the same nonce");
+  const scripts = html.match(/<script\b[^>]*>/g) ?? [];
+  const unnonced = scripts.filter((tag) => !tag.includes(` nonce="${nonce}"`));
+  if (scripts.length === 0 || unnonced.length > 0) throw new Error(`Scripts without the response nonce: ${unnonced.slice(0, 3).join(" ")}`);
+  report.checks.push({ check: "csp-nonce", result: "pass", policy: POLICY, scripts: scripts.length });
   const missing = specifiers["server-safe"].filter((specifier) => !html.includes(`data-entry="${specifier}"`) || !html.includes(`server-safe ${specifier} `));
   if (missing.length > 0) throw new Error(`Server HTML lacks server-safe entries: ${missing.join(", ")}`);
   report.checks.push({ check: "server-html", result: "pass", entries: specifiers["server-safe"].length });
 
   const visit = async (url) => {
     const page = await browser.newPage();
+    // Collected outside the page's CSP: init scripts are injected by the driver.
+    await page.addInitScript(() => {
+      globalThis.__SCNX_CSP__ = [];
+      document.addEventListener("securitypolicyviolation", (event) => globalThis.__SCNX_CSP__.push(`${event.effectiveDirective} ${event.blockedURI}`));
+    });
     const errors = [];
     page.on("console", (message) => message.type() === "error" && errors.push(`${message.text()} (${message.location().url})`));
     page.on("pageerror", (error) => errors.push(String(error)));
@@ -316,8 +378,12 @@ try {
   await page.waitForFunction(() => document.querySelector("[data-fixture='accordion-trigger']")?.getAttribute("aria-expanded") === "true");
   if (!(await page.getByText("Annual leave accrues monthly.").isVisible())) throw new Error("Accordion panel is not visible after its trigger was clicked");
   await page.waitForTimeout(500);
+  const violations = await page.evaluate(() => globalThis.__SCNX_CSP__);
+  if (violations.length > 0) throw new Error(`CSP violations on the fixture page: ${JSON.stringify(violations)}`);
+  const stylesheets = await page.evaluate(() => [...document.styleSheets].filter((sheet) => sheet.href?.includes("/_next/static/")).length);
+  if (stylesheets === 0) throw new Error("No framework stylesheet loaded under the policy");
   if (errors.length > 0) throw new Error(`Console or page errors on the fixture page:\n${errors.join("\n")}`);
-  report.checks.push({ check: "hydration-and-interaction", result: "pass", clientEntries: specifiers["client-only"].length });
+  report.checks.push({ check: "hydration-and-interaction", result: "pass", clientEntries: specifiers["client-only"].length, stylesheets, cspViolations: 0 });
 
   const negative = await visit(`${origin}/negative`);
   await negative.page.waitForTimeout(1000);
@@ -327,9 +393,18 @@ try {
     throw new Error(`The mismatch page reported no hydration error; detection does not work:\n${negative.errors.join("\n")}`);
   }
   report.checks.push({ check: "hydration-error-detected", result: "pass" });
+
+  for (const [control, directive] of [["script", "script-src-elem"], ["style", "style-src-attr"]]) {
+    const { page: blocked } = await visit(`${origin}/csp-negative/${control}`);
+    await blocked.waitForTimeout(500);
+    const recorded = await blocked.evaluate(() => globalThis.__SCNX_CSP__);
+    if (!recorded.some((entry) => entry.startsWith(`${directive} `))) throw new Error(`The ${control} negative control recorded no ${directive} violation: ${JSON.stringify(recorded)}`);
+    if (control === "script" && (await blocked.evaluate(() => globalThis.__SCNX_RAN__))) throw new Error("The unnonced inline script ran");
+  }
+  report.checks.push({ check: "csp-negative-controls", result: "pass" });
   report.result = "pass";
   console.log(
-    `Next.js ${report.versions.next} App Router: build and start pass, ${specifiers["server-safe"].length} server-safe and ${specifiers["client-only"].length} client-only entries render, hydration has zero errors, Accordion opens; a mismatch page is detected`,
+    `Next.js ${report.versions.next} App Router: build and start pass, ${specifiers["server-safe"].length} server-safe and ${specifiers["client-only"].length} client-only entries render, hydration has zero errors and zero CSP violations under a per-request nonce, Accordion opens; a mismatch page and both CSP negative controls are detected`,
   );
 } catch (error) {
   failed = true;
