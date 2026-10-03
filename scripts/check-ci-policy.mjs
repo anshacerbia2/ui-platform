@@ -7,7 +7,8 @@
 //   is exempt from end-of-line conversion (`-text`), and every other tracked
 //   file checks out with LF on every platform (`eol=lf`);
 // - support matrix (TDD packaging RC5): the pinned Node.js is a supported line,
-//   and the CI workflow runs the packed consumer on every other line.
+//   the CI workflow runs the packed consumer on every other line, and it
+//   installs every browser engine the matrix lists.
 // `--self-test` runs the detectors against known-good and known-bad inputs.
 
 import { execFileSync } from "node:child_process";
@@ -82,6 +83,12 @@ export function nodeLineFindings(matrixLines, pinned, workflow) {
   return findings;
 }
 
+/** Browser engines in the matrix that the packed-consumer job does not install. */
+export function browserInstallFindings(engines, workflow) {
+  const install = /playwright install --with-deps ([a-z ]+)\n/.exec(workflow)?.[1].trim().split(/\s+/) ?? [];
+  return engines.filter((engine) => !install.includes(engine)).map((engine) => `.github/workflows/ci.yml does not install the ${engine} browser engine`);
+}
+
 function selfTest() {
   const cases = [
     [heapFindings("x", 'NODE_OPTIONS="--max-old-space-size=8192"').length, 1],
@@ -99,6 +106,8 @@ function selfTest() {
     [nodeLineFindings(["22", "24"], "24.11.1\n", '        with:\n          node-version: "22"\n      - name: x\n        run: node scripts/packed-consumer.mjs --packs a').length, 0],
     [nodeLineFindings(["22", "24"], "24.11.1\n", "").length, 1],
     [nodeLineFindings(["22"], "24.11.1\n", "").length, 2],
+    [browserInstallFindings(["chromium", "firefox"], "run: pnpm exec playwright install --with-deps chromium firefox\n").length, 0],
+    [browserInstallFindings(["chromium", "webkit"], "run: pnpm exec playwright install --with-deps chromium\n").length, 1],
   ];
   const failed = cases.filter(([actual, expected]) => actual !== expected);
   if (failed.length > 0) {
@@ -119,7 +128,9 @@ function check() {
   const attrs = parseCheckAttr(execFileSync("git", ["check-attr", "text", "eol", "--", ...all], { encoding: "utf8", maxBuffer: 16 * 1024 * 1024 }));
   failures.push(...lineEndingFindings(attrs, verified));
   const matrix = JSON.parse(readFileSync("support-matrix.json", "utf8"));
-  failures.push(...nodeLineFindings(matrix.node, readFileSync(".node-version", "utf8"), readFileSync(".github/workflows/ci.yml", "utf8")));
+  const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
+  failures.push(...nodeLineFindings(matrix.node, readFileSync(".node-version", "utf8"), workflow));
+  failures.push(...browserInstallFindings(matrix.browsers, workflow));
   for (const path of tracked) {
     failures.push(...heapFindings(path, readFileSync(path, "utf8")));
   }

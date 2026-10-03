@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Browser verifier (TDD tokens, "CSS and visual validation"; Testing Strategy
 // "Packed browser"). Loads the packed @scnx/system token stylesheets over HTTP
-// in Chromium with every theme/mode root on one page, and fails unless:
+// in every engine of support-matrix.json (Chromium, Firefox, WebKit; TDD
+// packaging RC5) with every theme/mode root on one page, and fails unless:
 // - every root declares every JSON token, with the emitted value;
 // - every resolved value is valid for a consuming property in the engine;
 // - roots of different themes coexist (a theme-specific token differs);
@@ -12,7 +13,7 @@
 import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
-import { chromium } from "playwright";
+import { browserEngines } from "./browser-engines.mjs";
 
 const arg = (name, fallback) => {
   const index = process.argv.indexOf(name);
@@ -80,10 +81,23 @@ const server = http.createServer((request, response) => {
 await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
 const origin = `http://127.0.0.1:${server.address().port}`;
 
-const browser = await chromium.launch();
-let failures = [];
-let summary;
-try {
+const failures = [];
+const summaries = [];
+for (const engine of browserEngines()) {
+  const browser = await engine.type.launch();
+  try {
+    const result = await verify(browser);
+    failures.push(...result.failures.map((failure) => `${engine.name}: ${failure}`));
+    summaries.push(`${engine.name} ${browser.version()}: ${result.summary.declarationsChecked} declarations, fonts ${result.summary.fontFaces.join(", ")}`);
+  } finally {
+    await browser.close();
+  }
+}
+server.close();
+
+async function verify(browser) {
+  let failures = [];
+  let summary;
   const page = await browser.newPage();
   const missing = [];
   page.on("response", (res) => {
@@ -136,9 +150,7 @@ try {
     return { failures, summary: { declarationsChecked: checked, fontFaces: faces.map((f) => `${f.family} ${f.style}: ${f.status}`) } };
   }, cases));
   failures.push(...missing.map((m) => `HTTP ${m}`));
-} finally {
-  await browser.close();
-  server.close();
+  return { failures, summary };
 }
 
 if (failures.length > 0) {
@@ -146,6 +158,4 @@ if (failures.length > 0) {
   console.error(`${failures.length} browser verification failure(s)`);
   process.exit(1);
 }
-console.log(
-  `Browser verification passed: ${themes.length} themes, ${summary.declarationsChecked} declarations; fonts ${summary.fontFaces.join(", ")}`,
-);
+console.log(`Browser verification passed: ${themes.length} themes; ${summaries.join("; ")}`);
