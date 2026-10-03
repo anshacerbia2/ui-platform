@@ -8,6 +8,9 @@
 // No entry adds a global when imported in Node, and every server-safe entry
 // imports and renders with `react-dom/server` while
 // browser globals and timers throw on access (TDD packaging K4).
+// The support matrix (support-matrix.json, TDD packaging RC5) sets the React
+// range, the Node.js lines this script must run on, and the lowest and highest
+// TypeScript every entry typechecks with.
 //
 //   node scripts/packed-consumer.mjs --packs <dir from inspect-packages.mjs> [--out <report dir>]
 
@@ -25,13 +28,26 @@ const packsDir = path.resolve(arg("--packs", "artifacts/packages"));
 const outDir = path.resolve(arg("--out", packsDir));
 const packReport = JSON.parse(fs.readFileSync(path.join(packsDir, "pack-report.json"), "utf8"));
 
-// Types and compiler versions match the workspace so the fixture checks the
-// packages, not a different TypeScript release.
+const matrix = JSON.parse(fs.readFileSync("support-matrix.json", "utf8"));
+const nodeLine = process.versions.node.split(".")[0];
+if (!matrix.node.includes(nodeLine)) throw new Error(`Node.js ${process.versions.node} is not a supported line (${matrix.node.join(", ")})`);
+// The browser versions the Baseline query resolves to today, oldest per browser.
+const browserslist = createRequire(path.resolve("package.json"))("browserslist");
+const oldestBrowsers = {};
+for (const entry of browserslist(matrix.baseline)) {
+  const [name, version] = entry.split(" ");
+  const first = Number.parseFloat(version.split("-")[0]);
+  if (!(name in oldestBrowsers) || first < Number.parseFloat(oldestBrowsers[name].split("-")[0])) oldestBrowsers[name] = version;
+}
+// Each consumer type-checks with the lowest and the highest supported TypeScript.
+const compilers = { "typescript-lowest": matrix.typescript.lowest, "typescript-highest": matrix.typescript.highest };
+
+// React types match the workspace so the fixture checks the packages.
 const workspaceRequire = createRequire(path.resolve("packages/core-ui/package.json"));
 const versionOf = (name) => workspaceRequire(`${name}/package.json`).version;
 const systemRequire = createRequire(path.resolve("packages/design-system/package.json"));
 const devDependencies = {
-  typescript: versionOf("typescript"),
+  ...Object.fromEntries(Object.entries(compilers).map(([alias, version]) => [alias, `npm:typescript@${version}`])),
   "@types/react": versionOf("@types/react"),
   "@types/react-dom": versionOf("@types/react-dom"),
   // sass does not export its package.json; read it beside the resolved entry.
@@ -39,6 +55,7 @@ const devDependencies = {
 };
 
 const peerRange = packReport.packages.find((pkg) => pkg.name === "@scnx/system").peerDependencies.react;
+if (peerRange !== matrix.react) throw new Error(`The packages declare react@${peerRange}; support-matrix.json declares ${matrix.react}`);
 for (const pkg of packReport.packages) {
   for (const dep of ["react", "react-dom"]) {
     if (pkg.peerDependencies[dep] !== peerRange) {
@@ -228,6 +245,9 @@ for (const pkg of packReport.packages) {
 
 const report = {
   schemaVersion: 1,
+  node: process.versions.node,
+  supportMatrix: matrix,
+  baselineBrowsers: oldestBrowsers,
   packages: packReport.packages.map(({ name, version, tarballSha256 }) => ({ name, version, tarballSha256 })),
   peerRange,
   scenarios: [],
@@ -242,7 +262,7 @@ for (const boundary of boundaries) {
     run(`pnpm install --ignore-workspace --strict-peer-dependencies --store-dir ${JSON.stringify(path.join(dir, ".store"))}`, dir);
     saveLockfile(dir, `packed-consumer-${boundary.label}`);
     const consumerRequire = createRequire(path.join(dir, "package.json"));
-    for (const name of ["react", "react-dom", "typescript", ...packReport.packages.map((pkg) => pkg.name)]) {
+    for (const name of ["react", "react-dom", ...Object.keys(compilers), ...packReport.packages.map((pkg) => pkg.name)]) {
       scenario.versions[name] = consumerRequire(`${name}/package.json`).version;
     }
 
@@ -265,12 +285,14 @@ for (const boundary of boundaries) {
     fs.writeFileSync(path.join(dir, "types.ts"), typesSource(entries.javascript));
     for (const resolution of ["bundler", "nodenext"]) {
       writeJson(path.join(dir, `tsconfig.${resolution}.json`), tsconfig(resolution));
-      run(`node node_modules/typescript/bin/tsc -p tsconfig.${resolution}.json`, dir);
-      scenario.checks.push({ check: `types-${resolution}`, result: "pass", entries: entries.javascript.length });
+      for (const alias of Object.keys(compilers)) {
+        run(`node node_modules/${alias}/bin/tsc -p tsconfig.${resolution}.json`, dir);
+        scenario.checks.push({ check: `types-${resolution}-${alias}`, result: "pass", typescript: scenario.versions[alias], entries: entries.javascript.length });
+      }
     }
     scenario.result = "pass";
     console.log(
-      `${scenario.scenario}: react ${scenario.versions.react}, ${imported.length} entries resolve, ${serverSafe.length} server-safe entries render with browser globals trapped, types pass (bundler, nodenext)`,
+      `${scenario.scenario}: node ${process.versions.node}, react ${scenario.versions.react}, ${imported.length} entries resolve, ${serverSafe.length} server-safe entries render with browser globals trapped, types pass (bundler, nodenext) with TypeScript ${Object.keys(compilers).map((alias) => scenario.versions[alias]).join(" and ")}`,
     );
   } catch (error) {
     failed = true;

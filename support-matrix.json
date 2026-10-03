@@ -1,0 +1,7 @@
+{
+  "$comment": "Support matrix of the next release (STD-UIP-ENG-001 3.5 item 5; TDD packaging RC5). Updated on the release date: Baseline Widely available on that date, the Node.js lines in Active or Maintenance LTS, the lowest and highest TypeScript minor released less than two years earlier (latest patch of each), and the shared React peer range.",
+  "baseline": "baseline widely available on 2026-10-03",
+  "node": ["22", "24"],
+  "typescript": { "lowest": "5.7.3", "highest": "7.0.2" },
+  "react": "^19.0.0"
+}

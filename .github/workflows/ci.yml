@@ -152,6 +152,16 @@ jobs:
         run: node scripts/inspect-packages.mjs --out artifacts/packages
       - name: Isolated consumers at both React peer boundaries
         run: node scripts/packed-consumer.mjs --packs artifacts/packages
+      # TDD packaging RC5: the same consumers on every other Node.js LTS line in
+      # support-matrix.json (check-ci-policy keeps the two in step).
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Isolated consumers on Node.js 22
+        run: node scripts/packed-consumer.mjs --packs artifacts/packages --out artifacts/packages/node-22
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
       - name: Install Chromium for the browser verifier
         run: pnpm exec playwright install --with-deps chromium
       - name: Packed token stylesheets in a browser
@@ -190,6 +200,7 @@ jobs:
             artifacts/packages/*.json
             artifacts/packages/sbom/
             artifacts/packages/lockfiles/
+            artifacts/packages/node-22/consumer-report.json
             artifacts/packages/security/
 
   # TDD packaging V6: SLSA Build L2 provenance and SBOM attestations for the

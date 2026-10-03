@@ -176,6 +176,21 @@ export function inspectPackage(manifest, files, read, environments = {}) {
   return failures;
 }
 
+// TDD packaging RC3: one version for both packages, and a SemVer 2.0.0
+// pre-release until a stable release is authorized (STD-UIP-ENG-001 3.5).
+const PRERELEASE = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-((?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*)(?:\.(?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*))*)$/;
+
+/** Findings for the versions of the packed manifests (`[{ name, version }]`). */
+export function releaseVersionFindings(manifests) {
+  const findings = [];
+  const versions = new Set(manifests.map((m) => m.version));
+  if (versions.size > 1) findings.push(`packages carry different versions (${manifests.map((m) => `${m.name}@${m.version}`).join(", ")}); RC3 requires one version`);
+  for (const { name, version } of manifests) {
+    if (!PRERELEASE.test(version ?? "")) findings.push(`${name}@${version}: not a SemVer pre-release; no stable release is authorized (RC3)`);
+  }
+  return findings;
+}
+
 function selfTest() {
   const good = {
     name: "fixture",
@@ -229,6 +244,13 @@ function selfTest() {
       'references missing "../fonts/a.woff2"',
     ],
   ];
+
+  cases.push(
+    ["lockstep pre-release", releaseVersionFindings([{ name: "a", version: "1.0.0-beta.0" }, { name: "b", version: "1.0.0-beta.0" }]), null],
+    ["different versions", releaseVersionFindings([{ name: "a", version: "1.0.0-beta.0" }, { name: "b", version: "1.0.0-beta.1" }]), "different versions"],
+    ["stable without authority", releaseVersionFindings([{ name: "a", version: "1.0.0" }]), "not a SemVer pre-release"],
+    ["leading zero in a pre-release identifier", releaseVersionFindings([{ name: "a", version: "1.0.0-beta.01" }]), "not a SemVer pre-release"],
+  );
 
   const failed = cases.filter(([, failures, expected]) =>
     expected === null ? failures.length > 0 : !failures.some((failure) => failure.includes(expected)),
@@ -303,6 +325,7 @@ function packAndInspect(outDir) {
     });
   }
 
+  failures.push(...releaseVersionFindings(report.packages));
   fs.writeFileSync(path.join(outDir, "pack-report.json"), `${JSON.stringify(report, null, 2)}\n`);
   if (failures.length > 0) {
     console.error(failures.join("\n"));

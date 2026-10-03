@@ -5,7 +5,9 @@
 // - every package Vitest config sets `retry: 0`, and no script passes `--retry`;
 // - line endings (TDD packaging V4): every vendored file verified by SHA-256
 //   is exempt from end-of-line conversion (`-text`), and every other tracked
-//   file checks out with LF on every platform (`eol=lf`).
+//   file checks out with LF on every platform (`eol=lf`);
+// - support matrix (TDD packaging RC5): the pinned Node.js is a supported line,
+//   and the CI workflow runs the packed consumer on every other line.
 // `--self-test` runs the detectors against known-good and known-bad inputs.
 
 import { execFileSync } from "node:child_process";
@@ -67,6 +69,19 @@ export function parseCheckAttr(output) {
   return attrs;
 }
 
+/** Supported Node.js lines the CI workflow does not exercise. */
+export function nodeLineFindings(matrixLines, pinned, workflow) {
+  const findings = [];
+  const pinnedLine = pinned.trim().split(".")[0];
+  if (!matrixLines.includes(pinnedLine)) findings.push(`.node-version ${pinned.trim()} is not a supported line (${matrixLines.join(", ")})`);
+  for (const line of matrixLines) {
+    if (line === pinnedLine) continue;
+    const step = new RegExp(`node-version: "${line}"\\s*\\n\\s*- name: [^\\n]*\\n\\s*run: node scripts/packed-consumer\\.mjs`);
+    if (!step.test(workflow)) findings.push(`.github/workflows/ci.yml does not run the packed consumer on Node.js ${line}`);
+  }
+  return findings;
+}
+
 function selfTest() {
   const cases = [
     [heapFindings("x", 'NODE_OPTIONS="--max-old-space-size=8192"').length, 1],
@@ -81,6 +96,9 @@ function selfTest() {
     [lineEndingFindings(parseCheckAttr("a.json: text: auto\na.json: eol: lf\n"), new Set(["a.json"])).length, 1],
     [lineEndingFindings(parseCheckAttr("b.md: text: unspecified\nb.md: eol: unspecified\n"), new Set()).length, 1],
     [lineEndingFindings(parseCheckAttr(""), new Set(["a.json"])).length, 1],
+    [nodeLineFindings(["22", "24"], "24.11.1\n", '        with:\n          node-version: "22"\n      - name: x\n        run: node scripts/packed-consumer.mjs --packs a').length, 0],
+    [nodeLineFindings(["22", "24"], "24.11.1\n", "").length, 1],
+    [nodeLineFindings(["22"], "24.11.1\n", "").length, 2],
   ];
   const failed = cases.filter(([actual, expected]) => actual !== expected);
   if (failed.length > 0) {
@@ -100,6 +118,8 @@ function check() {
   const verified = new Set(Object.keys(JSON.parse(readFileSync(`${schemaDir}/provenance.json`, "utf8")).files).map((file) => `${schemaDir}/${file}`));
   const attrs = parseCheckAttr(execFileSync("git", ["check-attr", "text", "eol", "--", ...all], { encoding: "utf8", maxBuffer: 16 * 1024 * 1024 }));
   failures.push(...lineEndingFindings(attrs, verified));
+  const matrix = JSON.parse(readFileSync("support-matrix.json", "utf8"));
+  failures.push(...nodeLineFindings(matrix.node, readFileSync(".node-version", "utf8"), readFileSync(".github/workflows/ci.yml", "utf8")));
   for (const path of tracked) {
     failures.push(...heapFindings(path, readFileSync(path, "utf8")));
   }
