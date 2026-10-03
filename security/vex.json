@@ -1,4 +1,15 @@
 {
   "$comment": "TDD packaging V3. CISA VEX not_affected statements only (vul_id, product, status, justification, impact_statement, owner, timestamp, expires within 90 days). High or critical advisories against React, React DOM, react-server-dom-*, or a meta-framework cannot be excepted (STD-GLB-FE-006 section 3.10).",
-  "statements": []
+  "statements": [
+    {
+      "vul_id": "GHSA-vfj7-8cjw-p6xm",
+      "product": "braces",
+      "status": "not_affected",
+      "justification": "Vulnerable_code_cannot_be_controlled_by_adversary",
+      "impact_statement": "braces 3.0.3 (CVE-2026-93687: deeply nested brace patterns exhaust the call stack) is reached only at build time, through @pandacss/dev 1.12.1 -> @pandacss/node -> fast-glob -> micromatch. The only brace pattern it expands is the constant include glob \"src/components/**/*.{ts,tsx}\" committed in packages/design-system/panda.config.ts, so no adversary can supply a pattern. braces is not in either published tarball (0 files; the packages have no runtime dependencies). No patched braces version exists. Remediation: Panda v2 (@pandacss/dev 2.1.1 has no braces, micromatch, or fast-glob in its dependency tree, checked 2026-10-03), under the panda-css trial condition due 2026-12-31.",
+      "owner": "UI Platform Team (Security Lead)",
+      "timestamp": "2026-10-03",
+      "expires": "2026-12-31"
+    }
+  ]
 }
