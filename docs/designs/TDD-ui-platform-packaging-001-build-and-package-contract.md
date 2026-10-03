@@ -14,13 +14,6 @@ doc_meta:
 
 # TDD-ui-platform-packaging-001: Build and Published Package Contract
 
-> **Revision pending exact-commit ratification.** The line-ending rule and
-> registry retries in decision V4 and the release-contract record RC1–RC6 are
-> pending under GDC-000 section 2.6.7, and decisions S4 and V7 await
-> ratification of their candidate `937c8b2`; the revision ratified on
-> 2026-10-03 (`fb59328`) remains binding until the authorized human authority
-> approves the exact commit containing these changes.
-
 ## Purpose
 
 Turn the extracted workspace into two reproducible, independently installable
