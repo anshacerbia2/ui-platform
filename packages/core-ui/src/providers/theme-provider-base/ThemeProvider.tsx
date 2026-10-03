@@ -1,4 +1,3 @@
-"use client";
 import { createContext, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { assertThemeId, createThemeStore, isThemeMode } from "./store";
 import type { ThemeContextValue, ThemeMode, ThemeProviderProps, ThemeSnapshot } from "./types";

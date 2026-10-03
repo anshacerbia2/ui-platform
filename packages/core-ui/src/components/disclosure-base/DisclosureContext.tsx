@@ -1,5 +1,3 @@
-"use client";
-
 import { createContext, useCallback, useContext, useEffect, useId, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { createDisclosureStore, type DisclosureStore } from "./store";
 import type { DisclosureItemContextValue, DisclosureItemOptions, DisclosureProviderProps } from "./types";

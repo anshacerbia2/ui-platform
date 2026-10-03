@@ -1,5 +1,3 @@
-"use client";
-
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { useHydrated } from "../../utils/use-hydrated";
 import { computedTiming, fallbackTimeout } from "./timing";

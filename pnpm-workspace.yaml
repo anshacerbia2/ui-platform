@@ -17,21 +17,13 @@ catalog:
   jsdom: ^27.4.0
   react: ^19.2.0
   react-dom: ^19.2.0
-  tsup: ^8.5.1
+  tsdown: 0.23.0
   typescript: ^5.9.3
   vitest: ^4.0.16
 
 catalogs:
   conflicts_@types/react-dom_h19_2_3:
     '@types/react-dom': ^19.2.3
-
-# tsup bundles rollup-plugin-dts, whose config cache returns the input file's
-# directory on a cache hit when a tsconfig path is passed. Every declaration
-# entry then gets its own TypeScript program (about 90 MiB each). The patch
-# keeps one program per tsconfig (PLAN P0 row 2: declaration heap growth).
-# pnpm fails the install if the patch stops matching an installed tsup.
-patchedDependencies:
-  tsup@8.5.1: patches/tsup@8.5.1.patch
 
 # TDD packaging V3: @pandacss/dev 1.12.1 pins postcss 8.5.14 and browserslist
 # 4.28.1 exactly; both have high-severity advisories (GHSA-r28c-9q8g-f849,

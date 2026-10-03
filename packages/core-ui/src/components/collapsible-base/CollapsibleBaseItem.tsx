@@ -1,5 +1,3 @@
-"use client";
-
 import { DisclosureItemProvider, useDisclosureItem } from "../disclosure-base/DisclosureContext";
 import type { CollapsibleBaseItemProps } from "./types";
 

@@ -1,5 +1,3 @@
-"use client";
-
 import { AccordionBaseHeader } from "@scnx/core-ui/components/accordion-base";
 import { CollapsibleBaseTrigger } from "@scnx/core-ui/components/collapsible-base";
 

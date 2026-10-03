@@ -36,9 +36,9 @@ const outDir = path.resolve(arg("--out", packsDir));
 const packReport = JSON.parse(fs.readFileSync(path.join(packsDir, "pack-report.json"), "utf8"));
 const system = packReport.packages.find((pkg) => pkg.name === "@scnx/system");
 
-// The workspace's own esbuild (the one tsup uses) bundles the probes; it
+// The workspace's esbuild (a root devDependency) bundles the probes; it
 // resolves imports from the fixture project, so the bundles use the packs.
-const esbuild = createRequire(createRequire(path.resolve("packages/design-system/package.json")).resolve("tsup"))("esbuild");
+const esbuild = createRequire(path.resolve("package.json"))("esbuild");
 
 const CSP = "default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'; base-uri 'none'";
 

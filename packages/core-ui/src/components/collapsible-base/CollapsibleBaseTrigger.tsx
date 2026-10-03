@@ -1,5 +1,3 @@
-"use client";
-
 import type { MouseEvent } from "react";
 import { useDisclosureItem } from "../disclosure-base/DisclosureContext";
 import type { CollapsibleBaseTriggerProps } from "./types";

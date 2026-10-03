@@ -1,5 +1,3 @@
-"use client";
-
 import { useId, type ReactNode } from "react";
 import { TableOfContentsBaseRoot } from "@scnx/core-ui/components/table-of-contents-base";
 

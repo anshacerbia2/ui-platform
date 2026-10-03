@@ -1,5 +1,3 @@
-"use client";
-
 import { CollapsibleBaseRoot } from "../collapsible-base/CollapsibleBaseRoot";
 import type { AccordionBaseRootProps } from "./types";
 

@@ -1,5 +1,3 @@
-"use client";
-
 import type { TableOfContentsProps } from "./types";
 import { TableOfContentsRoot as Root } from "./TableOfContentsRoot";
 import { TableOfContentsList as List } from "./TableOfContentsList";

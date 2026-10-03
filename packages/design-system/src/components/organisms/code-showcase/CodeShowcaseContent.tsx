@@ -1,5 +1,3 @@
-"use client";
-
 import { CodeShowcaseBaseContent } from "@scnx/core-ui/components/code-showcase-base";
 import type { CodeShowcaseBaseContentProps } from "@scnx/core-ui/components/code-showcase-base";
 import { cx } from "styled-system/css";

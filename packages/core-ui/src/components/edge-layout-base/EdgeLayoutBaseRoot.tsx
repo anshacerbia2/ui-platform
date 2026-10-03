@@ -1,5 +1,3 @@
-"use client";
-
 import type { EdgeLayoutBaseRootProps } from "./types";
 import { EdgeLayoutContext } from "./EdgeLayoutContext";
 
