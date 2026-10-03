@@ -1,2 +1,6 @@
-# pnpm hashes patch files and applies them to LF sources; keep them LF everywhere.
-patches/*.patch text eol=lf
+# Every text file is LF in the index and in every working tree, whatever the
+# platform's core.autocrlf, so a local run reads the bytes CI reads.
+* text=auto eol=lf
+# Vendored files verified by SHA-256 (scripts/sbom/vendored.mjs) keep their
+# exact upstream bytes: no end-of-line conversion on checkin or checkout.
+scripts/sbom/schema/** -text

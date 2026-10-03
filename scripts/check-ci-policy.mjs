@@ -2,7 +2,10 @@
 // PLAN P0 row 2 policy gate:
 // - no tracked configuration raises or sets the Node/V8 heap (builds must pass
 //   with the default heap of the pinned runner);
-// - every package Vitest config sets `retry: 0`, and no script passes `--retry`.
+// - every package Vitest config sets `retry: 0`, and no script passes `--retry`;
+// - line endings (TDD packaging V4): every vendored file verified by SHA-256
+//   is exempt from end-of-line conversion (`-text`), and every other tracked
+//   file checks out with LF on every platform (`eol=lf`).
 // `--self-test` runs the detectors against known-good and known-bad inputs.
 
 import { execFileSync } from "node:child_process";
@@ -35,6 +38,35 @@ export function scriptFindings(path, scripts) {
   );
 }
 
+/**
+ * Line-ending findings from `git check-attr text eol` output.
+ * @param {Map<string, { text?: string, eol?: string }>} attrs path -> attributes
+ * @param {Set<string>} verified paths whose bytes are checked against a digest
+ */
+export function lineEndingFindings(attrs, verified) {
+  const findings = [];
+  for (const [path, { text, eol }] of attrs) {
+    if (verified.has(path)) {
+      if (text !== "unset") findings.push(`${path}: a digest-verified file needs -text in .gitattributes (text is ${text})`);
+    } else if (eol !== "lf") findings.push(`${path}: must check out with LF (eol is ${eol})`);
+  }
+  for (const path of verified) if (!attrs.has(path)) findings.push(`${path}: digest-verified file is not tracked`);
+  return findings;
+}
+
+/** Parse `git check-attr` lines (`path: attribute: value`). */
+export function parseCheckAttr(output) {
+  const attrs = new Map();
+  for (const line of output.split("\n").filter(Boolean)) {
+    const match = /^(.*): (text|eol): (.*)$/.exec(line);
+    if (!match) continue;
+    const entry = attrs.get(match[1]) ?? {};
+    entry[match[2]] = match[3];
+    attrs.set(match[1], entry);
+  }
+  return attrs;
+}
+
 function selfTest() {
   const cases = [
     [heapFindings("x", 'NODE_OPTIONS="--max-old-space-size=8192"').length, 1],
@@ -45,6 +77,10 @@ function selfTest() {
     [vitestFindings("x", "test: {}").length, 1],
     [scriptFindings("x", { test: "vitest run --retry=3" }).length, 1],
     [scriptFindings("x", { test: "vitest run" }).length, 0],
+    [lineEndingFindings(parseCheckAttr("a.json: text: unset\na.json: eol: lf\nb.md: text: auto\nb.md: eol: lf\n"), new Set(["a.json"])).length, 0],
+    [lineEndingFindings(parseCheckAttr("a.json: text: auto\na.json: eol: lf\n"), new Set(["a.json"])).length, 1],
+    [lineEndingFindings(parseCheckAttr("b.md: text: unspecified\nb.md: eol: unspecified\n"), new Set()).length, 1],
+    [lineEndingFindings(parseCheckAttr(""), new Set(["a.json"])).length, 1],
   ];
   const failed = cases.filter(([actual, expected]) => actual !== expected);
   if (failed.length > 0) {
@@ -56,11 +92,14 @@ function selfTest() {
 
 function check() {
   const self = "scripts/check-ci-policy.mjs";
-  const tracked = execFileSync("git", ["ls-files", "-z"], { encoding: "utf8" })
-    .split("\0")
-    .filter((path) => path && path !== self && !path.endsWith(".md") && existsSync(path));
+  const all = execFileSync("git", ["ls-files", "-z"], { encoding: "utf8" }).split("\0").filter(Boolean);
+  const tracked = all.filter((path) => path !== self && !path.endsWith(".md") && existsSync(path));
 
   const failures = [];
+  const schemaDir = "scripts/sbom/schema";
+  const verified = new Set(Object.keys(JSON.parse(readFileSync(`${schemaDir}/provenance.json`, "utf8")).files).map((file) => `${schemaDir}/${file}`));
+  const attrs = parseCheckAttr(execFileSync("git", ["check-attr", "text", "eol", "--", ...all], { encoding: "utf8", maxBuffer: 16 * 1024 * 1024 }));
+  failures.push(...lineEndingFindings(attrs, verified));
   for (const path of tracked) {
     failures.push(...heapFindings(path, readFileSync(path, "utf8")));
   }
@@ -93,7 +132,7 @@ function check() {
     process.exit(1);
   }
   console.log(
-    `CI policy passed: ${tracked.length} tracked files, ${configs} Vitest configs with retry: 0`,
+    `CI policy passed: ${tracked.length} tracked files, ${configs} Vitest configs with retry: 0, ${verified.size} digest-verified files without line-ending conversion, every other file LF`,
   );
 }
 
