@@ -222,6 +222,11 @@ section 3.0):
 | L3   | Long-term package storage and Developer Platform signing (R2; ADR-UIP-SEC-001 item 6) | Release Lead              | before stable (2026-12-04)   |
 | L4   | Stability classification of the 39 unclassified entries                               | Interaction Lead          | with the P1 release contract |
 
+L2 evidence, 2026-10-03: the Next.js fixture (K5) runs every route under a
+per-request nonce policy with zero violations and two negative controls (TDD
+packaging S4, pending exact-commit ratification). L2 is removed only when its
+owner states so for the merged commit.
+
 Obligations from D2 that are not liens of this decision: the `tsup` successor
 record (due 2026-11-01, GDC-004 section 2.2), and the trial reviews ending
 2026-12-31.
