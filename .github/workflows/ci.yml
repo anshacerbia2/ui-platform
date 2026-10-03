@@ -162,8 +162,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Install Chromium for the browser verifier
-        run: pnpm exec playwright install --with-deps chromium
+      # TDD packaging RC5: every engine in support-matrix.json (check-ci-policy).
+      - name: Install the browser engines of the support matrix
+        run: pnpm exec playwright install --with-deps chromium firefox webkit
       - name: Packed token stylesheets in a browser
         run: node scripts/browser-tokens.mjs --packs artifacts/packages
       - name: Packed components in a browser (layers, isolation, focus, forced colors)

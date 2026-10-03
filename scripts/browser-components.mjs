@@ -3,7 +3,8 @@
 // "Packed browser", "Isolation", "Accessibility"). Installs the packed tarballs
 // into a fresh project outside the workspace, server-renders the focusable
 // components inside one root per theme/mode next to plain host markup, loads
-// only the published stylesheets in Chromium, and fails unless:
+// only the published stylesheets in every engine of support-matrix.json
+// (Chromium, Firefox, WebKit; TDD packaging RC5), and fails unless:
 // - every published stylesheet opens with the canonical layer order and every
 //   style rule sits in a canonical layer;
 // - host markup outside every theme root computes exactly as without the
@@ -20,7 +21,7 @@ import fs from "node:fs";
 import http from "node:http";
 import os from "node:os";
 import path from "node:path";
-import { chromium } from "playwright";
+import { browserEngines } from "./browser-engines.mjs";
 import { LAYERS } from "../packages/design-system/scripts/styles/layers.mjs";
 
 const arg = (name, fallback) => {
@@ -140,10 +141,23 @@ async function focusWalk(tab) {
   return seen;
 }
 
-const browser = await chromium.launch();
 const failures = [];
-const result = { scenario: "packed-browser-components", themes, stylesheets, checks: [] };
-try {
+const result = { scenario: "packed-browser-components", themes, stylesheets, engines: [] };
+for (const engine of browserEngines()) {
+  const browser = await engine.type.launch();
+  try {
+    const checked = await verify(browser);
+    failures.push(...checked.failures.map((failure) => `${engine.name}: ${failure}`));
+    result.engines.push({ engine: engine.name, version: browser.version(), checks: checked.checks });
+  } finally {
+    await browser.close();
+  }
+}
+server.close();
+
+async function verify(browser) {
+  const failures = [];
+  const result = { checks: [] };
   const tab = await browser.newPage();
   const missing = [];
   tab.on("response", (res) => {
@@ -237,9 +251,7 @@ try {
     }
     result.checks.push({ check: `focus-visible-forced-colors-${forcedColors}`, focused: focused.length });
   }
-} finally {
-  await browser.close();
-  server.close();
+  return { failures, checks: result.checks };
 }
 
 fs.mkdirSync(outDir, { recursive: true });
@@ -250,5 +262,7 @@ if (failures.length > 0) {
   process.exit(1);
 }
 console.log(
-  `Component browser fixture passed: ${themes.length} themes x 2 modes; ${result.checks.map((c) => c.focused !== undefined ? `${c.check} ${c.focused} parts` : c.check).join(", ")}`,
+  `Component browser fixture passed: ${themes.length} themes x 2 modes; ${result.engines
+    .map((e) => `${e.engine} ${e.version}: ${e.checks.map((c) => (c.focused !== undefined ? `${c.check} ${c.focused} parts` : c.check)).join(", ")}`)
+    .join("; ")}`,
 );

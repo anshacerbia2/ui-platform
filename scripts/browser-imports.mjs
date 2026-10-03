@@ -3,7 +3,8 @@
 // Installs the packed tarballs into a fresh project and bundles one module per
 // public JavaScript entry with the workspace's esbuild; React and React DOM go
 // into a shared chunk the page loads first. Each entry is then imported alone
-// in a fresh Chromium page under a strict CSP (no 'unsafe-eval'), and the
+// in a fresh page of every engine in support-matrix.json (Chromium, Firefox,
+// WebKit; TDD packaging RC5) under a strict CSP (no 'unsafe-eval'), and the
 // import fails the gate if it:
 // - mutates the DOM (any node, attribute, or text, head included);
 // - adds a global, or a property to a built-in prototype;
@@ -25,7 +26,7 @@ import http from "node:http";
 import { createRequire } from "node:module";
 import os from "node:os";
 import path from "node:path";
-import { chromium } from "playwright";
+import { browserEngines } from "./browser-engines.mjs";
 
 const arg = (name, fallback) => {
   const index = process.argv.indexOf(name);
@@ -145,10 +146,9 @@ const findings = {
 console.log("SCNX_IMPORT_RESULT " + JSON.stringify({ probe, error, findings }));
 `;
 
-const report = { schemaVersion: 1, csp: CSP, entries: [], negativeControls: [] };
+const report = { schemaVersion: 1, csp: CSP, engines: [] };
 let failed = false;
 let server;
-const browser = await chromium.launch();
 try {
   execSync(`pnpm install --ignore-workspace --strict-peer-dependencies --store-dir ${JSON.stringify(path.join(dir, ".store"))}`, { cwd: dir, stdio: ["ignore", "pipe", "pipe"] });
 
@@ -192,39 +192,48 @@ try {
   await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
   const origin = `http://127.0.0.1:${server.address().port}`;
 
-  const runProbe = async (probe) => {
-    const context = await browser.newContext();
-    const tab = await context.newPage();
-    const reported = tab.waitForEvent("console", { predicate: (message) => message.text().startsWith("SCNX_IMPORT_RESULT "), timeout: 30_000 });
-    await tab.goto(`${origin}/?probe=${probe}`);
-    const result = JSON.parse((await reported).text().slice("SCNX_IMPORT_RESULT ".length));
-    await context.close();
-    const caught = Object.entries(result.findings).filter(([, list]) => list.length > 0);
-    return { ...result, caught: Object.fromEntries(caught) };
-  };
+  for (const engine of browserEngines()) {
+    const browser = await engine.type.launch();
+    const engineReport = { engine: engine.name, version: browser.version(), entries: [], negativeControls: [] };
+    report.engines.push(engineReport);
+    try {
+      const runProbe = async (probe) => {
+        const context = await browser.newContext();
+        const tab = await context.newPage();
+        const reported = tab.waitForEvent("console", { predicate: (message) => message.text().startsWith("SCNX_IMPORT_RESULT "), timeout: 30_000 });
+        await tab.goto(`${origin}/?probe=${probe}`);
+        const result = JSON.parse((await reported).text().slice("SCNX_IMPORT_RESULT ".length));
+        await context.close();
+        const caught = Object.entries(result.findings).filter(([, list]) => list.length > 0);
+        return { ...result, caught: Object.fromEntries(caught) };
+      };
 
-  for (const [probe, specifier] of Object.entries(probes)) {
-    const result = await runProbe(probe);
-    if (probe.startsWith("negative-")) {
-      const caught = Object.keys(result.caught).length > 0;
-      report.negativeControls.push({ control: probe.slice("negative-".length), caught, findings: result.caught });
-      if (!caught) {
-        failed = true;
-        console.error(`${probe}: the gate did not detect this side effect`);
+      for (const [probe, specifier] of Object.entries(probes)) {
+        const result = await runProbe(probe);
+        if (probe.startsWith("negative-")) {
+          const caught = Object.keys(result.caught).length > 0;
+          engineReport.negativeControls.push({ control: probe.slice("negative-".length), caught, findings: result.caught });
+          if (!caught) {
+            failed = true;
+            console.error(`${engine.name}: ${probe}: the gate did not detect this side effect`);
+          }
+          continue;
+        }
+        const clean = !result.error && Object.keys(result.caught).length === 0;
+        engineReport.entries.push({ specifier, result: clean ? "pass" : "fail", ...(clean ? {} : { error: result.error, findings: result.caught }) });
+        if (!clean) {
+          failed = true;
+          console.error(`${engine.name}: ${specifier}: ${result.error ?? JSON.stringify(result.caught)}`);
+        }
       }
-      continue;
-    }
-    const clean = !result.error && Object.keys(result.caught).length === 0;
-    report.entries.push({ specifier, result: clean ? "pass" : "fail", ...(clean ? {} : { error: result.error, findings: result.caught }) });
-    if (!clean) {
-      failed = true;
-      console.error(`${specifier}: ${result.error ?? JSON.stringify(result.caught)}`);
+    } finally {
+      await browser.close();
     }
   }
   report.result = failed ? "fail" : "pass";
   if (!failed) {
     console.log(
-      `Import side-effect gate passed under "${CSP}": ${report.entries.length} entries import with no DOM, global, prototype, storage, network, timer, listener, custom-element, stylesheet, or CSP effect; ${report.negativeControls.length} negative controls caught`,
+      `Import side-effect gate passed under "${CSP}": in ${report.engines.map((e) => `${e.engine} ${e.version}`).join(", ")}, ${report.engines[0].entries.length} entries import with no DOM, global, prototype, storage, network, timer, listener, custom-element, stylesheet, or CSP effect; ${report.engines[0].negativeControls.length} negative controls caught in each`,
     );
   }
 } catch (error) {
@@ -233,7 +242,6 @@ try {
   report.error = `${error.message}\n${error.stdout ?? ""}${error.stderr ?? ""}`.trim();
   console.error(`Import side-effect gate: FAILED\n${report.error}`);
 } finally {
-  await browser.close();
   server?.close();
   fs.rmSync(dir, { recursive: true, force: true });
 }

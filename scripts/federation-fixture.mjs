@@ -8,7 +8,8 @@
 // share map comes from scripts/federation-share-map.mjs. remote_c declares an
 // incompatible @scnx/core-ui range; remote_x points at a missing entry;
 // remote_d bundles its own React, a negative control for the identity check.
-// It fails unless, in Chromium:
+// It fails unless, in every engine of support-matrix.json (Chromium, Firefox,
+// WebKit; TDD packaging RC5):
 // - in both load orders (remote_a then remote_b, and the reverse) every
 //   participant holds the host's React internals and ThemeProvider module,
 //   both remotes read the host's theme context, and their Accordions open;
@@ -34,7 +35,7 @@ import fs from "node:fs";
 import http from "node:http";
 import os from "node:os";
 import path from "node:path";
-import { chromium } from "playwright";
+import { browserEngines } from "./browser-engines.mjs";
 import { packageOf, REACT_KEYS, shareKeys, shareMap } from "./federation-share-map.mjs";
 
 // Pinned (TDD packaging F1, references [7], [8], [16]); bump deliberately, with a run of this fixture.
@@ -285,7 +286,6 @@ const installedVersion = (pkg) => JSON.parse(fs.readFileSync(path.join(dir, "nod
 const report = { schemaVersion: 1, rspack: RSPACK_VERSION, mfRuntime: MF_RUNTIME_VERSION, scenarios: [] };
 let failed = false;
 let server;
-const browser = await chromium.launch();
 try {
   execSync(`pnpm install --ignore-workspace --strict-peer-dependencies --store-dir ${JSON.stringify(path.join(dir, ".store"))}`, { cwd: dir, stdio: ["ignore", "pipe", "pipe"] });
   saveLockfile(dir, "federation-fixture");
@@ -378,137 +378,151 @@ rspack(compilers).run((error, stats) => {
   await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
   const origin = `http://127.0.0.1:${server.address().port}`;
 
-  // Collected outside the page's CSP: init scripts are injected by the driver.
-  const watchViolations = (page) =>
-    page.addInitScript(() => {
-      globalThis.__SCNX_CSP__ = [];
-      document.addEventListener("securitypolicyviolation", (event) =>
-        globalThis.__SCNX_CSP__.push(`${event.effectiveDirective} ${event.blockedURI}`),
-      );
-    });
-  const violations = (page) => page.evaluate(() => globalThis.__SCNX_CSP__);
-  const visit = async () => {
-    const page = await browser.newPage();
-    await watchViolations(page);
-    const log = { pageErrors: [], errors: [], warnings: [] };
-    page.on("pageerror", (error) => log.pageErrors.push(String(error)));
-    page.on("console", (message) => {
-      if (message.type() === "error") log.errors.push(message.text());
-      if (message.type() === "warning") log.warnings.push(message.text());
-    });
-    await page.goto(origin);
-    await page.waitForSelector("[data-host='ready']");
-    return { page, log };
-  };
-  const open = (page, name) => page.click(`[data-open='${name}']`);
-  const events = (page) => page.evaluate(() => globalThis.__SCNX_FEDERATION_EVENTS__ ?? []);
-  const hostVersion = apps.find((a) => a.role === "host").version;
+  const engines = [];
+  for (const engine of browserEngines()) {
+    const browser = await engine.type.launch();
+    const first = report.scenarios.length;
+    try {
+      // Collected outside the page's CSP: init scripts are injected by the driver.
+      const watchViolations = (page) =>
+        page.addInitScript(() => {
+          globalThis.__SCNX_CSP__ = [];
+          document.addEventListener("securitypolicyviolation", (event) =>
+            globalThis.__SCNX_CSP__.push(`${event.effectiveDirective} ${event.blockedURI}`),
+          );
+        });
+      const violations = (page) => page.evaluate(() => globalThis.__SCNX_CSP__);
+      const visit = async () => {
+        const page = await browser.newPage();
+        await watchViolations(page);
+        const log = { pageErrors: [], errors: [], warnings: [] };
+        page.on("pageerror", (error) => log.pageErrors.push(String(error)));
+        page.on("console", (message) => {
+          if (message.type() === "error") log.errors.push(message.text());
+          if (message.type() === "warning") log.warnings.push(message.text());
+        });
+        await page.goto(origin);
+        await page.waitForSelector("[data-host='ready']");
+        return { page, log };
+      };
+      const open = (page, name) => page.click(`[data-open='${name}']`);
+      const events = (page) => page.evaluate(() => globalThis.__SCNX_FEDERATION_EVENTS__ ?? []);
+      const hostVersion = apps.find((a) => a.role === "host").version;
 
-  // F5: both load orders keep one identity and one stylesheet.
-  for (const order of [["remote_a", "remote_b"], ["remote_b", "remote_a"]]) {
-    const { page, log } = await visit();
-    for (const name of order) {
-      await open(page, name);
-      await page.waitForSelector(`[data-remote='${name}'][data-theme-id='default']`);
-    }
-    const identity = await page.evaluate((names) => {
-      const all = globalThis.__SCNX_IDENTITY__;
-      const host = all.host;
-      return names.map((name) => ({
-        name,
-        react: Boolean(host.react.internals) && all[name]?.react.internals === host.react.internals && all[name]?.react.useState === host.react.useState,
-        theme: all[name]?.ThemeModule === host.ThemeModule,
-      }));
-    }, order);
-    const split = identity.filter((entry) => !entry.react || !entry.theme);
-    if (split.length > 0) throw new Error(`Order ${order.join(" -> ")}: split identity ${JSON.stringify(split)}`);
-    for (const name of order) {
-      await page.click(`[data-remote-trigger='${name}']`);
-      await page.waitForFunction((n) => document.querySelector(`[data-remote-trigger='${n}']`)?.getAttribute("aria-expanded") === "true", name);
-    }
-    const sheets = await page.evaluate(() => {
-      const hasComponentRule = (rules) =>
-        [...rules].some((rule) => (rule.selectorText ?? "").includes(".scnx-accordion") || (rule.cssRules && hasComponentRule(rule.cssRules)));
-      return [...document.styleSheets].filter((sheet) => hasComponentRule(sheet.cssRules)).length;
-    });
-    if (sheets !== 1) throw new Error(`Order ${order.join(" -> ")}: ${sheets} component stylesheets applied; expected 1`);
-    const negotiated = await events(page);
-    const wrong = negotiated.filter((e) => e.schema !== EVENT_SCHEMA || e.outcome !== "selected" || e.host_version !== hostVersion);
-    if (wrong.length > 0) throw new Error(`Order ${order.join(" -> ")}: unexpected share events ${JSON.stringify(wrong, null, 2)}`);
-    for (const name of order) {
-      const packages = new Set(negotiated.filter((e) => e.remote_name === name).map((e) => e.shared_package));
-      for (const pkg of ["react", "@scnx/core-ui", "@scnx/system"]) {
-        if (!packages.has(pkg)) throw new Error(`Order ${order.join(" -> ")}: no ${pkg} share event from ${name}`);
+      // F5: both load orders keep one identity and one stylesheet.
+      for (const order of [["remote_a", "remote_b"], ["remote_b", "remote_a"]]) {
+        const { page, log } = await visit();
+        for (const name of order) {
+          await open(page, name);
+          await page.waitForSelector(`[data-remote='${name}'][data-theme-id='default']`);
+        }
+        const identity = await page.evaluate((names) => {
+          const all = globalThis.__SCNX_IDENTITY__;
+          const host = all.host;
+          return names.map((name) => ({
+            name,
+            react: Boolean(host.react.internals) && all[name]?.react.internals === host.react.internals && all[name]?.react.useState === host.react.useState,
+            theme: all[name]?.ThemeModule === host.ThemeModule,
+          }));
+        }, order);
+        const split = identity.filter((entry) => !entry.react || !entry.theme);
+        if (split.length > 0) throw new Error(`Order ${order.join(" -> ")}: split identity ${JSON.stringify(split)}`);
+        for (const name of order) {
+          await page.click(`[data-remote-trigger='${name}']`);
+          await page.waitForFunction((n) => document.querySelector(`[data-remote-trigger='${n}']`)?.getAttribute("aria-expanded") === "true", name);
+        }
+        const sheets = await page.evaluate(() => {
+          const hasComponentRule = (rules) =>
+            [...rules].some((rule) => (rule.selectorText ?? "").includes(".scnx-accordion") || (rule.cssRules && hasComponentRule(rule.cssRules)));
+          return [...document.styleSheets].filter((sheet) => hasComponentRule(sheet.cssRules)).length;
+        });
+        if (sheets !== 1) throw new Error(`Order ${order.join(" -> ")}: ${sheets} component stylesheets applied; expected 1`);
+        const negotiated = await events(page);
+        const wrong = negotiated.filter((e) => e.schema !== EVENT_SCHEMA || e.outcome !== "selected" || e.host_version !== hostVersion);
+        if (wrong.length > 0) throw new Error(`Order ${order.join(" -> ")}: unexpected share events ${JSON.stringify(wrong, null, 2)}`);
+        for (const name of order) {
+          const packages = new Set(negotiated.filter((e) => e.remote_name === name).map((e) => e.shared_package));
+          for (const pkg of ["react", "@scnx/core-ui", "@scnx/system"]) {
+            if (!packages.has(pkg)) throw new Error(`Order ${order.join(" -> ")}: no ${pkg} share event from ${name}`);
+          }
+        }
+        const federationWarnings = log.warnings.filter((text) => /federation|shared singleton/i.test(text));
+        if (log.pageErrors.length + log.errors.length + federationWarnings.length > 0) {
+          throw new Error(`Order ${order.join(" -> ")}: ${JSON.stringify({ ...log, warnings: federationWarnings })}`);
+        }
+        const blocked = await violations(page);
+        if (blocked.length > 0) throw new Error(`Order ${order.join(" -> ")}: CSP violations ${JSON.stringify(blocked)}`);
+        report.scenarios.push({ scenario: `order ${order.join(" -> ")}`, result: "pass", identity, componentStylesheets: sheets, events: negotiated.length, cspViolations: 0 });
+        await page.close();
       }
-    }
-    const federationWarnings = log.warnings.filter((text) => /federation|shared singleton/i.test(text));
-    if (log.pageErrors.length + log.errors.length + federationWarnings.length > 0) {
-      throw new Error(`Order ${order.join(" -> ")}: ${JSON.stringify({ ...log, warnings: federationWarnings })}`);
-    }
-    const blocked = await violations(page);
-    if (blocked.length > 0) throw new Error(`Order ${order.join(" -> ")}: CSP violations ${JSON.stringify(blocked)}`);
-    report.scenarios.push({ scenario: `order ${order.join(" -> ")}`, result: "pass", identity, componentStylesheets: sheets, events: negotiated.length, cspViolations: 0 });
-    await page.close();
-  }
 
-  // F6/F8: an incompatible remote and an unavailable remote fail route-locally.
-  {
-    const { page, log } = await visit();
-    await open(page, "remote_c");
-    await page.waitForSelector("[data-fallback='remote_c']");
-    const rejected = (await events(page)).filter((e) => e.outcome === "rejected");
-    const expected = {
-      schema: EVENT_SCHEMA,
-      host_version: hostVersion,
-      remote_name: "remote_c",
-      remote_version: "0.9.0",
-      shared_package: "@scnx/core-ui",
-      required_range: apps.find((a) => a.name === "remote_c").peerDependencies["@scnx/core-ui"],
-      selected_version: coreUi.version,
-      outcome: "rejected",
-    };
-    const matches = rejected.length === 1 && Object.entries(expected).every(([key, value]) => rejected[0][key] === value) && rejected[0].offered_versions.includes(coreUi.version);
-    if (!matches) throw new Error(`remote_c: expected one rejected event ${JSON.stringify(expected)}, got ${JSON.stringify(rejected, null, 2)}`);
-    await page.click("[data-host-counter]");
-    await page.waitForSelector("[data-host-counter='1']");
-    await open(page, "remote_a");
-    await page.waitForSelector("[data-remote='remote_a'][data-theme-id='default']");
-    await open(page, "remote_x");
-    await page.waitForSelector("[data-fallback='remote_x']");
-    await page.click("[data-remote-trigger='remote_a']");
-    await page.waitForFunction(() => document.querySelector("[data-remote-trigger='remote_a']")?.getAttribute("aria-expanded") === "true");
-    await open(page, "remote_d");
-    await page.waitForSelector("[data-remote='remote_d'], [data-fallback='remote_d']");
-    const control = await page.evaluate(() => {
-      const all = globalThis.__SCNX_IDENTITY__;
-      return { recorded: Boolean(all.remote_d), sameReact: all.remote_d?.react.internals === all.host.react.internals };
-    });
-    if (!control.recorded || control.sameReact) throw new Error(`remote_d bundles its own React, but the identity check did not report it: ${JSON.stringify(control)}`);
-    if (log.pageErrors.length > 0) throw new Error(`Failure scenario: errors escaped to the page ${JSON.stringify(log.pageErrors)}`);
-    const blocked = await violations(page);
-    if (blocked.length > 0) throw new Error(`Failure scenario: CSP violations ${JSON.stringify(blocked)}`);
-    const remoteD = (await page.locator("[data-fallback='remote_d']").count()) > 0 ? "fallback" : "rendered";
-    report.scenarios.push({ scenario: "incompatible and unavailable remotes", result: "pass", rejectedEvent: rejected[0], consoleErrors: log.errors.length, duplicateReactControl: { detected: true, remoteD } });
-    await page.close();
-  }
+      // F6/F8: an incompatible remote and an unavailable remote fail route-locally.
+      {
+        const { page, log } = await visit();
+        await open(page, "remote_c");
+        await page.waitForSelector("[data-fallback='remote_c']");
+        const rejected = (await events(page)).filter((e) => e.outcome === "rejected");
+        const expected = {
+          schema: EVENT_SCHEMA,
+          host_version: hostVersion,
+          remote_name: "remote_c",
+          remote_version: "0.9.0",
+          shared_package: "@scnx/core-ui",
+          required_range: apps.find((a) => a.name === "remote_c").peerDependencies["@scnx/core-ui"],
+          selected_version: coreUi.version,
+          outcome: "rejected",
+        };
+        const matches = rejected.length === 1 && Object.entries(expected).every(([key, value]) => rejected[0][key] === value) && rejected[0].offered_versions.includes(coreUi.version);
+        if (!matches) throw new Error(`remote_c: expected one rejected event ${JSON.stringify(expected)}, got ${JSON.stringify(rejected, null, 2)}`);
+        await page.click("[data-host-counter]");
+        await page.waitForSelector("[data-host-counter='1']");
+        await open(page, "remote_a");
+        await page.waitForSelector("[data-remote='remote_a'][data-theme-id='default']");
+        await open(page, "remote_x");
+        await page.waitForSelector("[data-fallback='remote_x']");
+        await page.click("[data-remote-trigger='remote_a']");
+        await page.waitForFunction(() => document.querySelector("[data-remote-trigger='remote_a']")?.getAttribute("aria-expanded") === "true");
+        await open(page, "remote_d");
+        await page.waitForSelector("[data-remote='remote_d'], [data-fallback='remote_d']");
+        const control = await page.evaluate(() => {
+          const all = globalThis.__SCNX_IDENTITY__;
+          return { recorded: Boolean(all.remote_d), sameReact: all.remote_d?.react.internals === all.host.react.internals };
+        });
+        if (!control.recorded || control.sameReact) throw new Error(`remote_d bundles its own React, but the identity check did not report it: ${JSON.stringify(control)}`);
+        if (log.pageErrors.length > 0) throw new Error(`Failure scenario: errors escaped to the page ${JSON.stringify(log.pageErrors)}`);
+        const blocked = await violations(page);
+        if (blocked.length > 0) throw new Error(`Failure scenario: CSP violations ${JSON.stringify(blocked)}`);
+        const remoteD = (await page.locator("[data-fallback='remote_d']").count()) > 0 ? "fallback" : "rendered";
+        report.scenarios.push({ scenario: "incompatible and unavailable remotes", result: "pass", rejectedEvent: rejected[0], consoleErrors: log.errors.length, duplicateReactControl: { detected: true, remoteD } });
+        await page.close();
+      }
 
-  // Negative control: without the nonce the host's own script is blocked.
-  {
-    const page = await browser.newPage();
-    await watchViolations(page);
-    await page.goto(`${origin}/negative`);
-    await page.waitForFunction(() => globalThis.__SCNX_CSP__.length > 0, null, { timeout: 10_000 });
-    const blocked = await violations(page);
-    if (!blocked.some((v) => v.startsWith("script-src"))) throw new Error(`Negative control recorded no script-src violation: ${JSON.stringify(blocked)}`);
-    if ((await page.locator("[data-host='ready']").count()) > 0) throw new Error("Negative control: the host ran without its nonce");
-    report.scenarios.push({ scenario: "csp-negative-control", result: "pass", violations: blocked.length });
-    await page.close();
+      // Negative control: without the nonce the host's own script is blocked.
+      {
+        const page = await browser.newPage();
+        await watchViolations(page);
+        await page.goto(`${origin}/negative`);
+        await page.waitForFunction(() => globalThis.__SCNX_CSP__.length > 0, null, { timeout: 10_000 });
+        const blocked = await violations(page);
+        if (!blocked.some((v) => v.startsWith("script-src"))) throw new Error(`Negative control recorded no script-src violation: ${JSON.stringify(blocked)}`);
+        if ((await page.locator("[data-host='ready']").count()) > 0) throw new Error("Negative control: the host ran without its nonce");
+        report.scenarios.push({ scenario: "csp-negative-control", result: "pass", violations: blocked.length });
+        await page.close();
+      }
+    } catch (error) {
+      error.message = `${engine.name}: ${error.message}`;
+      throw error;
+    } finally {
+      for (const scenario of report.scenarios.slice(first)) scenario.engine = engine.name;
+      engines.push(`${engine.name} ${browser.version()}`);
+      await browser.close();
+    }
   }
 
   report.result = "pass";
   report.csp = CSP.replaceAll(NONCE, "<nonce>");
   console.log(
-    `Federation fixture passed (Rspack ${report.versions["@rspack/core"]}, MF runtime ${report.versions["@module-federation/runtime-tools"]}): both load orders keep one React and theme identity with one stylesheet; remote_c fails route-locally with one rejected event; remote_x falls back; the host stays usable; a duplicate React is detected; zero violations under ${report.csp}; a page without the nonce is blocked`,
+    `Federation fixture passed (Rspack ${report.versions["@rspack/core"]}, MF runtime ${report.versions["@module-federation/runtime-tools"]}) in ${engines.join(", ")}: both load orders keep one React and theme identity with one stylesheet; remote_c fails route-locally with one rejected event; remote_x falls back; the host stays usable; a duplicate React is detected; zero violations under ${report.csp}; a page without the nonce is blocked`,
   );
 } catch (error) {
   failed = true;
@@ -516,7 +530,6 @@ rspack(compilers).run((error, stats) => {
   report.error = `${error.message}\n${error.stdout ?? ""}${error.stderr ?? ""}`.trim();
   console.error(`Federation fixture: FAILED\n${report.error}`);
 } finally {
-  await browser.close();
   server?.close();
   fs.rmSync(dir, { recursive: true, force: true });
 }

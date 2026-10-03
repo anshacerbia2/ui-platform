@@ -4,7 +4,8 @@
 // server-safe entry and every client-only entry from a Server Component page
 // (client entries whose parts are static properties, or whose props are
 // functions, render inside one client island), runs `next build` and
-// `next start`, and fails unless, in Chromium:
+// `next start`, and fails unless, in every engine of support-matrix.json
+// (Chromium, Firefox, WebKit; TDD packaging RC5):
 // - the server HTML contains every server-safe entry's markup;
 // - the page hydrates with zero console errors and zero page errors;
 // - an Accordion trigger opens its panel (one working client interaction);
@@ -23,7 +24,7 @@ import fs from "node:fs";
 import net from "node:net";
 import os from "node:os";
 import path from "node:path";
-import { chromium } from "playwright";
+import { browserEngines } from "./browser-engines.mjs";
 
 // TDD packaging S4: the policy, with {nonce} replaced per request by proxy.js.
 const POLICY = "default-src 'self'; script-src 'nonce-{nonce}'; style-src 'nonce-{nonce}'; object-src 'none'; base-uri 'none'";
@@ -311,7 +312,6 @@ function saveLockfile(projectDir, name) {
 const report = { schemaVersion: 1, next: NEXT_VERSION, checks: [] };
 let failed = false;
 let server;
-const browser = await chromium.launch();
 try {
   run(`pnpm install --ignore-workspace --strict-peer-dependencies --store-dir ${JSON.stringify(path.join(dir, ".store"))}`);
   saveLockfile(dir, "nextjs-consumer");
@@ -356,55 +356,69 @@ try {
   if (missing.length > 0) throw new Error(`Server HTML lacks server-safe entries: ${missing.join(", ")}`);
   report.checks.push({ check: "server-html", result: "pass", entries: specifiers["server-safe"].length });
 
-  const visit = async (url) => {
-    const page = await browser.newPage();
-    // Collected outside the page's CSP: init scripts are injected by the driver.
-    await page.addInitScript(() => {
-      globalThis.__SCNX_CSP__ = [];
-      document.addEventListener("securitypolicyviolation", (event) => globalThis.__SCNX_CSP__.push(`${event.effectiveDirective} ${event.blockedURI}`));
-    });
-    const errors = [];
-    page.on("console", (message) => message.type() === "error" && errors.push(`${message.text()} (${message.location().url})`));
-    page.on("pageerror", (error) => errors.push(String(error)));
-    page.on("response", (response) => response.status() >= 400 && errors.push(`${response.status()} ${response.url()}`));
-    await page.goto(url);
-    return { page, errors };
-  };
+  const engines = [];
+  for (const engine of browserEngines()) {
+    const browser = await engine.type.launch();
+    const first = report.checks.length;
+    try {
+      const visit = async (url) => {
+        const page = await browser.newPage();
+        // Collected outside the page's CSP: init scripts are injected by the driver.
+        await page.addInitScript(() => {
+          globalThis.__SCNX_CSP__ = [];
+          document.addEventListener("securitypolicyviolation", (event) => globalThis.__SCNX_CSP__.push(`${event.effectiveDirective} ${event.blockedURI}`));
+        });
+        const errors = [];
+        page.on("console", (message) => message.type() === "error" && errors.push(`${message.text()} (${message.location().url})`));
+        page.on("pageerror", (error) => errors.push(String(error)));
+        page.on("response", (response) => response.status() >= 400 && errors.push(`${response.status()} ${response.url()}`));
+        await page.goto(url);
+        return { page, errors };
+      };
 
-  const { page, errors } = await visit(origin);
-  await page.waitForSelector("[data-island='hydrated']");
-  const trigger = page.locator("[data-fixture='accordion-trigger']");
-  await trigger.click();
-  await page.waitForFunction(() => document.querySelector("[data-fixture='accordion-trigger']")?.getAttribute("aria-expanded") === "true");
-  if (!(await page.getByText("Annual leave accrues monthly.").isVisible())) throw new Error("Accordion panel is not visible after its trigger was clicked");
-  await page.waitForTimeout(500);
-  const violations = await page.evaluate(() => globalThis.__SCNX_CSP__);
-  if (violations.length > 0) throw new Error(`CSP violations on the fixture page: ${JSON.stringify(violations)}`);
-  const stylesheets = await page.evaluate(() => [...document.styleSheets].filter((sheet) => sheet.href?.includes("/_next/static/")).length);
-  if (stylesheets === 0) throw new Error("No framework stylesheet loaded under the policy");
-  if (errors.length > 0) throw new Error(`Console or page errors on the fixture page:\n${errors.join("\n")}`);
-  report.checks.push({ check: "hydration-and-interaction", result: "pass", clientEntries: specifiers["client-only"].length, stylesheets, cspViolations: 0 });
+      const { page, errors } = await visit(origin);
+      await page.waitForSelector("[data-island='hydrated']");
+      const trigger = page.locator("[data-fixture='accordion-trigger']");
+      await trigger.click();
+      await page.waitForFunction(() => document.querySelector("[data-fixture='accordion-trigger']")?.getAttribute("aria-expanded") === "true");
+      if (!(await page.getByText("Annual leave accrues monthly.").isVisible())) throw new Error("Accordion panel is not visible after its trigger was clicked");
+      await page.waitForTimeout(500);
+      const violations = await page.evaluate(() => globalThis.__SCNX_CSP__);
+      if (violations.length > 0) throw new Error(`CSP violations on the fixture page: ${JSON.stringify(violations)}`);
+      const stylesheets = await page.evaluate(() => [...document.styleSheets].filter((sheet) => sheet.href?.includes("/_next/static/")).length);
+      if (stylesheets === 0) throw new Error("No framework stylesheet loaded under the policy");
+      if (errors.length > 0) throw new Error(`Console or page errors on the fixture page:\n${errors.join("\n")}`);
+      report.checks.push({ check: "hydration-and-interaction", result: "pass", clientEntries: specifiers["client-only"].length, stylesheets, cspViolations: 0 });
 
-  const negative = await visit(`${origin}/negative`);
-  await negative.page.waitForTimeout(1000);
-  // Production React reports minified codes; 418 and 421-424 are its
-  // hydration failures (facebook/react scripts/error-codes/codes.json).
-  if (!negative.errors.some((text) => /hydrat|react\.dev\/errors\/(418|42[1-4])\b/i.test(text))) {
-    throw new Error(`The mismatch page reported no hydration error; detection does not work:\n${negative.errors.join("\n")}`);
+      const negative = await visit(`${origin}/negative`);
+      await negative.page.waitForTimeout(1000);
+      // Production React reports minified codes; 418 and 421-424 are its
+      // hydration failures (facebook/react scripts/error-codes/codes.json).
+      if (!negative.errors.some((text) => /hydrat|react\.dev\/errors\/(418|42[1-4])\b/i.test(text))) {
+        throw new Error(`The mismatch page reported no hydration error; detection does not work:\n${negative.errors.join("\n")}`);
+      }
+      report.checks.push({ check: "hydration-error-detected", result: "pass" });
+
+      for (const [control, directive] of [["script", "script-src-elem"], ["style", "style-src-attr"]]) {
+        const { page: blocked } = await visit(`${origin}/csp-negative/${control}`);
+        await blocked.waitForTimeout(500);
+        const recorded = await blocked.evaluate(() => globalThis.__SCNX_CSP__);
+        if (!recorded.some((entry) => entry.startsWith(`${directive} `))) throw new Error(`The ${control} negative control recorded no ${directive} violation: ${JSON.stringify(recorded)}`);
+        if (control === "script" && (await blocked.evaluate(() => globalThis.__SCNX_RAN__))) throw new Error("The unnonced inline script ran");
+      }
+      report.checks.push({ check: "csp-negative-controls", result: "pass" });
+    } catch (error) {
+      error.message = `${engine.name}: ${error.message}`;
+      throw error;
+    } finally {
+      for (const check of report.checks.slice(first)) check.engine = engine.name;
+      engines.push(`${engine.name} ${browser.version()}`);
+      await browser.close();
+    }
   }
-  report.checks.push({ check: "hydration-error-detected", result: "pass" });
-
-  for (const [control, directive] of [["script", "script-src-elem"], ["style", "style-src-attr"]]) {
-    const { page: blocked } = await visit(`${origin}/csp-negative/${control}`);
-    await blocked.waitForTimeout(500);
-    const recorded = await blocked.evaluate(() => globalThis.__SCNX_CSP__);
-    if (!recorded.some((entry) => entry.startsWith(`${directive} `))) throw new Error(`The ${control} negative control recorded no ${directive} violation: ${JSON.stringify(recorded)}`);
-    if (control === "script" && (await blocked.evaluate(() => globalThis.__SCNX_RAN__))) throw new Error("The unnonced inline script ran");
-  }
-  report.checks.push({ check: "csp-negative-controls", result: "pass" });
   report.result = "pass";
   console.log(
-    `Next.js ${report.versions.next} App Router: build and start pass, ${specifiers["server-safe"].length} server-safe and ${specifiers["client-only"].length} client-only entries render, hydration has zero errors and zero CSP violations under a per-request nonce, Accordion opens; a mismatch page and both CSP negative controls are detected`,
+    `Next.js ${report.versions.next} App Router in ${engines.join(", ")}: build and start pass, ${specifiers["server-safe"].length} server-safe and ${specifiers["client-only"].length} client-only entries render, hydration has zero errors and zero CSP violations under a per-request nonce, Accordion opens; a mismatch page and both CSP negative controls are detected`,
   );
 } catch (error) {
   failed = true;
@@ -412,7 +426,6 @@ try {
   report.error = `${error.message}\n${error.stdout ?? ""}${error.stderr ?? ""}`.trim();
   console.error(`Next.js consumer: FAILED\n${report.error}`);
 } finally {
-  await browser.close();
   server?.kill();
   fs.rmSync(dir, { recursive: true, force: true });
 }

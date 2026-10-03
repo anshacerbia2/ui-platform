@@ -4,7 +4,8 @@
 // project, server-renders a ThemeProvider page, and hydrates it with an
 // external bundle under a strict Content Security Policy:
 //   default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'; base-uri 'none'
-// It fails unless, in Chromium:
+// It fails unless, in every engine of support-matrix.json (Chromium, Firefox,
+// WebKit; TDD packaging RC5):
 // - hydration reports no mismatch and the page records zero CSP violations;
 // - the stored preference applies after hydration, a mode change updates
 //   only its own root, persists, and survives a reload;
@@ -25,7 +26,7 @@ import http from "node:http";
 import { createRequire } from "node:module";
 import os from "node:os";
 import path from "node:path";
-import { chromium } from "playwright";
+import { browserEngines } from "./browser-engines.mjs";
 
 const arg = (name, fallback) => {
   const index = process.argv.indexOf(name);
@@ -132,10 +133,23 @@ const server = http.createServer((request, response) => {
 await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
 const origin = `http://127.0.0.1:${server.address().port}`;
 
-const browser = await chromium.launch();
 const failures = [];
-const checks = [];
-try {
+const engines = [];
+for (const engine of browserEngines()) {
+  const browser = await engine.type.launch();
+  try {
+    const checked = await verify(browser);
+    failures.push(...checked.failures.map((failure) => `${engine.name}: ${failure}`));
+    engines.push({ engine: engine.name, version: browser.version(), checks: checked.checks });
+  } finally {
+    await browser.close();
+  }
+}
+server.close();
+
+async function verify(browser) {
+  const failures = [];
+  const checks = [];
   const context = await browser.newContext();
   // Collected outside the page's CSP: init scripts are injected by the driver.
   await context.addInitScript(() => {
@@ -250,16 +264,14 @@ try {
   const negative = await page.evaluate(() => ({ ran: document.body.dataset.inline === "ran", violations: window.__cspViolations.length }));
   if (negative.ran || negative.violations === 0) failures.push(`negative control: inline script ${negative.ran ? "ran" : "was blocked"} with ${negative.violations} violation(s); the CSP check is not effective`);
   checks.push({ check: "csp-negative-control", ...negative });
-} finally {
-  await browser.close();
-  server.close();
+  return { failures, checks };
 }
 
 fs.mkdirSync(outDir, { recursive: true });
-fs.writeFileSync(path.join(outDir, "browser-theme-report.json"), `${JSON.stringify({ scenario: "packed-browser-theme", csp: CSP, checks, failures }, null, 2)}\n`);
+fs.writeFileSync(path.join(outDir, "browser-theme-report.json"), `${JSON.stringify({ scenario: "packed-browser-theme", csp: CSP, engines, failures }, null, 2)}\n`);
 if (failures.length > 0) {
   console.error(failures.join("\n"));
   console.error(`${failures.length} theme browser failure(s)`);
   process.exit(1);
 }
-console.log(`Theme browser fixture passed under "${CSP}": ${checks.map((c) => c.check).join(", ")}`);
+console.log(`Theme browser fixture passed under "${CSP}": ${engines.map((e) => `${e.engine} ${e.version}: ${e.checks.map((c) => c.check).join(", ")}`).join("; ")}`);
