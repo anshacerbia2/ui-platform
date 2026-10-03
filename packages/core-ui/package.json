@@ -1,7 +1,7 @@
 {
   "name": "@scnx/core-ui",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.0",
   "packageManager": "pnpm@10.23.0",
   "description": "Enterprise-grade UI component library with optimal tree shaking",
   "author": "Scnehaux",

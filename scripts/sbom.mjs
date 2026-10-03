@@ -56,11 +56,12 @@ export function purl(name, version) {
 
 /** An npm caret or exact range as a purl `vers` range (`^19.0.0` -> `vers:npm/>=19.0.0|<20.0.0`). */
 export function versRange(range) {
-  const exact = /^(\d+)\.(\d+)\.(\d+)$/.exec(range);
+  const exact = /^(\d+)\.(\d+)\.(\d+)(-[0-9A-Za-z.-]+)?$/.exec(range);
   if (exact) return `vers:npm/${range}`;
-  const caret = /^\^(\d+)\.(\d+)\.(\d+)$/.exec(range);
+  // A pre-release lower bound (`^1.0.0-beta.0`) keeps the same upper bound.
+  const caret = /^\^(\d+)\.(\d+)\.(\d+)(-[0-9A-Za-z.-]+)?$/.exec(range);
   if (!caret) throw new Error(`Unsupported peer range "${range}": only caret and exact ranges are converted`);
-  const [major, minor, patch] = caret.slice(1).map(Number);
+  const [major, minor, patch] = caret.slice(1, 4).map(Number);
   const upper = major > 0 ? `${major + 1}.0.0` : minor > 0 ? `0.${minor + 1}.0` : `0.0.${patch + 1}`;
   return `vers:npm/>=${range.slice(1)}|<${upper}`;
 }
@@ -175,6 +176,7 @@ function selfTest() {
   if (validate(badHash)) failures.push("a malformed SHA-256 validated");
   if (versRange("^19.0.0") !== "vers:npm/>=19.0.0|<20.0.0") failures.push(`versRange("^19.0.0") = ${versRange("^19.0.0")}`);
   if (versRange("^0.3.1") !== "vers:npm/>=0.3.1|<0.4.0") failures.push(`versRange("^0.3.1") = ${versRange("^0.3.1")}`);
+  if (versRange("^1.0.0-beta.0") !== "vers:npm/>=1.0.0-beta.0|<2.0.0") failures.push(`versRange("^1.0.0-beta.0") = ${versRange("^1.0.0-beta.0")}`);
   let threw = false;
   try {
     versRange(">=19 <21");
@@ -191,7 +193,7 @@ function selfTest() {
     console.error(`SBOM self-test failed:\n  ${failures.join("\n  ")}`);
     process.exit(1);
   }
-  console.log("SBOM self-test passed: 10 checks against the CycloneDX 1.7.2 schema");
+  console.log("SBOM self-test passed: 11 checks against the CycloneDX 1.7.2 schema");
 }
 
 function main() {
