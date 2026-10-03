@@ -73,6 +73,30 @@ export function lockfilePackages(text) {
   return packages;
 }
 
+// Transient registry errors are retried with npm's own defaults (fetch-retries
+// 2, fetch-retry-factor 10, fetch-retry-mintimeout 10 s, fetch-retry-maxtimeout
+// 60 s); a 4xx other than 429 is definitive. The gate still fails closed after
+// the last attempt.
+export const RETRY_DELAYS_MS = [10_000, 60_000];
+
+/** Fetch JSON, retrying network errors, 429, and 5xx responses after each delay. */
+export async function fetchJsonWithRetry(url, { delays = RETRY_DELAYS_MS, fetchImpl = fetch, sleep = (ms) => new Promise((r) => setTimeout(r, ms)) } = {}) {
+  for (let attempt = 0; ; attempt++) {
+    let error;
+    try {
+      const response = await fetchImpl(url);
+      if (response.ok) return await response.json();
+      error = new Error(`HTTP ${response.status}`);
+      if (response.status !== 429 && response.status < 500) throw error;
+    } catch (caught) {
+      error ??= caught;
+      if (/^HTTP 4/.test(error.message) && error.message !== "HTTP 429") throw error;
+    }
+    if (attempt >= delays.length) throw error;
+    await sleep(delays[attempt]);
+  }
+}
+
 /** `name@version` -> license from the registry's per-version metadata; failures are recorded. */
 async function registryLicenseMap(keys, failures) {
   const registry = (process.env.npm_config_registry ?? "https://registry.npmjs.org/").replace(/\/?$/, "/");
@@ -84,9 +108,7 @@ async function registryLicenseMap(keys, failures) {
       const name = key.slice(0, at);
       const version = key.slice(at + 1);
       try {
-        const response = await fetch(`${registry}${name.replace("/", "%2F")}/${version}`);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        result.set(key, declaredLicense(await response.json()));
+        result.set(key, declaredLicense(await fetchJsonWithRetry(`${registry}${name.replace("/", "%2F")}/${version}`)));
       } catch (error) {
         failures.push(`${key}: registry metadata lookup failed (${error.message})`);
       }
@@ -114,7 +136,38 @@ function installedLicenses(root) {
   return found;
 }
 
-function selfTest() {
+async function retrySelfTest() {
+  const sequence = (...results) => {
+    let calls = 0;
+    const fetchImpl = async () => {
+      const next = results[Math.min(calls++, results.length - 1)];
+      if (next === "network") throw new TypeError("fetch failed");
+      return { ok: next === 200, status: next, json: async () => ({ license: "MIT" }) };
+    };
+    return { fetchImpl, calls: () => calls };
+  };
+  const run = async (results) => {
+    const s = sequence(...results);
+    try {
+      await fetchJsonWithRetry("x", { delays: [0, 0], fetchImpl: s.fetchImpl, sleep: async () => {} });
+      return ["ok", s.calls()];
+    } catch {
+      return ["error", s.calls()];
+    }
+  };
+  const cases = [
+    ["network then ok", await run(["network", 200]), ["ok", 2]],
+    ["503 twice then ok", await run([503, 503, 200]), ["ok", 3]],
+    ["429 then ok", await run([429, 200]), ["ok", 2]],
+    ["404 is definitive", await run([404, 200]), ["error", 1]],
+    ["three network failures fail closed", await run(["network", "network", "network", 200]), ["error", 3]],
+  ];
+  const failed = cases.filter(([, actual, expected]) => JSON.stringify(actual) !== JSON.stringify(expected));
+  for (const [label, actual, expected] of failed) console.error(`retry ${label}: expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`);
+  return { count: cases.length, failed: failed.length };
+}
+
+async function selfTest() {
   const cases = [
     ["MIT", 0],
     ["(MIT OR Apache-2.0)", 0],
@@ -139,8 +192,9 @@ function selfTest() {
   const failed = cases.filter(([expression, expected]) => expressionProblems(expression).length !== expected);
   for (const [expression, expected] of failed) console.error(`${JSON.stringify(expression)}: expected ${expected} problems, got ${JSON.stringify(expressionProblems(expression))}`);
   const thirdParty = thirdPartySelfTest();
-  if (failed.length > 0 || thirdParty.failed > 0) process.exit(1);
-  console.log(`License gate self-test passed: ${cases.length + 2 + thirdParty.count} cases`);
+  const retries = await retrySelfTest();
+  if (failed.length > 0 || thirdParty.failed > 0 || retries.failed > 0) process.exit(1);
+  console.log(`License gate self-test passed: ${cases.length + 2 + thirdParty.count + retries.count} cases`);
 }
 
 async function main() {
@@ -227,5 +281,5 @@ async function main() {
   );
 }
 
-if (process.argv.includes("--self-test")) selfTest();
+if (process.argv.includes("--self-test")) await selfTest();
 else await main();
