@@ -14,12 +14,6 @@ doc_meta:
 
 # TDD-ui-platform-packaging-001: Build and Published Package Contract
 
-> **Revision pending exact-commit ratification.** Decision S4 (Next.js nonce
-> policy fixture) with its reference in S1, and decision V7 (third-party code
-> in a tarball) with its reference in V5, are pending under GDC-000 section
-> 2.6.7; the revision ratified on 2026-10-03 (`fb59328`) remains binding until
-> the authorized human authority approves the exact commit containing it.
-
 ## Purpose
 
 Turn the extracted workspace into two reproducible, independently installable
