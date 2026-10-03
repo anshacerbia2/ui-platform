@@ -172,6 +172,21 @@ hold, with its successor record due 2026-11-01 and its grace window ending
 2027-03-31; the other radar positions follow the D2 recommendations record
 (`docs/reviews/2026-10-02-d2-arb-recommendations.md`).
 
+Fourth ratification, appended 2026-10-03: the SAD-003 and TDD packaging
+revisions that move the package build to tsdown under ADR-UIP-BLD-002
+(accepted 2026-10-03).
+
+| Repository            | Ratified revision                                         | Candidate commit (ratified)                | Merge commit | Pull request | CI at candidate and merge                       |
+| :-------------------- | :-------------------------------------------------------- | :----------------------------------------- | :----------- | :----------- | :---------------------------------------------- |
+| scnehaux-architecture | SAD-003 (tsdown builder; ADR-UIP-BLD-002 as UI authority) | `8f441b5346e270b8834ed7f65aae0e5c03dd0ccd` | `bc68371`    | #51          | Linter passed                                   |
+| ui-platform           | TDD packaging (baseline, K2, K3 on tsdown)                | `fb593282450dcaf3c979267c08f0f9ab0a1ed974` | `023f04f`    | #52          | CI, Chromatic, and P0 evidence workflows passed |
+
+Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+2026-10-03: "Saya, sebagai ARB dan UI Platform Lead, meratifikasi 8f441b5
+(SAD-003) dan fb59328 (TDD packaging) beserta bukti CI-nya, per 2026-10-03."
+("As ARB and UI Platform Lead, I ratify 8f441b5 (SAD-003) and fb59328 (TDD
+packaging) with their CI evidence, as of 2026-10-03.")
+
 ## D2 recommendation: `oklch`
 
 Appended 2026-10-02. The `oklch` trial ended on 2026-08-01 with no recorded
@@ -231,5 +246,5 @@ stated "Saya, sebagai ARB, menerima ADR-UIP-BLD-002 per 2026-10-03." ("As
 ARB, I accept ADR-UIP-BLD-002 as of 2026-10-03."), and the radar names
 `tsdown` as successor with ADR-UIP-BLD-002 as migration guide
 (`scnehaux-architecture` #51). The implementation merged in this repository
-as #51 (`e42a9cf`). The TDD packaging and SAD-003 revisions for it remain
-pending exact-commit ratification.
+as #51 (`e42a9cf`). The TDD packaging and SAD-003 revisions for it were
+ratified the same day (fourth ratification above).
