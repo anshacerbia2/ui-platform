@@ -9,16 +9,10 @@ doc_meta:
   parent_sad: SAD-003
   review_cycle_days: 30
   created_date: 2026-09-28
-  last_reviewed: 2026-10-02
+  last_reviewed: 2026-10-03
 ---
 
 # TDD-ui-platform-packaging-001: Build and Published Package Contract
-
-> **Revision pending exact-commit ratification.** The builder change to tsdown
-> (ADR-UIP-BLD-002, accepted 2026-10-03) in the baseline and decisions K2–K3 is pending
-> under GDC-000 section 2.6.7; the revision ratified on 2026-10-02 (`a260bf0`)
-> remains binding until the authorized human authority approves the exact
-> commit containing it.
 
 ## Purpose
 
