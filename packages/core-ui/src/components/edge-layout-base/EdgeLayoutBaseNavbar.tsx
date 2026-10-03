@@ -1,5 +1,3 @@
-"use client";
-
 import type { EdgeLayoutBaseNavbarProps } from "./types";
 import { useEdgeLayoutContext } from "./EdgeLayoutContext";
 

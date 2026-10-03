@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { useDisclosureItem } from "../disclosure-base/DisclosureContext";
 import { TransitionBase } from "../transition-base";

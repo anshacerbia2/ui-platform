@@ -1,4 +1,4 @@
-// Single source of the public entries of both packages. The tsup configs build
+// Single source of the public entries of both packages. The tsdown configs build
 // exactly these entries and scripts/sync-exports.mjs writes them as explicit
 // package `exports` (TDD packaging: explicit, generated lists, never `./*`).
 
@@ -125,12 +125,12 @@ export function packageEntries(packageDir) {
 }
 
 /**
- * tsup `entry` map (output name without `dist/` -> source) for the JavaScript
+ * tsdown `entry` map (output name without `dist/` -> source) for the JavaScript
  * entries of one environment, or all of them (TDD packaging K2).
  * @param {string} packageDir
  * @param {"client-only" | "server-safe"} [environment]
  */
-export function tsupEntries(packageDir, environment) {
+export function buildEntries(packageDir, environment) {
   return Object.fromEntries(
     packageEntries(packageDir)
       .filter((entry) => entry.kind === "javascript" && (!environment || entry.environment === environment))

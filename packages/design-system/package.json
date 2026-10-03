@@ -2,7 +2,7 @@
   "name": "@scnx/system",
   "type": "module",
   "version": "1.1.0",
-  "description": "Enterprise-grade design system — tokens, components, and themes",
+  "description": "Enterprise-grade design system \u2014 tokens, components, and themes",
   "author": "Scnehaux",
   "license": "UNLICENSED",
   "exports": {
@@ -112,7 +112,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\" && tsup && node scripts/tokens/emit.mjs --out dist && node scripts/styles/assemble.mjs --out dist",
+    "build": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\" && tsdown --config-loader native && node scripts/tokens/emit.mjs --out dist && node scripts/styles/assemble.mjs --out dist",
     "codegen": "panda codegen",
     "prepare": "panda codegen",
     "test": "vitest run",
@@ -133,12 +133,11 @@
     "@vitejs/plugin-react": "catalog:",
     "colorjs.io": "^0.7.1",
     "css-tree": "^3.2.1",
-    "esbuild-plugin-tsconfig-paths": "^1.0.2",
     "jsdom": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "sass": "^1.94.2",
-    "tsup": "^8.5.1",
+    "tsdown": "catalog:",
     "typescript": "^5.9.3",
     "vitest": "catalog:"
   }

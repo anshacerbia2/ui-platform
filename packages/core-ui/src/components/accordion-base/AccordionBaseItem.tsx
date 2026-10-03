@@ -1,5 +1,3 @@
-"use client";
-
 import { CollapsibleBaseItem } from "../collapsible-base/CollapsibleBaseItem";
 import type { AccordionBaseItemProps } from "./types";
 

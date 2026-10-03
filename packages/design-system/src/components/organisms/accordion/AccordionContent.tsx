@@ -1,5 +1,3 @@
-"use client";
-
 import { CollapsibleBaseContent } from "@scnx/core-ui/components/collapsible-base";
 import type { AccordionContentProps } from "./types";
 import { cx } from "styled-system/css";

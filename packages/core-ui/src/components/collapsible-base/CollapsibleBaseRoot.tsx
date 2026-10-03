@@ -1,5 +1,3 @@
-"use client";
-
 import { DisclosureProvider } from "../disclosure-base/DisclosureContext";
 import type { CollapsibleBaseRootProps } from "./types";
 

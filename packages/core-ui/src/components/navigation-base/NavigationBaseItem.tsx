@@ -1,5 +1,3 @@
-"use client";
-
 import { cloneElement, createContext, useId, useState, type MouseEvent, type ReactElement, type ReactNode, type Ref } from "react";
 import { Slot } from "../../utils/Slot";
 import { NavigationBaseBadge as Badge } from "./NavigationBaseBadge";

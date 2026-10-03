@@ -97,7 +97,7 @@ jobs:
         run: |
           set -o pipefail
           /usr/bin/time -v -o build-time.txt pnpm run build 2>&1 | tee build.log
-          if grep -nE 'directive.*was ignored|was ignored.*directive|Module level directives' build.log; then
+          if grep -nE 'directive.*was ignored|was ignored.*directive|Module level directives|MODULE_LEVEL_DIRECTIVE' build.log; then
             echo "::error::A module-level directive was dropped by the build"
             exit 1
           fi

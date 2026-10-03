@@ -1,5 +1,3 @@
-"use client";
-
 import { useEdgeLayoutContext, EdgeLayoutBaseNavbar } from "@scnx/core-ui/components/edge-layout-base";
 
 import type { EdgeLayoutNavbarProps } from "./types";
