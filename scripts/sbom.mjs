@@ -13,6 +13,8 @@
 //   because the consumer provides it;
 // - every copied asset (the Inter font files) is a component with its
 //   provenance record, license, and digest;
+// - third-party code compiled into the package (its third-party-code.json,
+//   TDD packaging V7) is a library component with its version and license;
 // - compositions state that the package's own assembly is complete and that
 //   the peers' contents are unknown to this SBOM.
 // The timestamp is the source commit's time, so the same commit yields the
@@ -27,7 +29,9 @@ import fs from "node:fs";
 import path from "node:path";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
+import { packageDirOf } from "./package-entries.mjs";
 import { vendoredSchema } from "./sbom/vendored.mjs";
+import { thirdPartyCode } from "./security/third-party-code.mjs";
 
 const SUPPLIER = { name: "UI Platform Team" };
 const TOOL = "scnx-sbom (scripts/sbom.mjs)";
@@ -75,8 +79,9 @@ function uuidFrom(seed) {
  * @param {string} options.tarballSha256
  * @param {{ component: object, files: { file: string, sha256: string }[] } | null} options.assets copied assets
  * @param {{ sha: string, time: string, repository: string }} options.source
+ * @param {{ name: string, version: string, license: string, supplier: string, copyright: string, source: string, sources: string }[]} [options.compiled] third-party code in dist/
  */
-export function buildSbom({ manifest, tarballSha256, assets, source }) {
+export function buildSbom({ manifest, tarballSha256, assets, source, compiled = [] }) {
   const rootRef = purl(manifest.name, manifest.version);
   const peers = Object.entries(manifest.peerDependencies ?? {}).map(([name, range]) => ({
     type: "library",
@@ -99,6 +104,20 @@ export function buildSbom({ manifest, tarballSha256, assets, source }) {
     hashes: [{ alg: "SHA-256", content: sha256 }],
     externalReferences: [{ type: "website", url: assets.component.source }],
   }));
+  const libraries = compiled.map((c) => ({
+    type: "library",
+    "bom-ref": purl(c.name, c.version),
+    group: c.name.startsWith("@") ? c.name.split("/")[0] : undefined,
+    name: c.name.startsWith("@") ? c.name.split("/")[1] : c.name,
+    version: c.version,
+    purl: purl(c.name, c.version),
+    description: `Compiled into dist/ from ${c.sources}`,
+    supplier: { name: c.supplier },
+    copyright: c.copyright,
+    licenses: [{ license: { id: c.license } }],
+    externalReferences: [{ type: "vcs", url: c.source }],
+  }));
+  const included = [...libraries, ...files];
   return {
     bomFormat: "CycloneDX",
     specVersion: "1.7",
@@ -124,10 +143,10 @@ export function buildSbom({ manifest, tarballSha256, assets, source }) {
         externalReferences: [{ type: "vcs", url: source.repository, comment: `source commit ${source.sha}` }],
       },
     },
-    components: [...peers, ...files],
+    components: [...peers, ...included],
     dependencies: [
-      { ref: rootRef, dependsOn: [...peers, ...files].map((c) => c["bom-ref"]) },
-      ...[...peers, ...files].map((c) => ({ ref: c["bom-ref"], dependsOn: [] })),
+      { ref: rootRef, dependsOn: [...peers, ...included].map((c) => c["bom-ref"]) },
+      ...[...peers, ...included].map((c) => ({ ref: c["bom-ref"], dependsOn: [] })),
     ],
     compositions: [
       { aggregate: "complete", assemblies: [rootRef] },
@@ -164,11 +183,15 @@ function selfTest() {
   }
   if (!threw) failures.push("an unsupported range was converted");
   if (buildSbom({ manifest, tarballSha256: "a".repeat(64), assets: null, source }).serialNumber !== good.serialNumber) failures.push("the serial number is not deterministic");
+  const compiled = [{ name: "@pandacss/generator", version: "1.12.1", license: "MIT", supplier: "Segun Adebayo", copyright: "Copyright (c) 2023 Segun Adebayo", source: "https://github.com/chakra-ui/panda", sources: "src/styled-system/" }];
+  const withCode = buildSbom({ manifest, tarballSha256: "a".repeat(64), assets: null, source, compiled });
+  if (!validate(withCode)) failures.push(`an SBOM with compiled third-party code is invalid: ${JSON.stringify(validate.errors?.slice(0, 3))}`);
+  if (!withCode.components.some((c) => c.purl === "pkg:npm/%40pandacss/generator@1.12.1" && c.licenses[0].license.id === "MIT")) failures.push("compiled third-party code is not a component");
   if (failures.length > 0) {
     console.error(`SBOM self-test failed:\n  ${failures.join("\n  ")}`);
     process.exit(1);
   }
-  console.log("SBOM self-test passed: 8 checks against the CycloneDX 1.7.2 schema");
+  console.log("SBOM self-test passed: 10 checks against the CycloneDX 1.7.2 schema");
 }
 
 function main() {
@@ -201,7 +224,8 @@ function main() {
     for (const file of assets?.files ?? []) {
       if (sha256(path.join(root, file.file)) !== file.sha256) throw new Error(`${manifest.name}: ${file.file} differs from its provenance record`);
     }
-    const sbom = buildSbom({ manifest, tarballSha256: sha256(path.join(packsDir, pkg.tarball)), assets, source });
+    const compiled = thirdPartyCode(path.resolve(packageDirOf(manifest.name))).components;
+    const sbom = buildSbom({ manifest, tarballSha256: sha256(path.join(packsDir, pkg.tarball)), assets, source, compiled });
     if (!validate(sbom)) throw new Error(`${manifest.name}: SBOM fails the CycloneDX 1.7 schema: ${JSON.stringify(validate.errors, null, 2)}`);
     const file = path.join(outDir, `${pkg.tarball.replace(/\.tgz$/, "")}.cdx.json`);
     fs.writeFileSync(file, `${JSON.stringify(sbom, null, 2)}\n`);
