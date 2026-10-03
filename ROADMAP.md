@@ -1,6 +1,6 @@
 # UI Platform roadmap
 
-Status: **ratified architecture and TDD baseline; P0 repair in progress**.
+Status: **ratified architecture and TDD baseline; P0 exited with liens on 2026-10-03**.
 
 The architecture repository owns architecture and governance. The five
 [TDDs](docs/designs/) own local component design. [PLAN.md](PLAN.md) owns work
@@ -11,7 +11,7 @@ gates.
 | -------------------------------- | ----------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 0. Architecture and TDD baseline | Complete    | 2026-10-02  | Mature PAD-PLT-003 and SAD-003; five implementation-ready TDDs; one plan; one roadmap; review records separated by round                                                                               | Both repositories pass documentation/governance gates; human authority approves the exact ratification commits; no duplicate UI architecture authority remains |
 | 1. Deterministic bootstrap       | Complete    | 2026-10-09  | Repaired Panda prepare resolution and required clean-install CI job                                                                                                                                    | A clean checkout passes `pnpm install --frozen-lockfile` with scripts enabled, no bypass flag, and no lockfile mutation                                        |
-| 2. P0 repair and evidence        | In progress | 2026-10-30  | Source tests, packed consumers, corrected tokens/CSS/provider/primitives, security evidence, strict-CSP standalone fixture, conditional federation evaluation, and the component workshop (PLAN W1–W2) | Every applicable P0 PLAN row passes against exact commits and artifacts; failed capabilities remain outside stable exports                                     |
+| 2. P0 repair and evidence        | Complete    | 2026-10-30  | Source tests, packed consumers, corrected tokens/CSS/provider/primitives, security evidence, strict-CSP standalone fixture, conditional federation evaluation, and the component workshop (PLAN W1–W2) | Every applicable P0 PLAN row passes against exact commits and artifacts; failed capabilities remain outside stable exports                                     |
 | 3. Reference slice and beta      | Not started | 2026-11-20  | Four-component reference slice, repeatable release pipeline, named consumer pilots, migration/support evidence                                                                                         | Source, packed, SSR/RSC, CSP, accessibility, visual, localization, performance, provenance, migration, and rollback gates pass for the supported scope         |
 | 4. Stable release                | Not started | 2026-12-04  | Versioned packages and operating model                                                                                                                                                                 | Human release authority accepts exact-version evidence and at least one real consumer completes migration and rollback rehearsal                               |
 
@@ -25,6 +25,10 @@ Phase evidence:
   `prepare` failure did not reproduce on a clean runner; it was caused by a
   stray Yarn Plug'n'Play manifest in one developer's home directory, which
   esbuild used while bundling `panda.config.ts`.
+- **Phase 2:** exit decided on 2026-10-03 by Ansha Cerbia (Architecture Review
+  Board and UI Platform Lead): go with liens L1–L4, for evidence packet
+  `1263488f…` (main `6d030a9`, run `37050521714`, attested). Record:
+  [P0 exit review](docs/reviews/2026-10-02-p0-exit-review.md), "Exit decision".
 
 ## Non-negotiable boundaries
 
