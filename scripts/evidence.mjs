@@ -4,7 +4,8 @@
 // scripts/evidence/schema.json. The packet embeds its evidence: every job's
 // result, the SHA-256 of every report, per-tarball digests (published `.tgz`,
 // content tar, rebuild content tar, SBOM) and verified attestations,
-// architecture statuses copied verbatim, entry stability, and known limits.
+// architecture statuses copied verbatim, entry stability, known limits, and the
+// release record (TDD packaging RC6).
 // Anything missing makes the packet fail (exit 1); the packet is still written.
 //
 //   node scripts/evidence.mjs --artifacts <dir> --jobs <jobs.json> --architecture <checkout>
@@ -17,10 +18,12 @@
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
+import { packageDirOf } from "./package-entries.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const SCHEMA = JSON.parse(fs.readFileSync(path.join(here, "evidence", "schema.json"), "utf8"));
@@ -241,6 +244,8 @@ export function buildPacket({ artifactsDir, jobs, architectureDir, uiDir, source
     return { limit, absentFromExports: holds };
   });
 
+  const release = releaseRecord({ packReport, artifactsDir, uiDir, failures });
+
   return {
     schema: "scnx.p0-evidence/1",
     source,
@@ -252,8 +257,54 @@ export function buildPacket({ artifactsDir, jobs, architectureDir, uiDir, source
     pendingRatification: pending,
     entries,
     knownLimits,
+    release,
     result: failures.length === 0 ? "pass" : "fail",
     failures,
+  };
+}
+
+/**
+ * TDD packaging RC6: the release record. No release has been published yet
+ * (package storage is lien L3), so the previous release, the public-API
+ * difference from it, and the rollback target are null with a stated reason
+ * until the first publication; nothing is inferred.
+ */
+export function releaseRecord({ packReport, artifactsDir, uiDir, failures }) {
+  const versions = [...new Set(packReport.packages.map((pkg) => pkg.version))];
+  if (versions.length !== 1) failures.push(`release record: packages carry ${versions.length} versions (RC3)`);
+  const consumerPath = path.join(artifactsDir, "packed-packages", "consumer-report.json");
+  const consumer = fs.existsSync(consumerPath) ? JSON.parse(fs.readFileSync(consumerPath, "utf8")) : {};
+  if (!consumer.supportMatrix) failures.push("release record: the consumer report has no support matrix (RC5)");
+  const apiReports = [];
+  const deprecations = [];
+  for (const pkg of packReport.packages) {
+    const folder = path.join(uiDir, packageDirOf(pkg.name), "api");
+    if (!fs.existsSync(folder)) {
+      failures.push(`release record: ${pkg.name} has no public-API reports (RC1)`);
+      continue;
+    }
+    for (const file of fs.readdirSync(folder).sort()) {
+      const full = path.join(folder, file);
+      apiReports.push({ file: path.relative(uiDir, full).replaceAll("\\", "/"), sha256: sha256(full) });
+      if (!file.endsWith(".api.md")) continue;
+      const lines = fs.readFileSync(full, "utf8").split("\n");
+      lines.forEach((line, index) => {
+        if (!/^\/\/ .*@deprecated/.test(line)) return;
+        const declaration = lines.slice(index + 1).find((next) => next.trim() && !next.startsWith("//"));
+        deprecations.push({ report: file, declaration: declaration?.trim().slice(0, 200) ?? null });
+      });
+    }
+  }
+  return {
+    version: versions[0] ?? null,
+    supportMatrix: consumer.supportMatrix ?? null,
+    baselineBrowsers: consumer.baselineBrowsers ?? null,
+    apiReports,
+    deprecations,
+    previousRelease: null,
+    apiDifference: null,
+    rollbackTarget: null,
+    notPublishedReason: "No version has been published yet; package storage is lien L3 of the P0 exit.",
   };
 }
 
@@ -282,13 +333,33 @@ function selfTest() {
   if (!byName.alpha?.pendingArb || !byName.beta?.pendingArb || byName.gamma?.pendingArb || byName.alphabet?.pendingArb) failures.push(`radarEntries pending: ${JSON.stringify(radar)}`);
   if (byName.alphabet?.ring !== "assess" || byName.alpha?.ring !== "trial") failures.push("radarEntries rings");
   if (byName.alpha?.owner !== "UI Platform Team" || byName.alphabet?.owner !== "Platform Team") failures.push("radarEntries owners");
+  // RC6: the release record reads the committed reports and finds deprecations.
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), "scnx-evidence-self-test-"));
+  try {
+    for (const dir of ["packages/core-ui/api", "packages/design-system/api", "art/packed-packages"]) fs.mkdirSync(path.join(temp, dir), { recursive: true });
+    fs.writeFileSync(path.join(temp, "packages/core-ui/api/index.api.md"), "## API Report File\n\n// @public @deprecated\nexport function old(): void;\n\n// @public\nexport function current(): void;\n");
+    fs.writeFileSync(path.join(temp, "packages/design-system/api/css-contract.json"), "{}\n");
+    fs.writeFileSync(path.join(temp, "art/packed-packages/consumer-report.json"), JSON.stringify({ supportMatrix: { node: ["24"] }, baselineBrowsers: { chrome: "123" } }));
+    const packReport = { packages: [{ name: "@scnx/core-ui", version: "1.0.0-beta.0" }, { name: "@scnx/system", version: "1.0.0-beta.0" }] };
+    const recordFailures = [];
+    const record = releaseRecord({ packReport, artifactsDir: path.join(temp, "art"), uiDir: temp, failures: recordFailures });
+    if (recordFailures.length > 0) failures.push(`releaseRecord failures: ${recordFailures.join("; ")}`);
+    if (record.version !== "1.0.0-beta.0" || record.apiReports.length !== 2) failures.push(`releaseRecord: ${JSON.stringify(record)}`);
+    if (record.deprecations.length !== 1 || !record.deprecations[0].declaration?.includes("old()")) failures.push(`releaseRecord deprecations: ${JSON.stringify(record.deprecations)}`);
+    const split = [];
+    releaseRecord({ packReport: { packages: [{ ...packReport.packages[0] }, { ...packReport.packages[1], version: "1.0.0-beta.1" }] }, artifactsDir: path.join(temp, "art"), uiDir: temp, failures: split });
+    if (!split.some((f) => f.includes("versions"))) failures.push("releaseRecord accepted two versions");
+  } finally {
+    fs.rmSync(temp, { recursive: true, force: true });
+  }
+
   const validate = validator();
   if (validate({ schema: "scnx.p0-evidence/1" })) failures.push("an incomplete packet validated");
   if (failures.length > 0) {
     console.error(`Evidence self-test failed:\n  ${failures.join("\n  ")}`);
     process.exit(1);
   }
-  console.log("Evidence self-test passed: authority IDs, radar parsing, schema rejection");
+  console.log("Evidence self-test passed: authority IDs, radar parsing, release record, schema rejection");
 }
 
 function main() {

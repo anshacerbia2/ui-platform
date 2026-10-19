@@ -150,6 +150,11 @@ jobs:
         run: node scripts/inspect-packages.mjs --self-test
       - name: Pack and inspect both tarballs
         run: node scripts/inspect-packages.mjs --out artifacts/packages
+      # TDD packaging RC1: a public-API change must update the committed reports.
+      - name: Public-API reports match the tarballs
+        run: |
+          node scripts/api-report.mjs --self-test
+          node scripts/api-report.mjs --packs artifacts/packages --check
       - name: Isolated consumers at both React peer boundaries
         run: node scripts/packed-consumer.mjs --packs artifacts/packages
       # TDD packaging RC5: the same consumers on every other Node.js LTS line in
