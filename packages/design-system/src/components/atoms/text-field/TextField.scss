@@ -1,0 +1,54 @@
+@use "styles/abstracts/variables" as *;
+
+// TDD primitives P15. The boundary uses the strong neutral border; the error
+// state adds the strong danger border, but the error text carries the state,
+// so colour is never its only cue.
+.scnx-text-field {
+  display: flex;
+  flex-direction: column;
+  gap: $dimension-spacing-stack-compact;
+
+  > [data-part="label"] {
+    @include typography(label, default);
+    font-weight: $typography-weight-medium;
+    color: $color-text-primary;
+  }
+
+  > [data-part="description"],
+  > [data-part="error"] {
+    @include typography(body, small);
+    margin: 0;
+  }
+
+  > [data-part="description"] {
+    color: $color-text-secondary;
+  }
+
+  > [data-part="error"] {
+    color: $color-danger-text;
+    font-weight: $typography-weight-medium;
+  }
+
+  > [data-part="input"] {
+    @include typography(body, default);
+    color: $color-text-primary;
+    background: $color-surface-raised;
+    border: $dimension-border-width-default solid $color-border-strong;
+    border-radius: $dimension-radius-control;
+    padding: 0.55rem 0.75rem;
+    transition-property: border-color, box-shadow;
+    transition-duration: $motion-feedback-duration;
+    transition-timing-function: $motion-feedback-easing;
+
+    &:disabled {
+      color: $color-text-disabled;
+      border-color: $color-border-disabled;
+      background: $color-state-disabled;
+      cursor: not-allowed;
+    }
+  }
+
+  &[data-invalid] > [data-part="input"] {
+    border-color: $color-danger-border;
+  }
+}

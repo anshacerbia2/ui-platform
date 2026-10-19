@@ -12,9 +12,10 @@ import { ButtonBase } from "./components/button-base";
 import { NavigationBase } from "./components/navigation-base";
 import { SidebarBaseRoot, SidebarBaseToggle } from "./components/sidebar-base";
 import { TableOfContentsBase } from "./components/table-of-contents-base";
+import { TextFieldBase } from "./components/text-field-base";
 import { TransitionBase } from "./components/transition-base";
 
-const components = { ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle };
+const components = { ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase };
 
 const Page = () => (
   <div>
