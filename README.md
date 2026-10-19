@@ -22,7 +22,9 @@ Use these documents in order:
   by review round.
 
 No other Markdown is kept in this repository: each package has one
-navigation-only README, and the documentation gate rejects any other file.
+navigation-only README, and the documentation gate rejects any other file
+except the public-API reports API Extractor generates under
+`packages/<package>/api/` (SAD-003 section 2.1).
 Source comments cannot override the central architecture, TDDs, PLAN, or
 ROADMAP. Current delivery state belongs
 only in ROADMAP; executable work and commands belong only in PLAN and the
