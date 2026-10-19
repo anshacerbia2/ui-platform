@@ -4,7 +4,7 @@
   "title": "UI Platform P0 evidence packet (TDD packaging R1-R5)",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema", "source", "run", "jobs", "rows", "packages", "architecture", "pendingRatification", "entries", "knownLimits", "result", "failures"],
+  "required": ["schema", "source", "run", "jobs", "rows", "packages", "architecture", "pendingRatification", "entries", "knownLimits", "release", "result", "failures"],
   "definitions": {
     "sha256": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
     "attestation": {
@@ -163,6 +163,29 @@
         "additionalProperties": false,
         "required": ["limit", "absentFromExports"],
         "properties": { "limit": { "type": "string" }, "absentFromExports": { "type": "boolean" } }
+      }
+    },
+    "release": {
+      "description": "TDD packaging RC6. Null previous release, API difference, and rollback target until a version is published.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "supportMatrix", "baselineBrowsers", "apiReports", "deprecations", "previousRelease", "apiDifference", "rollbackTarget", "notPublishedReason"],
+      "properties": {
+        "version": { "type": ["string", "null"] },
+        "supportMatrix": { "type": ["object", "null"] },
+        "baselineBrowsers": { "type": ["object", "null"], "additionalProperties": { "type": "string" } },
+        "apiReports": {
+          "type": "array",
+          "items": { "type": "object", "additionalProperties": false, "required": ["file", "sha256"], "properties": { "file": { "type": "string" }, "sha256": { "$ref": "#/definitions/sha256" } } }
+        },
+        "deprecations": {
+          "type": "array",
+          "items": { "type": "object", "additionalProperties": false, "required": ["report", "declaration"], "properties": { "report": { "type": "string" }, "declaration": { "type": ["string", "null"] } } }
+        },
+        "previousRelease": { "type": ["string", "null"] },
+        "apiDifference": { "type": ["object", "null"] },
+        "rollbackTarget": { "type": ["string", "null"] },
+        "notPublishedReason": { "type": ["string", "null"] }
       }
     },
     "result": { "enum": ["pass", "fail"] },
