@@ -16,6 +16,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { gunzipSync } from "node:zlib";
 import { packageDirs, packageEntries } from "./package-entries.mjs";
+import { entryStability } from "./stability.mjs";
 
 const DEPENDENCY_FIELDS = ["dependencies", "peerDependencies", "optionalDependencies", "devDependencies"];
 const ALWAYS_PACKED = /^(package\.json|README(\.md)?|LICENSE(\.md|\.txt)?)$/i;
@@ -326,6 +327,9 @@ function packAndInspect(outDir) {
   }
 
   failures.push(...releaseVersionFindings(report.packages));
+  // TDD primitives P13: one stability record per public entry.
+  const inventory = JSON.parse(fs.readFileSync(path.resolve("packages/core-ui/behavior-inventory.json"), "utf8"));
+  failures.push(...entryStability(report, inventory).failures);
   fs.writeFileSync(path.join(outDir, "pack-report.json"), `${JSON.stringify(report, null, 2)}\n`);
   if (failures.length > 0) {
     console.error(failures.join("\n"));

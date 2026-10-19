@@ -24,6 +24,7 @@ import { fileURLToPath } from "node:url";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 import { packageDirOf } from "./package-entries.mjs";
+import { entryStability } from "./stability.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const SCHEMA = JSON.parse(fs.readFileSync(path.join(here, "evidence", "schema.json"), "utf8"));
@@ -231,11 +232,9 @@ export function buildPacket({ artifactsDir, jobs, architectureDir, uiDir, source
 
   // Entry stability and known limits (TDD packaging R5).
   const inventory = JSON.parse(fs.readFileSync(path.join(uiDir, "packages", "core-ui", "behavior-inventory.json"), "utf8"));
-  const stabilityByEntry = new Map(inventory.primitives.map((p) => [p.entry, p.stability]));
-  const entries = packReport.packages.flatMap((pkg) => Object.keys(pkg.environments).map((subpath) => {
-    const entry = `${pkg.name}${subpath.slice(1)}`;
-    return { entry, stability: stabilityByEntry.get(entry) ?? "unclassified" };
-  }));
+  const stability = entryStability(packReport, inventory);
+  failures.push(...stability.failures);
+  const entries = stability.entries;
   const anyRowFailed = rows.some((r) => r.result === "fail");
   for (const e of entries) if (e.stability === "stable" && anyRowFailed) failures.push(`${e.entry} is stable while a P0 row failed`);
   const knownLimits = KNOWN_LIMITS.map(({ limit, check }) => {
@@ -353,13 +352,21 @@ function selfTest() {
     fs.rmSync(temp, { recursive: true, force: true });
   }
 
+  // P13: one stability record per public entry.
+  const pack = { packages: [{ name: "@x/a", environments: { "./one": "server-safe", "./two": "client-only" } }] };
+  const covered = entryStability(pack, { primitives: [{ entry: "@x/a/one", stability: "candidate" }], entries: [{ entry: "@x/a/two", stability: "candidate", kind: "hook" }] });
+  if (covered.failures.length > 0 || covered.entries.some((e) => e.stability === "unclassified")) failures.push(`entryStability covered: ${JSON.stringify(covered)}`);
+  if (entryStability(pack, { primitives: [{ entry: "@x/a/one", stability: "candidate" }] }).failures.length !== 1) failures.push("entryStability accepted an unclassified entry");
+  if (entryStability(pack, { primitives: [], entries: [{ entry: "@x/a/one" }, { entry: "@x/a/two" }, { entry: "@x/a/gone" }] }).failures.length !== 1) failures.push("entryStability accepted a record for a non-public entry");
+  if (entryStability(pack, { primitives: [{ entry: "@x/a/one" }], entries: [{ entry: "@x/a/one" }, { entry: "@x/a/two" }] }).failures.length !== 1) failures.push("entryStability accepted a duplicate record");
+
   const validate = validator();
   if (validate({ schema: "scnx.p0-evidence/1" })) failures.push("an incomplete packet validated");
   if (failures.length > 0) {
     console.error(`Evidence self-test failed:\n  ${failures.join("\n  ")}`);
     process.exit(1);
   }
-  console.log("Evidence self-test passed: authority IDs, radar parsing, release record, schema rejection");
+  console.log("Evidence self-test passed: authority IDs, radar parsing, entry stability, release record, schema rejection");
 }
 
 function main() {

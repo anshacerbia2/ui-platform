@@ -242,6 +242,21 @@ per-request nonce policy with zero violations and two negative controls (TDD
 packaging S4, pending exact-commit ratification). L2 is removed only when its
 owner states so for the merged commit.
 
+L4 evidence, 2026-10-19: every public entry of both packages has exactly one
+stability record (TDD primitives P13, pending exact-commit ratification); all
+44 are `candidate`, because no stable release is authorized and no Component
+ACR exists. The inspector and the evidence packet fail on a public entry
+without a record. L4 is removed only when its owner states so for the merged
+commit.
+
+Sequence deviations after the exit, recorded as facts: the release-contract
+implementation merged before the revisions it implements were ratified,
+although TDD packaging RC1–RC6 state that implementation follows ratification
+(STD-UIP-ENG-001 2.1.0 candidate `d67a02e`, TDD packaging candidate
+`f9b6941`): RC3 and RC5 in #60, the browser engines of RC5 in #61, and RC1 and
+RC6 in #62. #62 also ended the daily CI failures that began on 2026-10-08
+(tinypool and source-map-js advisories in development dependencies).
+
 Obligations from D2 that are not liens of this decision: the `tsup` successor
 record (due 2026-11-01, GDC-004 section 2.2), and the trial reviews ending
 2026-12-31.
