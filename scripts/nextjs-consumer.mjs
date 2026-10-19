@@ -180,6 +180,8 @@ import { CodeShowcase } from "@scnx/system/components/code-showcase";
 import { EdgeLayout } from "@scnx/system/components/edge-layout";
 import { FloatingLayout } from "@scnx/system/components/floating-layout";
 import { Sidebar, SidebarProvider } from "@scnx/system/components/sidebar";
+import { TextFieldBase } from "@scnx/core-ui/components/text-field-base";
+import { TextField } from "@scnx/system/components/text-field";
 
 const ItemState = () => <span>{useDisclosureItem().open ? "open" : "closed"}</span>;
 
@@ -263,6 +265,8 @@ export function Island() {
           <EdgeLayout.Content>Edge layout content</EdgeLayout.Content>
         </EdgeLayout>
       </SidebarProvider>
+      <TextFieldBase label="Base email" description="Base hint" />
+      <TextField label="Email" type="email" error="Enter an email address" />
       <SidebarProvider activePath="#people">
         <FloatingLayout>
           <FloatingLayout.Sidebar><Nav /></FloatingLayout.Sidebar>

@@ -15,10 +15,11 @@ export type FixtureComponents = {
   TableOfContentsBase: C;
   SidebarBaseRoot: C;
   SidebarBaseToggle: C;
+  TextFieldBase: C;
 };
 
 export function BehaviorFixtures({ components }: { components: FixtureComponents }): ReactElement {
-  const { ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle } = components;
+  const { ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase } = components;
   const [pressed, setPressed] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   return (
@@ -64,6 +65,9 @@ export function BehaviorFixtures({ components }: { components: FixtureComponents
         <SidebarBaseRoot id="inventory-sidebar" isOpen={sidebarOpen} aria-label="Inventory sidebar">
           <SidebarBaseToggle label="Collapse sidebar" controls="inventory-sidebar" isOpen={sidebarOpen} onClick={() => setSidebarOpen((o) => !o)} />
         </SidebarBaseRoot>
+      </div>
+      <div data-inventory="TextFieldBase">
+        <TextFieldBase id="inventory-email" label="Email" type="email" description="We send the payslip here." error="Enter an email address" />
       </div>
     </div>
   );

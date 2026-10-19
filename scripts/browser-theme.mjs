@@ -58,6 +58,7 @@ import { AccordionBase } from "@scnx/core-ui/components/accordion-base";
 import { NavigationBase } from "@scnx/core-ui/components/navigation-base";
 import { TableOfContentsBase } from "@scnx/core-ui/components/table-of-contents-base";
 import { SidebarBaseRoot, SidebarBaseToggle } from "@scnx/core-ui/components/sidebar-base";
+import { TextFieldBase } from "@scnx/core-ui/components/text-field-base";
 import { BehaviorFixtures } from "./behavior-fixtures.tsx";
 
 const Toggle = ({ id }) => {
@@ -85,7 +86,7 @@ export const App = () => (
     <ThemeProvider themeId="achromatic" defaultMode="light" storage={false}><Toggle id="second" /></ThemeProvider>
     {/* Server-rendered: its markup carries no style attribute (TDD theme THM-009). */}
     <div data-behavior-matrix="">
-      <BehaviorFixtures components={{ ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle }} />
+      <BehaviorFixtures components={{ ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase }} />
     </div>
   </main>
 );

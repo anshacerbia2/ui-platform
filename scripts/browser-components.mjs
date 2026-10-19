@@ -41,6 +41,7 @@ const FOCUSABLE = {
   "CodeSelect input": ".scnx-code-select__input",
   "Navigation item": ".scnx-navigation__item",
   "TableOfContents link": ".scnx-toc__link",
+  "TextField input": ".scnx-text-field input",
 };
 
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), "scnx-browser-components-"));
@@ -68,6 +69,7 @@ import { CodeShowcase } from "@scnx/system/components/code-showcase";
 import { CodeSelect } from "@scnx/system/components/code-select";
 import { Navigation } from "@scnx/system/components/navigation";
 import { TableOfContents } from "@scnx/system/components/table-of-contents";
+import { TextField } from "@scnx/system/components/text-field";
 
 const modes = ${JSON.stringify(["light", "dark"])};
 const themes = ${JSON.stringify(themes)};
@@ -79,6 +81,7 @@ const set = () => h("div", null,
   h(CodeSelect, { options: [{ id: "ts", title: "TypeScript" }], value: "ts", onChange: () => {} }),
   h(Navigation, null, h(Navigation.Group, null, h(Navigation.Item, { href: "#nav" }, h(Navigation.Text, null, "Dashboard")))),
   h(TableOfContents, { items: [{ id: "intro", title: "Intro", url: "#intro" }] }),
+  h(TextField, { label: "Email", description: "Work address", error: "Enter an email address" }),
 );
 const roots = themes.flatMap((theme) => modes.map((mode) =>
   h("div", { "data-scnx-theme": theme, "data-scnx-resolved-mode": mode, "data-fixture-root": theme + "/" + mode }, set())));

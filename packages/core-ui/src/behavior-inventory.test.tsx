@@ -13,6 +13,7 @@ import { ButtonBase } from "./components/button-base";
 import { NavigationBase } from "./components/navigation-base";
 import { SidebarBaseRoot, SidebarBaseToggle } from "./components/sidebar-base";
 import { TableOfContentsBase } from "./components/table-of-contents-base";
+import { TextFieldBase } from "./components/text-field-base";
 
 type Part = { name: string; element: string; selector: string };
 type Key = { key: string; part: string; condition: string; effect: string; expect?: { part: string; attribute: string; value: string } };
@@ -36,7 +37,7 @@ const inventory = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../behavio
 };
 
 // Interactive entries of @scnx/core-ui that must have a record.
-const INTERACTIVE = ["ButtonBase", "AccordionBase", "NavigationBase", "TableOfContentsBase", "SidebarBase"];
+const INTERACTIVE = ["ButtonBase", "AccordionBase", "NavigationBase", "TableOfContentsBase", "SidebarBase", "TextFieldBase"];
 
 const KEYS: { [key: string]: string } = { Enter: "{Enter}", Space: " ", Tab: "{Tab}" };
 
@@ -67,6 +68,7 @@ describe("behavior inventory", () => {
           TableOfContentsBase,
           SidebarBaseRoot,
           SidebarBaseToggle,
+          TextFieldBase,
         }}
       />,
     );

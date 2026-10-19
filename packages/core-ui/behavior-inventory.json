@@ -97,6 +97,26 @@
       "focus": { "initial": "none", "movement": "native Tab order", "restoration": "flyout Escape returns focus to its opener" },
       "accessibleName": "toggle label prop (required, localized by the consumer)",
       "dataHooks": ["data-state"]
+    },
+    {
+      "name": "TextFieldBase",
+      "entry": "@scnx/core-ui/components/text-field-base",
+      "stability": "candidate",
+      "root": "div",
+      "parts": [
+        { "name": "label", "element": "label", "selector": "[data-inventory='TextFieldBase'] [data-part='label']" },
+        { "name": "description", "element": "p", "selector": "[data-inventory='TextFieldBase'] [data-part='description']" },
+        { "name": "input", "element": "input", "selector": "[data-inventory='TextFieldBase'] [data-part='input']" },
+        { "name": "error", "element": "p", "selector": "[data-inventory='TextFieldBase'] [data-part='error']" }
+      ],
+      "controlledProps": ["value"],
+      "states": ["default", "invalid", "disabled", "required"],
+      "keys": [
+        { "key": "Tab", "part": "input", "condition": "error present", "effect": "focus reaches the native input, which reports the error state", "expect": { "part": "input", "attribute": "aria-invalid", "value": "true" } }
+      ],
+      "focus": { "initial": "none", "movement": "native Tab order", "restoration": "none" },
+      "accessibleName": "label prop, a visible native label (required, localized by the consumer)",
+      "dataHooks": ["data-part", "data-invalid", "data-disabled"]
     }
   ],
   "entries": [
@@ -138,6 +158,7 @@
     { "entry": "@scnx/system/components/stack", "stability": "candidate", "kind": "presentational" },
     { "entry": "@scnx/system/components/table-of-contents", "stability": "candidate", "kind": "interactive" },
     { "entry": "@scnx/system/components/text", "stability": "candidate", "kind": "presentational" },
+    { "entry": "@scnx/system/components/text-field", "stability": "candidate", "kind": "interactive" },
     { "entry": "@scnx/system/components/transition", "stability": "candidate", "kind": "motion" }
   ]
 }

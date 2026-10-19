@@ -85,6 +85,10 @@
       "types": "./dist/components/text-base/index.d.ts",
       "default": "./dist/components/text-base/index.js"
     },
+    "./components/text-field-base": {
+      "types": "./dist/components/text-field-base/index.d.ts",
+      "default": "./dist/components/text-field-base/index.js"
+    },
     "./components/transition-base": {
       "types": "./dist/components/transition-base/index.d.ts",
       "default": "./dist/components/transition-base/index.js"
