@@ -33,6 +33,10 @@
       "types": "./dist/components/container-base/index.d.ts",
       "default": "./dist/components/container-base/index.js"
     },
+    "./components/dialog-base": {
+      "types": "./dist/components/dialog-base/index.d.ts",
+      "default": "./dist/components/dialog-base/index.js"
+    },
     "./components/disclosure-base": {
       "types": "./dist/components/disclosure-base/index.d.ts",
       "default": "./dist/components/disclosure-base/index.js"

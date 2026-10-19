@@ -1,0 +1,30 @@
+@use "styles/abstracts/variables" as *;
+
+// TDD primitives P16. The dialog stays inside the theme root and renders in
+// the top layer; ::backdrop inherits from it in every browser of the support
+// matrix, so the scrim derives from a token.
+.scnx-dialog {
+  width: min(32rem, calc(100% - 2rem));
+  max-height: calc(100% - 4rem);
+  padding: $dimension-spacing-inset-comfortable;
+  border: $dimension-border-width-default solid $color-border-subtle;
+  border-radius: $dimension-radius-container;
+  background: $color-surface-floating;
+  color: $color-text-primary;
+  box-shadow: $effect-shadow-overlay;
+
+  &::backdrop {
+    background: color-mix(in oklch, $color-shadow-high 55%, transparent);
+  }
+
+  > [data-part="title"] {
+    @include typography(heading, small);
+    margin: 0 0 $dimension-spacing-stack-compact;
+  }
+
+  > [data-part="description"] {
+    @include typography(body, default);
+    color: $color-text-secondary;
+    margin: 0 0 $dimension-spacing-stack-default;
+  }
+}

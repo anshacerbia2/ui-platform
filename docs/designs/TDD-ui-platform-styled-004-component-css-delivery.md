@@ -14,6 +14,12 @@ doc_meta:
 
 # TDD-ui-platform-styled-004: Styled Components and CSS Delivery
 
+> **Revision pending exact-commit ratification.** The native-dialog exception
+> to the overlay portal rule (TDD primitives P16) is pending under GDC-000
+> section 2.6.7; the revision ratified on 2026-10-02 (`773a864`) remains
+> binding until the authorized human authority approves the exact commit
+> containing it.
+
 ## Purpose
 
 Define the exact seam between headless behavior, styled wrappers, token usage,
@@ -128,7 +134,9 @@ entry and excluded from multi-brand/federated support.
 
 ### Portal and scope resolution
 
-Overlay components receive a portal container from the active theme provider.
+Overlay components receive a portal container from the active theme provider,
+except a native `dialog` shown with `showModal()`, which stays inside the theme
+root and renders in the top layer (TDD primitives P16).
 The container is a descendant of the originating theme root. If no valid portal
 container exists, a portal-dependent component fails with a development
 diagnostic and remains outside Stable support; it does not silently mount under

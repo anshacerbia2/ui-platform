@@ -10,13 +10,15 @@ import { describe, expect, it } from "vitest";
 import { BehaviorFixtures } from "../test/behavior-fixtures";
 import { AccordionBase } from "./components/accordion-base";
 import { ButtonBase } from "./components/button-base";
+import { DialogBase } from "./components/dialog-base";
 import { NavigationBase } from "./components/navigation-base";
 import { SidebarBaseRoot, SidebarBaseToggle } from "./components/sidebar-base";
 import { TableOfContentsBase } from "./components/table-of-contents-base";
 import { TextFieldBase } from "./components/text-field-base";
 
 type Part = { name: string; element: string; selector: string };
-type Key = { key: string; part: string; condition: string; effect: string; expect?: { part: string; attribute: string; value: string } };
+// An expected value of null means the attribute is absent.
+type Key = { key: string; part: string; condition: string; effect: string; expect?: { part: string; attribute: string; value: string | null } };
 type Record = {
   name: string;
   entry: string;
@@ -37,9 +39,9 @@ const inventory = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../behavio
 };
 
 // Interactive entries of @scnx/core-ui that must have a record.
-const INTERACTIVE = ["ButtonBase", "AccordionBase", "NavigationBase", "TableOfContentsBase", "SidebarBase", "TextFieldBase"];
+const INTERACTIVE = ["ButtonBase", "AccordionBase", "NavigationBase", "TableOfContentsBase", "SidebarBase", "TextFieldBase", "DialogBase"];
 
-const KEYS: { [key: string]: string } = { Enter: "{Enter}", Space: " ", Tab: "{Tab}" };
+const KEYS: { [key: string]: string } = { Enter: "{Enter}", Space: " ", Tab: "{Tab}", Escape: "{Escape}" };
 
 describe("behavior inventory", () => {
   it("has a schema-valid record for every interactive primitive", () => {
@@ -69,6 +71,7 @@ describe("behavior inventory", () => {
           SidebarBaseRoot,
           SidebarBaseToggle,
           TextFieldBase,
+          DialogBase,
         }}
       />,
     );
@@ -89,7 +92,9 @@ describe("behavior inventory", () => {
           target.focus();
           await userEvent.keyboard(KEYS[key.key]);
         }
-        expect(part(key.expect.part), `${record.name} ${key.key}: ${key.effect}`).toHaveAttribute(key.expect.attribute, key.expect.value);
+        const message = `${record.name} ${key.key}: ${key.effect}`;
+        if (key.expect.value === null) expect(part(key.expect.part), message).not.toHaveAttribute(key.expect.attribute);
+        else expect(part(key.expect.part), message).toHaveAttribute(key.expect.attribute, key.expect.value);
       }
     });
   }
