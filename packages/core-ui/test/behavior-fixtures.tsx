@@ -17,10 +17,11 @@ export type FixtureComponents = {
   SidebarBaseToggle: C;
   TextFieldBase: C;
   DialogBase: C;
+  TabsBase: C;
 };
 
 export function BehaviorFixtures({ components }: { components: FixtureComponents }): ReactElement {
-  const { ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase, DialogBase } = components;
+  const { ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase, DialogBase, TabsBase } = components;
   const [pressed, setPressed] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -80,6 +81,18 @@ export function BehaviorFixtures({ components }: { components: FixtureComponents
           <DialogBase.Description>The run and its payslips are removed.</DialogBase.Description>
           <DialogBase.Close>Cancel</DialogBase.Close>
         </DialogBase>
+      </div>
+      <div data-inventory="TabsBase">
+        <TabsBase id="inventory-tabs" defaultValue="pay">
+          <TabsBase.List aria-label="Employee">
+            <TabsBase.Tab value="pay">Pay</TabsBase.Tab>
+            <TabsBase.Tab value="leave">Leave</TabsBase.Tab>
+            <TabsBase.Tab value="tax">Tax</TabsBase.Tab>
+          </TabsBase.List>
+          <TabsBase.Panel value="pay">Pay panel</TabsBase.Panel>
+          <TabsBase.Panel value="leave">Leave panel</TabsBase.Panel>
+          <TabsBase.Panel value="tax">Tax panel</TabsBase.Panel>
+        </TabsBase>
       </div>
     </div>
   );

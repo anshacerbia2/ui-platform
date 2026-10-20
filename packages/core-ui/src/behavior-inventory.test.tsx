@@ -11,6 +11,7 @@ import { BehaviorFixtures } from "../test/behavior-fixtures";
 import { AccordionBase } from "./components/accordion-base";
 import { ButtonBase } from "./components/button-base";
 import { DialogBase } from "./components/dialog-base";
+import { TabsBase } from "./components/tabs-base";
 import { NavigationBase } from "./components/navigation-base";
 import { SidebarBaseRoot, SidebarBaseToggle } from "./components/sidebar-base";
 import { TableOfContentsBase } from "./components/table-of-contents-base";
@@ -39,9 +40,9 @@ const inventory = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../behavio
 };
 
 // Interactive entries of @scnx/core-ui that must have a record.
-const INTERACTIVE = ["ButtonBase", "AccordionBase", "NavigationBase", "TableOfContentsBase", "SidebarBase", "TextFieldBase", "DialogBase"];
+const INTERACTIVE = ["ButtonBase", "AccordionBase", "NavigationBase", "TableOfContentsBase", "SidebarBase", "TextFieldBase", "DialogBase", "TabsBase"];
 
-const KEYS: { [key: string]: string } = { Enter: "{Enter}", Space: " ", Tab: "{Tab}", Escape: "{Escape}" };
+const KEYS: { [key: string]: string } = { Enter: "{Enter}", Space: " ", Tab: "{Tab}", Escape: "{Escape}", ArrowRight: "{ArrowRight}", ArrowLeft: "{ArrowLeft}", Home: "{Home}", End: "{End}" };
 
 describe("behavior inventory", () => {
   it("has a schema-valid record for every interactive primitive", () => {
@@ -72,6 +73,7 @@ describe("behavior inventory", () => {
           SidebarBaseToggle,
           TextFieldBase,
           DialogBase,
+          TabsBase,
         }}
       />,
     );
