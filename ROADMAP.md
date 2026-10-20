@@ -1,6 +1,6 @@
 # UI Platform roadmap
 
-Status: **ratified architecture and TDD baseline; P0 exited with liens on 2026-10-03**.
+Status: **ratified architecture and TDD baseline; P0 exited with liens on 2026-10-03 (L2 and L4 removed 2026-10-20); phase 3 in progress**.
 
 The architecture repository owns architecture and governance. The five
 [TDDs](docs/designs/) own local component design. [PLAN.md](PLAN.md) owns work
@@ -12,7 +12,7 @@ gates.
 | 0. Architecture and TDD baseline | Complete    | 2026-10-02  | Mature PAD-PLT-003 and SAD-003; five implementation-ready TDDs; one plan; one roadmap; review records separated by round                                                                               | Both repositories pass documentation/governance gates; human authority approves the exact ratification commits; no duplicate UI architecture authority remains |
 | 1. Deterministic bootstrap       | Complete    | 2026-10-09  | Repaired Panda prepare resolution and required clean-install CI job                                                                                                                                    | A clean checkout passes `pnpm install --frozen-lockfile` with scripts enabled, no bypass flag, and no lockfile mutation                                        |
 | 2. P0 repair and evidence        | Complete    | 2026-10-30  | Source tests, packed consumers, corrected tokens/CSS/provider/primitives, security evidence, strict-CSP standalone fixture, conditional federation evaluation, and the component workshop (PLAN W1–W2) | Every applicable P0 PLAN row passes against exact commits and artifacts; failed capabilities remain outside stable exports                                     |
-| 3. Reference slice and beta      | Not started | 2026-11-20  | Four-component reference slice, repeatable release pipeline, named consumer pilots, migration/support evidence                                                                                         | Source, packed, SSR/RSC, CSP, accessibility, visual, localization, performance, provenance, migration, and rollback gates pass for the supported scope         |
+| 3. Reference slice and beta      | In progress | 2026-11-20  | Four-component reference slice, repeatable release pipeline, named consumer pilots, migration/support evidence                                                                                         | Source, packed, SSR/RSC, CSP, accessibility, visual, localization, performance, provenance, migration, and rollback gates pass for the supported scope         |
 | 4. Stable release                | Not started | 2026-12-04  | Versioned packages and operating model                                                                                                                                                                 | Human release authority accepts exact-version evidence and at least one real consumer completes migration and rollback rehearsal                               |
 
 Phase evidence:
@@ -29,6 +29,12 @@ Phase evidence:
   Board and UI Platform Lead): go with liens L1–L4, for evidence packet
   `1263488f…` (main `6d030a9`, run `37050521714`, attested). Record:
   [P0 exit review](docs/reviews/2026-10-02-p0-exit-review.md), "Exit decision".
+- **Phase 3 (in progress):** the four-component reference slice exists as
+  `candidate` entries (Button; TextField, Dialog, and Tabs in #64–#66;
+  right-to-left Tabs in #70), each through the source, packed, SSR/RSC, CSP,
+  accessibility (three engines), and visual gates; the P1 release contract is
+  implemented (#60–#62). Remaining: the repeatable release pipeline (needs lien
+  L3), named consumer pilots, performance, and migration and rollback evidence.
 
 ## Non-negotiable boundaries
 

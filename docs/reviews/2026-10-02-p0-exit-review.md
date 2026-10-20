@@ -187,6 +187,27 @@ Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
 ("As ARB and UI Platform Lead, I ratify 8f441b5 (SAD-003) and fb59328 (TDD
 packaging) with their CI evidence, as of 2026-10-03.")
 
+Fifth ratification, appended 2026-10-20: the release contract, the control
+boundary, the generated API reports, and the TDD revisions of the release
+contract implementation and the reference slice.
+
+| Repository            | Ratified revision                                                                 | Candidate commit (ratified)                | Merge commit | Pull request | CI at candidate and merge                       |
+| :-------------------- | :-------------------------------------------------------------------------------- | :----------------------------------------- | :----------- | :----------- | :---------------------------------------------- |
+| scnehaux-architecture | STD-UIP-ENG-001 2.1.0 (release contract)                                          | `d67a02e81213c7b0e3d148023391ed3d4f231608` | `2bcd8e1`    | #56          | Linter passed                                   |
+| scnehaux-architecture | SAD-003 (generated API reports); STD-UIP-TKN-001 2.2.0 (control boundary at 3:1)  | `a93e28ff198dc842fd59f5c9df8fcc886407323b` | `1fe4a45`    | #98          | Linter passed                                   |
+| ui-platform           | TDD packaging (S4, V4, V7, RC1–RC6, C2), primitives (P13–P17), styled, and tokens | `bc332cb6d1dc45c8c63139c32eb9d56160c57ae0` | `13349de`    | #68          | CI, Chromatic, and P0 evidence workflows passed |
+
+Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+2026-10-20: "Saya, sebagai ARB dan UI Platform Lead, meratifikasi d67a02e
+(STD-UIP-ENG-001 2.1.0), a93e28f (SAD-003 + STD-UIP-TKN-001 2.2.0), dan bc332cb
+(TDD packaging, primitives, styled, tokens) beserta bukti CI-nya, per
+2026-10-20." ("As ARB and UI Platform Lead, I ratify d67a02e (STD-UIP-ENG-001
+2.1.0), a93e28f (SAD-003 + STD-UIP-TKN-001 2.2.0), and bc332cb (TDD packaging,
+primitives, styled, tokens) with their CI evidence, as of 2026-10-20.") The TDD packaging text
+at `bc332cb` includes the revisions of the earlier candidate `f9b6941`, which
+therefore needs no separate statement. The
+right-to-left revision of P17 (#70) came after `bc332cb` and remains pending.
+
 ## D2 recommendation: `oklch`
 
 Appended 2026-10-02. The `oklch` trial ended on 2026-08-01 with no recorded
