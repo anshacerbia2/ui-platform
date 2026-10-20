@@ -14,12 +14,6 @@ doc_meta:
 
 # TDD-ui-platform-packaging-001: Build and Published Package Contract
 
-> **Revision pending exact-commit ratification.** A registry fact found on
-> 2026-10-20 that contradicts RC3 is recorded after the release-contract table;
-> the revision ratified on 2026-10-20 (`1f852e9`) remains binding until the
-> authorized human authority approves the exact commit containing these
-> changes.
-
 ## Purpose
 
 Turn the extracted workspace into two reproducible, independently installable

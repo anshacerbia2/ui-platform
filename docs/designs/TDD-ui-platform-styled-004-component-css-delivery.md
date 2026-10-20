@@ -14,12 +14,6 @@ doc_meta:
 
 # TDD-ui-platform-styled-004: Styled Components and CSS Delivery
 
-> **Revision pending exact-commit ratification.** Two compatibility facts
-> under "Rollout and Compatibility" are pending under GDC-000 section 2.6.7; the
-> revision ratified on 2026-10-20 (`bc332cb`) remains binding until the
-> authorized human authority approves the exact commit containing these
-> changes.
-
 ## Purpose
 
 Define the exact seam between headless behavior, styled wrappers, token usage,
