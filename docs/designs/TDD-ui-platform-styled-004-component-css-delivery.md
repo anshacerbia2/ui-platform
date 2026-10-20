@@ -9,16 +9,10 @@ doc_meta:
   parent_sad: SAD-003
   review_cycle_days: 30
   created_date: 2026-09-28
-  last_reviewed: 2026-10-02
+  last_reviewed: 2026-10-20
 ---
 
 # TDD-ui-platform-styled-004: Styled Components and CSS Delivery
-
-> **Revision pending exact-commit ratification.** The native-dialog exception
-> to the overlay portal rule (TDD primitives P16) is pending under GDC-000
-> section 2.6.7; the revision ratified on 2026-10-02 (`773a864`) remains
-> binding until the authorized human authority approves the exact commit
-> containing it.
 
 ## Purpose
 

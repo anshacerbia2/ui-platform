@@ -9,16 +9,10 @@ doc_meta:
   parent_sad: SAD-003
   review_cycle_days: 30
   created_date: 2026-09-28
-  last_reviewed: 2026-09-29
+  last_reviewed: 2026-10-20
 ---
 
 # TDD-ui-platform-tokens-003: Theme and Token Output
-
-> **Revision pending exact-commit ratification.** The control-boundary contrast
-> rule and the light neutral step 8 change (STD-UIP-TKN-001 2.2.0) are pending
-> under GDC-000 section 2.6.7; the revision ratified on 2026-10-02 (`773a864`)
-> remains binding until the authorized human authority approves the exact
-> commit containing it.
 
 ## Purpose
 

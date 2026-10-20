@@ -9,16 +9,10 @@ doc_meta:
   parent_sad: SAD-003
   review_cycle_days: 30
   created_date: 2026-09-28
-  last_reviewed: 2026-10-03
+  last_reviewed: 2026-10-20
 ---
 
 # TDD-ui-platform-packaging-001: Build and Published Package Contract
-
-> **Revision pending exact-commit ratification.** The TurboSnap externals in
-> decision C2 are pending under GDC-000 section 2.6.7; candidate `f9b6941`
-> awaits ratification, and the revision ratified on 2026-10-03 (`fb59328`)
-> remains binding until the authorized human authority approves the exact
-> commit containing these changes.
 
 ## Purpose
 
