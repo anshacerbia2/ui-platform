@@ -14,6 +14,12 @@ doc_meta:
 
 # TDD-ui-platform-tokens-003: Theme and Token Output
 
+> **Revision pending exact-commit ratification.** The decision record "display
+> paths of out-of-gamut colors" (G1–G3) is pending under GDC-000 section 2.6.7;
+> the revision ratified on 2026-10-20 (`bc332cb`) remains binding until the
+> authorized human authority approves the exact commit containing these
+> changes.
+
 ## Purpose
 
 Define one deterministic token pipeline that implements the centrally governed
@@ -156,7 +162,24 @@ calculation. The neutral strong border in its default state is the boundary of
 controls with no other visual indicator, such as text inputs, and is tested at
 3:1 against every declared neutral surface (STD-UIP-TKN-001 2.2.0, WCAG 2.2 SC
 1.4.11); on 2026-10-20 the light neutral step 8 moved from L 0.64 to 0.63 to
-meet it (minimum 3.11:1, from 2.99:1). P3 values include a declared fallback and are tested on both paths.
+meet it (minimum 3.11:1, from 2.99:1). A color outside sRGB is tested on every
+display path, as decided below.
+
+#### Decision record: display paths of out-of-gamut colors
+
+How STD-UIP-TKN-001 revision 2.3.0 ("Semantic Usage Doctrine") is implemented in
+`scripts/tokens/color.mjs`. On 2026-10-20, 94 token names lie outside sRGB; the
+`default` theme stylesheet holds 41 distinct such values.
+
+| ID  | Decision                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Sources                  | Tradeoff                                                                                                                                                                                                                                                                           |
+| :-- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| G1  | No fallback value is declared for a color outside sRGB. Every supported browser parses `oklch()` (Baseline Widely available since 2025-11-09 [3]; `support-matrix.json` is Baseline Widely available on 2026-10-03), and the browser's own gamut handling is the fallback.                                                                                                                                                                                                                                                                                                                       | STD-UIP-TKN-001 [5]; [3] | No `@media (color-gamut: p3)` or `@supports` duplicate is emitted, so the CSS stays one declaration per token. What a display actually shows is then the browser's choice, which G2 tests.                                                                                         |
+| G2  | Contrast is evaluated on four display paths: sRGB clipped, sRGB gamut mapped with the CSS Color 4 algorithm, Display P3 clipped, and Display P3 gamut mapped. The lowest ratio counts, and a finding names its path. CSS Color 4 specifies gamut mapping for an RGB display or a unorm8 canvas [1]. Painted into a 2D canvas on 2026-10-20, Chromium 153 and Firefox 155 clipped instead: of the 41 values of the `default` stylesheet, 14 (Chromium) and 15 (Firefox) matched the clipped color more closely and at most 1 the mapped color, with an OKLCH lightness difference of up to 0.013. | STD-UIP-TKN-001 [3]; [1] | The spec and the engines disagree, so the gate tests both. The canvas measures a script-visible surface, not the display pipeline itself, which no script can read [1]. WebKit was not measured on this server.                                                                    |
+| G3  | Alpha colors are composited in the gamma-encoded space of each path, and relative luminance is taken in that path's color space [2]; for an sRGB color every path gives the same ratio.                                                                                                                                                                                                                                                                                                                                                                                                          | STD-UIP-TKN-001 [4]; [2] | WCAG defines the sRGB formula and asks authors to evaluate in sRGB "Unless it is known that another color space will be used" [2]; the P3 paths extend the same definition to a P3 display. Where a browser composites in another space, the composited ratio can differ slightly. |
+
+On 2026-10-20 all 2,376 contrast cases pass on every path. A color that passes
+only when gamut mapped now fails: `oklch(0.66 0.3 105)` on white is 3.05:1
+mapped and 2.99:1 clipped, a unit-test case.
 
 ## Configuration
 
@@ -233,7 +256,6 @@ consumer migration, and promote an exact digest with human authority.
 
 - Does an independent token-only consumer justify a third package after v1?
 - Which DTCG version and resolver behavior passes full output parity?
-- Which P3 fallback policy meets the declared browser support matrix?
 
 These are bounded future decisions; v1 remains Sass-source with generated
 multi-format outputs until evidence closes them.
@@ -245,3 +267,21 @@ STD-GLB-FE-005/009 and STD-UIP-TKN-001/002. Lifecycle status in
 `scnehaux-architecture` controls authority. Execution:
 [PLAN](../../PLAN.md) P0 rows 4 and 11. Related designs: packaging, CSS delivery,
 and theme runtime.
+
+References (retrieved 2026-10-20):
+
+1. W3C, CSS Color Module Level 4, "Gamut Mapping" and "CSS Gamut Mapping to an
+   RGB Destination", at csswg-drafts commit
+   `160a00acff045d99796606f502812c9462e110e2`, cited in STD-UIP-TKN-001 [3]:
+   out-of-gamut values "must be converted to an in-gamut color" for a display;
+   the CSS algorithms apply to "an RGB display" and "a canvas, with unorm8
+   backing store"; its test annotation says "Actual values of color are not
+   exposed to script, making this hard to test in an automated manner."
+2. W3C, WCAG 2.2, definition "relative luminance", at w3c/wcag commit
+   `457cece22d8219be32d29c5c1313e71aa6b61eae`, cited in STD-UIP-TKN-001 [4]:
+   "the relative brightness of any point in a colorspace, normalized to 0 for
+   darkest black and 1 for lightest white"; "Unless it is known that another
+   color space will be used to process and display the content, authors should
+   evaluate using sRGB colorspace."
+3. web-features 3.43.0, feature `oklab`, cited in STD-UIP-TKN-001 [5]:
+   `baseline_high_date` 2025-11-09, covering `css.types.color.oklch`.
