@@ -50,6 +50,8 @@ export const ROWS = [
     reports: ["packed-packages/imports-report.json", "packed-packages/security/audit-report.json", "packed-packages/security/license-report.json", "packed-packages/sbom-report.json"],
   },
   { row: "W1-W2", title: "Component workshop", jobs: ["Storybook tests", "Chromatic visual review"], reports: [] },
+  // PLAN P3; STD-UIP-ENG-001 3.3. Comparative evidence: no value is a gate (TDD packaging PF5).
+  { row: "P3-payload", title: "Payload and runtime measurements", jobs: ["Packed consumer"], reports: ["packed-packages/performance-report.json"] },
 ];
 
 // Unsupported capabilities (TDD packaging R5): each must stay absent.

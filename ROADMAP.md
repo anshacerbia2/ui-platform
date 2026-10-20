@@ -33,8 +33,10 @@ Phase evidence:
   `candidate` entries (Button; TextField, Dialog, and Tabs in #64–#66;
   right-to-left Tabs in #70), each through the source, packed, SSR/RSC, CSP,
   accessibility (three engines), and visual gates; the P1 release contract is
-  implemented (#60–#62). Remaining: the repeatable release pipeline (needs lien
-  L3), named consumer pilots, performance, and migration and rollback evidence.
+  implemented (#60–#62); payload and runtime measurements run on every change
+  as comparative evidence (TDD packaging PF1–PF6). Remaining: the repeatable
+  release pipeline (needs lien L3), named consumer pilots with approved
+  budgets, interaction traces, and migration and rollback evidence.
 
 ## Non-negotiable boundaries
 
