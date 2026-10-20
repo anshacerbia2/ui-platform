@@ -93,6 +93,16 @@ export function BehaviorFixtures({ components }: { components: FixtureComponents
           <TabsBase.Panel value="leave">Leave panel</TabsBase.Panel>
           <TabsBase.Panel value="tax">Tax panel</TabsBase.Panel>
         </TabsBase>
+        <div dir="rtl">
+          <TabsBase id="inventory-tabs-rtl" defaultValue="one">
+            <TabsBase.List aria-label="RTL">
+              <TabsBase.Tab value="one">One</TabsBase.Tab>
+              <TabsBase.Tab value="two">Two</TabsBase.Tab>
+            </TabsBase.List>
+            <TabsBase.Panel value="one">One panel</TabsBase.Panel>
+            <TabsBase.Panel value="two">Two panel</TabsBase.Panel>
+          </TabsBase>
+        </div>
       </div>
     </div>
   );

@@ -59,6 +59,22 @@ export const Manual: Story = {
   },
 };
 
+/** Right-to-left: Left moves to the next tab (React Aria's behavior); the vertical list mirrors. */
+export const RightToLeft: Story = {
+  render: () => (
+    <div dir="rtl">
+      <Employee />
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.tab();
+    await userEvent.keyboard("{ArrowLeft}");
+    await expect(canvas.getByRole("tab", { name: "Leave" })).toHaveFocus();
+    await expect(canvas.getByRole("tab", { name: "Leave" })).toHaveAttribute("aria-selected", "true");
+  },
+};
+
 /** Vertical: Up and Down move; the list carries aria-orientation. */
 export const Vertical: Story = {
   render: () => <Employee orientation="vertical" />,

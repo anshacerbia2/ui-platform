@@ -25,7 +25,8 @@ const panelId = (baseId: string, value: string) => `${baseId}-panel-${idPart(val
  * TabsBase - tabs after the APG Tabs pattern (TDD primitives P17).
  *
  * Roving focus: only the selected tab is in the Tab sequence; arrow keys
- * (Left/Right, or Up/Down when vertical) move between enabled tabs and wrap,
+ * (Left/Right, flipped in right-to-left text, or Up/Down when vertical) move
+ * between enabled tabs and wrap,
  * Home and End jump to the ends. Activation is automatic by default; panels
  * stay rendered and hidden.
  *
@@ -61,8 +62,11 @@ const TabsBaseRoot = ({ value, defaultValue, onValueChange, activation = "automa
   );
 };
 
+// In right-to-left text, Left moves to the next tab and Right to the previous
+// one; Up and Down never flip (TDD primitives P17).
 const KEYS = {
-  horizontal: { previous: "ArrowLeft", next: "ArrowRight" },
+  ltr: { previous: "ArrowLeft", next: "ArrowRight" },
+  rtl: { previous: "ArrowRight", next: "ArrowLeft" },
   vertical: { previous: "ArrowUp", next: "ArrowDown" },
 } as const;
 
@@ -75,7 +79,8 @@ const TabsBaseList = ({ onKeyDown, ...props }: TabsBaseListProps): ReactElement 
     const tabs = [...event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="tab"]:not(:disabled)')];
     const current = tabs.indexOf(event.target as HTMLButtonElement);
     if (current === -1) return;
-    const keys = KEYS[orientation];
+    // :dir() reads the HTML directionality, set by any dir attribute above.
+    const keys = orientation === "vertical" ? KEYS.vertical : event.currentTarget.matches(":dir(rtl)") ? KEYS.rtl : KEYS.ltr;
     let next: number;
     if (event.key === keys.next) next = (current + 1) % tabs.length;
     else if (event.key === keys.previous) next = (current - 1 + tabs.length) % tabs.length;
