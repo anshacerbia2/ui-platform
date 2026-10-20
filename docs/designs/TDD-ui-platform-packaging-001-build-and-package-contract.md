@@ -14,6 +14,12 @@ doc_meta:
 
 # TDD-ui-platform-packaging-001: Build and Published Package Contract
 
+> **Revision pending exact-commit ratification.** The decision record "payload
+> and runtime evidence" (PF1–PF6, PLAN P3) is pending under GDC-000 section
+> 2.6.7; the revision ratified on 2026-10-20 (`bc332cb`) remains binding until
+> the authorized human authority approves the exact commit containing these
+> changes.
+
 ## Purpose
 
 Turn the extracted workspace into two reproducible, independently installable
@@ -322,6 +328,28 @@ size (raw/minified/gzip/Brotli), parse/evaluation cost, and fixture startup for
 the exact toolchain and runner. Thresholds are approved per scenario; this TDD
 defines no universal byte, percentage, or multiplier budget.
 
+Build time and declaration peak memory are recorded by the build job (PLAN P0
+row 2). Everything else is recorded as below.
+
+#### Decision record: payload and runtime evidence (PLAN P3)
+
+How the measurements of STD-UIP-ENG-001 section 3.3 (revision 2.2.0) are
+taken. `scripts/performance.mjs` runs in the packed-consumer job and writes
+`performance-report.json`, which the evidence packet carries.
+
+| ID  | Decision                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Sources                               | Tradeoff                                                                                                                                                                                                                                                                                                                                                                                                |
+| :-- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| PF1 | Scenarios, each rendered inside a `ThemeProvider`: one per reference-slice component (Button; TextField; Dialog, closed, with its opening Button; Tabs), a layout (EdgeLayout with Navbar and a three-item Sidebar in its `SidebarProvider`), and a representative page (the layout holding Heading, Text, Tabs, TextField, Dialog, and Button). Every public JavaScript entry is also measured whole (`export *`).                                                                                                     | STD-UIP-ENG-001 3.3; [51]             | The provider's cost is inside every single-component number, because no component renders themed without it; a consumer pays it once. A whole entry defeats tree shaking [51], so it bounds the worst case rather than describing a typical import.                                                                                                                                                     |
+| PF2 | The consumer bundler is the workspace's pinned esbuild: ESM, browser platform, `process.env.NODE_ENV` defined as `"production"` in every build, and `react`, `react-dom`, and their subpaths external [51]. React and React DOM are measured in a separate bundle, so a scenario's bytes are its incremental cost.                                                                                                                                                                                                      | STD-UIP-ENG-001 3.3 (1); [51]         | esbuild defines `NODE_ENV` as production only when every minification option is on [51], so the unminified build defines it explicitly. Consumers on webpack, Rollup, or Vite minify differently; the numbers compare releases of this harness and do not forecast every bundler.                                                                                                                       |
+| PF3 | Sizes: raw (the unminified bundle), minified (the parsed size [52]), gzip at level 9, and Brotli at quality 11, both from `node:zlib` at their maximum [53]. Stylesheets are minified with esbuild's CSS minifier; fonts are reported as published (WOFF2 is already compressed); each package reports its tarball and installed bytes.                                                                                                                                                                                 | STD-UIP-ENG-001 3.3 (2); [52]–[54]    | Maximum levels describe a precompressed static file; a server that compresses on the fly at a lower level sends more bytes [53]. gzip and Brotli are the encodings in general use [54].                                                                                                                                                                                                                 |
+| PF4 | Timing, in every engine of `support-matrix.json`: after React loads, `performance.now()` around `import()` of the scenario (fetch over loopback, parse, compile, evaluate) and around its first render in `flushSync`. Each sample is a fresh browser context; scenarios alternate within a round; 9 rounds by default. The report keeps every sample and its median, the engine versions, the runner's CPU and memory, and whether the page was cross-origin isolated, which it serves for 5 µs timer resolution [58]. | STD-UIP-ENG-001 3.3 (3, 4); [55]–[58] | Execution time, not bytes, dominates script cost [55][56], so it is timed. A GitHub-hosted runner is a shared virtual machine, which Lighthouse advises against for stable timing [57]; keeping every sample and comparing medians is the mitigation. No CPU throttling is applied, so the times are desktop-class, not phone-class. The render time is React's commit; style and layout are not in it. |
+| PF5 | No value is a gate. The job fails only when a measurement is missing (STD-UIP-ENG-001 "Fail closed"); the report is a row of the evidence packet and a table in the job summary. A budget is approved per scenario as PLAN "consumer budget" requires [59].                                                                                                                                                                                                                                                             | STD-UIP-ENG-001 3.3 (5); PLAN; [59]   | A regression does not block a merge until a budget exists; reviewers see it in the job summary. Blocking on an unapproved threshold would be the universal budget PLAN rules out.                                                                                                                                                                                                                       |
+| PF6 | The release record (RC6) carries the performance report of the released tarballs. From the second release on, it lists each scenario's difference from the previous release's report; the first release's report is the baseline.                                                                                                                                                                                                                                                                                       | STD-UIP-ENG-001 3.3 (5); RC6          | The comparison waits for the release pipeline (lien L3); until then, the report on `main` is the only record.                                                                                                                                                                                                                                                                                           |
+
+Not decided here: interaction traces for dynamic-height transitions (STD-UIP-ENG-001
+section 3.3, second item) and consumer install time on a warm store. The
+install time in the report includes registry fetches for React.
+
 ## Security Notes
 
 The dependency gate evaluates the resolved lockfile/SBOM, including React,
@@ -449,7 +477,7 @@ Architecture authority: SAD-003; ADR-GLB-FE-010 through -013;
 ADR-UIP-PLT-001, ADR-UIP-BLD-001, and proposed ADR-UIP-WKS-001; STD-GLB-FE-002/003/006/007/008 and
 STD-UIP-ENG-001. Lifecycle status in `scnehaux-architecture` determines whether
 each record is binding or proposed. Execution: [PLAN](../../PLAN.md) P0 rows
-0–3 and 8–11. Related designs: tokens, styled CSS, theme runtime, and primitives.
+0–3 and 8–11; P3 payload and runtime evidence (PF1–PF6). Related designs: tokens, styled CSS, theme runtime, and primitives.
 
 References (retrieved 2026-10-02):
 
@@ -755,3 +783,45 @@ References (retrieved 2026-10-02):
     `fetch-retry-maxtimeout` (60000 ms), at npm/cli commit
     `b317f16c80df02ea3628cfa77170d5ae9b59720c`:
     <https://github.com/npm/cli/blob/b317f16c80df02ea3628cfa77170d5ae9b59720c/workspaces/config/lib/definitions/definitions.js>.
+51. esbuild API documentation, "External", "Tree shaking", and "Minify":
+    <https://esbuild.github.io/api/> (retrieved 2026-10-20; esbuild 0.28.2 is
+    the pinned root devDependency). "You can mark a file or a package as
+    external to exclude it from your build"; "Tree shaking is the term the
+    JavaScript community uses for dead code elimination, a common compiler
+    optimization that automatically removes unreachable code"; "NODE_ENV
+    expressions are automatically defined to "production" if all
+    minification options are enabled and "development" otherwise."
+52. webpack-bundle-analyzer, README at commit
+    `0ebe1e5e0625692251faf4505dad53a75c14e869`, cited in STD-UIP-ENG-001 [9].
+    "parsed": "This is the "output" size of your files. If you're using a
+    Webpack plugin such as Uglify, then this value will reflect the minified
+    size of your code."
+53. Node.js 24, `zlib` documentation at commit
+    `0d10bfe3cb961ef997490f5c060bd1466b5affea`, cited in STD-UIP-ENG-001 [11]:
+    "the speed/memory/compression tradeoffs involved in `zlib` usage"; levels
+    `Z_BEST_SPEED` to `Z_BEST_COMPRESSION`; Brotli quality "Ranges from
+    `BROTLI_MIN_QUALITY` to `BROTLI_MAX_QUALITY`".
+54. MDN, Compression in HTTP, at mdn/content commit
+    `7b8a3c0a4ab5b4b0c605641e8b64c8da42d8dd51`, cited in STD-UIP-ENG-001 [10]:
+    "Nowadays, only two are relevant: `gzip`, the most common one, and `br`
+    the new challenger."
+55. V8, The cost of JavaScript in 2019, at v8.dev commit
+    `031a6578036da033a0c3fb728ec58527345336b6`, cited in STD-UIP-ENG-001 [12]:
+    "In 2019, the dominant costs of processing scripts are now download and
+    CPU execution time."
+56. Size Limit, README at commit `3deb55962bb7f4ad4167bd2bb3e04f3f6549370e`,
+    cited in STD-UIP-ENG-001 [13]: "Time is a much more accurate and
+    understandable metric compared to the size in bytes."
+57. Lighthouse, `docs/variability.md` at commit
+    `8cbac2d085f0fc8f4da2089e7e8e822076179f9e`, cited in STD-UIP-ENG-001 [14]:
+    "use aggregate values like the median, 90th percentile, or even min/max
+    instead of single test results"; "Avoid "burstable" or "shared-core"
+    instance types".
+58. MDN, `Performance: now()` method, at mdn/content commit
+    `7b8a3c0a4ab5b4b0c605641e8b64c8da42d8dd51`:
+    <https://github.com/mdn/content/blob/7b8a3c0a4ab5b4b0c605641e8b64c8da42d8dd51/files/en-us/web/api/performance/now/index.md>.
+    "Resolution in isolated contexts: 5 microseconds"; "Resolution in
+    non-isolated contexts: 100 microseconds".
+59. web.dev, Performance budgets 101, cited in STD-UIP-ENG-001 [15]: "A
+    performance budget is a set of limits imposed on metrics that affect site
+    performance."
