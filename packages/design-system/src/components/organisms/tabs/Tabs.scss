@@ -1,7 +1,8 @@
 @use "styles/abstracts/variables" as *;
 
 // TDD primitives P17. The selected tab carries a 2px indicator and a heavier
-// weight, so colour is not its only cue.
+// weight, so colour is not its only cue. Sides are logical, so a vertical list
+// mirrors in right-to-left text.
 .scnx-tabs {
   display: flex;
   flex-direction: column;
@@ -20,7 +21,7 @@
   &[data-orientation="vertical"] [data-part="list"] {
     flex-direction: column;
     border-bottom: 0;
-    border-right: $dimension-border-width-default solid $color-border-subtle;
+    border-inline-end: $dimension-border-width-default solid $color-border-subtle;
   }
 
   [data-part="tab"] {
@@ -57,11 +58,11 @@
     text-align: start;
     border-bottom: 0;
     margin-bottom: 0;
-    border-right: $dimension-border-width-strong solid transparent;
-    margin-right: calc(-1 * #{$dimension-border-width-default});
+    border-inline-end: $dimension-border-width-strong solid transparent;
+    margin-inline-end: calc(-1 * #{$dimension-border-width-default});
 
     &[aria-selected="true"] {
-      border-right-color: $color-primary-default;
+      border-inline-end-color: $color-primary-default;
     }
   }
 

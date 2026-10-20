@@ -81,6 +81,19 @@ describe("TabsBase (TDD primitives P17)", () => {
     expect(tab("Leave")).toHaveFocus();
   });
 
+  it("flips Left and Right in right-to-left text, not Up and Down", async () => {
+    render(
+      <div dir="rtl">
+        <Employee />
+      </div>,
+    );
+    tab("Pay").focus();
+    await userEvent.keyboard("{ArrowLeft}");
+    expect(tab("Leave")).toHaveFocus();
+    await userEvent.keyboard("{ArrowRight}");
+    expect(tab("Pay")).toHaveFocus();
+  });
+
   it("with manual activation, moves focus without selecting until Enter or Space", async () => {
     render(<Employee activation="manual" />);
     tab("Pay").focus();

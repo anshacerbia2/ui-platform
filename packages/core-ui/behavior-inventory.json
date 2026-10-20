@@ -152,7 +152,9 @@
         { "name": "first", "element": "button", "selector": "[data-inventory='TabsBase'] [data-value='pay']" },
         { "name": "second", "element": "button", "selector": "[data-inventory='TabsBase'] [data-value='leave']" },
         { "name": "last", "element": "button", "selector": "[data-inventory='TabsBase'] [data-value='tax']" },
-        { "name": "first-panel", "element": "div", "selector": "[data-inventory='TabsBase'] [role='tabpanel'][id$='-panel-pay']" }
+        { "name": "first-panel", "element": "div", "selector": "[data-inventory='TabsBase'] [role='tabpanel'][id$='-panel-pay']" },
+        { "name": "rtl-first", "element": "button", "selector": "[data-inventory='TabsBase'] [dir='rtl'] [data-value='one']" },
+        { "name": "rtl-second", "element": "button", "selector": "[data-inventory='TabsBase'] [dir='rtl'] [data-value='two']" }
       ],
       "controlledProps": ["value"],
       "states": ["selected", "unselected", "disabled"],
@@ -161,7 +163,8 @@
         { "key": "End", "part": "second", "condition": "focused", "effect": "focus moves to the last tab, which is selected", "expect": { "part": "last", "attribute": "aria-selected", "value": "true" } },
         { "key": "ArrowRight", "part": "last", "condition": "focused on the last tab", "effect": "wraps to the first tab", "expect": { "part": "first", "attribute": "aria-selected", "value": "true" } },
         { "key": "ArrowLeft", "part": "first", "condition": "focused on the first tab", "effect": "wraps to the last tab", "expect": { "part": "last", "attribute": "tabindex", "value": "0" } },
-        { "key": "Home", "part": "last", "condition": "focused", "effect": "focus moves to the first tab, which is selected; its panel is shown", "expect": { "part": "first-panel", "attribute": "hidden", "value": null } }
+        { "key": "Home", "part": "last", "condition": "focused", "effect": "focus moves to the first tab, which is selected; its panel is shown", "expect": { "part": "first-panel", "attribute": "hidden", "value": null } },
+        { "key": "ArrowLeft", "part": "rtl-first", "condition": "focused, right-to-left text", "effect": "Left moves to the next tab, which is selected", "expect": { "part": "rtl-second", "attribute": "aria-selected", "value": "true" } }
       ],
       "focus": { "initial": "the selected tab (roving tabindex)", "movement": "arrow keys between enabled tabs, wrapping; Home and End", "restoration": "none" },
       "accessibleName": "TabsBase.List aria-label or aria-labelledby; each tab by its text; each panel by its tab",
