@@ -308,6 +308,14 @@ fixture, TDD packaging S4); `8509ad2` is the merge of #63 (one stability record
 per public entry, TDD primitives P13). Open liens: L1 (license policy, due
 2026-11-20) and L3 (package storage and signing, before stable).
 
+L3 recommendation, 2026-10-20: proposed ADR-UIP-REL-001 in
+`scnehaux-architecture` (#101) recommends the public npm registry under the
+existing `@scnx` scope with trusted publishing and provenance, a `2.0.0` release
+line (because `@scnx/core-ui@1.0.0` was published in 2025), and, before the first
+publish, a second organization-controlled Owner of the `@scnx` organization and
+required two-factor authentication. L3 stays open until the ADR is accepted and
+its release workflow runs.
+
 Sequence deviations after the exit, recorded as facts: the release-contract
 implementation merged before the revisions it implements were ratified,
 although TDD packaging RC1–RC6 state that implementation follows ratification

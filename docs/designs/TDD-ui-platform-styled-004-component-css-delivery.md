@@ -14,6 +14,12 @@ doc_meta:
 
 # TDD-ui-platform-styled-004: Styled Components and CSS Delivery
 
+> **Revision pending exact-commit ratification.** Two compatibility facts
+> under "Rollout and Compatibility" are pending under GDC-000 section 2.6.7; the
+> revision ratified on 2026-10-20 (`bc332cb`) remains binding until the
+> authorized human authority approves the exact commit containing these
+> changes.
+
 ## Purpose
 
 Define the exact seam between headless behavior, styled wrappers, token usage,
@@ -108,8 +114,10 @@ Public styling consists of:
 
 Private Sass class structure and generated Panda class names are not public.
 Consumers may override through the final `overrides` layer and documented
-tokens/parts only. A single-brand `:root` compatibility asset is a separate
-entry and excluded from multi-brand/federated support.
+tokens/parts only. A single-brand `:root` compatibility asset, which
+ADR-UIP-PLT-001 permits, is not shipped in v1; a single-brand document passes
+`root={document.documentElement}` to `ThemeProvider` instead, which puts the
+theme attributes on `html`.
 
 ## Algorithms / Logic
 
@@ -222,6 +230,18 @@ and duplicate ownership, introduce canonical layers/scopes, assemble the
 aggregate asset, and prove packed consumers. Then run the dual-engine decision
 gate before Stable promotion. Baseline private class names receive no aliases;
 documented parts and assets become the v1 compatibility boundary.
+
+The baseline Sidebar read ten undocumented custom properties. STD-GLB-FE-005
+section 3.2 prohibits them ("Custom properties in shared and application styles
+are either `--ds-*` tokens or documented Tier-3 aliases; ad-hoc custom properties
+are prohibited"), the style gate enforces it, and they were removed: `--sidebar-width`,
+`--layout-sidebar-width`, `--sidebar-bg-color`, `--sidebar-group-header-color`,
+`--sidebar-item-color`, `--sidebar-item-hover-bg`, `--sidebar-item-hover-color`,
+`--sidebar-item-active-bg`, `--sidebar-item-active-color`, and
+`--sidebar-item-active-weight`. They receive no aliases, like the private class
+names. A consumer that set them overrides the Sidebar through the `overrides`
+layer or a Tier-3 alias (STD-UIP-TKN-001, "Tier-3 Alias Governance"), and the
+migration evidence of a pilot (PLAN P3) lists any such use.
 
 ## Open Questions
 

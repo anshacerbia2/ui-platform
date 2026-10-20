@@ -14,6 +14,12 @@ doc_meta:
 
 # TDD-ui-platform-packaging-001: Build and Published Package Contract
 
+> **Revision pending exact-commit ratification.** A registry fact found on
+> 2026-10-20 that contradicts RC3 is recorded after the release-contract table;
+> the revision ratified on 2026-10-20 (`1f852e9`) remains binding until the
+> authorized human authority approves the exact commit containing these
+> changes.
+
 ## Purpose
 
 Turn the extracted workspace into two reproducible, independently installable
@@ -433,6 +439,16 @@ enforced. Implementation follows ratification of that revision.
 | RC5 | A root `support-matrix.json` records, for the release, the Baseline date (`baseline widely available on <date>`), the Node.js LTS lines, the TypeScript range, and the React peer range. CI reads it: the browser fixtures run in Chromium, Firefox, and WebKit; the packed consumer runs its server rendering on each listed Node.js line and type-checks against the lowest and highest listed TypeScript; the evidence packet records the browser versions the query resolves to.                                                                                                        | STD-UIP-ENG-001 3.5 (5); [49]            | Playwright "can run tests on Chromium, WebKit and Firefox browsers" [49]; the browser fixtures run Chromium only today, so the other two engines are new CI cost and may expose differences. One file keeps the declared matrix and the tested matrix the same.                                                                                                           |
 | RC6 | The release record is part of the evidence packet: version, support matrix, stability per entry, the public-API difference (RC1), deprecations (RC4), and the rollback target. Before a stable release, the packed consumer installs the release, then the rollback target, and passes on both.                                                                                                                                                                                                                                                                                             | STD-UIP-ENG-001 3.5 (6); ROADMAP phase 4 | Rollback rehearses the previous immutable pair, never a rebuilt one; the first stable release has no previous stable pair, so its rollback target is the last beta.                                                                                                                                                                                                       |
 
+Registry fact, 2026-10-20: `1.0.0` is not "never-published" for
+`@scnx/core-ui`. The `@scnx` scope on the public npm registry already holds
+`@scnx/core-ui@1.0.0` (published 2025-11-28, its `latest`) and
+`@scnx/design-system` and `@scnx/ui` 1.0.0–1.0.2. npm never reuses a version, so
+a stable `1.0.0` cannot be published there, and the packed peer range
+`^1.0.0-beta.0` already resolves to the 2025 package. RC3 stays binding until a
+decision changes it: proposed ADR-UIP-REL-001 (lien L3) moves the line to
+`2.0.0-beta.N` and `2.0.0`, and STD-UIP-ENG-001 section 3.5 (3) and RC3 are
+revised only after its acceptance. Until then nothing is published.
+
 ## Operational Notes
 
 Runbooks cover clean-install failure, build-memory regression, corrupt artifact,
@@ -458,6 +474,8 @@ classified before removal.
 - Which CJS consumers, if any, justify maintaining CJS output?
 - What exact React peer range passes both package and SSR/RSC fixtures?
 - Which registry/provenance implementation will Developer Platform provide?
+  Until it does, proposed ADR-UIP-REL-001 recommends the public npm registry
+  with trusted publishing (lien L3).
 - Is federation authorized by an owning system after its assessment passes?
 - Which dependency licenses are acceptable, and which require legal review
   (V4)?
