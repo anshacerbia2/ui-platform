@@ -14,6 +14,12 @@ doc_meta:
 
 # TDD-ui-platform-tokens-003: Theme and Token Output
 
+> **Revision pending exact-commit ratification.** The control-boundary contrast
+> rule and the light neutral step 8 change (STD-UIP-TKN-001 2.2.0) are pending
+> under GDC-000 section 2.6.7; the revision ratified on 2026-10-02 (`773a864`)
+> remains binding until the authorized human authority approves the exact
+> commit containing it.
+
 ## Purpose
 
 Define one deterministic token pipeline that implements the centrally governed
@@ -152,7 +158,11 @@ motion, and z-index) and require a valid computed value.
 
 Contrast evaluates named semantic pairs and all interaction states against
 their actual resolved background. Alpha colors are composited before contrast
-calculation. P3 values include a declared fallback and are tested on both paths.
+calculation. The neutral strong border in its default state is the boundary of
+controls with no other visual indicator, such as text inputs, and is tested at
+3:1 against every declared neutral surface (STD-UIP-TKN-001 2.2.0, WCAG 2.2 SC
+1.4.11); on 2026-10-20 the light neutral step 8 moved from L 0.64 to 0.63 to
+meet it (minimum 3.11:1, from 2.99:1). P3 values include a declared fallback and are tested on both paths.
 
 ## Configuration
 
