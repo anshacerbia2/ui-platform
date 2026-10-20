@@ -85,6 +85,10 @@
       "types": "./dist/components/table-of-contents-base/index.d.ts",
       "default": "./dist/components/table-of-contents-base/index.js"
     },
+    "./components/tabs-base": {
+      "types": "./dist/components/tabs-base/index.d.ts",
+      "default": "./dist/components/tabs-base/index.js"
+    },
     "./components/text-base": {
       "types": "./dist/components/text-base/index.d.ts",
       "default": "./dist/components/text-base/index.js"

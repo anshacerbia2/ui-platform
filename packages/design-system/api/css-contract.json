@@ -68,6 +68,7 @@
         "scnx-sidebar__header",
         "scnx-sidebar__navigation",
         "scnx-sidebar__toggle",
+        "scnx-tabs",
         "scnx-text-field",
         "scnx-toc",
         "scnx-toc__item",

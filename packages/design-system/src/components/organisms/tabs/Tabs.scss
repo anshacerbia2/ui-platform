@@ -1,0 +1,72 @@
+@use "styles/abstracts/variables" as *;
+
+// TDD primitives P17. The selected tab carries a 2px indicator and a heavier
+// weight, so colour is not its only cue.
+.scnx-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: $dimension-spacing-stack-default;
+
+  &[data-orientation="vertical"] {
+    flex-direction: row;
+  }
+
+  [data-part="list"] {
+    display: flex;
+    gap: $dimension-spacing-inline-compact;
+    border-bottom: $dimension-border-width-default solid $color-border-subtle;
+  }
+
+  &[data-orientation="vertical"] [data-part="list"] {
+    flex-direction: column;
+    border-bottom: 0;
+    border-right: $dimension-border-width-default solid $color-border-subtle;
+  }
+
+  [data-part="tab"] {
+    @include typography(label, default);
+    padding: 0.55rem 0.9rem;
+    border: 0;
+    border-bottom: $dimension-border-width-strong solid transparent;
+    margin-bottom: calc(-1 * #{$dimension-border-width-default});
+    background: transparent;
+    color: $color-text-secondary;
+    cursor: pointer;
+    transition-property: color, border-color, background-color;
+    transition-duration: $motion-feedback-duration;
+    transition-timing-function: $motion-feedback-easing;
+
+    &:hover:not(:disabled) {
+      background: $color-state-hover;
+      color: $color-text-primary;
+    }
+
+    &[aria-selected="true"] {
+      color: $color-text-primary;
+      font-weight: $typography-weight-semibold;
+      border-bottom-color: $color-primary-default;
+    }
+
+    &:disabled {
+      color: $color-text-disabled;
+      cursor: not-allowed;
+    }
+  }
+
+  &[data-orientation="vertical"] [data-part="tab"] {
+    text-align: start;
+    border-bottom: 0;
+    margin-bottom: 0;
+    border-right: $dimension-border-width-strong solid transparent;
+    margin-right: calc(-1 * #{$dimension-border-width-default});
+
+    &[aria-selected="true"] {
+      border-right-color: $color-primary-default;
+    }
+  }
+
+  [data-part="panel"] {
+    @include typography(body, default);
+    color: $color-text-primary;
+  }
+}

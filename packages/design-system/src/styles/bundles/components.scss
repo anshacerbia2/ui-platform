@@ -34,4 +34,5 @@
   @include meta.load-css("components/organisms/navigation/Navigation");
   @include meta.load-css("components/organisms/sidebar/Sidebar");
   @include meta.load-css("components/organisms/table-of-contents/TableOfContents");
+  @include meta.load-css("components/organisms/tabs/Tabs");
 }

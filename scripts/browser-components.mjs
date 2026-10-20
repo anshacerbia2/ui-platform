@@ -42,6 +42,7 @@ const FOCUSABLE = {
   "Navigation item": ".scnx-navigation__item",
   "TableOfContents link": ".scnx-toc__link",
   "TextField input": ".scnx-text-field input",
+  "Tabs selected tab": ".scnx-tabs [role=tab][aria-selected=true]",
 };
 
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), "scnx-browser-components-"));
@@ -70,6 +71,7 @@ import { CodeSelect } from "@scnx/system/components/code-select";
 import { Navigation } from "@scnx/system/components/navigation";
 import { TableOfContents } from "@scnx/system/components/table-of-contents";
 import { TextField } from "@scnx/system/components/text-field";
+import { Tabs } from "@scnx/system/components/tabs";
 
 const modes = ${JSON.stringify(["light", "dark"])};
 const themes = ${JSON.stringify(themes)};
@@ -82,6 +84,7 @@ const set = () => h("div", null,
   h(Navigation, null, h(Navigation.Group, null, h(Navigation.Item, { href: "#nav" }, h(Navigation.Text, null, "Dashboard")))),
   h(TableOfContents, { items: [{ id: "intro", title: "Intro", url: "#intro" }] }),
   h(TextField, { label: "Email", description: "Work address", error: "Enter an email address" }),
+  h(Tabs, { defaultValue: "a" }, h(Tabs.List, { "aria-label": "Sections" }, h(Tabs.Tab, { value: "a" }, "A"), h(Tabs.Tab, { value: "b" }, "B")), h(Tabs.Panel, { value: "a", tabIndex: -1 }, "Panel A"), h(Tabs.Panel, { value: "b", tabIndex: -1 }, "Panel B")),
 );
 const roots = themes.flatMap((theme) => modes.map((mode) =>
   h("div", { "data-scnx-theme": theme, "data-scnx-resolved-mode": mode, "data-fixture-root": theme + "/" + mode }, set())));

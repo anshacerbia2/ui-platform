@@ -184,6 +184,8 @@ import { TextFieldBase } from "@scnx/core-ui/components/text-field-base";
 import { TextField } from "@scnx/system/components/text-field";
 import { DialogBase } from "@scnx/core-ui/components/dialog-base";
 import { Dialog } from "@scnx/system/components/dialog";
+import { TabsBase } from "@scnx/core-ui/components/tabs-base";
+import { Tabs } from "@scnx/system/components/tabs";
 
 const ItemState = () => <span>{useDisclosureItem().open ? "open" : "closed"}</span>;
 
@@ -272,6 +274,18 @@ export function Island() {
       <DialogBase open={false} onOpenChange={() => {}}>
         <DialogBase.Title>Base dialog</DialogBase.Title>
       </DialogBase>
+      <TabsBase defaultValue="a">
+        <TabsBase.List aria-label="Base tabs">
+          <TabsBase.Tab value="a">A</TabsBase.Tab>
+        </TabsBase.List>
+        <TabsBase.Panel value="a">Base panel</TabsBase.Panel>
+      </TabsBase>
+      <Tabs defaultValue="a">
+        <Tabs.List aria-label="Styled tabs">
+          <Tabs.Tab value="a">A</Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panel value="a">Styled panel</Tabs.Panel>
+      </Tabs>
       <Dialog open={false} onOpenChange={() => {}}>
         <Dialog.Title>Styled dialog</Dialog.Title>
         <Dialog.Close>Close</Dialog.Close>

@@ -90,6 +90,10 @@
       "types": "./dist/components/table-of-contents/index.d.ts",
       "default": "./dist/components/table-of-contents/index.js"
     },
+    "./components/tabs": {
+      "types": "./dist/components/tabs/index.d.ts",
+      "default": "./dist/components/tabs/index.js"
+    },
     "./components/text": {
       "types": "./dist/components/text/index.d.ts",
       "default": "./dist/components/text/index.js"
