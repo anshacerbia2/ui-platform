@@ -14,11 +14,6 @@ doc_meta:
 
 # TDD-ui-platform-primitives-002: Primitive Behavior and Polymorphism
 
-> **Revision pending exact-commit ratification.** Right-to-left keyboard
-> behavior in decision P17 is pending under GDC-000 section 2.6.7; the revision
-> ratified on 2026-10-20 (`bc332cb`) remains binding until the authorized human
-> authority approves the exact commit containing these changes.
-
 ## Purpose
 
 Define an implementation-ready, style-agnostic contract for `@scnx/core-ui`:
