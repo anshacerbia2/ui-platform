@@ -122,7 +122,10 @@ export function keySetFindings(themes, aliases) {
  * - every text/icon `contrast` token on the `solid` surface of its scheme, per state;
  * - every text/icon `subtle|default|strong` token on the declared neutral surfaces;
  * - every border `focus` token on the declared neutral surfaces, because it
- *   draws the focus indicator (STD-GLB-FE-005 section 3.9, SC 1.4.11).
+ *   draws the focus indicator (STD-GLB-FE-005 section 3.9, SC 1.4.11);
+ * - the neutral `strong` border in its default state on the declared neutral
+ *   surfaces, because it is the boundary of controls with no other visual
+ *   indicator, such as text inputs (STD-UIP-TKN-001 2.2.0, SC 1.4.11).
  * Disabled states are exempt from SC 1.4.3 and 1.4.11 and are not evaluated.
  */
 export function contrastCases(names, config) {
@@ -159,6 +162,12 @@ export function contrastCases(names, config) {
       for (const bg of config.contrast.neutralBackgrounds) {
         cases.push({ rule: "focus-on-neutral-surface", fg, bg, minimum: config.contrast.nonTextMinimum });
       }
+    }
+  }
+  const boundary = "--ds-color-neutral-border-strong-default";
+  if (has(boundary)) {
+    for (const bg of config.contrast.neutralBackgrounds) {
+      cases.push({ rule: "control-boundary-on-neutral-surface", fg: boundary, bg, minimum: config.contrast.nonTextMinimum });
     }
   }
   return cases;
