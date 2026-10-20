@@ -14,12 +14,6 @@ doc_meta:
 
 # TDD-ui-platform-tokens-003: Theme and Token Output
 
-> **Revision pending exact-commit ratification.** The decision record "display
-> paths of out-of-gamut colors" (G1–G3) is pending under GDC-000 section 2.6.7;
-> the revision ratified on 2026-10-20 (`bc332cb`) remains binding until the
-> authorized human authority approves the exact commit containing these
-> changes.
-
 ## Purpose
 
 Define one deterministic token pipeline that implements the centrally governed
