@@ -249,6 +249,15 @@ ACR exists. The inspector and the evidence packet fail on a public entry
 without a record. L4 is removed only when its owner states so for the merged
 commit.
 
+Liens L2 and L4 removed, 2026-10-20. Stated by Ansha Cerbia: "Saya, sebagai
+Packaging Lead, menyatakan lien L2 selesai berdasarkan 6f5169d; sebagai
+Interaction Lead, lien L4 selesai berdasarkan 8509ad2." ("As Packaging Lead, I
+state lien L2 complete based on 6f5169d; as Interaction Lead, lien L4 complete
+based on 8509ad2.") `6f5169d` is the merge of #54 (the Next.js nonce-CSP
+fixture, TDD packaging S4); `8509ad2` is the merge of #63 (one stability record
+per public entry, TDD primitives P13). Open liens: L1 (license policy, due
+2026-11-20) and L3 (package storage and signing, before stable).
+
 Sequence deviations after the exit, recorded as facts: the release-contract
 implementation merged before the revisions it implements were ratified,
 although TDD packaging RC1–RC6 state that implementation follows ratification
