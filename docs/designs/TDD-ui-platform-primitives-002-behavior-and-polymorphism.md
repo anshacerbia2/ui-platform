@@ -9,17 +9,10 @@ doc_meta:
   parent_sad: SAD-003
   review_cycle_days: 30
   created_date: 2026-09-28
-  last_reviewed: 2026-10-02
+  last_reviewed: 2026-10-20
 ---
 
 # TDD-ui-platform-primitives-002: Primitive Behavior and Polymorphism
-
-> **Revision pending exact-commit ratification.** Decisions P13 (one
-> stability record per public entry, lien L4, with its data model), P14 (the
-> reference slice), P15 (TextField), P16 (Dialog), and P17 (Tabs) are pending
-> under GDC-000 section 2.6.7; the revision ratified on 2026-10-02 (`773a864`)
-> remains binding until the authorized human authority approves the exact
-> commit containing it.
 
 ## Purpose
 
