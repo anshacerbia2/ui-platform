@@ -14,12 +14,6 @@ doc_meta:
 
 # TDD-ui-platform-packaging-001: Build and Published Package Contract
 
-> **Revision pending exact-commit ratification.** The decision record "payload
-> and runtime evidence" (PF1–PF6, PLAN P3) is pending under GDC-000 section
-> 2.6.7; the revision ratified on 2026-10-20 (`bc332cb`) remains binding until
-> the authorized human authority approves the exact commit containing these
-> changes.
-
 ## Purpose
 
 Turn the extracted workspace into two reproducible, independently installable
