@@ -208,6 +208,35 @@ at `bc332cb` includes the revisions of the earlier candidate `f9b6941`, which
 therefore needs no separate statement. The
 right-to-left revision of P17 (#70) came after `bc332cb` and remains pending.
 
+Sixth ratification, appended 2026-10-20: the payload and runtime measurement
+method, the sources for scoped theme roots and portals, the display paths of
+out-of-gamut colors, and the TDD revisions that implement them, with the
+right-to-left revision of P17.
+
+| Repository            | Ratified revision                                                  | Candidate commit (ratified)                | Merge commit | Pull request | CI at candidate and merge                       |
+| :-------------------- | :----------------------------------------------------------------- | :----------------------------------------- | :----------- | :----------- | :---------------------------------------------- |
+| scnehaux-architecture | STD-UIP-ENG-001 2.2.0 (payload and runtime method)                 | `5d525f649934de9130591bbac2f30946f115f905` | `3945311`    | #103         | Linter passed                                   |
+| scnehaux-architecture | STD-UIP-STY-001 2.0.1 (sources for scoped theme roots and portals) | `a96a153792377576c598423ad483a0c155fcafd2` | `69276e2`    | #105         | Linter passed                                   |
+| scnehaux-architecture | STD-UIP-TKN-001 2.3.0 (display paths of out-of-gamut colors)       | `1ec951e75b3a118c13d202f2fb877bc278f07a47` | `40cc834`    | #107         | Linter passed                                   |
+| ui-platform           | TDD packaging PF1–PF6; TDD primitives P17 (right-to-left Tabs)     | `1f852e97586a5e0514475d721139ac321d257237` | `ba58d7d`    | #73          | CI, Chromatic, and P0 evidence workflows passed |
+| ui-platform           | TDD tokens G1–G3                                                   | `88a0d232a3b43eeecb888b3764e610737c0b4cb6` | `a662b18`    | #75          | CI, Chromatic, and P0 evidence workflows passed |
+
+Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+2026-10-20: "Saya, sebagai ARB dan UI Platform Lead, meratifikasi 5d525f6,
+a96a153, 1ec951e, 1f852e9, dan 88a0d23 beserta bukti CI-nya, per 2026-10-20."
+("As ARB and UI Platform Lead, I ratify 5d525f6, a96a153, 1ec951e, 1f852e9,
+and 88a0d23 with their CI evidence, as of 2026-10-20.") This ratifies the P17
+revision left pending by the fifth ratification. It does not accept
+ADR-UIP-REL-001, which remains proposed.
+
+Sequence deviation, recorded as a fact: all five candidates were merged before
+this statement (#103, #73, #105, #107, and #75, between their merge and the
+statement on 2026-10-20). From each merge until the statement, `main` showed no
+pending-ratification notice for a revision that was not yet effective; the
+previous revisions (STD-UIP-ENG-001 2.1.0, STD-UIP-STY-001 2.0.0,
+STD-UIP-TKN-001 2.2.0, and `bc332cb` for the TDDs) remained binding in that
+interval.
+
 ## D2 recommendation: `oklch`
 
 Appended 2026-10-02. The `oklch` trial ended on 2026-08-01 with no recorded
