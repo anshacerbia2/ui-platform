@@ -172,6 +172,9 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium firefox webkit
       - name: Packed token stylesheets in a browser
         run: node scripts/browser-tokens.mjs --packs artifacts/packages
+      # TDD tokens G2: evidence of how each engine displays out-of-gamut colors; not a gate on the behavior.
+      - name: Out-of-gamut token colors in each engine (clip or map)
+        run: node scripts/browser-gamut.mjs --packs artifacts/packages
       - name: Packed components in a browser (layers, isolation, focus, forced colors)
         run: node scripts/browser-components.mjs --packs artifacts/packages
       - name: Packed ThemeProvider in a browser (SSR, hydration, isolation, strict CSP)
