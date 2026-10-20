@@ -231,8 +231,10 @@ aggregate asset, and prove packed consumers. Then run the dual-engine decision
 gate before Stable promotion. Baseline private class names receive no aliases;
 documented parts and assets become the v1 compatibility boundary.
 
-The baseline Sidebar read ten undocumented custom properties, which the style
-gate's ban on ad-hoc custom properties removed: `--sidebar-width`,
+The baseline Sidebar read ten undocumented custom properties. STD-GLB-FE-005
+section 3.2 prohibits them ("Custom properties in shared and application styles
+are either `--ds-*` tokens or documented Tier-3 aliases; ad-hoc custom properties
+are prohibited"), the style gate enforces it, and they were removed: `--sidebar-width`,
 `--layout-sidebar-width`, `--sidebar-bg-color`, `--sidebar-group-header-color`,
 `--sidebar-item-color`, `--sidebar-item-hover-bg`, `--sidebar-item-hover-color`,
 `--sidebar-item-active-bg`, `--sidebar-item-active-color`, and
