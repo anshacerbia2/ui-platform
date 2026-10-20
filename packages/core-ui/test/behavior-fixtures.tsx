@@ -16,12 +16,14 @@ export type FixtureComponents = {
   SidebarBaseRoot: C;
   SidebarBaseToggle: C;
   TextFieldBase: C;
+  DialogBase: C;
 };
 
 export function BehaviorFixtures({ components }: { components: FixtureComponents }): ReactElement {
-  const { ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase } = components;
+  const { ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase, DialogBase } = components;
   const [pressed, setPressed] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
   return (
     <div>
       <div data-inventory="ButtonBase">
@@ -68,6 +70,16 @@ export function BehaviorFixtures({ components }: { components: FixtureComponents
       </div>
       <div data-inventory="TextFieldBase">
         <TextFieldBase id="inventory-email" label="Email" type="email" description="We send the payslip here." error="Enter an email address" />
+      </div>
+      <div data-inventory="DialogBase">
+        <button type="button" data-fixture="dialog-trigger" onClick={() => setDialogOpen(true)}>
+          Delete run
+        </button>
+        <DialogBase id="inventory-dialog" open={dialogOpen} onOpenChange={setDialogOpen}>
+          <DialogBase.Title>Delete the payroll run?</DialogBase.Title>
+          <DialogBase.Description>The run and its payslips are removed.</DialogBase.Description>
+          <DialogBase.Close>Cancel</DialogBase.Close>
+        </DialogBase>
       </div>
     </div>
   );

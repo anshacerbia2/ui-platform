@@ -182,6 +182,8 @@ import { FloatingLayout } from "@scnx/system/components/floating-layout";
 import { Sidebar, SidebarProvider } from "@scnx/system/components/sidebar";
 import { TextFieldBase } from "@scnx/core-ui/components/text-field-base";
 import { TextField } from "@scnx/system/components/text-field";
+import { DialogBase } from "@scnx/core-ui/components/dialog-base";
+import { Dialog } from "@scnx/system/components/dialog";
 
 const ItemState = () => <span>{useDisclosureItem().open ? "open" : "closed"}</span>;
 
@@ -267,6 +269,13 @@ export function Island() {
       </SidebarProvider>
       <TextFieldBase label="Base email" description="Base hint" />
       <TextField label="Email" type="email" error="Enter an email address" />
+      <DialogBase open={false} onOpenChange={() => {}}>
+        <DialogBase.Title>Base dialog</DialogBase.Title>
+      </DialogBase>
+      <Dialog open={false} onOpenChange={() => {}}>
+        <Dialog.Title>Styled dialog</Dialog.Title>
+        <Dialog.Close>Close</Dialog.Close>
+      </Dialog>
       <SidebarProvider activePath="#people">
         <FloatingLayout>
           <FloatingLayout.Sidebar><Nav /></FloatingLayout.Sidebar>
