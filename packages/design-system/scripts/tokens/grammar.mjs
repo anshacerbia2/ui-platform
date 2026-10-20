@@ -1,8 +1,10 @@
-// Canonical token grammar, transcribed from STD-UIP-TKN-001 v2.1.0 section 3
-// (scnehaux-architecture af6462e). The standard is the single normative
-// definition; change this file only to follow a ratified revision of it.
+// Canonical token grammar, transcribed from STD-UIP-TKN-001 section 3, which
+// is unchanged from v2.1.0 (scnehaux-architecture af6462e) to the ratified
+// v2.2.0 (a93e28f). The standard is the single normative definition; change
+// this file only to follow a ratified revision of it. STANDARD names the
+// ratified revision the gate is reported against.
 
-export const STANDARD = { id: "STD-UIP-TKN-001", version: "2.1.0", commit: "af6462e" };
+export const STANDARD = { id: "STD-UIP-TKN-001", version: "2.2.0", commit: "a93e28f" };
 
 const SURFACE_STATES = ["default", "hover", "pressed", "selected", "disabled"];
 

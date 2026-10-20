@@ -37,7 +37,7 @@ export const ROWS = [
   { row: "1", title: "Central architecture linter and document contract", jobs: ["Documentation gates", "Central governance linter / Enforce GDC Compliance"], reports: [] },
   { row: "2", title: "Source tests and declaration heap", jobs: ["Source tests", "Build with default heap"], reports: ["build-memory/build-time.txt", "build-memory/build.log"] },
   { row: "3", title: "Packaging and isolated consumers", jobs: ["Packed consumer"], reports: ["packed-packages/pack-report.json", "packed-packages/consumer-report.json"] },
-  { row: "4", title: "Token output", jobs: ["Token gate"], reports: ["token-report/token-report.json"] },
+  { row: "4", title: "Token output", jobs: ["Token gate", "Packed consumer"], reports: ["token-report/token-report.json", "packed-packages/gamut-report.json"] },
   { row: "5", title: "Component CSS delivery", jobs: ["Packed consumer"], reports: ["packed-packages/browser-components-report.json"] },
   { row: "6", title: "Theme provider and transitions", jobs: ["Packed consumer"], reports: ["packed-packages/browser-theme-report.json"] },
   { row: "7", title: "Primitive behavior", jobs: ["Source tests", "Packed consumer"], reports: ["packed-packages/browser-theme-report.json"] },

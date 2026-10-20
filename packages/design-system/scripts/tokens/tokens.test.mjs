@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 import * as sass from "sass";
 import { beforeAll, describe, expect, it } from "vitest";
 import { loadConfig } from "./check.mjs";
-import { contrastRatio, parseColor } from "./color.mjs";
+import { contrastByPath, contrastRatio, parseColor } from "./color.mjs";
 import { consumingProperty, parseTokenName, tokenType } from "./grammar.mjs";
 import { emit, serializeThemes, themeSelector } from "./emit.mjs";
 import { normalize } from "./normalize.mjs";
@@ -224,9 +224,23 @@ describe("theme parity and contrast", () => {
 
   it("computes WCAG ratios and composites alpha on the actual background", () => {
     const white = parseColor("rgb(255 255 255)");
-    expect(contrastRatio(parseColor("rgb(0 0 0)"), white, white)).toBeCloseTo(21, 5);
+    expect(contrastRatio(parseColor("rgb(0 0 0)"), white, white).ratio).toBeCloseTo(21, 5);
     // 50% black on white displays as mid-gray, not black.
-    expect(contrastRatio(parseColor("rgb(0 0 0 / 0.5)"), white, white)).toBeCloseTo(3.95, 1);
+    expect(contrastRatio(parseColor("rgb(0 0 0 / 0.5)"), white, white).ratio).toBeCloseTo(3.95, 1);
+  });
+
+  it("takes the lowest ratio over every display path of an out-of-gamut color", () => {
+    const white = parseColor("rgb(255 255 255)");
+    // Outside sRGB: 3.05:1 when gamut mapped, 2.99:1 when clipped, as Chromium and Firefox display it.
+    const yellow = parseColor("oklch(0.66 0.3 105)");
+    const byPath = Object.fromEntries(contrastByPath(yellow, white, white).map(({ path, ratio }) => [path, ratio]));
+    expect(Object.keys(byPath)).toEqual(["srgb-clip", "srgb-map", "p3-clip", "p3-map"]);
+    expect(byPath["srgb-map"]).toBeGreaterThanOrEqual(3);
+    expect(contrastRatio(yellow, white, white)).toEqual({ path: "srgb-clip", ratio: byPath["srgb-clip"] });
+    expect(byPath["srgb-clip"]).toBeLessThan(3);
+    // An sRGB color displays the same on every path.
+    const ratios = contrastByPath(parseColor("rgb(118 118 118)"), white, white).map(({ ratio }) => ratio);
+    for (const ratio of ratios) expect(ratio).toBeCloseTo(ratios[0], 2);
   });
 
   it("tests every focus border on the neutral surfaces at the non-text minimum", () => {

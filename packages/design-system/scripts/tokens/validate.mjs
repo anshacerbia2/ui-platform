@@ -390,12 +390,12 @@ export function validate({ themes, config, packageDir }) {
           add({ category: "contrast", theme: themeId, mode, token: test.fg, message: `${test.rule}: cannot evaluate; unresolved ${absent.join(", ")}` });
           continue;
         }
-        const ratio = contrastRatio(fg, bg, canvas);
+        const { ratio, path } = contrastRatio(fg, bg, canvas);
         if (ratio < test.minimum) {
           stats.contrastFailures++;
           add({
             category: "contrast", theme: themeId, mode, token: test.fg,
-            message: `${test.rule}: ${ratio.toFixed(2)}:1 on ${test.bg} (minimum ${test.minimum}:1)`,
+            message: `${test.rule}: ${ratio.toFixed(2)}:1 on ${test.bg}, display path ${path} (minimum ${test.minimum}:1)`,
           });
         }
       }
