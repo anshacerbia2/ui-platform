@@ -38,3 +38,13 @@ jobs:
           # the rest at 1/5 of a snapshot; the Free plan pauses testing at
           # 5,000 billed snapshots a month (128 per full build).
           onlyChanged: true
+          # TDD packaging C2: the preview imports the built CSS from dist/, so
+          # TurboSnap cannot trace the sources of that CSS; a change to any of
+          # them rebuilds every story (Chromatic, "Trigger full rebuilds").
+          externals: |
+            packages/design-system/src/**/*.scss
+            packages/design-system/tokens.config.json
+            packages/design-system/styles.config.json
+            packages/design-system/panda.config.ts
+            packages/design-system/scripts/**
+            packages/design-system/assets/**
