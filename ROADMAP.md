@@ -34,9 +34,12 @@ Phase evidence:
   right-to-left Tabs in #70), each through the source, packed, SSR/RSC, CSP,
   accessibility (three engines), and visual gates; the P1 release contract is
   implemented (#60–#62); payload and runtime measurements run on every change
-  as comparative evidence (TDD packaging PF1–PF6). Remaining: the repeatable
-  release pipeline (needs lien L3), named consumer pilots with approved
-  budgets, interaction traces, and migration and rollback evidence.
+  as comparative evidence (TDD packaging PF1–PF6); token contrast is proven on
+  every display path of out-of-gamut colors (TDD tokens G1–G3). Remaining: the
+  repeatable release pipeline (lien L3; registry and version line proposed in
+  ADR-UIP-REL-001, awaiting ARB acceptance), named consumer pilots with approved
+  budgets (no pilot named yet; ADR-IAM-012 keeps identity-experience on local
+  components), interaction traces, and migration and rollback evidence.
 
 ## Non-negotiable boundaries
 

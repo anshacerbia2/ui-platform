@@ -108,5 +108,9 @@ Authority owns any waiver from an applicable enterprise standard.
 - **P3 — beta pilots:** named standalone and, only if separately authorized,
   federated consumers covering localization, bidirectional layout, multi-brand
   isolation, responsive reflow, touch targets, budgets, migration, and support.
+  A pilot installs a published beta, so it waits for the registry decision of
+  lien L3 (proposed ADR-UIP-REL-001). The pilot's migration evidence lists any
+  use of the baseline Sidebar custom properties that v1 removed (TDD styled,
+  "Rollout and Compatibility").
 - **P4 — stable:** exact-version approval, release evidence, and at least one
   real consumer migration and rollback rehearsal.
