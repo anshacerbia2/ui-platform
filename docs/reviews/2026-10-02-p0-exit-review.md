@@ -309,6 +309,23 @@ Sequence deviation, recorded as a fact: the candidate was merged on 2026-10-21
 (#116) before this statement; in that interval STD-UIP-PRM-001 2.0.0 remained
 binding while `main` showed no pending-ratification notice.
 
+Eleventh ratification, appended 2026-10-21: governed values in component
+styles, the ComboboxBase decision, and the governed spacing, typography, and
+pointer-target decisions.
+
+| Repository            | Ratified revision                                     | Candidate commit (ratified)                | Merge commit | Pull request | CI at candidate and merge                       |
+| :-------------------- | :---------------------------------------------------- | :----------------------------------------- | :----------- | :----------- | :---------------------------------------------- |
+| scnehaux-architecture | STD-UIP-STY-001 2.1.0 (governed values)               | `7a2d50091bea745b9608844fc26f7d16f5ef4507` | `104633f`    | #117         | Linter passed                                   |
+| ui-platform           | TDD primitives P18 (ComboboxBase); TDD styled GV4–GV7 | `335fed42e23c6eb72b49ed370b3e0945bc2fff60` | `946529d`    | #87          | CI, Chromatic, and P0 evidence workflows passed |
+
+Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+2026-10-21 before the merges: "Saya, sebagai ARB dan UI Platform Lead,
+meratifikasi 7a2d500 (STD-UIP-STY-001 2.1.0) dan 335fed4 (TDD primitives P18,
+TDD styled GV4–GV7) beserta bukti CI-nya, per 2026-10-21." ("As ARB and UI
+Platform Lead, I ratify 7a2d500 (STD-UIP-STY-001 2.1.0) and 335fed4 (TDD
+primitives P18, TDD styled GV4–GV7) with their CI evidence, as of
+2026-10-21.")
+
 ## D2 recommendation: `oklch`
 
 Appended 2026-10-02. The `oklch` trial ended on 2026-08-01 with no recorded
