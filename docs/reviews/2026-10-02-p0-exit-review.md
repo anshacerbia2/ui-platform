@@ -237,6 +237,24 @@ previous revisions (STD-UIP-ENG-001 2.1.0, STD-UIP-STY-001 2.0.0,
 STD-UIP-TKN-001 2.2.0, and `bc332cb` for the TDDs) remained binding in that
 interval.
 
+Seventh ratification, appended 2026-10-21: the alignment of the TDDs with the
+2026-10-20 findings.
+
+| Repository  | Ratified revision                                                                                                                                                  | Candidate commit (ratified)                | Merge commit | Pull request | CI at candidate and merge                       |
+| :---------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------- | :----------- | :----------- | :---------------------------------------------- |
+| ui-platform | TDD packaging (registry fact under RC3; L3 pointer); TDD styled (removed Sidebar custom properties, traced to STD-GLB-FE-005 section 3.2; unshipped `:root` asset) | `f5281528fb5a33ad4558809ee33ce7e76b3d95ea` | `5507fd2`    | #78          | CI, Chromatic, and P0 evidence workflows passed |
+
+Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+2026-10-21: "Saya, sebagai ARB dan UI Platform Lead, meratifikasi f528152 (TDD
+packaging dan TDD styled) beserta bukti CI-nya, per 2026-10-21." ("As ARB and
+UI Platform Lead, I ratify f528152 (TDD packaging and TDD styled) with their CI
+evidence, as of 2026-10-21.")
+
+Sequence deviation, recorded as a fact: the candidate was merged on 2026-10-20
+(#78) before this statement; from that merge until the statement, `1f852e9`
+(TDD packaging) and `bc332cb` (TDD styled) remained binding while `main` showed
+no pending-ratification notice.
+
 ## D2 recommendation: `oklch`
 
 Appended 2026-10-02. The `oklch` trial ended on 2026-08-01 with no recorded
