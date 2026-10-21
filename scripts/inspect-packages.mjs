@@ -17,6 +17,7 @@ import path from "node:path";
 import { gunzipSync } from "node:zlib";
 import { packageDirs, packageEntries } from "./package-entries.mjs";
 import { entryStability } from "./stability.mjs";
+import { releaseVersionFindings } from "./release-line.mjs";
 
 const DEPENDENCY_FIELDS = ["dependencies", "peerDependencies", "optionalDependencies", "devDependencies"];
 const ALWAYS_PACKED = /^(package\.json|README(\.md)?|LICENSE(\.md|\.txt)?)$/i;
@@ -177,21 +178,6 @@ export function inspectPackage(manifest, files, read, environments = {}) {
   return failures;
 }
 
-// TDD packaging RC3: one version for both packages, and a SemVer 2.0.0
-// pre-release until a stable release is authorized (STD-UIP-ENG-001 3.5).
-const PRERELEASE = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)-((?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*)(?:\.(?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*))*)$/;
-
-/** Findings for the versions of the packed manifests (`[{ name, version }]`). */
-export function releaseVersionFindings(manifests) {
-  const findings = [];
-  const versions = new Set(manifests.map((m) => m.version));
-  if (versions.size > 1) findings.push(`packages carry different versions (${manifests.map((m) => `${m.name}@${m.version}`).join(", ")}); RC3 requires one version`);
-  for (const { name, version } of manifests) {
-    if (!PRERELEASE.test(version ?? "")) findings.push(`${name}@${version}: not a SemVer pre-release; no stable release is authorized (RC3)`);
-  }
-  return findings;
-}
-
 function selfTest() {
   const good = {
     name: "fixture",
@@ -247,10 +233,11 @@ function selfTest() {
   ];
 
   cases.push(
-    ["lockstep pre-release", releaseVersionFindings([{ name: "a", version: "1.0.0-beta.0" }, { name: "b", version: "1.0.0-beta.0" }]), null],
-    ["different versions", releaseVersionFindings([{ name: "a", version: "1.0.0-beta.0" }, { name: "b", version: "1.0.0-beta.1" }]), "different versions"],
-    ["stable without authority", releaseVersionFindings([{ name: "a", version: "1.0.0" }]), "not a SemVer pre-release"],
-    ["leading zero in a pre-release identifier", releaseVersionFindings([{ name: "a", version: "1.0.0-beta.01" }]), "not a SemVer pre-release"],
+    ["lockstep pre-release", releaseVersionFindings([{ name: "a", version: "2.0.0-beta.0" }, { name: "b", version: "2.0.0-beta.0" }]), null],
+    ["different versions", releaseVersionFindings([{ name: "a", version: "2.0.0-beta.0" }, { name: "b", version: "2.0.0-beta.1" }]), "different versions"],
+    ["old release line", releaseVersionFindings([{ name: "a", version: "1.0.0-beta.0" }]), "2.0.0 pre-release line"],
+    ["stable without authority", releaseVersionFindings([{ name: "a", version: "2.0.0" }]), "not a SemVer pre-release"],
+    ["leading zero in a pre-release identifier", releaseVersionFindings([{ name: "a", version: "2.0.0-beta.01" }]), "not a SemVer pre-release"],
   );
 
   const failed = cases.filter(([, failures, expected]) =>

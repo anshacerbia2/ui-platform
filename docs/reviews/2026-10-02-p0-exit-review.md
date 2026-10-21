@@ -326,6 +326,18 @@ Platform Lead, I ratify 7a2d500 (STD-UIP-STY-001 2.1.0) and 335fed4 (TDD
 primitives P18, TDD styled GV4–GV7) with their CI evidence, as of
 2026-10-21.")
 
+Twelfth ratification, appended 2026-10-21: TableOfContents scrolling.
+
+| Repository  | Ratified revision                              | Candidate commit (ratified)                | Merge commit                    | Pull request | CI at candidate                     |
+| :---------- | :--------------------------------------------- | :----------------------------------------- | :------------------------------ | :----------- | :---------------------------------- |
+| ui-platform | TDD primitives P19 (TableOfContents scrolling) | `961786f25cc1bc70308dd2ac22857b7e045a840b` | merge of #89 (this record's PR) | #89          | CI, Chromatic, and Storybook passed |
+
+Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+2026-10-21 before the merge: "Saya, sebagai ARB dan UI Platform Lead,
+meratifikasi 961786f (TDD primitives P19) beserta bukti CI-nya, per
+2026-10-21." ("As ARB and UI Platform Lead, I ratify 961786f (TDD primitives
+P19) with its CI evidence, as of 2026-10-21.")
+
 ## D2 recommendation: `oklch`
 
 Appended 2026-10-02. The `oklch` trial ended on 2026-08-01 with no recorded
@@ -404,6 +416,15 @@ line (because `@scnx/core-ui@1.0.0` was published in 2025), and, before the firs
 publish, a second organization-controlled Owner of the `@scnx` organization and
 required two-factor authentication. L3 stays open until the ADR is accepted and
 its release workflow runs.
+
+L3 update, 2026-10-21: the ARB accepted ADR-UIP-REL-001 ("Saya, sebagai ARB,
+menerima ADR-UIP-REL-001 per 2026-10-21.", recorded in the ADR,
+`scnehaux-architecture` #119). The release workflow exists (TDD packaging
+RL1–RL6) and the packages are on `2.0.0-beta.0`. L3 is removed when the
+Release Lead states so after the first staged release is approved; its
+preconditions are the owner's: a second Owner of `@scnx` with required
+two-factor authentication, a trusted publisher per package, and the `release`
+environment with its reviewer.
 
 Sequence deviations after the exit, recorded as facts: the release-contract
 implementation merged before the revisions it implements were ratified,
