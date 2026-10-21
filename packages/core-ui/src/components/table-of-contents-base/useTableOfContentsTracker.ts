@@ -16,6 +16,7 @@ export function useTableOfContentsTracker({
 }: UseTableOfContentsTrackerProps) {
   const isAutomaticScrollRef = useRef(false);
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const releaseRef = useRef<(() => void) | null>(null);
 
   // Initial state logic: 
   // MUST be consistent between Server and Client to avoid hydration mismatch.
@@ -56,12 +57,25 @@ export function useTableOfContentsTracker({
       const yOffset = -totalOffset;
       const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
       
-      window.scrollTo({ top: y, behavior: "smooth" });
+      // Reduced motion jumps instead of animating (TDD primitives P19).
+      const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches === true;
 
-      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-      scrollTimeoutRef.current = setTimeout(() => {
+      // The programmatic scroll ends at `scrollend` where the engine has it;
+      // the timer covers engines without it and a scroll that does not move,
+      // which fires no `scrollend` (CSSOM View).
+      releaseRef.current?.();
+      const release = () => {
         isAutomaticScrollRef.current = false;
-      }, 800);
+        window.removeEventListener("scrollend", release);
+        if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+        scrollTimeoutRef.current = null;
+        releaseRef.current = null;
+      };
+      releaseRef.current = release;
+      if ("onscrollend" in window) window.addEventListener("scrollend", release);
+      scrollTimeoutRef.current = setTimeout(release, reduce ? 100 : 1000);
+
+      window.scrollTo({ top: y, behavior: reduce ? "auto" : "smooth" });
     }
   }, [totalOffset]);
 
@@ -97,7 +111,7 @@ export function useTableOfContentsTracker({
 
     return () => {
       observer.disconnect();
-      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+      releaseRef.current?.();
     };
   }, [items, totalOffset]);
 
