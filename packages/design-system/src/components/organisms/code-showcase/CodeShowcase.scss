@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-block: 1.5em;
+  margin-block: $dimension-spacing-stack-comfortable;
   border: 1px solid $color-border-default;
   border-radius: $dimension-radius-container;
   background-color: $color-surface-canvas;
@@ -42,11 +42,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    column-gap: 2em;
-    row-gap: 0.5em;
-    padding: 0.5em 1em;
+    column-gap: $dimension-spacing-inline-comfortable;
+    row-gap: $dimension-spacing-stack-default;
+    padding: $dimension-spacing-inset-compact $dimension-spacing-inset-default;
     color: $color-text-secondary;
-    font-size: 0.875em;
+    @include typography(label, default);
     background-color: $color-surface-default;
   }
 
@@ -72,12 +72,12 @@
 
   &__tab {
     position: relative;
-    padding: 0.25em 0.75em;
+    padding: $dimension-spacing-inset-compact;
     transition: color $motion-feedback-duration $motion-feedback-easing;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 0.5em;
+    gap: $dimension-spacing-inline-default;
     color: $color-text-secondary;
 
     &[data-active="true"] {
@@ -97,14 +97,20 @@
   &__selectors {
     display: flex;
     align-items: center;
-    gap: 0.5em;
+    gap: $dimension-spacing-inline-default;
   }
 
   &__actions {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    column-gap: 0.5em;
+    column-gap: $dimension-spacing-inline-default;
+  }
+
+  // WCAG 2.2 SC 2.5.8: a pointer target is at least 24 by 24 CSS pixels
+  // (STD-UIP-STY-001, "Governed values").
+  &__trigger {
+    min-block-size: 24px;
   }
 
   &__icon-button {
@@ -115,7 +121,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.35em;
+    padding: $dimension-spacing-inset-compact;
     border-radius: $dimension-radius-element;
     transition: color $motion-feedback-duration $motion-feedback-easing, background-color $motion-feedback-duration $motion-feedback-easing;
 
@@ -146,7 +152,6 @@
       border: none;
       background: transparent !important;
       color: $color-text-secondary;
-      font-size: 0.925em;
       min-width: max-content;
       display: block;
     }

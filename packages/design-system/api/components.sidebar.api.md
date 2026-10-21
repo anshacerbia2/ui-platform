@@ -4,31 +4,31 @@
 
 ```ts
 
-import { h as FlyoutContextValue } from '../../index-DFcPM-t1.js';
-import { n as FlyoutProvider } from '../../index-DFcPM-t1.js';
-import { g as FlyoutState } from '../../index-DFcPM-t1.js';
-import { r as InsideFlyoutProvider } from '../../index-DFcPM-t1.js';
-import { _ as NavigableChildProps } from '../../index-DFcPM-t1.js';
-import { t as Sidebar } from '../../index-DFcPM-t1.js';
-import { v as SidebarContextValue } from '../../index-DFcPM-t1.js';
-import { c as SidebarFlyout } from '../../index-DFcPM-t1.js';
-import { y as SidebarFlyoutProps } from '../../index-DFcPM-t1.js';
-import { u as SidebarFooter } from '../../index-DFcPM-t1.js';
-import { b as SidebarFooterProps } from '../../index-DFcPM-t1.js';
-import { f as SidebarHeader } from '../../index-DFcPM-t1.js';
-import { x as SidebarHeaderProps } from '../../index-DFcPM-t1.js';
-import { d as SidebarNav } from '../../index-DFcPM-t1.js';
-import { l as SidebarNavItem } from '../../index-DFcPM-t1.js';
-import { S as SidebarNavProps } from '../../index-DFcPM-t1.js';
-import { C as SidebarProps } from '../../index-DFcPM-t1.js';
-import { o as SidebarProvider } from '../../index-DFcPM-t1.js';
-import { w as SidebarProviderProps } from '../../index-DFcPM-t1.js';
-import { m as SidebarRoot } from '../../index-DFcPM-t1.js';
-import { p as SidebarToggle } from '../../index-DFcPM-t1.js';
-import { T as SidebarToggleProps } from '../../index-DFcPM-t1.js';
-import { i as useFlyout } from '../../index-DFcPM-t1.js';
-import { a as useInsideFlyout } from '../../index-DFcPM-t1.js';
-import { s as useSidebar } from '../../index-DFcPM-t1.js';
+import { h as FlyoutContextValue } from '../../index-BzihNgPS.js';
+import { n as FlyoutProvider } from '../../index-BzihNgPS.js';
+import { g as FlyoutState } from '../../index-BzihNgPS.js';
+import { r as InsideFlyoutProvider } from '../../index-BzihNgPS.js';
+import { _ as NavigableChildProps } from '../../index-BzihNgPS.js';
+import { t as Sidebar } from '../../index-BzihNgPS.js';
+import { v as SidebarContextValue } from '../../index-BzihNgPS.js';
+import { c as SidebarFlyout } from '../../index-BzihNgPS.js';
+import { y as SidebarFlyoutProps } from '../../index-BzihNgPS.js';
+import { u as SidebarFooter } from '../../index-BzihNgPS.js';
+import { b as SidebarFooterProps } from '../../index-BzihNgPS.js';
+import { f as SidebarHeader } from '../../index-BzihNgPS.js';
+import { x as SidebarHeaderProps } from '../../index-BzihNgPS.js';
+import { d as SidebarNav } from '../../index-BzihNgPS.js';
+import { l as SidebarNavItem } from '../../index-BzihNgPS.js';
+import { S as SidebarNavProps } from '../../index-BzihNgPS.js';
+import { C as SidebarProps } from '../../index-BzihNgPS.js';
+import { o as SidebarProvider } from '../../index-BzihNgPS.js';
+import { w as SidebarProviderProps } from '../../index-BzihNgPS.js';
+import { m as SidebarRoot } from '../../index-BzihNgPS.js';
+import { p as SidebarToggle } from '../../index-BzihNgPS.js';
+import { T as SidebarToggleProps } from '../../index-BzihNgPS.js';
+import { i as useFlyout } from '../../index-BzihNgPS.js';
+import { a as useInsideFlyout } from '../../index-BzihNgPS.js';
+import { s as useSidebar } from '../../index-BzihNgPS.js';
 
 export { FlyoutContextValue }
 

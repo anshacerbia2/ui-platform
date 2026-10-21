@@ -9,7 +9,7 @@
 
 .scnx-navigation {
   // Block: Navigation root
-  padding-block: 1rem;
+  padding-block: $dimension-spacing-inset-default;
   user-select: none;
 
   // Element: Group Header (Section Title like 'FOUNDATIONS')
@@ -37,7 +37,6 @@
         @include typography(label, small);
         font-weight: $typography-weight-bold;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
         color: $color-text-primary;
         padding-block: $dimension-spacing-inset-compact;
         // white-space: nowrap !important; // Membiarkan teks meluber lurus tanpa wrap

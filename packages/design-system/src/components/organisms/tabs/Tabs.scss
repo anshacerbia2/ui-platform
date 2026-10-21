@@ -26,7 +26,7 @@
 
   [data-part="tab"] {
     @include typography(label, default);
-    padding: 0.55rem 0.9rem;
+    padding: $dimension-spacing-inset-compact $dimension-spacing-inset-default;
     border: 0;
     border-bottom: $dimension-border-width-strong solid transparent;
     margin-bottom: calc(-1 * #{$dimension-border-width-default});

@@ -39,6 +39,7 @@
         "scnx-code-showcase__selectors",
         "scnx-code-showcase__tab",
         "scnx-code-showcase__tabs",
+        "scnx-code-showcase__trigger",
         "scnx-dialog",
         "scnx-divider",
         "scnx-edge-layout",

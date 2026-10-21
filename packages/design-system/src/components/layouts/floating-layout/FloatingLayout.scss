@@ -2,14 +2,14 @@
 
 .scnx-floating-layout {
   display: flex;
-  gap: 1.25rem;
+  gap: $dimension-spacing-section;
   min-height: 100vh;
   box-sizing: border-box;
-  padding-block: 1.25rem;
+  padding-block: $dimension-spacing-page;
 
   &__sidebar {
     position: sticky;
-    top: 1.25rem;
+    top: $dimension-spacing-page;
     align-self: flex-start;
     height: calc(100vh - (1.25rem * 2));
   }

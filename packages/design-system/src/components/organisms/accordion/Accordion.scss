@@ -43,7 +43,7 @@
 
   &__trigger {
     width: 100%;
-    padding: $dimension-spacing-inset-default 1.25rem;
+    padding: $dimension-spacing-inset-default;
     background-color: $color-surface-default;
     border: none;
     text-align: left;
@@ -77,7 +77,7 @@
     // Internal wrapper for padding to allow smooth height transitions
     // without padding-box calculations interfering
     &-inner {
-      padding: $dimension-spacing-inset-default 1.25rem;
+      padding: $dimension-spacing-inset-default;
       border-top: 1px solid $color-border-default;
     }
   }

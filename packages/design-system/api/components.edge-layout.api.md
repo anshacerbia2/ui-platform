@@ -4,15 +4,15 @@
 
 ```ts
 
-import { z as EdgeLayout } from '../../index-DFcPM-t1.js';
-import { L as EdgeLayoutContent } from '../../index-DFcPM-t1.js';
-import { B as EdgeLayoutContentProps } from '../../index-DFcPM-t1.js';
-import { I as EdgeLayoutNavbar } from '../../index-DFcPM-t1.js';
-import { V as EdgeLayoutNavbarProps } from '../../index-DFcPM-t1.js';
-import { R as EdgeLayoutRoot } from '../../index-DFcPM-t1.js';
-import { H as EdgeLayoutRootProps } from '../../index-DFcPM-t1.js';
-import { F as EdgeLayoutSidebar } from '../../index-DFcPM-t1.js';
-import { U as EdgeLayoutSidebarProps } from '../../index-DFcPM-t1.js';
+import { z as EdgeLayout } from '../../index-BzihNgPS.js';
+import { L as EdgeLayoutContent } from '../../index-BzihNgPS.js';
+import { B as EdgeLayoutContentProps } from '../../index-BzihNgPS.js';
+import { I as EdgeLayoutNavbar } from '../../index-BzihNgPS.js';
+import { V as EdgeLayoutNavbarProps } from '../../index-BzihNgPS.js';
+import { R as EdgeLayoutRoot } from '../../index-BzihNgPS.js';
+import { H as EdgeLayoutRootProps } from '../../index-BzihNgPS.js';
+import { F as EdgeLayoutSidebar } from '../../index-BzihNgPS.js';
+import { U as EdgeLayoutSidebarProps } from '../../index-BzihNgPS.js';
 
 export { EdgeLayout }
 
