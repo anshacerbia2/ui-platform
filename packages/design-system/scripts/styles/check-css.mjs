@@ -8,8 +8,12 @@
 //   declared in the same stylesheet, nor documented runtime properties;
 // - a selector/property pair owned by both Sass components and Panda recipes;
 // - raw values (STD-GLB-FE-005 sections 3.2 and 3.4): integer z-index, color
-//   literals, ad-hoc custom properties, and !important, unless
-//   styles.config.json records the exception. An exception no rule uses fails.
+//   literals, motion literals (a duration or timing function in a transition
+//   or animation property), a non-zero length in a border radius, ad-hoc
+//   custom properties, and !important, unless styles.config.json records the
+//   exception. A duration inside a calc() that multiplies a documented runtime
+//   property (a stagger step) is a local value whose purpose that property
+//   records (STD-GLB-FE-005 3.2). An exception no rule uses fails.
 //
 //   node scripts/styles/check-css.mjs --dist <dir>   check the built assets
 //   node scripts/styles/check-css.mjs --self-test    prove each rule rejects
@@ -28,7 +32,7 @@ const CONFIG_KEYS = {
   runtimeProperty: ["owner", "purpose"],
   exception: ["rule", "selector", "properties", "standard", "reason", "removal"],
 };
-const EXCEPTION_RULES = ["important", "color-literal", "z-index"];
+const EXCEPTION_RULES = ["important", "color-literal", "z-index", "motion-literal", "radius-literal"];
 
 /** Load styles.config.json (TDD CSS delivery, Configuration); unknown keys fail. */
 export function loadStyleConfig(file = path.join(packageDir, "styles.config.json")) {
@@ -72,6 +76,45 @@ export const RUNTIME_PROPERTIES = STYLE_CONFIG.runtimeProperties;
 
 // Color functions and named colors that hardcode a color (STD-GLB-FE-005 3.2).
 // Keywords such as transparent, currentcolor, and CSS system colors are not literals.
+const MOTION_PROPERTY = /^(?:transition|animation)(?:-(?:duration|delay|timing-function))?$/;
+const TIMING_KEYWORDS = new Set(["ease", "ease-in", "ease-out", "ease-in-out", "linear", "step-start", "step-end"]);
+const RADIUS_PROPERTY = /^border(?:-(?:top|bottom|start|end)-(?:left|right|start|end))?-radius$/;
+
+/** First motion literal in a transition/animation value, skipping var() and stagger steps. */
+function motionLiteral(value, runtime) {
+  let found = null;
+  csstree.walk(value, {
+    enter(node) {
+      if (found) return;
+      if (node.type === "Function" && node.name === "var") return this.skip;
+      if (node.type === "Function" && node.name === "calc") {
+        let stagger = false;
+        csstree.walk(node, (inner) => {
+          if (inner.type === "Function" && inner.name === "var" && runtime[inner.children.first?.name]) stagger = true;
+        });
+        if (stagger) return this.skip;
+      }
+      if (node.type === "Dimension" && /^m?s$/i.test(node.unit) && Number(node.value) !== 0) found = `${node.value}${node.unit}`;
+      else if (node.type === "Function" && ["cubic-bezier", "steps", "linear"].includes(node.name)) found = `${node.name}()`;
+      else if (node.type === "Identifier" && TIMING_KEYWORDS.has(node.name)) found = node.name;
+    },
+  });
+  return found;
+}
+
+/** First non-zero length in a border radius outside var(); percentages are geometry. */
+function radiusLiteral(value) {
+  let found = null;
+  csstree.walk(value, {
+    enter(node) {
+      if (found) return;
+      if (node.type === "Function" && node.name === "var") return this.skip;
+      if (node.type === "Dimension" && Number(node.value) !== 0) found = `${node.value}${node.unit}`;
+    },
+  });
+  return found;
+}
+
 const COLOR_FUNCTIONS = new Set(["rgb", "rgba", "hsl", "hsla", "hwb", "lab", "lch", "oklab", "oklch", "color"]);
 const NAMED_COLORS = new Set(("aliceblue antiquewhite aqua aquamarine azure beige bisque black blanchedalmond blue blueviolet brown burlywood cadetblue chartreuse chocolate coral cornflowerblue cornsilk crimson cyan darkblue darkcyan darkgoldenrod darkgray darkgreen darkgrey darkkhaki darkmagenta darkolivegreen darkorange darkorchid darkred darksalmon darkseagreen darkslateblue darkslategray darkslategrey darkturquoise darkviolet deeppink deepskyblue dimgray dimgrey dodgerblue firebrick floralwhite forestgreen fuchsia gainsboro ghostwhite gold goldenrod gray green greenyellow grey honeydew hotpink indianred indigo ivory khaki lavender lavenderblush lawngreen lemonchiffon lightblue lightcoral lightcyan lightgoldenrodyellow lightgray lightgreen lightgrey lightpink lightsalmon lightseagreen lightskyblue lightslategray lightslategrey lightsteelblue lightyellow lime limegreen linen magenta maroon mediumaquamarine mediumblue mediumorchid mediumpurple mediumseagreen mediumslateblue mediumspringgreen mediumturquoise mediumvioletred midnightblue mintcream mistyrose moccasin navajowhite navy oldlace olive olivedrab orange orangered orchid palegoldenrod palegreen paleturquoise palevioletred papayawhip peru pink plum powderblue purple rebeccapurple red rosybrown royalblue saddlebrown salmon sandybrown seagreen seashell sienna silver skyblue slateblue slategray slategrey snow springgreen steelblue tan teal thistle tomato turquoise violet wheat white whitesmoke yellow yellowgreen").split(" "));
 
@@ -175,6 +218,22 @@ export function checkStylesheet(css, { tokenNames, config = STYLE_CONFIG }) {
             else if (child.type === "Identifier" && NAMED_COLORS.has(child.name.toLowerCase())) literal = child.name;
           },
         });
+        if (MOTION_PROPERTY.test(property)) {
+          const motion = motionLiteral(node.value, runtime);
+          if (motion) {
+            for (const selector of selectors) {
+              if (!excepted("motion-literal", selector, property)) findings.push(`${selector}: motion literal ${motion} in ${property}; use a --ds-motion-* token`);
+            }
+          }
+        }
+        if (RADIUS_PROPERTY.test(property)) {
+          const radius = radiusLiteral(node.value);
+          if (radius) {
+            for (const selector of selectors) {
+              if (!excepted("radius-literal", selector, property)) findings.push(`${selector}: radius literal ${radius} in ${property}; use a --ds-dimension-radius-* token`);
+            }
+          }
+        }
         if (literal && !property.startsWith("--")) {
           for (const selector of selectors) {
             if (!excepted("color-literal", selector, property)) findings.push(`${selector}: color literal ${literal} in ${property}`);
@@ -230,7 +289,7 @@ export function checkStylesheet(css, { tokenNames, config = STYLE_CONFIG }) {
 
 const STATEMENT = LAYER_STATEMENT;
 const SELF_TESTS = [
-  ["valid", `${STATEMENT}\n@layer components { .scnx-a { color: var(--ds-x, transparent); z-index: var(--ds-dimension-z-index-modal); transition-delay: calc(var(--item-index) * 1ms); } }\n@layer base { ${THEME_ROOT} :focus-visible { outline: 0 } }\n@media (forced-colors: active) { @layer base { ${THEME_ROOT} :focus-visible { outline-color: Highlight } } }`, null],
+  ["valid", `${STATEMENT}\n@layer components { .scnx-a { color: var(--ds-x, transparent); z-index: var(--ds-dimension-z-index-modal); transition-delay: calc(var(--item-index) * 1ms); transition: height var(--ds-x) var(--ds-x), opacity 0s; border-radius: 50% 0; } }\n@layer base { ${THEME_ROOT} :focus-visible { outline: 0 } }\n@media (forced-colors: active) { @layer base { ${THEME_ROOT} :focus-visible { outline-color: Highlight } } }`, null],
   ["no order statement", "@layer components { .scnx-a { color: red } }", "does not open with"],
   ["unlayered rule", `${STATEMENT}\n.scnx-a { color: red }`, "outside every layer"],
   ["undeclared layer", `${STATEMENT}\n@layer theme { .scnx-a { color: red } }`, "not a canonical layer"],
@@ -250,6 +309,11 @@ const SELF_TESTS = [
   ["hex color", `${STATEMENT}\n@layer components { .scnx-a { color: #fff } }`, "color literal #fff"],
   ["rgb color", `${STATEMENT}\n@layer components { .scnx-a { border: 1px solid rgb(0 0 0) } }`, "color literal rgb()"],
   ["named color", `${STATEMENT}\n@layer base { ${THEME_ROOT} a { color: red } }`, "color literal red"],
+  ["motion duration", `${STATEMENT}\n@layer components { .scnx-a { transition: height 0.3s var(--ds-x) } }`, "motion literal 0.3s"],
+  ["motion easing", `${STATEMENT}\n@layer components { .scnx-a { transition: color var(--ds-x) ease } }`, "motion literal ease"],
+  ["motion curve", `${STATEMENT}\n@layer components { .scnx-a { animation-timing-function: cubic-bezier(0, 0, 1, 1) } }`, "motion literal cubic-bezier()"],
+  ["delay without runtime property", `${STATEMENT}\n@layer components { .scnx-a { transition-delay: calc(2 * 33ms) } }`, "motion literal 33ms"],
+  ["radius length", `${STATEMENT}\n@layer components { .scnx-a { border-radius: 3px } }`, "radius literal 3px"],
 ];
 
 function selfTest() {

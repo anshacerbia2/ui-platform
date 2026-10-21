@@ -14,6 +14,12 @@ doc_meta:
 
 # TDD-ui-platform-styled-004: Styled Components and CSS Delivery
 
+> **Revision pending exact-commit ratification.** The decision record
+> "governed values in component CSS" (GV1–GV4) is pending under GDC-000 section
+> 2.6.7; the revision ratified on 2026-10-21 (`f528152`) remains binding until
+> the authorized human authority approves the exact commit containing these
+> changes.
+
 ## Purpose
 
 Define the exact seam between headless behavior, styled wrappers, token usage,
@@ -127,6 +133,23 @@ theme attributes on `html`.
 7. Install tarballs and import component plus selected theme CSS once at the
    composition root.
 8. Render the supported set and assert computed properties and isolation.
+
+#### Decision record: governed values in component CSS
+
+STD-GLB-FE-005 section 3.2: "Governed shared decisions for color, typography,
+spacing rhythm, radius, shadow, z-index, and motion use Tier-2 semantic tokens
+or justified Tier-3 aliases", while "local geometry with no reusable semantic
+role" stays valid and "records its purpose when the reason is not
+self-evident". On 2026-10-21 the stylesheet gate (step 4) enforced only color,
+`z-index`, custom properties, and `!important`; twelve motion declarations and
+one radius in Accordion, CodeShowcase, and CodeSelect used literals.
+
+| ID  | Decision                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Source                                                       | Tradeoff                                                                                                                                                                                                                                                          |
+| :-- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| GV1 | The gate rejects a motion literal, meaning a duration, a timing keyword, or a timing function in a `transition` or `animation` property, and a non-zero length in a border radius, unless `styles.config.json` records an exception with its standard, reason, and removal condition. Zero durations and percentages are geometry and pass.                                                                                                                                                     | STD-GLB-FE-005 3.2                                           | The rule reads the built CSS, so a literal hidden behind a Sass variable that resolves to a literal is still caught.                                                                                                                                              |
+| GV2 | A duration inside a `calc()` that multiplies a documented runtime property is a stagger step, a local value whose purpose the runtime property's entry records (`--item-index`, `--ancestors-index`: the Sidebar's 33 ms step).                                                                                                                                                                                                                                                                 | STD-GLB-FE-005 3.2 ("local geometry"; "records its purpose") | The step is not a token, because it has no reusable semantic role; a second component that staggers would make it one.                                                                                                                                            |
+| GV3 | Each literal maps to the motion action the STD defines for it: height and opacity of expanding content and the rotating chevron of a disclosure use `motion.disclosure` ("Height expand/collapse for accordions, menus, and detail triggers"); hover, focus, and selection color, shadow, and indicator changes use `motion.feedback` ("State feedback on the same element"). `transition: all` becomes the properties that change. The scrollbar thumb radius uses `dimension.radius.element`. | STD-UIP-TKN-001, "Semantic Motion Language"                  | Feedback becomes 150 ms instead of 200 ms, and the Accordion chevron takes the disclosure curve instead of `cubic-bezier(0.16, 1, 0.3, 1)`; the thumb radius becomes 0.25rem instead of 3px. Static snapshots do not change, except possibly the scrollbar thumb. |
+| GV4 | Typography, spacing rhythm, and shadow literals are not gated yet. On 2026-10-21, ten spacing and seven typography declarations in component Sass use literals; each is either a token or a local value with a recorded purpose, decided per declaration before the gate covers them (ROADMAP phase 3). Shadow has no literal.                                                                                                                                                                  | STD-GLB-FE-005 3.2                                           | Until then the gate does not prove the whole of section 3.2; this record names the gap rather than claiming coverage.                                                                                                                                             |
 
 ### Portal and scope resolution
 

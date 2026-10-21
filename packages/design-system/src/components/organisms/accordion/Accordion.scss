@@ -33,7 +33,7 @@
     border-radius: $dimension-radius-container;
     background-color: $color-surface-canvas;
     overflow: hidden;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: border-color $motion-feedback-duration $motion-feedback-easing, box-shadow $motion-feedback-duration $motion-feedback-easing;
 
     &:focus-within {
       border-color: $color-ring-focus;
@@ -54,7 +54,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition: background-color $motion-feedback-duration $motion-feedback-easing, color $motion-feedback-duration $motion-feedback-easing;
 
     &:hover {
       background-color: $color-state-hover;
@@ -72,7 +72,7 @@
     background-color: $color-surface-canvas;
     color: $color-text-secondary;
     @include typography(body, small);
-    transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    transition: height $motion-disclosure-duration $motion-disclosure-easing, opacity $motion-disclosure-duration $motion-disclosure-easing;
     
     // Internal wrapper for padding to allow smooth height transitions
     // without padding-box calculations interfering
@@ -83,7 +83,7 @@
   }
 
   &__icon {
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform $motion-disclosure-duration $motion-disclosure-easing;
     color: $color-text-secondary;
     display: flex;
     align-items: center;

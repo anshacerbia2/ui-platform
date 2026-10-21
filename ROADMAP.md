@@ -39,7 +39,10 @@ Phase evidence:
   repeatable release pipeline (lien L3; registry and version line proposed in
   ADR-UIP-REL-001, awaiting ARB acceptance), named consumer pilots with approved
   budgets (no pilot named yet; ADR-IAM-012 keeps identity-experience on local
-  components), interaction traces, and migration and rollback evidence.
+  components), interaction traces (method proposed in STD-UIP-ENG-001 2.3.0,
+  `scnehaux-architecture` #112), the typography and spacing literals the
+  stylesheet gate does not yet cover (TDD styled GV4; motion and radius are
+  gated since 2026-10-21, GV1–GV3), and migration and rollback evidence.
 
 ## Non-negotiable boundaries
 
