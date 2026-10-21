@@ -347,12 +347,24 @@ recorded as the authorization under GDC-000 section 2.6.7 for every
 ratification candidate of the UI Platform prepared through the completion of
 the current work. Each candidate it covers is listed here with its exact SHA:
 
-| Repository            | Ratified revision                          | Candidate commit (ratified)                | Pull request |
-| :-------------------- | :----------------------------------------- | :----------------------------------------- | :----------- |
-| ui-platform           | TDD packaging RC3 (2.0.0 line) and RL1–RL6 | `4c8d92674a12dddf0813848bf86d01da70b80f28` | #90          |
-| scnehaux-architecture | STD-UIP-ENG-001 2.4.0; SAD-003 2.2.0       | `43ec5b4556ed85fefb05b36cd803d6c19f9efe2e` | #120         |
+| Repository            | Ratified revision                                                                       | Candidate commit (ratified)                | Pull request |
+| :-------------------- | :-------------------------------------------------------------------------------------- | :----------------------------------------- | :----------- |
+| ui-platform           | TDD packaging RC3 (2.0.0 line) and RL1–RL6                                              | `4c8d92674a12dddf0813848bf86d01da70b80f28` | #90          |
+| scnehaux-architecture | STD-UIP-ENG-001 2.4.0; SAD-003 2.2.0                                                    | `43ec5b4556ed85fefb05b36cd803d6c19f9efe2e` | #120         |
+| scnehaux-architecture | ADR-UIP-CMP-001 (accepted); SAD-003 2.3.0; STD-UIP-PRM-001 2.2.0; STD-UIP-STY-001 2.2.0 | `bf29b8a774040ff73dc257c8af854eab21ade08f` | #122         |
 
 Later candidates are appended to this table under the same statement.
+
+Standing acceptance of decisions, appended 2026-10-22. Ansha Cerbia, as ARB,
+stated on 2026-10-22: "Lo rubah aja, gausah terlalu formal di status, gw butuh
+first class grade design, klo memang udh based on best practice, battle tested
+solution, first class grade, dan ada referencenya, lgsg approved aja, gausah
+pake proposed2" ("Change it; the status need not be formal. When a design is
+based on best practice and battle-tested solutions, first-class, and
+referenced, approve it directly without the proposed step."). An ADR that
+meets that bar is recorded as accepted on creation, citing this statement; a
+decision that is irreversible or a choice between equally supported options is
+still put to the ARB first.
 
 ## D2 recommendation: `oklch`
 
