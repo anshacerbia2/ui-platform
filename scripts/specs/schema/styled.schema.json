@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/anshacerbia2/ui-platform/blob/main/scripts/specs/schema/styled.schema.json",
+  "title": "Styled specification: the presentation contract of an @scnx/system component (ADR-UIP-CMP-001; TDD styled CS1-CS6)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "kind", "entry", "entryKind", "stability", "primitive", "anatomy", "options", "states", "fixture", "bindings"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "kind": { "const": "styled" },
+    "entry": { "allOf": [{ "$ref": "common.schema.json#/$defs/entry" }, { "type": "string", "pattern": "^@scnx/system/components/" }] },
+    "entryKind": { "enum": ["presentational", "interactive", "layout", "motion"] },
+    "stability": { "$ref": "common.schema.json#/$defs/stability" },
+    "primitive": {
+      "description": "Name of the primitive specification this component styles, or null.",
+      "type": ["string", "null"],
+      "pattern": "^[A-Z][A-Za-z]*Base$"
+    },
+    "anatomy": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "selector"],
+        "properties": {
+          "name": { "$ref": "common.schema.json#/$defs/name" },
+          "selector": { "description": "The part's class selector in the published stylesheet.", "type": "string", "pattern": "^\\.scnx-[a-z0-9_-]+$" },
+          "primitivePart": { "description": "The primitive part this part styles.", "$ref": "common.schema.json#/$defs/name" }
+        }
+      }
+    },
+    "options": {
+      "description": "Styling options; each value is selected by a selector fragment on the root part.",
+      "type": "object",
+      "propertyNames": { "pattern": "^[a-z][A-Za-z]*$" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["values", "default", "selector"],
+        "properties": {
+          "values": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "common.schema.json#/$defs/name" } },
+          "default": { "$ref": "common.schema.json#/$defs/name" },
+          "selector": { "description": "Selector fragment with {value}, for example [data-variant={value}].", "type": "string", "pattern": "\\{value\\}" }
+        }
+      }
+    },
+    "states": {
+      "description": "Visual states besides the rest state; each is matched by one or more selector fragments and entered by props or an interaction.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "selectors", "enter"],
+        "properties": {
+          "name": { "$ref": "common.schema.json#/$defs/name" },
+          "selectors": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+          "enter": {
+            "oneOf": [
+              { "type": "object", "additionalProperties": false, "required": ["props"], "properties": { "props": { "type": "object" } } },
+              { "type": "object", "additionalProperties": false, "required": ["interaction"], "properties": { "interaction": { "enum": ["hover", "press"] } } }
+            ]
+          }
+        }
+      }
+    },
+    "fixture": {
+      "description": "How the conformance fixture renders the component: base props, passed with each option value and state's props.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["props"],
+      "properties": { "props": { "type": "object" } }
+    },
+    "bindings": {
+      "description": "Every token-bearing declaration of the component's stylesheet, by part, option value, and state. Values are the declared value with each token written as {token.path}.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["part", "declarations"],
+        "properties": {
+          "part": { "$ref": "common.schema.json#/$defs/name" },
+          "option": { "type": "object", "additionalProperties": { "$ref": "common.schema.json#/$defs/name" } },
+          "state": { "$ref": "common.schema.json#/$defs/name" },
+          "declarations": {
+            "type": "object",
+            "minProperties": 1,
+            "propertyNames": { "pattern": "^[a-z-]+$" },
+            "additionalProperties": { "type": "string", "pattern": "\\{[a-z0-9.-]+\\}" }
+          }
+        }
+      }
+    }
+  }
+}
