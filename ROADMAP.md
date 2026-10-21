@@ -42,12 +42,13 @@ Phase evidence:
   2026-10-21 to be a pointer-only list without combobox semantics, now runs on
   ComboboxBase, an APG editable combobox built without a third-party library
   (ADR-UIP-PLT-001 UIP-DEC-001 revised and accepted 2026-10-21; TDD primitives
-  P18). Remaining: the repeatable release pipeline (lien L3; registry and
-  version line proposed in ADR-UIP-REL-001, awaiting ARB acceptance), named
-  consumer pilots with approved budgets (no pilot named yet; ADR-IAM-012 keeps
-  identity-experience on local components), manual NVDA and VoiceOver results
-  for ComboboxBase and Tabs before stable promotion (STD-UIP-PRM-001), and
-  migration and rollback evidence.
+  P18); TableOfContents scrolling respects reduced motion and ends at
+  `scrollend` (P19). Remaining: the repeatable release pipeline (lien L3;
+  registry and version line proposed in ADR-UIP-REL-001, awaiting ARB
+  acceptance), named consumer pilots with approved budgets (no pilot named yet;
+  ADR-IAM-012 keeps identity-experience on local components), manual NVDA and
+  VoiceOver results for ComboboxBase and Tabs before stable promotion
+  (STD-UIP-PRM-001), and migration and rollback evidence.
 
 ## Non-negotiable boundaries
 
