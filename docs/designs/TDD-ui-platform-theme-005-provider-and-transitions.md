@@ -14,6 +14,12 @@ doc_meta:
 
 # TDD-ui-platform-theme-005: Theme Provider and Transition Runtime
 
+> **Revision pending exact-commit ratification.** The decision record
+> "interaction traces" (X1–X5) and the corrected layout-read description of the
+> transition state machine are pending under GDC-000 section 2.6.7; the revision
+> ratified on 2026-10-02 (`773a864`) remains binding until the authorized human
+> authority approves the exact commit containing these changes.
+
 ## Purpose
 
 Specify the client-runtime infrastructure for scoped theme state, SSR-safe
@@ -167,9 +173,12 @@ exiting --open--> entering
 
 Each intent increments `generation`. Scheduled frames, events, and timeouts
 capture that generation; stale completions do nothing. Opening with `height:
-auto` reads current pixels once, writes the start frame, then writes measured
-target on the next frame. Closing snapshots current pixels before targeting the
-closed value. Completion listens only to the owned element/property set.
+auto` reads current pixels (`getBoundingClientRect()`), writes the start
+frame, then on the next frame reads the measured target (`scrollHeight`) and
+writes it. Closing snapshots current pixels before targeting the closed value.
+Completion listens only to the owned element/property set. Of the two reads of
+an open, only the target read forces layout, because the start read finds
+layout clean; decision X3 gates the resulting counts.
 
 The fallback is `max(transition-duration + transition-delay,
 animation-duration + animation-delay) + safetyMargin`, capped by a configured
@@ -253,6 +262,20 @@ style recalculation, layout reads per transition, frame task duration, and theme
 switch interaction latency on declared devices. The design promises bounded
 work, not zero reflow or a universal millisecond target.
 
+#### Decision record: interaction traces
+
+How STD-UIP-ENG-001 section 3.3 (revision 2.3.0, interaction-trace method) is
+implemented in `scripts/interaction-traces.mjs`, which runs on the packed
+tarballs in the packed-consumer job and writes `traces-report.json`.
+
+| ID  | Decision                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Sources                                                                     | Tradeoff                                                                                                                                                                                                                            |
+| :-- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :-------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| X1  | Scenarios: every shipped dynamic-height transition, all through TransitionBase: the Accordion, the Sidebar's sub-navigation, and the CodeShowcase content. Each is opened, closed, and opened then reversed after 60 ms, with and without reduced motion, five times, inside a `ThemeProvider` with the published stylesheets; and the theme-mode toggle. Each sample starts in a fresh context once no transition is running, because an item open at mount animates in.                                     | STD-UIP-ENG-001 3.3 (method 1)                                              | Five components share one TransitionBase, so three scenarios cover every shipped path; a new user of TransitionBase adds a scenario.                                                                                                |
+| X2  | Input is real pointer input at the trigger's center (`mouse.click`), never a script-side `click()`. Playwright's `click()` runs its own hit testing in the page, which adds layout to the trace, and Event Timing records only trusted events. A forced layout is a `Layout` trace event nested in a script task (`EventDispatch`, `FunctionCall`, `FireAnimationFrame`, `TimerFire`, `RunMicrotasks`) between the marks `scnx-start` and `scnx-end`, which close two frames after the last transition phase. | STD-UIP-ENG-001 3.3 (method 2) and [16]–[18] there                          | Traces exist only in Chromium, so forced layouts are counted only there; another engine may differ. A negative control in every run (two reads, each after a style write) must count two forced layouts, which proves the detector. |
+| X3  | The claims are gates. An animated open, close, or reversal forces at most one layout; with reduced motion, none forces layout and no transition phase runs. Measured on 2026-10-21 (Chromium 153): open 1, close 0, reversal 1, reduced motion 0, in all three transitions and every run.                                                                                                                                                                                                                     | STD-UIP-ENG-001 3.3 (method 2); this TDD, "Transition finite state machine" | The bound is the measured behavior, so a change that adds a forced layout fails CI and needs a TDD revision. Earlier text said an open "reads current pixels once"; it reads twice, and the trace shows which read forces layout.   |
+| X4  | Long animation frames (50 ms or more) inside each window are recorded where the engine supports them (Chromium); no frame rate is claimed. On 2026-10-21 there were none.                                                                                                                                                                                                                                                                                                                                     | STD-UIP-ENG-001 3.3 (method 3) and [19] there                               | A desktop runner rarely produces a long frame, so this is evidence for slower devices only through a pilot's own measurements.                                                                                                      |
+| X5  | The theme switch's Event Timing duration is recorded in every engine. Event Timing reports only events of 16 ms or more ("the maximum between 16 and" the requested threshold) [5], so a shorter interaction is reported as below 16 ms rather than as a number. On 2026-10-21: Chromium 24 ms or below 16 ms, Firefox below 16 ms, and no forced layout in Chromium.                                                                                                                                         | STD-UIP-ENG-001 3.3 (method 4) and [20] there; [5]                          | A switch below 16 ms has no exact value; that is the platform's resolution for this metric, not a gap in the measurement.                                                                                                           |
+
 ## Security Notes
 
 Remove `new Function`, inline text generation, mutable window callbacks, and
@@ -311,3 +334,8 @@ References (retrieved 2026-10-02):
    <https://react.dev/reference/react-dom/client/hydrateRoot>. "There are no
    guarantees that attribute differences will be patched up in case of
    mismatches."
+5. W3C, Event Timing, at w3c/event-timing commit
+   `f8e11d6cd1818cdf4ae883da0a323520b9c6b403`, cited in STD-UIP-ENG-001 [20]:
+   "let minDuration be the maximum between 16 and options's durationThreshold
+   value"; an entry is queued only if its duration "is greater than or equal to
+   16".
