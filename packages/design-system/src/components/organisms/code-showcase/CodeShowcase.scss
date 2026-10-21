@@ -10,7 +10,7 @@
   border-radius: $dimension-radius-container;
   background-color: $color-surface-canvas;
   box-shadow: $effect-shadow-low;
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow $motion-feedback-duration $motion-feedback-easing;
   overflow: hidden;
 
   &:hover {
@@ -67,13 +67,13 @@
     width: 0;
     border-radius: $dimension-radius-element;
     background-color: $color-state-selected; 
-    transition: left 0.2s ease, width 0.2s ease;
+    transition: left $motion-feedback-duration $motion-feedback-easing, width $motion-feedback-duration $motion-feedback-easing;
   }
 
   &__tab {
     position: relative;
     padding: 0.25em 0.75em;
-    transition: color 0.2s ease;
+    transition: color $motion-feedback-duration $motion-feedback-easing;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -117,7 +117,7 @@
     justify-content: center;
     padding: 0.35em;
     border-radius: $dimension-radius-element;
-    transition: all 0.2s ease;
+    transition: color $motion-feedback-duration $motion-feedback-easing, background-color $motion-feedback-duration $motion-feedback-easing;
 
     &:hover {
       color: $color-text-primary;
@@ -128,7 +128,7 @@
   &__content {
     background-color: $color-surface-sunken;
     overflow: hidden;
-    transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    transition: height $motion-disclosure-duration $motion-disclosure-easing, opacity $motion-disclosure-duration $motion-disclosure-easing;
   }
 
   &__code-inner {
@@ -167,7 +167,7 @@
     
     &::-webkit-scrollbar-thumb {
       background: $color-text-secondary;
-      border-radius: 3px;
+      border-radius: $dimension-radius-element;
     }
   }
 

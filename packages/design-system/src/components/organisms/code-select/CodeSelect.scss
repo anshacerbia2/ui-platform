@@ -15,7 +15,7 @@
     padding: 4px 10px;
     width: 100%;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background-color $motion-feedback-duration $motion-feedback-easing;
 
     &:hover {
       background-color: $color-state-hover;
@@ -58,7 +58,7 @@
     color: $color-text-secondary;
     margin-left: auto;
     font-size: 10px;
-    transition: transform 0.2s ease;
+    transition: transform $motion-disclosure-duration $motion-disclosure-easing;
 
     &[data-open="true"] {
       transform: rotate(180deg);
@@ -85,7 +85,7 @@
     @include typography(label, small);
     color: $color-text-primary;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: background-color $motion-feedback-duration $motion-feedback-easing;
 
     &:hover {
       background-color: $color-state-hover;
