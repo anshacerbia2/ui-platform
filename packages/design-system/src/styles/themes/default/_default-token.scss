@@ -210,7 +210,14 @@ $solid-contrast-target: 4.6;
         $value: "";
 
         @if $recipe-emphasis == "contrast" {
-          @if $recipe-role == "text" or $recipe-role == "icon" {
+          @if ($recipe-role == "text" or $recipe-role == "icon") and $state == "disabled" {
+            // A contrast label sits on the solid fill of its scheme in every
+            // state (STD-UIP-TKN-001, "Semantic Usage Doctrine"). The disabled
+            // fill is quiet (solid-state-step), so the full-contrast label
+            // would vanish on it; the label takes the neutral disabled text
+            // step, which drops the scheme's chroma in every scheme.
+            $value: resolve-core-color("neutral", get-state-step(12, "disabled", text, $mode), $mode);
+          } @else if $recipe-role == "text" or $recipe-role == "icon" {
             $value: solid-label-color($scheme, $mode);
           } @else if $recipe-role == "shadow" {
             $value: -if($mode == "light", resolve-core-color("white", null, $mode), resolve-core-color("black", null, $mode));

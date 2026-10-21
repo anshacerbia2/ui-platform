@@ -276,6 +276,26 @@ describe("normalizer on the token source", () => {
     }
   });
 
+  it("labels each disabled solid fill with the neutral disabled text, not the full-contrast label", () => {
+    // Disabled states are exempt from SC 1.4.3, so this is not a contrast gate:
+    // it pins the pairing. The full-contrast label measured about 1.2:1 on the
+    // quiet disabled fill; the neutral disabled step measures 2.9:1 or more.
+    for (const modes of Object.values(themes)) {
+      for (const { records } of Object.values(modes)) {
+        const css = (name) => toCss(records.get(name));
+        const canvas = parseColor(css("--ds-color-neutral-surface-canvas-default"));
+        for (const scheme of ["primary", "neutral", "info", "success", "warning", "danger"]) {
+          for (const role of ["text", "icon"]) {
+            const label = `--ds-color-${scheme}-${role}-contrast-disabled`;
+            expect(css(label)).toBe(css(`--ds-color-neutral-${role}-default-disabled`));
+            const fill = parseColor(css(`--ds-color-${scheme}-surface-solid-disabled`));
+            expect(contrastRatio(parseColor(css(label)), fill, canvas).ratio).toBeGreaterThan(2.5);
+          }
+        }
+      }
+    }
+  });
+
   it("emits the public shadow set and no Tier-1 shadow sizes", () => {
     const names = [...themes.achromatic.light.records.keys()];
     expect(names.filter((name) => name.startsWith("--ds-effect-shadow-")).sort()).toEqual(

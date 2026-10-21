@@ -14,7 +14,11 @@
 // - keyboard focus on every focusable part draws a visible outline, normally
 //   and under forced colors, where the outline uses the Highlight system color;
 // - every focusable part's pointer target (for CodeSelect, its wrapper) is at
-//   least 24 by 24 CSS pixels (WCAG 2.2 SC 2.5.8; STD-UIP-STY-001).
+//   least 24 by 24 CSS pixels (WCAG 2.2 SC 2.5.8; STD-UIP-STY-001);
+// - in every root, each Button variant and state computes the token pair its
+//   recipe names: the primary label is its scheme's contrast token, the
+//   secondary is a tonal fill with no visible stroke, and a disabled Button
+//   takes the disabled pair at full opacity (TDD styled BR1-BR3).
 //
 //   node scripts/browser-components.mjs --packs <dir from inspect-packages.mjs> [--out <report dir>]
 
@@ -80,6 +84,8 @@ const themes = ${JSON.stringify(themes)};
 const set = () => h("div", null,
   h(Button, { variant: "primary" }, "Primary"),
   h(Button, { variant: "secondary", href: "#link" }, "Link"),
+  h(Button, { variant: "primary", disabled: true }, "Primary disabled"),
+  h(Button, { variant: "secondary", disabled: true }, "Secondary disabled"),
   h(Accordion, null, h(Accordion.Item, { value: "a" }, h(Accordion.Trigger, null, "Section"), h(Accordion.Content, null, "Body"))),
   h(CodeShowcase, null, h(CodeShowcase.Nav, null, h(CodeShowcase.Trigger, null, "Code")), h(CodeShowcase.Preview, null, "Preview"), h(CodeShowcase.Content, null, "const a = 1;")),
   h(CodeSelect, { options: [{ id: "ts", title: "TypeScript" }], value: "ts", onChange: () => {} }),
@@ -230,6 +236,45 @@ async function verify(browser) {
   }
   if (!differ(`${themes[0]}/light`, `${themes[0]}/dark`)) failures.push(`primary Button computes the same background in light and dark ${themes[0]} roots`);
   result.checks.push({ check: "coexistence", backgrounds });
+
+  // Button recipe: each variant and state computes the tokens it names.
+  const recipe = await tab.evaluate(() => {
+    const findings = [];
+    const expect = (root, token, property) => {
+      const probe = document.createElement("span");
+      probe.style.setProperty(property, `var(${token})`);
+      root.append(probe);
+      const value = getComputedStyle(probe).getPropertyValue(property);
+      probe.remove();
+      return value;
+    };
+    const cases = [
+      ['[data-variant="primary"]:not(:disabled)', { "background-color": "--ds-color-primary-surface-solid-default", color: "--ds-color-primary-text-contrast-default" }],
+      ['[data-variant="secondary"]:not([data-disabled])', { "background-color": "--ds-color-neutral-surface-default-default", color: "--ds-color-neutral-text-default-default" }],
+      ['[data-variant="primary"]:disabled', { "background-color": "--ds-color-primary-surface-solid-disabled", color: "--ds-color-primary-text-contrast-disabled" }],
+      ['[data-variant="secondary"]:disabled', { "background-color": "--ds-color-neutral-surface-default-disabled", color: "--ds-color-neutral-text-default-disabled" }],
+    ];
+    for (const root of document.querySelectorAll("[data-fixture-root]")) {
+      const name = root.getAttribute("data-fixture-root");
+      for (const [selector, tokens] of cases) {
+        const button = root.querySelector(`.scnx-btn${selector}`);
+        if (!button) {
+          findings.push(`${name}: no Button matches ${selector}`);
+          continue;
+        }
+        const style = getComputedStyle(button);
+        for (const [property, token] of Object.entries(tokens)) {
+          const want = expect(root, token, property);
+          if (style.getPropertyValue(property) !== want) findings.push(`${name}: Button ${selector} ${property} is ${style.getPropertyValue(property)}, not ${token} (${want})`);
+        }
+        if (style.opacity !== "1") findings.push(`${name}: Button ${selector} has opacity ${style.opacity}; state is carried by tokens`);
+        if (selector.includes("secondary") && style.borderTopColor !== "rgba(0, 0, 0, 0)") findings.push(`${name}: Button ${selector} draws a stroke (${style.borderTopColor}); the secondary variant is tonal`);
+      }
+    }
+    return findings;
+  });
+  failures.push(...recipe);
+  result.checks.push({ check: "button-recipe", findings: recipe.length });
 
   // Focus indicators, normally and under forced colors.
   for (const forcedColors of ["none", "active"]) {

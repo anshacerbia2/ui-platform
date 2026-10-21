@@ -55,6 +55,11 @@ $color-primary-subtle-pressed: var(--ds-color-primary-surface-subtle-pressed);
 $color-primary-text: var(--ds-color-primary-text-default-default);
 $color-primary-text-hover: var(--ds-color-primary-text-default-hover);
 $color-primary-border: var(--ds-color-primary-border-default-default);
+$color-primary-disabled: var(--ds-color-primary-surface-solid-disabled);
+// Labels of a primary solid fill; each sits on the fill state it names.
+$color-primary-contrast: var(--ds-color-primary-text-contrast-default);
+$color-primary-contrast-hover: var(--ds-color-primary-text-contrast-hover);
+$color-primary-contrast-disabled: var(--ds-color-primary-text-contrast-disabled);
 
 
 // ============================================
