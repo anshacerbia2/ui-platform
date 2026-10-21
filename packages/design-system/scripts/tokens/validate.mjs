@@ -128,8 +128,10 @@ export function keySetFindings(themes, aliases) {
  *   indicator, such as text inputs (STD-UIP-TKN-001 2.2.0, SC 1.4.11).
  * Disabled states are exempt from SC 1.4.3 and 1.4.11 and are not evaluated.
  */
-export function contrastCases(names, config) {
+export function contrastCases(names, config, rendered = []) {
   const cases = [];
+  // ADR-UIP-CMP-001 item 6 (TDD styled CS5): every pair a styled specification renders.
+  for (const pair of rendered) cases.push({ rule: "rendered-by-component", fg: pair.fg, bg: pair.bg, minimum: config.contrast.textMinimum, where: pair.where });
   const has = (name) => names.has(name);
   const minimum = (role) => (role === "text" ? config.contrast.textMinimum : config.contrast.nonTextMinimum);
   for (const scheme of COLOR.schemes) {
@@ -289,7 +291,7 @@ export function orderFindings(resolved) {
  * Validate normalized themes.
  * @returns {{ findings: object[], stats: object }}
  */
-export function validate({ themes, config, packageDir }) {
+export function validate({ themes, config, packageDir, rendered = [] }) {
   const aliases = config.aliases ?? {};
   const findings = [];
   const add = (finding) => findings.push(finding);
@@ -380,7 +382,7 @@ export function validate({ themes, config, packageDir }) {
       }
 
       const canvas = parseColor(resolved.get(config.contrast.canvas) ?? "");
-      for (const test of contrastCases(new Set(resolved.keys()), config)) {
+      for (const test of contrastCases(new Set(resolved.keys()), config, rendered)) {
         stats.contrastCases++;
         const fg = parseColor(resolved.get(test.fg) ?? "");
         const bg = parseColor(resolved.get(test.bg) ?? "");
@@ -395,7 +397,7 @@ export function validate({ themes, config, packageDir }) {
           stats.contrastFailures++;
           add({
             category: "contrast", theme: themeId, mode, token: test.fg,
-            message: `${test.rule}: ${ratio.toFixed(2)}:1 on ${test.bg}, display path ${path} (minimum ${test.minimum}:1)`,
+            message: `${test.rule}${test.where ? ` (${test.where})` : ""}: ${ratio.toFixed(2)}:1 on ${test.bg}, display path ${path} (minimum ${test.minimum}:1)`,
           });
         }
       }

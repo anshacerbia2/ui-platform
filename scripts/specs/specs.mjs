@@ -8,6 +8,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import Ajv2020 from "ajv/dist/2020.js";
 import { packageEntries } from "../package-entries.mjs";
+import { styledContext, styledFindings } from "./styled.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const schemaDir = path.join(root, "scripts/specs/schema");
@@ -15,7 +16,7 @@ const PACKAGES = [
   { name: "@scnx/core-ui", dir: "packages/core-ui" },
   { name: "@scnx/system", dir: "packages/design-system" },
 ];
-const KINDS = ["primitive", "entry"];
+const KINDS = ["primitive", "styled", "entry"];
 export const INVENTORY = "packages/core-ui/behavior-inventory.json";
 
 function validators() {
@@ -100,7 +101,21 @@ export function loadSpecs() {
       expected.push({ file, entry: `${pkg.name}${entry.subpath.slice(1)}`, spec });
     }
   }
-  return { specs: expected, findings: specFindings(expected, found, validate) };
+  const findings = specFindings(expected, found, validate);
+  // Styled rules read the built stylesheet and the API reports (TDD styled CS2, CS3).
+  const styled = expected.filter((row) => row.spec?.kind === "styled");
+  if (findings.length === 0 && styled.length > 0) {
+    const css = path.join(root, "packages/design-system/dist/tokens/css/default.css");
+    if (!fs.existsSync(css)) findings.push("styled specifications need the built packages; run pnpm build first");
+    else {
+      const tokens = new Set([...fs.readFileSync(css, "utf8").matchAll(/(--ds-[a-z0-9-]+)\s*:/g)].map((m) => m[1]));
+      const primitives = expected.filter((row) => row.spec.kind === "primitive").map((row) => row.spec);
+      for (const { file, spec } of styled) {
+        for (const finding of styledFindings(spec, styledContext(spec, primitives, tokens))) findings.push(`${file}: ${finding}`);
+      }
+    }
+  }
+  return { specs: expected, findings };
 }
 
 /** The behavior inventory (TDD primitives P12, P13) generated from specifications. */
@@ -111,7 +126,7 @@ export function inventoryFrom(specs) {
     .sort(byEntry)
     .map(({ $schema: _, kind: __, ...contract }) => contract);
   const entries = specs
-    .filter((s) => s.kind === "entry")
+    .filter((s) => s.kind === "entry" || s.kind === "styled")
     .sort(byEntry)
     .map(({ entry, stability, entryKind }) => ({ entry, stability, kind: entryKind }));
   return {
