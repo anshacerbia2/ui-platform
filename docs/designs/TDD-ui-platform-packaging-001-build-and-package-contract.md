@@ -9,17 +9,10 @@ doc_meta:
   parent_sad: SAD-003
   review_cycle_days: 30
   created_date: 2026-09-28
-  last_reviewed: 2026-10-20
+  last_reviewed: 2026-10-21
 ---
 
 # TDD-ui-platform-packaging-001: Build and Published Package Contract
-
-> **Revision pending exact-commit ratification.** RC3 on the `2.0.0` line and
-> the decision record "release workflow" (RL1–RL6), following accepted
-> ADR-UIP-REL-001 and STD-UIP-ENG-001 2.4.0, are pending under GDC-000 section
-> 2.6.7; the revision ratified on 2026-10-21 (`f528152`) remains binding until
-> the authorized human authority approves the exact commit containing these
-> changes.
 
 ## Purpose
 
