@@ -8,7 +8,11 @@
 //   file checks out with LF on every platform (`eol=lf`);
 // - support matrix (TDD packaging RC5): the pinned Node.js is a supported line,
 //   the CI workflow runs the packed consumer on every other line, and it
-//   installs every browser engine the matrix lists.
+//   installs every browser engine the matrix lists;
+// - workflow permissions (TDD packaging C5): every workflow declares
+//   top-level `permissions`, none grants `statuses: write`, `checks: write`,
+//   or `write-all`, and no job or step is named after a required check that
+//   an outside service posts, so no workflow can satisfy that check itself.
 // `--self-test` runs the detectors against known-good and known-bad inputs.
 
 import { execFileSync } from "node:child_process";
@@ -83,6 +87,26 @@ export function nodeLineFindings(matrixLines, pinned, workflow) {
   return findings;
 }
 
+// Required checks posted from outside GitHub Actions (TDD packaging C4, C5).
+// The ruleset accepts them from any source, so the repository's own workflows
+// must not be able to post them.
+export const EXTERNAL_CHECKS = ["UI Tests"];
+
+/** Workflow-permission findings for one workflow file (TDD packaging C5). */
+export function workflowPermissionFindings(path, text) {
+  const findings = [];
+  const lines = text.split(/\r?\n/);
+  if (!lines.some((line) => /^permissions\s*:/.test(line))) findings.push(`${path}: declares no top-level permissions, so jobs get the repository default token`);
+  lines.forEach((line, index) => {
+    const at = `${path}:${index + 1}`;
+    if (/^\s*(statuses|checks)\s*:\s*write\b/.test(line)) findings.push(`${at}: ${line.trim()} lets a workflow post a required check`);
+    if (/^\s*permissions\s*:\s*write-all\b/.test(line)) findings.push(`${at}: permissions: write-all is not allowed`);
+    const name = /^\s*-?\s*name\s*:\s*["']?(.+?)["']?\s*$/.exec(line)?.[1];
+    if (name && EXTERNAL_CHECKS.includes(name)) findings.push(`${at}: "${name}" is a required check posted by an outside service`);
+  });
+  return findings;
+}
+
 /** Browser engines in the matrix that the packed-consumer job does not install. */
 export function browserInstallFindings(engines, workflow) {
   const install = /playwright install --with-deps ([a-z ]+)\n/.exec(workflow)?.[1].trim().split(/\s+/) ?? [];
@@ -108,6 +132,14 @@ function selfTest() {
     [nodeLineFindings(["22"], "24.11.1\n", "").length, 2],
     [browserInstallFindings(["chromium", "firefox"], "run: pnpm exec playwright install --with-deps chromium firefox\n").length, 0],
     [browserInstallFindings(["chromium", "webkit"], "run: pnpm exec playwright install --with-deps chromium\n").length, 1],
+    [workflowPermissionFindings("w", "on: push\npermissions:\n  contents: read\njobs:\n  a:\n    name: Build\n").length, 0],
+    [workflowPermissionFindings("w", "on: push\njobs:\n  a:\n    name: Build\n").length, 1],
+    [workflowPermissionFindings("w", "permissions:\n  contents: read\njobs:\n  a:\n    permissions:\n      statuses: write\n").length, 1],
+    [workflowPermissionFindings("w", "permissions:\n  checks: write\n").length, 1],
+    [workflowPermissionFindings("w", "permissions: write-all\n").length, 1],
+    [workflowPermissionFindings("w", "permissions: {}\njobs:\n  a:\n    name: UI Tests\n").length, 1],
+    [workflowPermissionFindings("w", "permissions: {}\njobs:\n  a:\n    steps:\n      - name: 'UI Tests'\n").length, 1],
+    [workflowPermissionFindings("w", "permissions: {}\njobs:\n  a:\n    name: UI Tests report\n").length, 0],
   ];
   const failed = cases.filter(([actual, expected]) => actual !== expected);
   if (failed.length > 0) {
@@ -131,6 +163,8 @@ function check() {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
   failures.push(...nodeLineFindings(matrix.node, readFileSync(".node-version", "utf8"), workflow));
   failures.push(...browserInstallFindings(matrix.browsers, workflow));
+  const workflows = all.filter((path) => /^\.github\/workflows\/[^/]+\.ya?ml$/.test(path));
+  for (const path of workflows) failures.push(...workflowPermissionFindings(path, readFileSync(path, "utf8")));
   for (const path of tracked) {
     failures.push(...heapFindings(path, readFileSync(path, "utf8")));
   }
@@ -163,7 +197,7 @@ function check() {
     process.exit(1);
   }
   console.log(
-    `CI policy passed: ${tracked.length} tracked files, ${configs} Vitest configs with retry: 0, ${verified.size} digest-verified files without line-ending conversion, every other file LF`,
+    `CI policy passed: ${tracked.length} tracked files, ${configs} Vitest configs with retry: 0, ${verified.size} digest-verified files without line-ending conversion, every other file LF, ${workflows.length} workflows that cannot post an outside check`,
   );
 }
 
