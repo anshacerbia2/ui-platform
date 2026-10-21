@@ -185,6 +185,7 @@ import { TextField } from "@scnx/system/components/text-field";
 import { DialogBase } from "@scnx/core-ui/components/dialog-base";
 import { Dialog } from "@scnx/system/components/dialog";
 import { TabsBase } from "@scnx/core-ui/components/tabs-base";
+import { ComboboxBase } from "@scnx/core-ui/components/combobox-base";
 import { Tabs } from "@scnx/system/components/tabs";
 
 const ItemState = () => <span>{useDisclosureItem().open ? "open" : "closed"}</span>;
@@ -280,6 +281,11 @@ export function Island() {
         </TabsBase.List>
         <TabsBase.Panel value="a">Base panel</TabsBase.Panel>
       </TabsBase>
+      <ComboboxBase items={[{ value: "ts", label: "TypeScript" }]} defaultValue="ts">
+        <ComboboxBase.Input aria-label="Base language" />
+        <ComboboxBase.Listbox aria-label="Base languages" />
+        <ComboboxBase.Status>{(count) => count + " options"}</ComboboxBase.Status>
+      </ComboboxBase>
       <Tabs defaultValue="a">
         <Tabs.List aria-label="Styled tabs">
           <Tabs.Tab value="a">A</Tabs.Tab>

@@ -4,31 +4,31 @@
 
 ```ts
 
-import { h as FlyoutContextValue } from '../../index-BzihNgPS.js';
-import { n as FlyoutProvider } from '../../index-BzihNgPS.js';
-import { g as FlyoutState } from '../../index-BzihNgPS.js';
-import { r as InsideFlyoutProvider } from '../../index-BzihNgPS.js';
-import { _ as NavigableChildProps } from '../../index-BzihNgPS.js';
-import { t as Sidebar } from '../../index-BzihNgPS.js';
-import { v as SidebarContextValue } from '../../index-BzihNgPS.js';
-import { c as SidebarFlyout } from '../../index-BzihNgPS.js';
-import { y as SidebarFlyoutProps } from '../../index-BzihNgPS.js';
-import { u as SidebarFooter } from '../../index-BzihNgPS.js';
-import { b as SidebarFooterProps } from '../../index-BzihNgPS.js';
-import { f as SidebarHeader } from '../../index-BzihNgPS.js';
-import { x as SidebarHeaderProps } from '../../index-BzihNgPS.js';
-import { d as SidebarNav } from '../../index-BzihNgPS.js';
-import { l as SidebarNavItem } from '../../index-BzihNgPS.js';
-import { S as SidebarNavProps } from '../../index-BzihNgPS.js';
-import { C as SidebarProps } from '../../index-BzihNgPS.js';
-import { o as SidebarProvider } from '../../index-BzihNgPS.js';
-import { w as SidebarProviderProps } from '../../index-BzihNgPS.js';
-import { m as SidebarRoot } from '../../index-BzihNgPS.js';
-import { p as SidebarToggle } from '../../index-BzihNgPS.js';
-import { T as SidebarToggleProps } from '../../index-BzihNgPS.js';
-import { i as useFlyout } from '../../index-BzihNgPS.js';
-import { a as useInsideFlyout } from '../../index-BzihNgPS.js';
-import { s as useSidebar } from '../../index-BzihNgPS.js';
+import { h as FlyoutContextValue } from '../../index-DNN-qGMH.js';
+import { n as FlyoutProvider } from '../../index-DNN-qGMH.js';
+import { g as FlyoutState } from '../../index-DNN-qGMH.js';
+import { r as InsideFlyoutProvider } from '../../index-DNN-qGMH.js';
+import { _ as NavigableChildProps } from '../../index-DNN-qGMH.js';
+import { t as Sidebar } from '../../index-DNN-qGMH.js';
+import { v as SidebarContextValue } from '../../index-DNN-qGMH.js';
+import { c as SidebarFlyout } from '../../index-DNN-qGMH.js';
+import { y as SidebarFlyoutProps } from '../../index-DNN-qGMH.js';
+import { u as SidebarFooter } from '../../index-DNN-qGMH.js';
+import { b as SidebarFooterProps } from '../../index-DNN-qGMH.js';
+import { f as SidebarHeader } from '../../index-DNN-qGMH.js';
+import { x as SidebarHeaderProps } from '../../index-DNN-qGMH.js';
+import { d as SidebarNav } from '../../index-DNN-qGMH.js';
+import { l as SidebarNavItem } from '../../index-DNN-qGMH.js';
+import { S as SidebarNavProps } from '../../index-DNN-qGMH.js';
+import { C as SidebarProps } from '../../index-DNN-qGMH.js';
+import { o as SidebarProvider } from '../../index-DNN-qGMH.js';
+import { w as SidebarProviderProps } from '../../index-DNN-qGMH.js';
+import { m as SidebarRoot } from '../../index-DNN-qGMH.js';
+import { p as SidebarToggle } from '../../index-DNN-qGMH.js';
+import { T as SidebarToggleProps } from '../../index-DNN-qGMH.js';
+import { i as useFlyout } from '../../index-DNN-qGMH.js';
+import { a as useInsideFlyout } from '../../index-DNN-qGMH.js';
+import { s as useSidebar } from '../../index-DNN-qGMH.js';
 
 export { FlyoutContextValue }
 

@@ -34,18 +34,15 @@
     }
   }
 
-  &__display-value {
+
+  // Announces the option count to screen readers only.
+  &__status {
     position: absolute;
-    left: $dimension-spacing-inset-compact;
-    right: 28px;
-    pointer-events: none;
-    display: flex;
-    align-items: center;
-    @include typography(label, small);
-    color: $color-text-primary;
-    white-space: nowrap;
+    inline-size: 1px;
+    block-size: 1px;
     overflow: hidden;
-    text-overflow: ellipsis;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   &__icon {
@@ -60,12 +57,16 @@
     font-size: 10px;
     transition: transform $motion-disclosure-duration $motion-disclosure-easing;
 
-    &[data-open="true"] {
-      transform: rotate(180deg);
-    }
+  }
+
+  &[data-state="open"] &__chevron {
+    transform: rotate(180deg);
   }
 
   &__dropdown {
+    list-style: none;
+    margin-block-end: 0;
+    padding: 0;
     position: absolute;
     top: 100%;
     left: 0;
@@ -87,10 +88,13 @@
     cursor: pointer;
     transition: background-color $motion-feedback-duration $motion-feedback-easing;
 
-    &:hover {
+    // The active option (aria-activedescendant) is shown like a hovered one,
+    // so keyboard focus in the list is visible (WCAG 2.4.7).
+    &:hover,
+    &[data-active] {
       background-color: $color-state-hover;
     }
-    
+
     &[data-selected="true"] {
       color: $color-primary-default; // Use primary color for selected
     }

@@ -18,10 +18,11 @@ export type FixtureComponents = {
   TextFieldBase: C;
   DialogBase: C;
   TabsBase: C;
+  ComboboxBase: C;
 };
 
 export function BehaviorFixtures({ components }: { components: FixtureComponents }): ReactElement {
-  const { ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase, DialogBase, TabsBase } = components;
+  const { ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase, DialogBase, TabsBase, ComboboxBase } = components;
   const [pressed, setPressed] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -81,6 +82,21 @@ export function BehaviorFixtures({ components }: { components: FixtureComponents
           <DialogBase.Description>The run and its payslips are removed.</DialogBase.Description>
           <DialogBase.Close>Cancel</DialogBase.Close>
         </DialogBase>
+      </div>
+      <div data-inventory="ComboboxBase">
+        <ComboboxBase
+          id="inventory-combobox"
+          items={[
+            { value: "ts", label: "TypeScript" },
+            { value: "js", label: "JavaScript" },
+            { value: "py", label: "Python", disabled: true },
+            { value: "rs", label: "Rust" },
+          ]}
+        >
+          <ComboboxBase.Input aria-label="Language" />
+          <ComboboxBase.Listbox aria-label="Languages" />
+          <ComboboxBase.Status>{(count: number) => `${count} options`}</ComboboxBase.Status>
+        </ComboboxBase>
       </div>
       <div data-inventory="TabsBase">
         <TabsBase id="inventory-tabs" defaultValue="pay">

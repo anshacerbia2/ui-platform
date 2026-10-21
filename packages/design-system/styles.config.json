@@ -60,16 +60,6 @@
     },
     {
       "rule": "spacing-literal",
-      "selector": ".scnx-code-select__display-value",
-      "properties": [
-        "right"
-      ],
-      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
-      "reason": "Keeps the displayed value clear of the chevron glyph",
-      "removal": "CodeSelect lays the value and chevron out in flow instead of positioning the value"
-    },
-    {
-      "rule": "spacing-literal",
       "selector": ".scnx-sidebar__toggle",
       "properties": [
         "right"

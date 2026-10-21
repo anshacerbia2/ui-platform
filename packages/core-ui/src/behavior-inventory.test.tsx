@@ -10,6 +10,7 @@ import { describe, expect, it } from "vitest";
 import { BehaviorFixtures } from "../test/behavior-fixtures";
 import { AccordionBase } from "./components/accordion-base";
 import { ButtonBase } from "./components/button-base";
+import { ComboboxBase } from "./components/combobox-base";
 import { DialogBase } from "./components/dialog-base";
 import { TabsBase } from "./components/tabs-base";
 import { NavigationBase } from "./components/navigation-base";
@@ -40,9 +41,9 @@ const inventory = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../behavio
 };
 
 // Interactive entries of @scnx/core-ui that must have a record.
-const INTERACTIVE = ["ButtonBase", "AccordionBase", "NavigationBase", "TableOfContentsBase", "SidebarBase", "TextFieldBase", "DialogBase", "TabsBase"];
+const INTERACTIVE = ["ComboboxBase", "ButtonBase", "AccordionBase", "NavigationBase", "TableOfContentsBase", "SidebarBase", "TextFieldBase", "DialogBase", "TabsBase"];
 
-const KEYS: { [key: string]: string } = { Enter: "{Enter}", Space: " ", Tab: "{Tab}", Escape: "{Escape}", ArrowRight: "{ArrowRight}", ArrowLeft: "{ArrowLeft}", Home: "{Home}", End: "{End}" };
+const KEYS: { [key: string]: string } = { Enter: "{Enter}", Space: " ", Tab: "{Tab}", Escape: "{Escape}", ArrowRight: "{ArrowRight}", ArrowLeft: "{ArrowLeft}", ArrowDown: "{ArrowDown}", ArrowUp: "{ArrowUp}", Home: "{Home}", End: "{End}" };
 
 describe("behavior inventory", () => {
   it("has a schema-valid record for every interactive primitive", () => {
@@ -74,6 +75,7 @@ describe("behavior inventory", () => {
           TextFieldBase,
           DialogBase,
           TabsBase,
+          ComboboxBase,
         }}
       />,
     );
