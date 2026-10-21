@@ -256,6 +256,12 @@ describe("theme parity and contrast", () => {
     expect(cases.some((c) => c.fg === "--ds-color-primary-border-strong-default")).toBe(false);
   });
 
+  it("adds every pair a styled specification renders at the text minimum (TDD styled CS5)", () => {
+    const rendered = [{ fg: "--ds-color-primary-text-contrast-default", bg: "--ds-color-primary-surface-solid-default", where: "button root rest" }];
+    const cases = contrastCases(new Set(), { contrast: { textMinimum: 4.5, nonTextMinimum: 3, neutralBackgrounds: [] } }, rendered);
+    expect(cases).toEqual([{ rule: "rendered-by-component", fg: rendered[0].fg, bg: rendered[0].bg, minimum: 4.5, where: "button root rest" }]);
+  });
+
   it("pairs contrast text with the solid surface of its scheme per state", () => {
     const names = new Set(["--ds-color-primary-text-contrast-default", "--ds-color-primary-surface-solid-default"]);
     const cases = contrastCases(names, { contrast: { textMinimum: 4.5, nonTextMinimum: 3, neutralBackgrounds: [] } });
