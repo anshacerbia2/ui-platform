@@ -29,6 +29,10 @@
       "types": "./dist/components/collapsible-base/index.d.ts",
       "default": "./dist/components/collapsible-base/index.js"
     },
+    "./components/combobox-base": {
+      "types": "./dist/components/combobox-base/index.d.ts",
+      "default": "./dist/components/combobox-base/index.js"
+    },
     "./components/container-base": {
       "types": "./dist/components/container-base/index.d.ts",
       "default": "./dist/components/container-base/index.js"

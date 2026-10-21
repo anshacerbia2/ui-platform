@@ -4,8 +4,8 @@
 
 ```ts
 
-import { t as CodeSelect } from '../../index-DjRhxD06.js';
-import { n as CodeSelectOption } from '../../index-DjRhxD06.js';
+import { t as CodeSelect } from '../../index-CBSm004y.js';
+import { n as CodeSelectOption } from '../../index-CBSm004y.js';
 
 export { CodeSelect }
 

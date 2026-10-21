@@ -61,6 +61,7 @@ import { SidebarBaseRoot, SidebarBaseToggle } from "@scnx/core-ui/components/sid
 import { TextFieldBase } from "@scnx/core-ui/components/text-field-base";
 import { DialogBase } from "@scnx/core-ui/components/dialog-base";
 import { TabsBase } from "@scnx/core-ui/components/tabs-base";
+import { ComboboxBase } from "@scnx/core-ui/components/combobox-base";
 import { BehaviorFixtures } from "./behavior-fixtures.tsx";
 
 const Toggle = ({ id }) => {
@@ -88,7 +89,7 @@ export const App = () => (
     <ThemeProvider themeId="achromatic" defaultMode="light" storage={false}><Toggle id="second" /></ThemeProvider>
     {/* Server-rendered: its markup carries no style attribute (TDD theme THM-009). */}
     <div data-behavior-matrix="">
-      <BehaviorFixtures components={{ ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase, DialogBase, TabsBase }} />
+      <BehaviorFixtures components={{ ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase, DialogBase, TabsBase, ComboboxBase }} />
     </div>
   </main>
 );
@@ -234,7 +235,7 @@ async function verify(browser) {
 
   // Packed behavior matrix from the inventory.
   await page.waitForSelector("[data-behavior-matrix]");
-  const PRESS = { Enter: "Enter", Space: "Space", Escape: "Escape", ArrowRight: "ArrowRight", ArrowLeft: "ArrowLeft", Home: "Home", End: "End" };
+  const PRESS = { Enter: "Enter", Space: "Space", Escape: "Escape", ArrowRight: "ArrowRight", ArrowLeft: "ArrowLeft", ArrowDown: "ArrowDown", ArrowUp: "ArrowUp", Home: "Home", End: "End" };
   let keysChecked = 0;
   for (const record of inventory.primitives) {
     const selectorOf = (name) => record.parts.find((p) => p.name === name).selector;

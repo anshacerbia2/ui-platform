@@ -89,3 +89,10 @@ if (typeof HTMLDialogElement !== 'undefined' && typeof HTMLDialogElement.prototy
     }
   });
 }
+
+// jsdom implements no scrolling, so Element.scrollIntoView is missing; every
+// supported browser has it. Test-only no-op (ComboboxBase keeps the active
+// option visible with it).
+if (typeof Element !== "undefined" && typeof Element.prototype.scrollIntoView !== "function") {
+  Element.prototype.scrollIntoView = function scrollIntoView() {};
+}

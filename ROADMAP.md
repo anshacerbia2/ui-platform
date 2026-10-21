@@ -38,11 +38,16 @@ Phase evidence:
   forced layouts of every dynamic-height transition (TDD theme X1–X5); token
   contrast is proven on every display path of out-of-gamut colors (TDD tokens
   G1–G3); component styles use governed values only, and every focusable part
-  meets the 24 px pointer target (TDD styled GV1–GV7). Remaining: the repeatable
-  release pipeline (lien L3; registry and version line proposed in
-  ADR-UIP-REL-001, awaiting ARB acceptance), named consumer pilots with approved
-  budgets (no pilot named yet; ADR-IAM-012 keeps identity-experience on local
-  components), and migration and rollback evidence.
+  meets the 24 px pointer target (TDD styled GV1–GV7). CodeSelect, found on
+  2026-10-21 to be a pointer-only list without combobox semantics, now runs on
+  ComboboxBase, an APG editable combobox built without a third-party library
+  (ADR-UIP-PLT-001 UIP-DEC-001 revised and accepted 2026-10-21; TDD primitives
+  P18). Remaining: the repeatable release pipeline (lien L3; registry and
+  version line proposed in ADR-UIP-REL-001, awaiting ARB acceptance), named
+  consumer pilots with approved budgets (no pilot named yet; ADR-IAM-012 keeps
+  identity-experience on local components), manual NVDA and VoiceOver results
+  for ComboboxBase and Tabs before stable promotion (STD-UIP-PRM-001), and
+  migration and rollback evidence.
 
 ## Non-negotiable boundaries
 
