@@ -1,0 +1,73 @@
+name: Release
+
+# ADR-UIP-REL-001 items 2-4; TDD packaging RL1-RL6. A person starts it with the
+# ID of a successful CI run of a push to main; the `release` environment's
+# required reviewer (the Release Lead) approves the job. It verifies that run's
+# tarballs (run, digests, version line, attestations) and stages them,
+# unchanged, with npm trusted publishing: no npm token exists. A staged version
+# goes live only when an npm maintainer approves it with two-factor
+# authentication. It installs no dependency, so the OIDC token never reaches
+# dependency code.
+
+on:
+  workflow_dispatch:
+    inputs:
+      run-id:
+        description: ID of the successful CI run on main whose tarballs to stage
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  stage:
+    name: Verify and stage the tarballs
+    runs-on: ubuntu-24.04
+    environment: release
+    permissions:
+      contents: read
+      actions: read
+      attestations: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+      # Trusted publishing needs npm 11.5.1 or later and staging 11.15.0 or
+      # later (ADR-UIP-REL-001 [R1], [R11]); the version is pinned.
+      - name: Pin the npm CLI
+        run: npm install --global npm@11.21.0 && test "$(npm --version)" = "11.21.0"
+      - uses: actions/download-artifact@v4
+        with:
+          name: packed-packages
+          path: artifacts/packages
+          run-id: ${{ inputs.run-id }}
+          github-token: ${{ github.token }}
+      - name: Verify the run, digests, version line, and attestations
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ inputs.run-id }}
+        run: node scripts/release.mjs --run-id "$RUN_ID" --packs artifacts/packages --repo "$GITHUB_REPOSITORY"
+      # Pre-releases carry the beta tag; npm refuses a pre-release without one
+      # ([R4], [R10]). @scnx/core-ui is staged before @scnx/system, its peer.
+      - name: Stage with npm trusted publishing
+        run: |
+          set -euo pipefail
+          while IFS= read -r tarball; do
+            npm stage publish "$tarball" --tag beta --access public
+          done < artifacts/packages/release-order.txt
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "### Release"
+            echo ""
+            echo "Staged from CI run \`${{ inputs.run-id }}\` with the \`beta\` tag. Each version goes live after an npm maintainer approves it with 2FA (npmjs.com, Staged Packages)."
+          } >> "$GITHUB_STEP_SUMMARY"

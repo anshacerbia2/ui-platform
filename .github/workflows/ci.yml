@@ -148,6 +148,8 @@ jobs:
       - run: pnpm run build
       - name: Inspector rejects known violations
         run: node scripts/inspect-packages.mjs --self-test
+      - name: Release verification rejects known violations
+        run: node scripts/release.mjs --self-test
       - name: Pack and inspect both tarballs
         run: node scripts/inspect-packages.mjs --out artifacts/packages
       # TDD packaging RC1: a public-API change must update the committed reports.

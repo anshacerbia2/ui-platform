@@ -43,11 +43,13 @@ Phase evidence:
   ComboboxBase, an APG editable combobox built without a third-party library
   (ADR-UIP-PLT-001 UIP-DEC-001 revised and accepted 2026-10-21; TDD primitives
   P18); TableOfContents scrolling respects reduced motion and ends at
-  `scrollend` (P19). Remaining: the repeatable release pipeline (lien L3;
-  registry and version line proposed in ADR-UIP-REL-001, awaiting ARB
-  acceptance), named consumer pilots with approved budgets (no pilot named yet;
-  ADR-IAM-012 keeps identity-experience on local components), manual NVDA and
-  VoiceOver results for ComboboxBase and Tabs before stable promotion
+  `scrollend` (P19). The release pipeline exists (accepted ADR-UIP-REL-001; TDD
+  packaging RL1–RL6; packages on `2.0.0-beta.0`). Remaining: the first staged
+  release, which waits for the owner's preconditions (a second `@scnx` Owner
+  with 2FA, a trusted publisher per package, the `release` environment) and
+  removes lien L3, named consumer pilots with approved budgets (no pilot named
+  yet; ADR-IAM-012 keeps identity-experience on local components), manual NVDA
+  and VoiceOver results for ComboboxBase and Tabs before stable promotion
   (STD-UIP-PRM-001), and migration and rollback evidence.
 
 ## Non-negotiable boundaries
