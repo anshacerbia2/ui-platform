@@ -290,6 +290,25 @@ Sequence deviation, recorded as a fact: the candidate was merged on 2026-10-21
 (#83) before this statement; in that interval `773a864` remained binding while
 `main` showed no pending-ratification notice.
 
+Tenth ratification, appended 2026-10-21: the custom composite-widget rule that
+follows the accepted revision of ADR-UIP-PLT-001 UIP-DEC-001 (composite
+widgets without React Aria, accepted by the ARB on 2026-10-21 and recorded in
+that ADR).
+
+| Repository            | Ratified revision                                     | Candidate commit (ratified)                | Merge commit | Pull request | CI at candidate and merge |
+| :-------------------- | :---------------------------------------------------- | :----------------------------------------- | :----------- | :----------- | :------------------------ |
+| scnehaux-architecture | STD-UIP-PRM-001 2.1.0 (custom composite widgets, APG) | `889e0f974db67562643d35375db9e97edcb323c8` | `d924eec`    | #116         | Linter passed             |
+
+Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+2026-10-21: "Saya, sebagai ARB dan UI Platform Lead, meratifikasi 889e0f9
+(STD-UIP-PRM-001 2.1.0) beserta bukti CI-nya, per 2026-10-21." ("As ARB and UI
+Platform Lead, I ratify 889e0f9 (STD-UIP-PRM-001 2.1.0) with its CI evidence,
+as of 2026-10-21.")
+
+Sequence deviation, recorded as a fact: the candidate was merged on 2026-10-21
+(#116) before this statement; in that interval STD-UIP-PRM-001 2.0.0 remained
+binding while `main` showed no pending-ratification notice.
+
 ## D2 recommendation: `oklch`
 
 Appended 2026-10-02. The `oklch` trial ended on 2026-08-01 with no recorded
