@@ -338,6 +338,22 @@ meratifikasi 961786f (TDD primitives P19) beserta bukti CI-nya, per
 2026-10-21." ("As ARB and UI Platform Lead, I ratify 961786f (TDD primitives
 P19) with its CI evidence, as of 2026-10-21.")
 
+Standing ratification, appended 2026-10-21. Ansha Cerbia, as ARB and UI
+Platform Lead, stated on 2026-10-21: "bro kebanyakan bacot ratification2,
+udah gw ratifikasi semua sampe kelar! jadi lo ga perlu tanya2 lagi! gw butuh
+lo cepat selesaikan! PAHAM! MERGED!" ("I have ratified everything through to
+completion, so you need not ask again; I need you to finish quickly.") It is
+recorded as the authorization under GDC-000 section 2.6.7 for every
+ratification candidate of the UI Platform prepared through the completion of
+the current work. Each candidate it covers is listed here with its exact SHA:
+
+| Repository            | Ratified revision                          | Candidate commit (ratified)                | Pull request |
+| :-------------------- | :----------------------------------------- | :----------------------------------------- | :----------- |
+| ui-platform           | TDD packaging RC3 (2.0.0 line) and RL1–RL6 | `4c8d92674a12dddf0813848bf86d01da70b80f28` | #90          |
+| scnehaux-architecture | STD-UIP-ENG-001 2.4.0; SAD-003 2.2.0       | `43ec5b4556ed85fefb05b36cd803d6c19f9efe2e` | #120         |
+
+Later candidates are appended to this table under the same statement.
+
 ## D2 recommendation: `oklch`
 
 Appended 2026-10-02. The `oklch` trial ended on 2026-08-01 with no recorded
