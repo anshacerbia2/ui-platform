@@ -1,0 +1,44 @@
+{
+  "$schema": "../../../../../scripts/specs/schema/primitive.schema.json",
+  "kind": "primitive",
+  "name": "TableOfContentsBase",
+  "entry": "@scnx/core-ui/components/table-of-contents-base",
+  "stability": "candidate",
+  "root": "nav",
+  "parts": [
+    {
+      "name": "link",
+      "element": "a",
+      "selector": "[data-inventory='TableOfContentsBase'] a[href^='#']"
+    }
+  ],
+  "controlledProps": [
+    "initialActiveId"
+  ],
+  "states": [
+    "inactive",
+    "active"
+  ],
+  "keys": [
+    {
+      "key": "Enter",
+      "part": "link",
+      "condition": "focused",
+      "effect": "scrolls to the target heading and marks the link current",
+      "expect": {
+        "part": "link",
+        "attribute": "aria-current",
+        "value": "location"
+      }
+    }
+  ],
+  "focus": {
+    "initial": "none",
+    "movement": "native Tab order",
+    "restoration": "focus stays on the link"
+  },
+  "accessibleName": "link text; navigation labelled by the visible TOC label",
+  "dataHooks": [
+    "data-active"
+  ]
+}

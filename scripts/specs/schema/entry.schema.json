@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/anshacerbia2/ui-platform/blob/main/scripts/specs/schema/entry.schema.json",
+  "title": "Entry specification: stability and kind of a public entry without a primitive or styled specification (TDD primitives P13, P20)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "kind", "entry", "entryKind", "stability"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "kind": { "const": "entry" },
+    "entry": { "$ref": "common.schema.json#/$defs/entry" },
+    "entryKind": { "enum": ["presentational", "interactive", "layout", "motion", "provider", "hook", "aggregate"] },
+    "stability": { "$ref": "common.schema.json#/$defs/stability" }
+  }
+}

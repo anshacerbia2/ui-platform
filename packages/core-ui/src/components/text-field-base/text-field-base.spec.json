@@ -1,0 +1,63 @@
+{
+  "$schema": "../../../../../scripts/specs/schema/primitive.schema.json",
+  "kind": "primitive",
+  "name": "TextFieldBase",
+  "entry": "@scnx/core-ui/components/text-field-base",
+  "stability": "candidate",
+  "root": "div",
+  "parts": [
+    {
+      "name": "label",
+      "element": "label",
+      "selector": "[data-inventory='TextFieldBase'] [data-part='label']"
+    },
+    {
+      "name": "description",
+      "element": "p",
+      "selector": "[data-inventory='TextFieldBase'] [data-part='description']"
+    },
+    {
+      "name": "input",
+      "element": "input",
+      "selector": "[data-inventory='TextFieldBase'] [data-part='input']"
+    },
+    {
+      "name": "error",
+      "element": "p",
+      "selector": "[data-inventory='TextFieldBase'] [data-part='error']"
+    }
+  ],
+  "controlledProps": [
+    "value"
+  ],
+  "states": [
+    "default",
+    "invalid",
+    "disabled",
+    "required"
+  ],
+  "keys": [
+    {
+      "key": "Tab",
+      "part": "input",
+      "condition": "error present",
+      "effect": "focus reaches the native input, which reports the error state",
+      "expect": {
+        "part": "input",
+        "attribute": "aria-invalid",
+        "value": "true"
+      }
+    }
+  ],
+  "focus": {
+    "initial": "none",
+    "movement": "native Tab order",
+    "restoration": "none"
+  },
+  "accessibleName": "label prop, a visible native label (required, localized by the consumer)",
+  "dataHooks": [
+    "data-part",
+    "data-invalid",
+    "data-disabled"
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "$schema": "../../../../../scripts/specs/schema/primitive.schema.json",
+  "kind": "primitive",
+  "name": "ButtonBase",
+  "entry": "@scnx/core-ui/components/button-base",
+  "stability": "candidate",
+  "root": "button",
+  "parts": [
+    {
+      "name": "button",
+      "element": "button",
+      "selector": "[data-inventory='ButtonBase'] button"
+    },
+    {
+      "name": "link",
+      "element": "a",
+      "selector": "[data-inventory='ButtonBase'] a[href]"
+    },
+    {
+      "name": "disabled-link",
+      "element": "a",
+      "selector": "[data-inventory='ButtonBase'] a[aria-disabled='true']"
+    }
+  ],
+  "controlledProps": [
+    "pressed"
+  ],
+  "states": [
+    "default",
+    "pressed",
+    "disabled"
+  ],
+  "keys": [
+    {
+      "key": "Enter",
+      "part": "button",
+      "condition": "focused",
+      "effect": "activates the native button",
+      "expect": {
+        "part": "button",
+        "attribute": "aria-pressed",
+        "value": "true"
+      }
+    },
+    {
+      "key": "Space",
+      "part": "button",
+      "condition": "focused",
+      "effect": "activates the native button",
+      "expect": {
+        "part": "button",
+        "attribute": "aria-pressed",
+        "value": "false"
+      }
+    },
+    {
+      "key": "Tab",
+      "part": "disabled-link",
+      "condition": "disabled link",
+      "effect": "is not in the sequential focus order",
+      "expect": {
+        "part": "disabled-link",
+        "attribute": "tabindex",
+        "value": "-1"
+      }
+    }
+  ],
+  "focus": {
+    "initial": "none",
+    "movement": "native Tab order",
+    "restoration": "not applicable"
+  },
+  "accessibleName": "text content",
+  "dataHooks": [
+    "data-disabled"
+  ]
+}

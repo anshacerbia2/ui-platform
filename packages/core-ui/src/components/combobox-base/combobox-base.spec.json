@@ -1,0 +1,175 @@
+{
+  "$schema": "../../../../../scripts/specs/schema/primitive.schema.json",
+  "kind": "primitive",
+  "name": "ComboboxBase",
+  "entry": "@scnx/core-ui/components/combobox-base",
+  "stability": "candidate",
+  "root": "div",
+  "parts": [
+    {
+      "name": "input",
+      "element": "input",
+      "selector": "[data-inventory='ComboboxBase'] [role='combobox']"
+    },
+    {
+      "name": "listbox",
+      "element": "ul",
+      "selector": "[data-inventory='ComboboxBase'] [role='listbox']"
+    },
+    {
+      "name": "first",
+      "element": "li",
+      "selector": "[data-inventory='ComboboxBase'] [data-value='ts']"
+    },
+    {
+      "name": "second",
+      "element": "li",
+      "selector": "[data-inventory='ComboboxBase'] [data-value='js']"
+    },
+    {
+      "name": "last",
+      "element": "li",
+      "selector": "[data-inventory='ComboboxBase'] [data-value='rs']"
+    },
+    {
+      "name": "status",
+      "element": "div",
+      "selector": "[data-inventory='ComboboxBase'] [role='status']"
+    }
+  ],
+  "controlledProps": [
+    "value"
+  ],
+  "states": [
+    "closed",
+    "open",
+    "active option",
+    "accepted option",
+    "disabled option"
+  ],
+  "keys": [
+    {
+      "key": "ArrowDown",
+      "part": "input",
+      "condition": "focused, list closed",
+      "effect": "opens the list with the first enabled option active",
+      "expect": {
+        "part": "first",
+        "attribute": "aria-selected",
+        "value": "true"
+      }
+    },
+    {
+      "key": "ArrowDown",
+      "part": "input",
+      "condition": "list open",
+      "effect": "the next enabled option becomes active; the disabled option is skipped",
+      "expect": {
+        "part": "second",
+        "attribute": "aria-selected",
+        "value": "true"
+      }
+    },
+    {
+      "key": "ArrowDown",
+      "part": "input",
+      "condition": "list open on the second option",
+      "effect": "skips the disabled option to the last one",
+      "expect": {
+        "part": "last",
+        "attribute": "aria-selected",
+        "value": "true"
+      }
+    },
+    {
+      "key": "ArrowDown",
+      "part": "input",
+      "condition": "list open on the last option",
+      "effect": "does nothing; no wrap (APG)",
+      "expect": {
+        "part": "last",
+        "attribute": "aria-selected",
+        "value": "true"
+      }
+    },
+    {
+      "key": "ArrowUp",
+      "part": "input",
+      "condition": "list open",
+      "effect": "the previous enabled option becomes active",
+      "expect": {
+        "part": "second",
+        "attribute": "aria-selected",
+        "value": "true"
+      }
+    },
+    {
+      "key": "ArrowLeft",
+      "part": "input",
+      "condition": "an option is active",
+      "effect": "the caret moves natively and the active option is cleared, so screen readers announce the edit",
+      "expect": {
+        "part": "input",
+        "attribute": "aria-activedescendant",
+        "value": null
+      }
+    },
+    {
+      "key": "ArrowUp",
+      "part": "input",
+      "condition": "list open, no active option",
+      "effect": "the last enabled option becomes active",
+      "expect": {
+        "part": "last",
+        "attribute": "aria-selected",
+        "value": "true"
+      }
+    },
+    {
+      "key": "Enter",
+      "part": "input",
+      "condition": "an option is active",
+      "effect": "accepts it, places its label in the input, and closes the list",
+      "expect": {
+        "part": "input",
+        "attribute": "aria-expanded",
+        "value": "false"
+      }
+    },
+    {
+      "key": "ArrowDown",
+      "part": "input",
+      "condition": "list closed",
+      "effect": "reopens the list",
+      "expect": {
+        "part": "input",
+        "attribute": "aria-expanded",
+        "value": "true"
+      }
+    },
+    {
+      "key": "Escape",
+      "part": "input",
+      "condition": "list open",
+      "effect": "closes the list and restores the accepted label",
+      "expect": {
+        "part": "listbox",
+        "attribute": "hidden",
+        "value": ""
+      }
+    }
+  ],
+  "focus": {
+    "initial": "the input (DOM focus never leaves it)",
+    "movement": "aria-activedescendant over enabled options, Down and Up without wrapping",
+    "restoration": "none; pointer presses on the list keep focus in the input"
+  },
+  "accessibleName": "ComboboxBase.Input by aria-label, aria-labelledby, or a label; ComboboxBase.Listbox by aria-label or aria-labelledby; each option by its text",
+  "dataHooks": [
+    "data-part",
+    "data-state",
+    "data-value",
+    "data-active",
+    "data-selected"
+  ]
+}

@@ -142,6 +142,12 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Exports match source entries
         run: node scripts/sync-exports.mjs --check
+      # TDD primitives P20-P22: one specification per public entry; the
+      # behavior inventory is generated from them.
+      - name: Component specifications and the generated inventory
+        run: |
+          node scripts/specs/inventory.mjs --self-test
+          node scripts/specs/inventory.mjs --check
       - name: Stylesheet gate rejects known violations
         run: node packages/design-system/scripts/styles/check-css.mjs --self-test
       # The build runs the stylesheet gate on every published stylesheet.

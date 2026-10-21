@@ -1,0 +1,68 @@
+{
+  "$schema": "../../../../../scripts/specs/schema/primitive.schema.json",
+  "kind": "primitive",
+  "name": "AccordionBase",
+  "entry": "@scnx/core-ui/components/accordion-base",
+  "stability": "candidate",
+  "root": "div",
+  "parts": [
+    {
+      "name": "header",
+      "element": "h3",
+      "selector": "[data-inventory='AccordionBase'] [data-part='header']"
+    },
+    {
+      "name": "trigger",
+      "element": "button",
+      "selector": "[data-inventory='AccordionBase'] button[aria-controls]"
+    },
+    {
+      "name": "content",
+      "element": "div",
+      "selector": "[data-inventory='AccordionBase'] [role='region']"
+    }
+  ],
+  "controlledProps": [
+    "value",
+    "open"
+  ],
+  "states": [
+    "closed",
+    "open"
+  ],
+  "keys": [
+    {
+      "key": "Enter",
+      "part": "trigger",
+      "condition": "collapsed",
+      "effect": "expands the panel",
+      "expect": {
+        "part": "trigger",
+        "attribute": "aria-expanded",
+        "value": "true"
+      }
+    },
+    {
+      "key": "Space",
+      "part": "trigger",
+      "condition": "expanded and collapsible",
+      "effect": "collapses the panel",
+      "expect": {
+        "part": "trigger",
+        "attribute": "aria-expanded",
+        "value": "false"
+      }
+    }
+  ],
+  "focus": {
+    "initial": "none",
+    "movement": "native Tab order through headers and open panels",
+    "restoration": "focus stays on the trigger"
+  },
+  "accessibleName": "trigger text; region labelled by its trigger",
+  "dataHooks": [
+    "data-state",
+    "data-disabled",
+    "data-type"
+  ]
+}
