@@ -9,16 +9,10 @@ doc_meta:
   parent_sad: SAD-003
   review_cycle_days: 30
   created_date: 2026-09-28
-  last_reviewed: 2026-10-02
+  last_reviewed: 2026-10-21
 ---
 
 # TDD-ui-platform-theme-005: Theme Provider and Transition Runtime
-
-> **Revision pending exact-commit ratification.** The decision record
-> "interaction traces" (X1–X5) and the corrected layout-read description of the
-> transition state machine are pending under GDC-000 section 2.6.7; the revision
-> ratified on 2026-10-02 (`773a864`) remains binding until the authorized human
-> authority approves the exact commit containing these changes.
 
 ## Purpose
 
