@@ -32,7 +32,11 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           storybookBuildDir: storybook-static
-          exitZeroOnChanges: false
+          # TDD packaging C5: a visual change is not a failure. Chromatic's own
+          # "UI Tests" status stays pending until every change is reviewed, and
+          # that status is the required visual check; this job fails only when
+          # the build itself fails.
+          exitZeroOnChanges: true
           autoAcceptChanges: main
           # ADR-UIP-WKS-001: TurboSnap captures only affected stories and copies
           # the rest at 1/5 of a snapshot; the Free plan pauses testing at
