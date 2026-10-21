@@ -1,12 +1,16 @@
 @use "styles/abstracts/variables" as *;
 
+// Variant is the color axis: `primary` is the solid fill of its scheme with
+// the scheme's contrast label; `secondary` is tonal, a neutral fill with no
+// stroke. The transparent border keeps both variants the same size and draws
+// the boundary in forced-colors mode, where backgrounds are removed.
 .scnx-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: $dimension-spacing-inset-compact $dimension-spacing-inset-default;
   border-radius: $dimension-radius-control;
-  border: 1px solid transparent;
+  border: $dimension-border-width-default solid transparent;
   cursor: pointer;
   @include typography(label, default);
   font-weight: $typography-weight-semibold;
@@ -17,31 +21,47 @@
 
   &[data-variant="primary"] {
     background: $color-primary-default;
-    color: $color-text-inverse;
+    color: $color-primary-contrast;
 
-    &:hover {
+    &:hover:not(:disabled, [data-disabled]) {
       background: $color-primary-hover;
+      color: $color-primary-contrast-hover;
       box-shadow: $effect-shadow-low;
     }
 
-    &:active {
+    &:active:not(:disabled, [data-disabled]) {
       background: $color-primary-pressed;
+      color: $color-primary-contrast;
+    }
+
+    &:disabled,
+    &[data-disabled] {
+      background: $color-primary-disabled;
+      color: $color-primary-contrast-disabled;
     }
   }
 
   &[data-variant="secondary"] {
     background: $color-surface-default;
     color: $color-text-primary;
-    border: 1px solid $color-border-default;
 
-    &:hover {
+    &:hover:not(:disabled, [data-disabled]) {
       background: $color-state-hover;
-      border-color: $color-text-primary;
+    }
+
+    &:active:not(:disabled, [data-disabled]) {
+      background: $color-state-pressed;
+    }
+
+    &:disabled,
+    &[data-disabled] {
+      background: $color-state-disabled;
+      color: $color-text-disabled;
     }
   }
 
-  &:disabled, &[data-disabled="true"] {
-    opacity: 0.5;
+  &:disabled,
+  &[data-disabled] {
     cursor: not-allowed;
   }
 }

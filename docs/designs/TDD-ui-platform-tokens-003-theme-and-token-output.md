@@ -159,6 +159,21 @@ controls with no other visual indicator, such as text inputs, and is tested at
 meet it (minimum 3.11:1, from 2.99:1). A color outside sRGB is tested on every
 display path, as decided below.
 
+#### Decision record: the label of a disabled solid fill
+
+STD-UIP-TKN-001 "Semantic Usage Doctrine": `contrast` is the text or icon color
+"designed to sit on a `solid` surface of the same scheme", and each `contrast`
+token is tested against that surface "in each theme and state". Until
+2026-10-22 the recipe gave every state of `contrast` the full-contrast label
+(white, or neutral step 12 or 1 for a dark-label scheme), while
+`solid-state-step` gives the disabled fill the quiet step 3. In the light
+default theme a disabled primary label measured about 1.2:1 on its fill.
+
+| ID  | Decision                                                                                                                                                                                                                                       | Source                                              | Tradeoff                                                                                                                                                           |
+| :-- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SD1 | `text.contrast.disabled` and `icon.contrast.disabled` of every scheme take the neutral disabled text step (step 8 of the neutral scale), the value of `color.neutral.text.default.disabled`. The disabled fill keeps its quiet scheme step. | STD-UIP-TKN-001, "Semantic Usage Doctrine"          | A disabled label drops the scheme's chroma, so disabled controls read alike across schemes; the fill keeps a trace of the scheme. The ratio becomes 2.9:1 to 4.7:1. |
+| SD2 | The gate does not add a contrast minimum for disabled pairs; a unit test pins the pairing and fails below 2.5:1.                                                                                                                             | WCAG 2.2 SC 1.4.3 (disabled controls are exempt)    | 2.5:1 is a regression floor for this recipe, not a conformance claim.                                                                                              |
+
 #### Decision record: display paths of out-of-gamut colors
 
 How STD-UIP-TKN-001 revision 2.3.0 ("Semantic Usage Doctrine") is implemented in

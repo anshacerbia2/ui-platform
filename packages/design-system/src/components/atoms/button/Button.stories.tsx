@@ -36,6 +36,15 @@ export const Disabled: Story = {
   },
 };
 
+/** A disabled secondary keeps its tonal fill and takes the disabled label. */
+export const SecondaryDisabled: Story = {
+  args: { variant: "secondary", disabled: true },
+  play: async ({ canvasElement }) => {
+    const button = within(canvasElement).getByRole("button", { name: "Save changes" });
+    await expect(button).toBeDisabled();
+  },
+};
+
 /** Link mode keeps native link semantics. */
 export const Link: Story = { args: { variant: "secondary", href: "#docs", children: "Read the docs" } };
 
