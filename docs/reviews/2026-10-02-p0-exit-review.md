@@ -255,6 +255,24 @@ Sequence deviation, recorded as a fact: the candidate was merged on 2026-10-20
 (TDD packaging) and `bc332cb` (TDD styled) remained binding while `main` showed
 no pending-ratification notice.
 
+Eighth ratification, appended 2026-10-21: the interaction-trace method and the
+governed values in component CSS.
+
+| Repository            | Ratified revision                                     | Candidate commit (ratified)                | Merge commit | Pull request | CI at candidate and merge                       |
+| :-------------------- | :---------------------------------------------------- | :----------------------------------------- | :----------- | :----------- | :---------------------------------------------- |
+| scnehaux-architecture | STD-UIP-ENG-001 2.3.0 (interaction-trace method)      | `896b06056aa14245c1de6e0aa959ba8459206f6e` | `b9aa805`    | #113         | Linter passed                                   |
+| ui-platform           | TDD styled GV1–GV4 (governed values in component CSS) | `fa73759da780275f2e61a8195fc98969ccb0e382` | `d499e75`    | #81          | CI, Chromatic, and P0 evidence workflows passed |
+
+Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+2026-10-21: "Saya, sebagai ARB dan UI Platform Lead, meratifikasi 896b060 dan
+fa73759 beserta bukti CI-nya, per 2026-10-21." ("As ARB and UI Platform Lead, I
+ratify 896b060 and fa73759 with their CI evidence, as of 2026-10-21.")
+
+Sequence deviation, recorded as a fact: both candidates were merged on
+2026-10-21 (#113, #81) before this statement; in that interval STD-UIP-ENG-001
+2.2.0 and `f528152` (TDD styled) remained binding while `main` showed no
+pending-ratification notice.
+
 ## D2 recommendation: `oklch`
 
 Appended 2026-10-02. The `oklch` trial ended on 2026-08-01 with no recorded

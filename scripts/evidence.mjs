@@ -39,7 +39,7 @@ export const ROWS = [
   { row: "3", title: "Packaging and isolated consumers", jobs: ["Packed consumer"], reports: ["packed-packages/pack-report.json", "packed-packages/consumer-report.json"] },
   { row: "4", title: "Token output", jobs: ["Token gate", "Packed consumer"], reports: ["token-report/token-report.json", "packed-packages/gamut-report.json"] },
   { row: "5", title: "Component CSS delivery", jobs: ["Packed consumer"], reports: ["packed-packages/browser-components-report.json"] },
-  { row: "6", title: "Theme provider and transitions", jobs: ["Packed consumer"], reports: ["packed-packages/browser-theme-report.json"] },
+  { row: "6", title: "Theme provider and transitions", jobs: ["Packed consumer"], reports: ["packed-packages/browser-theme-report.json", "packed-packages/traces-report.json"] },
   { row: "7", title: "Primitive behavior", jobs: ["Source tests", "Packed consumer"], reports: ["packed-packages/browser-theme-report.json"] },
   { row: "8", title: "Entry environments and Next.js App Router", jobs: ["Packed consumer"], reports: ["packed-packages/nextjs-report.json", "packed-packages/pack-report.json"] },
   { row: "9", title: "Conditional federation evaluation", jobs: ["Packed consumer"], reports: ["packed-packages/federation-report.json"] },
