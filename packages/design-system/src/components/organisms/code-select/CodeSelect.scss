@@ -12,7 +12,7 @@
     background-color: $color-surface-default;
     border: 1px solid $color-border-default;
     border-radius: $dimension-radius-control;
-    padding: 4px 10px;
+    padding: $dimension-spacing-inset-compact;
     width: 100%;
     cursor: pointer;
     transition: background-color $motion-feedback-duration $motion-feedback-easing;
@@ -36,7 +36,7 @@
 
   &__display-value {
     position: absolute;
-    left: 10px;
+    left: $dimension-spacing-inset-compact;
     right: 28px;
     pointer-events: none;
     display: flex;

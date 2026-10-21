@@ -37,12 +37,12 @@ Phase evidence:
   comparative evidence (TDD packaging PF1–PF6); interaction traces gate the
   forced layouts of every dynamic-height transition (TDD theme X1–X5); token
   contrast is proven on every display path of out-of-gamut colors (TDD tokens
-  G1–G3). Remaining: the repeatable release pipeline (lien L3; registry and
-  version line proposed in ADR-UIP-REL-001, awaiting ARB acceptance), named
-  consumer pilots with approved budgets (no pilot named yet; ADR-IAM-012 keeps
-  identity-experience on local components), the typography and spacing literals
-  the stylesheet gate does not yet cover (TDD styled GV4; motion and radius are
-  gated since 2026-10-21, GV1–GV3), and migration and rollback evidence.
+  G1–G3); component styles use governed values only, and every focusable part
+  meets the 24 px pointer target (TDD styled GV1–GV7). Remaining: the repeatable
+  release pipeline (lien L3; registry and version line proposed in
+  ADR-UIP-REL-001, awaiting ARB acceptance), named consumer pilots with approved
+  budgets (no pilot named yet; ADR-IAM-012 keeps identity-experience on local
+  components), and migration and rollback evidence.
 
 ## Non-negotiable boundaries
 

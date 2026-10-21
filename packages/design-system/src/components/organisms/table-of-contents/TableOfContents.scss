@@ -36,6 +36,9 @@
   &__link {
       text-decoration: none;
       display: block;
+      // WCAG 2.2 SC 2.5.8: a pointer target is at least 24 by 24 CSS pixels
+      // (STD-UIP-STY-001, "Governed values").
+      min-block-size: 24px;
       @include tokens.typography(body, small);
       color: tokens.$color-text-secondary;
       transition: color tokens.$motion-feedback-duration tokens.$motion-feedback-easing;

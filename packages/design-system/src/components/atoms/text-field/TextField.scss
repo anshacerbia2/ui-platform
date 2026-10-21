@@ -35,7 +35,7 @@
     background: $color-surface-raised;
     border: $dimension-border-width-default solid $color-border-strong;
     border-radius: $dimension-radius-control;
-    padding: 0.55rem 0.75rem;
+    padding: $dimension-spacing-inset-compact;
     transition-property: border-color, box-shadow;
     transition-duration: $motion-feedback-duration;
     transition-timing-function: $motion-feedback-easing;

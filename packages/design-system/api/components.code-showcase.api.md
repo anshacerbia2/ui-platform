@@ -4,17 +4,17 @@
 
 ```ts
 
-import { o as CodeShowcase } from '../../index-Dct-nnW6.js';
-import { t as CodeShowcaseContent } from '../../index-Dct-nnW6.js';
-import { s as CodeShowcaseContentProps } from '../../index-Dct-nnW6.js';
-import { r as CodeShowcaseNav } from '../../index-Dct-nnW6.js';
-import { c as CodeShowcaseNavProps } from '../../index-Dct-nnW6.js';
-import { i as CodeShowcasePreview } from '../../index-Dct-nnW6.js';
-import { l as CodeShowcasePreviewProps } from '../../index-Dct-nnW6.js';
-import { a as CodeShowcaseRoot } from '../../index-Dct-nnW6.js';
-import { u as CodeShowcaseRootProps } from '../../index-Dct-nnW6.js';
-import { n as CodeShowcaseTrigger } from '../../index-Dct-nnW6.js';
-import { d as CodeShowcaseTriggerProps } from '../../index-Dct-nnW6.js';
+import { o as CodeShowcase } from '../../index-BfUpBnCU.js';
+import { t as CodeShowcaseContent } from '../../index-BfUpBnCU.js';
+import { s as CodeShowcaseContentProps } from '../../index-BfUpBnCU.js';
+import { r as CodeShowcaseNav } from '../../index-BfUpBnCU.js';
+import { c as CodeShowcaseNavProps } from '../../index-BfUpBnCU.js';
+import { i as CodeShowcasePreview } from '../../index-BfUpBnCU.js';
+import { l as CodeShowcasePreviewProps } from '../../index-BfUpBnCU.js';
+import { a as CodeShowcaseRoot } from '../../index-BfUpBnCU.js';
+import { u as CodeShowcaseRootProps } from '../../index-BfUpBnCU.js';
+import { n as CodeShowcaseTrigger } from '../../index-BfUpBnCU.js';
+import { d as CodeShowcaseTriggerProps } from '../../index-BfUpBnCU.js';
 
 export { CodeShowcase }
 

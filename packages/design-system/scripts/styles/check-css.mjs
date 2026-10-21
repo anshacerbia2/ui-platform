@@ -9,7 +9,9 @@
 // - a selector/property pair owned by both Sass components and Panda recipes;
 // - raw values (STD-GLB-FE-005 sections 3.2 and 3.4): integer z-index, color
 //   literals, motion literals (a duration or timing function in a transition
-//   or animation property), a non-zero length in a border radius, ad-hoc
+//   or animation property), a non-zero length in a border radius, a non-zero
+//   length in a spacing or positioning property, a non-zero length or number
+//   in font-size, line-height, letter-spacing, or font-weight, ad-hoc
 //   custom properties, and !important, unless styles.config.json records the
 //   exception. A duration inside a calc() that multiplies a documented runtime
 //   property (a stagger step) is a local value whose purpose that property
@@ -32,7 +34,7 @@ const CONFIG_KEYS = {
   runtimeProperty: ["owner", "purpose"],
   exception: ["rule", "selector", "properties", "standard", "reason", "removal"],
 };
-const EXCEPTION_RULES = ["important", "color-literal", "z-index", "motion-literal", "radius-literal"];
+const EXCEPTION_RULES = ["important", "color-literal", "z-index", "motion-literal", "radius-literal", "spacing-literal", "typography-literal"];
 
 /** Load styles.config.json (TDD CSS delivery, Configuration); unknown keys fail. */
 export function loadStyleConfig(file = path.join(packageDir, "styles.config.json")) {
@@ -78,6 +80,23 @@ export const RUNTIME_PROPERTIES = STYLE_CONFIG.runtimeProperties;
 // Keywords such as transparent, currentcolor, and CSS system colors are not literals.
 const MOTION_PROPERTY = /^(?:transition|animation)(?:-(?:duration|delay|timing-function))?$/;
 const TIMING_KEYWORDS = new Set(["ease", "ease-in", "ease-out", "ease-in-out", "linear", "step-start", "step-end"]);
+const SPACING_PROPERTY = /^(?:(?:padding|margin|inset|scroll-padding|scroll-margin)(?:-[a-z-]+)?|gap|row-gap|column-gap|top|right|bottom|left)$/;
+const TYPOGRAPHY_PROPERTY = /^(?:font-size|line-height|letter-spacing|font-weight)$/;
+
+/** First non-zero length or number outside var(); percentages and keywords are geometry. */
+function lengthLiteral(value, { numbers = false } = {}) {
+  let found = null;
+  csstree.walk(value, {
+    enter(node) {
+      if (found) return;
+      if (node.type === "Function" && node.name === "var") return this.skip;
+      if (node.type === "Dimension" && Number(node.value) !== 0) found = `${node.value}${node.unit}`;
+      else if (numbers && node.type === "Number" && Number(node.value) !== 0) found = node.value;
+    },
+  });
+  return found;
+}
+
 const RADIUS_PROPERTY = /^border(?:-(?:top|bottom|start|end)-(?:left|right|start|end))?-radius$/;
 
 /** First motion literal in a transition/animation value, skipping var() and stagger steps. */
@@ -226,6 +245,16 @@ export function checkStylesheet(css, { tokenNames, config = STYLE_CONFIG }) {
             }
           }
         }
+        const governed = SPACING_PROPERTY.test(property)
+          ? ["spacing-literal", lengthLiteral(node.value), "a --ds-dimension-spacing-* token"]
+          : TYPOGRAPHY_PROPERTY.test(property)
+            ? ["typography-literal", lengthLiteral(node.value, { numbers: true }), "a --ds-typography-* token"]
+            : null;
+        if (governed?.[1]) {
+          for (const selector of selectors) {
+            if (!excepted(governed[0], selector, property)) findings.push(`${selector}: ${governed[0].replace("-", " ")} ${governed[1]} in ${property}; use ${governed[2]} or record a local value`);
+          }
+        }
         if (RADIUS_PROPERTY.test(property)) {
           const radius = radiusLiteral(node.value);
           if (radius) {
@@ -289,7 +318,7 @@ export function checkStylesheet(css, { tokenNames, config = STYLE_CONFIG }) {
 
 const STATEMENT = LAYER_STATEMENT;
 const SELF_TESTS = [
-  ["valid", `${STATEMENT}\n@layer components { .scnx-a { color: var(--ds-x, transparent); z-index: var(--ds-dimension-z-index-modal); transition-delay: calc(var(--item-index) * 1ms); transition: height var(--ds-x) var(--ds-x), opacity 0s; border-radius: 50% 0; } }\n@layer base { ${THEME_ROOT} :focus-visible { outline: 0 } }\n@media (forced-colors: active) { @layer base { ${THEME_ROOT} :focus-visible { outline-color: Highlight } } }`, null],
+  ["valid", `${STATEMENT}\n@layer components { .scnx-a { color: var(--ds-x, transparent); z-index: var(--ds-dimension-z-index-modal); transition-delay: calc(var(--item-index) * 1ms); transition: height var(--ds-x) var(--ds-x), opacity 0s; border-radius: 50% 0; padding: 0 var(--ds-x); top: 100%; gap: 0; line-height: inherit; } }\n@layer base { ${THEME_ROOT} :focus-visible { outline: 0 } }\n@media (forced-colors: active) { @layer base { ${THEME_ROOT} :focus-visible { outline-color: Highlight } } }`, null],
   ["no order statement", "@layer components { .scnx-a { color: red } }", "does not open with"],
   ["unlayered rule", `${STATEMENT}\n.scnx-a { color: red }`, "outside every layer"],
   ["undeclared layer", `${STATEMENT}\n@layer theme { .scnx-a { color: red } }`, "not a canonical layer"],
@@ -314,6 +343,10 @@ const SELF_TESTS = [
   ["motion curve", `${STATEMENT}\n@layer components { .scnx-a { animation-timing-function: cubic-bezier(0, 0, 1, 1) } }`, "motion literal cubic-bezier()"],
   ["delay without runtime property", `${STATEMENT}\n@layer components { .scnx-a { transition-delay: calc(2 * 33ms) } }`, "motion literal 33ms"],
   ["radius length", `${STATEMENT}\n@layer components { .scnx-a { border-radius: 3px } }`, "radius literal 3px"],
+  ["spacing length", `${STATEMENT}\n@layer components { .scnx-a { padding: var(--ds-x) 1.25rem } }`, "spacing literal 1.25rem"],
+  ["spacing offset", `${STATEMENT}\n@layer components { .scnx-a { top: 4rem } }`, "spacing literal 4rem"],
+  ["font size", `${STATEMENT}\n@layer components { .scnx-a { font-size: 0.9em } }`, "typography literal 0.9em"],
+  ["unitless line height", `${STATEMENT}\n@layer components { .scnx-a { line-height: 1 } }`, "typography literal 1"],
 ];
 
 function selfTest() {

@@ -1,8 +1,20 @@
 {
   "schemaVersion": 1,
-  "aggregate": { "source": "src/styles/bundles/components.scss", "publish": "styles/components.css" },
+  "aggregate": {
+    "source": "src/styles/bundles/components.scss",
+    "publish": "styles/components.css"
+  },
   "themeRoot": ":where([data-scnx-theme][data-scnx-resolved-mode])",
-  "recipes": ["container", "flex", "grid", "heading", "code", "text", "list", "list-item"],
+  "recipes": [
+    "container",
+    "flex",
+    "grid",
+    "heading",
+    "code",
+    "text",
+    "list",
+    "list-item"
+  ],
   "runtimeProperties": {
     "--item-index": {
       "owner": "@scnx/core-ui NavigationBaseGroup",
@@ -17,7 +29,10 @@
     {
       "rule": "important",
       "selector": ".scnx-code-showcase__code-inner pre",
-      "properties": ["padding", "background"],
+      "properties": [
+        "padding",
+        "background"
+      ],
       "standard": "STD-GLB-FE-005 section 4 (vendor integration)",
       "reason": "Consumer syntax highlighters (for example Shiki or Prism) style pre/code inline or in unlayered CSS, which outranks every layered rule",
       "removal": "CodeShowcase renders highlighted code itself with token-bound colors"
@@ -25,10 +40,124 @@
     {
       "rule": "important",
       "selector": ".scnx-code-showcase__code-inner code",
-      "properties": ["padding", "background"],
+      "properties": [
+        "padding",
+        "background"
+      ],
       "standard": "STD-GLB-FE-005 section 4 (vendor integration)",
       "reason": "Consumer syntax highlighters (for example Shiki or Prism) style pre/code inline or in unlayered CSS, which outranks every layered rule",
       "removal": "CodeShowcase renders highlighted code itself with token-bound colors"
+    },
+    {
+      "rule": "spacing-literal",
+      "selector": ".scnx-edge-layout__sidebar",
+      "properties": [
+        "top"
+      ],
+      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
+      "reason": "Sticky offset equal to the EdgeLayout navbar height, so the sidebar starts below the navbar",
+      "removal": "A navbar-height token or a layout that derives the offset"
+    },
+    {
+      "rule": "spacing-literal",
+      "selector": ".scnx-code-select__display-value",
+      "properties": [
+        "right"
+      ],
+      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
+      "reason": "Keeps the displayed value clear of the chevron glyph",
+      "removal": "CodeSelect lays the value and chevron out in flow instead of positioning the value"
+    },
+    {
+      "rule": "spacing-literal",
+      "selector": ".scnx-sidebar__toggle",
+      "properties": [
+        "right"
+      ],
+      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
+      "reason": "Negative overhang of half the toggle's width, so it straddles the sidebar edge",
+      "removal": "The toggle moves inside the sidebar"
+    },
+    {
+      "rule": "spacing-literal",
+      "selector": ".code",
+      "properties": [
+        "padding-block",
+        "padding-inline"
+      ],
+      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
+      "reason": "Inset of inline code relative to the surrounding text (em), so it scales inside headings and body text alike",
+      "removal": "A text-relative inset token"
+    },
+    {
+      "rule": "spacing-literal",
+      "selector": ".list--variant_unordered",
+      "properties": [
+        "padding-left"
+      ],
+      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
+      "reason": "List-marker gutter: room for the disc marker",
+      "removal": "A list-marker gutter token"
+    },
+    {
+      "rule": "spacing-literal",
+      "selector": ".list--variant_ordered",
+      "properties": [
+        "padding-left"
+      ],
+      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
+      "reason": "List-marker gutter: room for the number marker",
+      "removal": "A list-marker gutter token"
+    },
+    {
+      "rule": "typography-literal",
+      "selector": ".scnx-code-select__chevron",
+      "properties": [
+        "font-size"
+      ],
+      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
+      "reason": "Glyph size of the chevron icon, not text",
+      "removal": "An icon-size token"
+    },
+    {
+      "rule": "typography-literal",
+      "selector": ".scnx-code-showcase__lang-icon svg",
+      "properties": [
+        "font-size"
+      ],
+      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
+      "reason": "Glyph size of the language icon, relative to the tab text",
+      "removal": "An icon-size token"
+    },
+    {
+      "rule": "typography-literal",
+      "selector": ".scnx-navigation__icon",
+      "properties": [
+        "line-height"
+      ],
+      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
+      "reason": "line-height 1 collapses the icon box to the glyph so it centers in the item",
+      "removal": "None; this is geometry of the icon box"
+    },
+    {
+      "rule": "typography-literal",
+      "selector": ".scnx-navigation__badge",
+      "properties": [
+        "line-height"
+      ],
+      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
+      "reason": "line-height 1 collapses the badge box to its label so the pill keeps its height",
+      "removal": "None; this is geometry of the badge box"
+    },
+    {
+      "rule": "typography-literal",
+      "selector": ".code",
+      "properties": [
+        "font-size"
+      ],
+      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
+      "reason": "Inline code is sized relative to the surrounding text (em), so it scales inside headings and body text alike",
+      "removal": "A text-relative inline-code size in the typography roles"
     }
   ]
 }

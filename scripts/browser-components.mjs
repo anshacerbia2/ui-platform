@@ -12,7 +12,9 @@
 // - two roots of different themes, and two modes of one theme, compute a
 //   component differently on one page;
 // - keyboard focus on every focusable part draws a visible outline, normally
-//   and under forced colors, where the outline uses the Highlight system color.
+//   and under forced colors, where the outline uses the Highlight system color;
+// - every focusable part's pointer target (for CodeSelect, its wrapper) is at
+//   least 24 by 24 CSS pixels (WCAG 2.2 SC 2.5.8; STD-UIP-STY-001).
 //
 //   node scripts/browser-components.mjs --packs <dir from inspect-packages.mjs> [--out <report dir>]
 
@@ -137,6 +139,12 @@ async function focusWalk(tab) {
         outlineStyle: style.outlineStyle,
         outlineWidth: parseFloat(style.outlineWidth),
         outlineColor: style.outlineColor,
+        // The pointer target: the part itself, or the ancestor that receives the pointer.
+        ...(() => {
+          const target = el.closest(".scnx-code-select__wrapper") ?? el;
+          const box = target.getBoundingClientRect();
+          return { width: box.width, height: box.height };
+        })(),
         key: el.outerHTML.slice(0, 80) + "@" + (root?.getAttribute("data-fixture-root") ?? "host"),
       };
     }, FOCUSABLE);
@@ -243,6 +251,10 @@ async function verify(browser) {
       if (!state.focusVisible) failures.push(`${where}: keyboard focus does not match :focus-visible`);
       if (state.outlineStyle === "none" || !(state.outlineWidth >= 1)) {
         failures.push(`${where}: no visible outline (${state.outlineStyle} ${state.outlineWidth}px)`);
+      }
+      // WCAG 2.2 SC 2.5.8; STD-UIP-STY-001, "Governed values".
+      if (Math.min(state.width, state.height) < 24) {
+        failures.push(`${where}: pointer target ${state.width.toFixed(1)} x ${state.height.toFixed(1)} CSS px is below 24 x 24 (WCAG 2.2 SC 2.5.8)`);
       }
       if (forcedColors === "active" && state.outlineColor !== highlight) {
         failures.push(`${where}: outline color ${state.outlineColor} is not Highlight (${highlight})`);

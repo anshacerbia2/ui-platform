@@ -4,13 +4,13 @@
 
 ```ts
 
-import { q as FloatingLayout } from '../../index-DFcPM-t1.js';
-import { W as FloatingLayoutContent } from '../../index-DFcPM-t1.js';
-import { J as FloatingLayoutContentProps } from '../../index-DFcPM-t1.js';
-import { Y as FloatingLayoutProps } from '../../index-DFcPM-t1.js';
-import { K as FloatingLayoutRoot } from '../../index-DFcPM-t1.js';
-import { G as FloatingLayoutSidebar } from '../../index-DFcPM-t1.js';
-import { X as FloatingLayoutSidebarProps } from '../../index-DFcPM-t1.js';
+import { q as FloatingLayout } from '../../index-BzihNgPS.js';
+import { W as FloatingLayoutContent } from '../../index-BzihNgPS.js';
+import { J as FloatingLayoutContentProps } from '../../index-BzihNgPS.js';
+import { Y as FloatingLayoutProps } from '../../index-BzihNgPS.js';
+import { K as FloatingLayoutRoot } from '../../index-BzihNgPS.js';
+import { G as FloatingLayoutSidebar } from '../../index-BzihNgPS.js';
+import { X as FloatingLayoutSidebarProps } from '../../index-BzihNgPS.js';
 
 export { FloatingLayout }
 

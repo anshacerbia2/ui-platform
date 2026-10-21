@@ -36,7 +36,7 @@ $-item-slide-offset: 1.5rem;
 
   &__navigation {
     flex-grow: 1;
-    margin-block: 1rem;
+    margin-block: $dimension-spacing-stack-comfortable;
     // Overrides the Navigation root padding: Sidebar loads after Navigation
     // in the components layer, so source order decides at equal specificity.
     padding-block: 0;
@@ -200,7 +200,7 @@ $-item-slide-offset: 1.5rem;
 
   &__toggle {
     position: absolute;
-    top: 1.25rem;
+    top: $dimension-spacing-inset-default;
     right: -12px;
     display: flex;
     align-items: center;
@@ -225,7 +225,7 @@ $-item-slide-offset: 1.5rem;
 
   &__header {
     flex-shrink: 0;
-    padding: 1.25rem;
+    padding: $dimension-spacing-inset-default;
     border-bottom: none;
     @include typography(heading, small);
     font-weight: $typography-weight-semibold;
