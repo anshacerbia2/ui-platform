@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/anshacerbia2/ui-platform/blob/main/scripts/specs/schema/primitive.schema.json",
+  "title": "Primitive specification: the behavior contract of an interactive @scnx/core-ui primitive (TDD primitives P12, P20)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "kind", "name", "entry", "stability", "root", "parts", "controlledProps", "states", "keys", "focus", "accessibleName", "dataHooks"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "kind": { "const": "primitive" },
+    "name": { "type": "string", "pattern": "^[A-Z][A-Za-z]*Base$" },
+    "entry": { "allOf": [{ "$ref": "common.schema.json#/$defs/entry" }, { "type": "string", "pattern": "^@scnx/core-ui/" }] },
+    "stability": { "$ref": "common.schema.json#/$defs/stability" },
+    "root": { "type": "string", "minLength": 1 },
+    "parts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "element", "selector"],
+        "properties": {
+          "name": { "$ref": "common.schema.json#/$defs/name" },
+          "element": { "type": "string", "minLength": 1 },
+          "selector": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "controlledProps": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "states": { "type": "array", "minItems": 1, "items": { "type": "string" }, "uniqueItems": true },
+    "keys": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["key", "part", "condition", "effect"],
+        "properties": {
+          "key": { "type": "string", "minLength": 1 },
+          "part": { "$ref": "common.schema.json#/$defs/name" },
+          "condition": { "type": "string", "minLength": 1 },
+          "effect": { "type": "string", "minLength": 1 },
+          "expect": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["part", "attribute", "value"],
+            "properties": {
+              "part": { "$ref": "common.schema.json#/$defs/name" },
+              "attribute": { "type": "string", "minLength": 1 },
+              "value": { "description": "The attribute value after the key; null means the attribute is absent.", "type": ["string", "null"] }
+            }
+          }
+        }
+      }
+    },
+    "focus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["initial", "movement", "restoration"],
+      "properties": {
+        "initial": { "type": "string" },
+        "movement": { "type": "string" },
+        "restoration": { "type": "string" }
+      }
+    },
+    "accessibleName": { "type": "string", "minLength": 1 },
+    "dataHooks": { "type": "array", "items": { "type": "string", "pattern": "^data-[a-z-]+$" }, "uniqueItems": true }
+  }
+}

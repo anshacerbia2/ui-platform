@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/anshacerbia2/ui-platform/blob/main/scripts/specs/schema/common.schema.json",
+  "title": "Shared definitions of UI Platform component specifications (ADR-UIP-CMP-001)",
+  "$defs": {
+    "entry": {
+      "description": "Public JavaScript entry, \"@scnx/<package>/<subpath>\".",
+      "type": "string",
+      "pattern": "^@scnx/(core-ui|system)(/[a-z0-9-]+)+$"
+    },
+    "stability": {
+      "description": "TDD primitives P13.",
+      "enum": ["candidate", "stable"]
+    },
+    "name": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "$schema": "../../../../../../scripts/specs/schema/entry.schema.json",
+  "kind": "entry",
+  "entry": "@scnx/system/components/grid",
+  "entryKind": "presentational",
+  "stability": "candidate"
+}

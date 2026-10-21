@@ -1,0 +1,44 @@
+{
+  "$schema": "../../../../../scripts/specs/schema/primitive.schema.json",
+  "kind": "primitive",
+  "name": "SidebarBase",
+  "entry": "@scnx/core-ui/components/sidebar-base",
+  "stability": "candidate",
+  "root": "aside",
+  "parts": [
+    {
+      "name": "toggle",
+      "element": "button",
+      "selector": "[data-inventory='SidebarBase'] button[aria-controls]"
+    }
+  ],
+  "controlledProps": [
+    "isOpen"
+  ],
+  "states": [
+    "expanded",
+    "collapsed"
+  ],
+  "keys": [
+    {
+      "key": "Enter",
+      "part": "toggle",
+      "condition": "expanded",
+      "effect": "collapses the sidebar",
+      "expect": {
+        "part": "toggle",
+        "attribute": "aria-expanded",
+        "value": "false"
+      }
+    }
+  ],
+  "focus": {
+    "initial": "none",
+    "movement": "native Tab order",
+    "restoration": "flyout Escape returns focus to its opener"
+  },
+  "accessibleName": "toggle label prop (required, localized by the consumer)",
+  "dataHooks": [
+    "data-state"
+  ]
+}

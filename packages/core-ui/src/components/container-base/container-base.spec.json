@@ -1,0 +1,7 @@
+{
+  "$schema": "../../../../../scripts/specs/schema/entry.schema.json",
+  "kind": "entry",
+  "entry": "@scnx/core-ui/components/container-base",
+  "entryKind": "presentational",
+  "stability": "candidate"
+}

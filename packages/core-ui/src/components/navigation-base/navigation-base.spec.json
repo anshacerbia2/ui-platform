@@ -1,0 +1,70 @@
+{
+  "$schema": "../../../../../scripts/specs/schema/primitive.schema.json",
+  "kind": "primitive",
+  "name": "NavigationBase",
+  "entry": "@scnx/core-ui/components/navigation-base",
+  "stability": "candidate",
+  "root": "nav",
+  "parts": [
+    {
+      "name": "link",
+      "element": "a",
+      "selector": "[data-inventory='NavigationBase'] a[href]"
+    },
+    {
+      "name": "disclosure",
+      "element": "button",
+      "selector": "[data-inventory='NavigationBase'] button[aria-expanded]"
+    },
+    {
+      "name": "group",
+      "element": "ul",
+      "selector": "[data-inventory='NavigationBase'] ul"
+    }
+  ],
+  "controlledProps": [
+    "isExpanded",
+    "isActive"
+  ],
+  "states": [
+    "collapsed",
+    "expanded",
+    "current"
+  ],
+  "keys": [
+    {
+      "key": "Enter",
+      "part": "disclosure",
+      "condition": "collapsed",
+      "effect": "shows the nested group",
+      "expect": {
+        "part": "disclosure",
+        "attribute": "aria-expanded",
+        "value": "true"
+      }
+    },
+    {
+      "key": "Space",
+      "part": "disclosure",
+      "condition": "expanded",
+      "effect": "hides the nested group",
+      "expect": {
+        "part": "disclosure",
+        "attribute": "aria-expanded",
+        "value": "false"
+      }
+    }
+  ],
+  "focus": {
+    "initial": "none",
+    "movement": "native Tab order; arrow-key roving is consumer-owned",
+    "restoration": "focus stays on the disclosure button"
+  },
+  "accessibleName": "item label; current page link has aria-current=page",
+  "dataHooks": [
+    "data-active",
+    "data-expanded",
+    "data-level",
+    "data-index"
+  ]
+}

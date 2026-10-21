@@ -1,174 +1,148 @@
 {
   "schemaVersion": 1,
   "contractVersion": "0.1.0",
-  "source": "TDD-ui-platform-primitives-002 (PRM-002, P12)",
+  "source": "Generated from the component specifications by scripts/specs/inventory.mjs (ADR-UIP-CMP-001; TDD primitives P12, P13, P20). Do not edit.",
   "primitives": [
-    {
-      "name": "ButtonBase",
-      "entry": "@scnx/core-ui/components/button-base",
-      "stability": "candidate",
-      "root": "button",
-      "parts": [
-        { "name": "button", "element": "button", "selector": "[data-inventory='ButtonBase'] button" },
-        { "name": "link", "element": "a", "selector": "[data-inventory='ButtonBase'] a[href]" },
-        { "name": "disabled-link", "element": "a", "selector": "[data-inventory='ButtonBase'] a[aria-disabled='true']" }
-      ],
-      "controlledProps": ["pressed"],
-      "states": ["default", "pressed", "disabled"],
-      "keys": [
-        { "key": "Enter", "part": "button", "condition": "focused", "effect": "activates the native button", "expect": { "part": "button", "attribute": "aria-pressed", "value": "true" } },
-        { "key": "Space", "part": "button", "condition": "focused", "effect": "activates the native button", "expect": { "part": "button", "attribute": "aria-pressed", "value": "false" } },
-        { "key": "Tab", "part": "disabled-link", "condition": "disabled link", "effect": "is not in the sequential focus order", "expect": { "part": "disabled-link", "attribute": "tabindex", "value": "-1" } }
-      ],
-      "focus": { "initial": "none", "movement": "native Tab order", "restoration": "not applicable" },
-      "accessibleName": "text content",
-      "dataHooks": ["data-disabled"]
-    },
     {
       "name": "AccordionBase",
       "entry": "@scnx/core-ui/components/accordion-base",
       "stability": "candidate",
       "root": "div",
       "parts": [
-        { "name": "header", "element": "h3", "selector": "[data-inventory='AccordionBase'] [data-part='header']" },
-        { "name": "trigger", "element": "button", "selector": "[data-inventory='AccordionBase'] button[aria-controls]" },
-        { "name": "content", "element": "div", "selector": "[data-inventory='AccordionBase'] [role='region']" }
+        {
+          "name": "header",
+          "element": "h3",
+          "selector": "[data-inventory='AccordionBase'] [data-part='header']"
+        },
+        {
+          "name": "trigger",
+          "element": "button",
+          "selector": "[data-inventory='AccordionBase'] button[aria-controls]"
+        },
+        {
+          "name": "content",
+          "element": "div",
+          "selector": "[data-inventory='AccordionBase'] [role='region']"
+        }
       ],
-      "controlledProps": ["value", "open"],
-      "states": ["closed", "open"],
+      "controlledProps": [
+        "value",
+        "open"
+      ],
+      "states": [
+        "closed",
+        "open"
+      ],
       "keys": [
-        { "key": "Enter", "part": "trigger", "condition": "collapsed", "effect": "expands the panel", "expect": { "part": "trigger", "attribute": "aria-expanded", "value": "true" } },
-        { "key": "Space", "part": "trigger", "condition": "expanded and collapsible", "effect": "collapses the panel", "expect": { "part": "trigger", "attribute": "aria-expanded", "value": "false" } }
+        {
+          "key": "Enter",
+          "part": "trigger",
+          "condition": "collapsed",
+          "effect": "expands the panel",
+          "expect": {
+            "part": "trigger",
+            "attribute": "aria-expanded",
+            "value": "true"
+          }
+        },
+        {
+          "key": "Space",
+          "part": "trigger",
+          "condition": "expanded and collapsible",
+          "effect": "collapses the panel",
+          "expect": {
+            "part": "trigger",
+            "attribute": "aria-expanded",
+            "value": "false"
+          }
+        }
       ],
-      "focus": { "initial": "none", "movement": "native Tab order through headers and open panels", "restoration": "focus stays on the trigger" },
+      "focus": {
+        "initial": "none",
+        "movement": "native Tab order through headers and open panels",
+        "restoration": "focus stays on the trigger"
+      },
       "accessibleName": "trigger text; region labelled by its trigger",
-      "dataHooks": ["data-state", "data-disabled", "data-type"]
+      "dataHooks": [
+        "data-state",
+        "data-disabled",
+        "data-type"
+      ]
     },
     {
-      "name": "NavigationBase",
-      "entry": "@scnx/core-ui/components/navigation-base",
+      "name": "ButtonBase",
+      "entry": "@scnx/core-ui/components/button-base",
       "stability": "candidate",
-      "root": "nav",
+      "root": "button",
       "parts": [
-        { "name": "link", "element": "a", "selector": "[data-inventory='NavigationBase'] a[href]" },
-        { "name": "disclosure", "element": "button", "selector": "[data-inventory='NavigationBase'] button[aria-expanded]" },
-        { "name": "group", "element": "ul", "selector": "[data-inventory='NavigationBase'] ul" }
+        {
+          "name": "button",
+          "element": "button",
+          "selector": "[data-inventory='ButtonBase'] button"
+        },
+        {
+          "name": "link",
+          "element": "a",
+          "selector": "[data-inventory='ButtonBase'] a[href]"
+        },
+        {
+          "name": "disabled-link",
+          "element": "a",
+          "selector": "[data-inventory='ButtonBase'] a[aria-disabled='true']"
+        }
       ],
-      "controlledProps": ["isExpanded", "isActive"],
-      "states": ["collapsed", "expanded", "current"],
+      "controlledProps": [
+        "pressed"
+      ],
+      "states": [
+        "default",
+        "pressed",
+        "disabled"
+      ],
       "keys": [
-        { "key": "Enter", "part": "disclosure", "condition": "collapsed", "effect": "shows the nested group", "expect": { "part": "disclosure", "attribute": "aria-expanded", "value": "true" } },
-        { "key": "Space", "part": "disclosure", "condition": "expanded", "effect": "hides the nested group", "expect": { "part": "disclosure", "attribute": "aria-expanded", "value": "false" } }
+        {
+          "key": "Enter",
+          "part": "button",
+          "condition": "focused",
+          "effect": "activates the native button",
+          "expect": {
+            "part": "button",
+            "attribute": "aria-pressed",
+            "value": "true"
+          }
+        },
+        {
+          "key": "Space",
+          "part": "button",
+          "condition": "focused",
+          "effect": "activates the native button",
+          "expect": {
+            "part": "button",
+            "attribute": "aria-pressed",
+            "value": "false"
+          }
+        },
+        {
+          "key": "Tab",
+          "part": "disabled-link",
+          "condition": "disabled link",
+          "effect": "is not in the sequential focus order",
+          "expect": {
+            "part": "disabled-link",
+            "attribute": "tabindex",
+            "value": "-1"
+          }
+        }
       ],
-      "focus": { "initial": "none", "movement": "native Tab order; arrow-key roving is consumer-owned", "restoration": "focus stays on the disclosure button" },
-      "accessibleName": "item label; current page link has aria-current=page",
-      "dataHooks": ["data-active", "data-expanded", "data-level", "data-index"]
-    },
-    {
-      "name": "TableOfContentsBase",
-      "entry": "@scnx/core-ui/components/table-of-contents-base",
-      "stability": "candidate",
-      "root": "nav",
-      "parts": [
-        { "name": "link", "element": "a", "selector": "[data-inventory='TableOfContentsBase'] a[href^='#']" }
-      ],
-      "controlledProps": ["initialActiveId"],
-      "states": ["inactive", "active"],
-      "keys": [
-        { "key": "Enter", "part": "link", "condition": "focused", "effect": "scrolls to the target heading and marks the link current", "expect": { "part": "link", "attribute": "aria-current", "value": "location" } }
-      ],
-      "focus": { "initial": "none", "movement": "native Tab order", "restoration": "focus stays on the link" },
-      "accessibleName": "link text; navigation labelled by the visible TOC label",
-      "dataHooks": ["data-active"]
-    },
-    {
-      "name": "SidebarBase",
-      "entry": "@scnx/core-ui/components/sidebar-base",
-      "stability": "candidate",
-      "root": "aside",
-      "parts": [
-        { "name": "toggle", "element": "button", "selector": "[data-inventory='SidebarBase'] button[aria-controls]" }
-      ],
-      "controlledProps": ["isOpen"],
-      "states": ["expanded", "collapsed"],
-      "keys": [
-        { "key": "Enter", "part": "toggle", "condition": "expanded", "effect": "collapses the sidebar", "expect": { "part": "toggle", "attribute": "aria-expanded", "value": "false" } }
-      ],
-      "focus": { "initial": "none", "movement": "native Tab order", "restoration": "flyout Escape returns focus to its opener" },
-      "accessibleName": "toggle label prop (required, localized by the consumer)",
-      "dataHooks": ["data-state"]
-    },
-    {
-      "name": "TextFieldBase",
-      "entry": "@scnx/core-ui/components/text-field-base",
-      "stability": "candidate",
-      "root": "div",
-      "parts": [
-        { "name": "label", "element": "label", "selector": "[data-inventory='TextFieldBase'] [data-part='label']" },
-        { "name": "description", "element": "p", "selector": "[data-inventory='TextFieldBase'] [data-part='description']" },
-        { "name": "input", "element": "input", "selector": "[data-inventory='TextFieldBase'] [data-part='input']" },
-        { "name": "error", "element": "p", "selector": "[data-inventory='TextFieldBase'] [data-part='error']" }
-      ],
-      "controlledProps": ["value"],
-      "states": ["default", "invalid", "disabled", "required"],
-      "keys": [
-        { "key": "Tab", "part": "input", "condition": "error present", "effect": "focus reaches the native input, which reports the error state", "expect": { "part": "input", "attribute": "aria-invalid", "value": "true" } }
-      ],
-      "focus": { "initial": "none", "movement": "native Tab order", "restoration": "none" },
-      "accessibleName": "label prop, a visible native label (required, localized by the consumer)",
-      "dataHooks": ["data-part", "data-invalid", "data-disabled"]
-    },
-    {
-      "name": "DialogBase",
-      "entry": "@scnx/core-ui/components/dialog-base",
-      "stability": "candidate",
-      "root": "dialog",
-      "parts": [
-        { "name": "trigger", "element": "button", "selector": "[data-inventory='DialogBase'] [data-fixture='dialog-trigger']" },
-        { "name": "dialog", "element": "dialog", "selector": "[data-inventory='DialogBase'] dialog" },
-        { "name": "title", "element": "h2", "selector": "[data-inventory='DialogBase'] [data-part='title']" },
-        { "name": "description", "element": "p", "selector": "[data-inventory='DialogBase'] [data-part='description']" },
-        { "name": "close", "element": "button", "selector": "[data-inventory='DialogBase'] [data-part='close']" }
-      ],
-      "controlledProps": ["open"],
-      "states": ["closed", "open"],
-      "keys": [
-        { "key": "Enter", "part": "trigger", "condition": "closed", "effect": "the consumer opens it; showModal() shows it", "expect": { "part": "dialog", "attribute": "open", "value": "" } },
-        { "key": "Escape", "part": "close", "condition": "open", "effect": "the close request closes it and reports onOpenChange(false)", "expect": { "part": "dialog", "attribute": "open", "value": null } },
-        { "key": "Enter", "part": "trigger", "condition": "closed again", "effect": "it reopens", "expect": { "part": "dialog", "attribute": "open", "value": "" } },
-        { "key": "Enter", "part": "close", "condition": "open", "effect": "Close closes it", "expect": { "part": "dialog", "attribute": "open", "value": null } }
-      ],
-      "focus": { "initial": "the browser's dialog focusing steps (first focusable descendant)", "movement": "native Tab order; the rest of the document is inert", "restoration": "the browser returns focus to the previously focused element" },
-      "accessibleName": "DialogBase.Title through aria-labelledby, or aria-label",
-      "dataHooks": ["data-state", "data-part"]
-    },
-    {
-      "name": "TabsBase",
-      "entry": "@scnx/core-ui/components/tabs-base",
-      "stability": "candidate",
-      "root": "div",
-      "parts": [
-        { "name": "list", "element": "div", "selector": "[data-inventory='TabsBase'] [role='tablist']" },
-        { "name": "first", "element": "button", "selector": "[data-inventory='TabsBase'] [data-value='pay']" },
-        { "name": "second", "element": "button", "selector": "[data-inventory='TabsBase'] [data-value='leave']" },
-        { "name": "last", "element": "button", "selector": "[data-inventory='TabsBase'] [data-value='tax']" },
-        { "name": "first-panel", "element": "div", "selector": "[data-inventory='TabsBase'] [role='tabpanel'][id$='-panel-pay']" },
-        { "name": "rtl-first", "element": "button", "selector": "[data-inventory='TabsBase'] [dir='rtl'] [data-value='one']" },
-        { "name": "rtl-second", "element": "button", "selector": "[data-inventory='TabsBase'] [dir='rtl'] [data-value='two']" }
-      ],
-      "controlledProps": ["value"],
-      "states": ["selected", "unselected", "disabled"],
-      "keys": [
-        { "key": "ArrowRight", "part": "first", "condition": "focused, automatic activation", "effect": "focus moves to the next tab, which is selected", "expect": { "part": "second", "attribute": "aria-selected", "value": "true" } },
-        { "key": "End", "part": "second", "condition": "focused", "effect": "focus moves to the last tab, which is selected", "expect": { "part": "last", "attribute": "aria-selected", "value": "true" } },
-        { "key": "ArrowRight", "part": "last", "condition": "focused on the last tab", "effect": "wraps to the first tab", "expect": { "part": "first", "attribute": "aria-selected", "value": "true" } },
-        { "key": "ArrowLeft", "part": "first", "condition": "focused on the first tab", "effect": "wraps to the last tab", "expect": { "part": "last", "attribute": "tabindex", "value": "0" } },
-        { "key": "Home", "part": "last", "condition": "focused", "effect": "focus moves to the first tab, which is selected; its panel is shown", "expect": { "part": "first-panel", "attribute": "hidden", "value": null } },
-        { "key": "ArrowLeft", "part": "rtl-first", "condition": "focused, right-to-left text", "effect": "Left moves to the next tab, which is selected", "expect": { "part": "rtl-second", "attribute": "aria-selected", "value": "true" } }
-      ],
-      "focus": { "initial": "the selected tab (roving tabindex)", "movement": "arrow keys between enabled tabs, wrapping; Home and End", "restoration": "none" },
-      "accessibleName": "TabsBase.List aria-label or aria-labelledby; each tab by its text; each panel by its tab",
-      "dataHooks": ["data-part", "data-state", "data-value", "data-orientation"]
+      "focus": {
+        "initial": "none",
+        "movement": "native Tab order",
+        "restoration": "not applicable"
+      },
+      "accessibleName": "text content",
+      "dataHooks": [
+        "data-disabled"
+      ]
     },
     {
       "name": "ComboboxBase",
@@ -176,74 +150,824 @@
       "stability": "candidate",
       "root": "div",
       "parts": [
-        { "name": "input", "element": "input", "selector": "[data-inventory='ComboboxBase'] [role='combobox']" },
-        { "name": "listbox", "element": "ul", "selector": "[data-inventory='ComboboxBase'] [role='listbox']" },
-        { "name": "first", "element": "li", "selector": "[data-inventory='ComboboxBase'] [data-value='ts']" },
-        { "name": "second", "element": "li", "selector": "[data-inventory='ComboboxBase'] [data-value='js']" },
-        { "name": "last", "element": "li", "selector": "[data-inventory='ComboboxBase'] [data-value='rs']" },
-        { "name": "status", "element": "div", "selector": "[data-inventory='ComboboxBase'] [role='status']" }
+        {
+          "name": "input",
+          "element": "input",
+          "selector": "[data-inventory='ComboboxBase'] [role='combobox']"
+        },
+        {
+          "name": "listbox",
+          "element": "ul",
+          "selector": "[data-inventory='ComboboxBase'] [role='listbox']"
+        },
+        {
+          "name": "first",
+          "element": "li",
+          "selector": "[data-inventory='ComboboxBase'] [data-value='ts']"
+        },
+        {
+          "name": "second",
+          "element": "li",
+          "selector": "[data-inventory='ComboboxBase'] [data-value='js']"
+        },
+        {
+          "name": "last",
+          "element": "li",
+          "selector": "[data-inventory='ComboboxBase'] [data-value='rs']"
+        },
+        {
+          "name": "status",
+          "element": "div",
+          "selector": "[data-inventory='ComboboxBase'] [role='status']"
+        }
       ],
-      "controlledProps": ["value"],
-      "states": ["closed", "open", "active option", "accepted option", "disabled option"],
+      "controlledProps": [
+        "value"
+      ],
+      "states": [
+        "closed",
+        "open",
+        "active option",
+        "accepted option",
+        "disabled option"
+      ],
       "keys": [
-        { "key": "ArrowDown", "part": "input", "condition": "focused, list closed", "effect": "opens the list with the first enabled option active", "expect": { "part": "first", "attribute": "aria-selected", "value": "true"  } },
-        { "key": "ArrowDown", "part": "input", "condition": "list open", "effect": "the next enabled option becomes active; the disabled option is skipped", "expect": { "part": "second", "attribute": "aria-selected", "value": "true"  } },
-        { "key": "ArrowDown", "part": "input", "condition": "list open on the second option", "effect": "skips the disabled option to the last one", "expect": { "part": "last", "attribute": "aria-selected", "value": "true"  } },
-        { "key": "ArrowDown", "part": "input", "condition": "list open on the last option", "effect": "does nothing; no wrap (APG)", "expect": { "part": "last", "attribute": "aria-selected", "value": "true"  } },
-        { "key": "ArrowUp", "part": "input", "condition": "list open", "effect": "the previous enabled option becomes active", "expect": { "part": "second", "attribute": "aria-selected", "value": "true"  } },
-        { "key": "ArrowLeft", "part": "input", "condition": "an option is active", "effect": "the caret moves natively and the active option is cleared, so screen readers announce the edit", "expect": { "part": "input", "attribute": "aria-activedescendant", "value": null } },
-        { "key": "ArrowUp", "part": "input", "condition": "list open, no active option", "effect": "the last enabled option becomes active", "expect": { "part": "last", "attribute": "aria-selected", "value": "true"  } },
-        { "key": "Enter", "part": "input", "condition": "an option is active", "effect": "accepts it, places its label in the input, and closes the list", "expect": { "part": "input", "attribute": "aria-expanded", "value": "false"  } },
-        { "key": "ArrowDown", "part": "input", "condition": "list closed", "effect": "reopens the list", "expect": { "part": "input", "attribute": "aria-expanded", "value": "true"  } },
-        { "key": "Escape", "part": "input", "condition": "list open", "effect": "closes the list and restores the accepted label", "expect": { "part": "listbox", "attribute": "hidden", "value": ""  } }
+        {
+          "key": "ArrowDown",
+          "part": "input",
+          "condition": "focused, list closed",
+          "effect": "opens the list with the first enabled option active",
+          "expect": {
+            "part": "first",
+            "attribute": "aria-selected",
+            "value": "true"
+          }
+        },
+        {
+          "key": "ArrowDown",
+          "part": "input",
+          "condition": "list open",
+          "effect": "the next enabled option becomes active; the disabled option is skipped",
+          "expect": {
+            "part": "second",
+            "attribute": "aria-selected",
+            "value": "true"
+          }
+        },
+        {
+          "key": "ArrowDown",
+          "part": "input",
+          "condition": "list open on the second option",
+          "effect": "skips the disabled option to the last one",
+          "expect": {
+            "part": "last",
+            "attribute": "aria-selected",
+            "value": "true"
+          }
+        },
+        {
+          "key": "ArrowDown",
+          "part": "input",
+          "condition": "list open on the last option",
+          "effect": "does nothing; no wrap (APG)",
+          "expect": {
+            "part": "last",
+            "attribute": "aria-selected",
+            "value": "true"
+          }
+        },
+        {
+          "key": "ArrowUp",
+          "part": "input",
+          "condition": "list open",
+          "effect": "the previous enabled option becomes active",
+          "expect": {
+            "part": "second",
+            "attribute": "aria-selected",
+            "value": "true"
+          }
+        },
+        {
+          "key": "ArrowLeft",
+          "part": "input",
+          "condition": "an option is active",
+          "effect": "the caret moves natively and the active option is cleared, so screen readers announce the edit",
+          "expect": {
+            "part": "input",
+            "attribute": "aria-activedescendant",
+            "value": null
+          }
+        },
+        {
+          "key": "ArrowUp",
+          "part": "input",
+          "condition": "list open, no active option",
+          "effect": "the last enabled option becomes active",
+          "expect": {
+            "part": "last",
+            "attribute": "aria-selected",
+            "value": "true"
+          }
+        },
+        {
+          "key": "Enter",
+          "part": "input",
+          "condition": "an option is active",
+          "effect": "accepts it, places its label in the input, and closes the list",
+          "expect": {
+            "part": "input",
+            "attribute": "aria-expanded",
+            "value": "false"
+          }
+        },
+        {
+          "key": "ArrowDown",
+          "part": "input",
+          "condition": "list closed",
+          "effect": "reopens the list",
+          "expect": {
+            "part": "input",
+            "attribute": "aria-expanded",
+            "value": "true"
+          }
+        },
+        {
+          "key": "Escape",
+          "part": "input",
+          "condition": "list open",
+          "effect": "closes the list and restores the accepted label",
+          "expect": {
+            "part": "listbox",
+            "attribute": "hidden",
+            "value": ""
+          }
+        }
       ],
-      "focus": { "initial": "the input (DOM focus never leaves it)", "movement": "aria-activedescendant over enabled options, Down and Up without wrapping", "restoration": "none; pointer presses on the list keep focus in the input" },
+      "focus": {
+        "initial": "the input (DOM focus never leaves it)",
+        "movement": "aria-activedescendant over enabled options, Down and Up without wrapping",
+        "restoration": "none; pointer presses on the list keep focus in the input"
+      },
       "accessibleName": "ComboboxBase.Input by aria-label, aria-labelledby, or a label; ComboboxBase.Listbox by aria-label or aria-labelledby; each option by its text",
-      "dataHooks": ["data-part", "data-state", "data-value", "data-active", "data-selected"]
+      "dataHooks": [
+        "data-part",
+        "data-state",
+        "data-value",
+        "data-active",
+        "data-selected"
+      ]
+    },
+    {
+      "name": "DialogBase",
+      "entry": "@scnx/core-ui/components/dialog-base",
+      "stability": "candidate",
+      "root": "dialog",
+      "parts": [
+        {
+          "name": "trigger",
+          "element": "button",
+          "selector": "[data-inventory='DialogBase'] [data-fixture='dialog-trigger']"
+        },
+        {
+          "name": "dialog",
+          "element": "dialog",
+          "selector": "[data-inventory='DialogBase'] dialog"
+        },
+        {
+          "name": "title",
+          "element": "h2",
+          "selector": "[data-inventory='DialogBase'] [data-part='title']"
+        },
+        {
+          "name": "description",
+          "element": "p",
+          "selector": "[data-inventory='DialogBase'] [data-part='description']"
+        },
+        {
+          "name": "close",
+          "element": "button",
+          "selector": "[data-inventory='DialogBase'] [data-part='close']"
+        }
+      ],
+      "controlledProps": [
+        "open"
+      ],
+      "states": [
+        "closed",
+        "open"
+      ],
+      "keys": [
+        {
+          "key": "Enter",
+          "part": "trigger",
+          "condition": "closed",
+          "effect": "the consumer opens it; showModal() shows it",
+          "expect": {
+            "part": "dialog",
+            "attribute": "open",
+            "value": ""
+          }
+        },
+        {
+          "key": "Escape",
+          "part": "close",
+          "condition": "open",
+          "effect": "the close request closes it and reports onOpenChange(false)",
+          "expect": {
+            "part": "dialog",
+            "attribute": "open",
+            "value": null
+          }
+        },
+        {
+          "key": "Enter",
+          "part": "trigger",
+          "condition": "closed again",
+          "effect": "it reopens",
+          "expect": {
+            "part": "dialog",
+            "attribute": "open",
+            "value": ""
+          }
+        },
+        {
+          "key": "Enter",
+          "part": "close",
+          "condition": "open",
+          "effect": "Close closes it",
+          "expect": {
+            "part": "dialog",
+            "attribute": "open",
+            "value": null
+          }
+        }
+      ],
+      "focus": {
+        "initial": "the browser's dialog focusing steps (first focusable descendant)",
+        "movement": "native Tab order; the rest of the document is inert",
+        "restoration": "the browser returns focus to the previously focused element"
+      },
+      "accessibleName": "DialogBase.Title through aria-labelledby, or aria-label",
+      "dataHooks": [
+        "data-state",
+        "data-part"
+      ]
+    },
+    {
+      "name": "NavigationBase",
+      "entry": "@scnx/core-ui/components/navigation-base",
+      "stability": "candidate",
+      "root": "nav",
+      "parts": [
+        {
+          "name": "link",
+          "element": "a",
+          "selector": "[data-inventory='NavigationBase'] a[href]"
+        },
+        {
+          "name": "disclosure",
+          "element": "button",
+          "selector": "[data-inventory='NavigationBase'] button[aria-expanded]"
+        },
+        {
+          "name": "group",
+          "element": "ul",
+          "selector": "[data-inventory='NavigationBase'] ul"
+        }
+      ],
+      "controlledProps": [
+        "isExpanded",
+        "isActive"
+      ],
+      "states": [
+        "collapsed",
+        "expanded",
+        "current"
+      ],
+      "keys": [
+        {
+          "key": "Enter",
+          "part": "disclosure",
+          "condition": "collapsed",
+          "effect": "shows the nested group",
+          "expect": {
+            "part": "disclosure",
+            "attribute": "aria-expanded",
+            "value": "true"
+          }
+        },
+        {
+          "key": "Space",
+          "part": "disclosure",
+          "condition": "expanded",
+          "effect": "hides the nested group",
+          "expect": {
+            "part": "disclosure",
+            "attribute": "aria-expanded",
+            "value": "false"
+          }
+        }
+      ],
+      "focus": {
+        "initial": "none",
+        "movement": "native Tab order; arrow-key roving is consumer-owned",
+        "restoration": "focus stays on the disclosure button"
+      },
+      "accessibleName": "item label; current page link has aria-current=page",
+      "dataHooks": [
+        "data-active",
+        "data-expanded",
+        "data-level",
+        "data-index"
+      ]
+    },
+    {
+      "name": "SidebarBase",
+      "entry": "@scnx/core-ui/components/sidebar-base",
+      "stability": "candidate",
+      "root": "aside",
+      "parts": [
+        {
+          "name": "toggle",
+          "element": "button",
+          "selector": "[data-inventory='SidebarBase'] button[aria-controls]"
+        }
+      ],
+      "controlledProps": [
+        "isOpen"
+      ],
+      "states": [
+        "expanded",
+        "collapsed"
+      ],
+      "keys": [
+        {
+          "key": "Enter",
+          "part": "toggle",
+          "condition": "expanded",
+          "effect": "collapses the sidebar",
+          "expect": {
+            "part": "toggle",
+            "attribute": "aria-expanded",
+            "value": "false"
+          }
+        }
+      ],
+      "focus": {
+        "initial": "none",
+        "movement": "native Tab order",
+        "restoration": "flyout Escape returns focus to its opener"
+      },
+      "accessibleName": "toggle label prop (required, localized by the consumer)",
+      "dataHooks": [
+        "data-state"
+      ]
+    },
+    {
+      "name": "TableOfContentsBase",
+      "entry": "@scnx/core-ui/components/table-of-contents-base",
+      "stability": "candidate",
+      "root": "nav",
+      "parts": [
+        {
+          "name": "link",
+          "element": "a",
+          "selector": "[data-inventory='TableOfContentsBase'] a[href^='#']"
+        }
+      ],
+      "controlledProps": [
+        "initialActiveId"
+      ],
+      "states": [
+        "inactive",
+        "active"
+      ],
+      "keys": [
+        {
+          "key": "Enter",
+          "part": "link",
+          "condition": "focused",
+          "effect": "scrolls to the target heading and marks the link current",
+          "expect": {
+            "part": "link",
+            "attribute": "aria-current",
+            "value": "location"
+          }
+        }
+      ],
+      "focus": {
+        "initial": "none",
+        "movement": "native Tab order",
+        "restoration": "focus stays on the link"
+      },
+      "accessibleName": "link text; navigation labelled by the visible TOC label",
+      "dataHooks": [
+        "data-active"
+      ]
+    },
+    {
+      "name": "TabsBase",
+      "entry": "@scnx/core-ui/components/tabs-base",
+      "stability": "candidate",
+      "root": "div",
+      "parts": [
+        {
+          "name": "list",
+          "element": "div",
+          "selector": "[data-inventory='TabsBase'] [role='tablist']"
+        },
+        {
+          "name": "first",
+          "element": "button",
+          "selector": "[data-inventory='TabsBase'] [data-value='pay']"
+        },
+        {
+          "name": "second",
+          "element": "button",
+          "selector": "[data-inventory='TabsBase'] [data-value='leave']"
+        },
+        {
+          "name": "last",
+          "element": "button",
+          "selector": "[data-inventory='TabsBase'] [data-value='tax']"
+        },
+        {
+          "name": "first-panel",
+          "element": "div",
+          "selector": "[data-inventory='TabsBase'] [role='tabpanel'][id$='-panel-pay']"
+        },
+        {
+          "name": "rtl-first",
+          "element": "button",
+          "selector": "[data-inventory='TabsBase'] [dir='rtl'] [data-value='one']"
+        },
+        {
+          "name": "rtl-second",
+          "element": "button",
+          "selector": "[data-inventory='TabsBase'] [dir='rtl'] [data-value='two']"
+        }
+      ],
+      "controlledProps": [
+        "value"
+      ],
+      "states": [
+        "selected",
+        "unselected",
+        "disabled"
+      ],
+      "keys": [
+        {
+          "key": "ArrowRight",
+          "part": "first",
+          "condition": "focused, automatic activation",
+          "effect": "focus moves to the next tab, which is selected",
+          "expect": {
+            "part": "second",
+            "attribute": "aria-selected",
+            "value": "true"
+          }
+        },
+        {
+          "key": "End",
+          "part": "second",
+          "condition": "focused",
+          "effect": "focus moves to the last tab, which is selected",
+          "expect": {
+            "part": "last",
+            "attribute": "aria-selected",
+            "value": "true"
+          }
+        },
+        {
+          "key": "ArrowRight",
+          "part": "last",
+          "condition": "focused on the last tab",
+          "effect": "wraps to the first tab",
+          "expect": {
+            "part": "first",
+            "attribute": "aria-selected",
+            "value": "true"
+          }
+        },
+        {
+          "key": "ArrowLeft",
+          "part": "first",
+          "condition": "focused on the first tab",
+          "effect": "wraps to the last tab",
+          "expect": {
+            "part": "last",
+            "attribute": "tabindex",
+            "value": "0"
+          }
+        },
+        {
+          "key": "Home",
+          "part": "last",
+          "condition": "focused",
+          "effect": "focus moves to the first tab, which is selected; its panel is shown",
+          "expect": {
+            "part": "first-panel",
+            "attribute": "hidden",
+            "value": null
+          }
+        },
+        {
+          "key": "ArrowLeft",
+          "part": "rtl-first",
+          "condition": "focused, right-to-left text",
+          "effect": "Left moves to the next tab, which is selected",
+          "expect": {
+            "part": "rtl-second",
+            "attribute": "aria-selected",
+            "value": "true"
+          }
+        }
+      ],
+      "focus": {
+        "initial": "the selected tab (roving tabindex)",
+        "movement": "arrow keys between enabled tabs, wrapping; Home and End",
+        "restoration": "none"
+      },
+      "accessibleName": "TabsBase.List aria-label or aria-labelledby; each tab by its text; each panel by its tab",
+      "dataHooks": [
+        "data-part",
+        "data-state",
+        "data-value",
+        "data-orientation"
+      ]
+    },
+    {
+      "name": "TextFieldBase",
+      "entry": "@scnx/core-ui/components/text-field-base",
+      "stability": "candidate",
+      "root": "div",
+      "parts": [
+        {
+          "name": "label",
+          "element": "label",
+          "selector": "[data-inventory='TextFieldBase'] [data-part='label']"
+        },
+        {
+          "name": "description",
+          "element": "p",
+          "selector": "[data-inventory='TextFieldBase'] [data-part='description']"
+        },
+        {
+          "name": "input",
+          "element": "input",
+          "selector": "[data-inventory='TextFieldBase'] [data-part='input']"
+        },
+        {
+          "name": "error",
+          "element": "p",
+          "selector": "[data-inventory='TextFieldBase'] [data-part='error']"
+        }
+      ],
+      "controlledProps": [
+        "value"
+      ],
+      "states": [
+        "default",
+        "invalid",
+        "disabled",
+        "required"
+      ],
+      "keys": [
+        {
+          "key": "Tab",
+          "part": "input",
+          "condition": "error present",
+          "effect": "focus reaches the native input, which reports the error state",
+          "expect": {
+            "part": "input",
+            "attribute": "aria-invalid",
+            "value": "true"
+          }
+        }
+      ],
+      "focus": {
+        "initial": "none",
+        "movement": "native Tab order",
+        "restoration": "none"
+      },
+      "accessibleName": "label prop, a visible native label (required, localized by the consumer)",
+      "dataHooks": [
+        "data-part",
+        "data-invalid",
+        "data-disabled"
+      ]
     }
   ],
   "entries": [
-    { "entry": "@scnx/core-ui/components/box-base", "stability": "candidate", "kind": "presentational" },
-    { "entry": "@scnx/core-ui/components/code-showcase-base", "stability": "candidate", "kind": "interactive" },
-    { "entry": "@scnx/core-ui/components/collapsible-base", "stability": "candidate", "kind": "interactive" },
-    { "entry": "@scnx/core-ui/components/container-base", "stability": "candidate", "kind": "presentational" },
-    { "entry": "@scnx/core-ui/components/disclosure-base", "stability": "candidate", "kind": "interactive" },
-    { "entry": "@scnx/core-ui/components/divider-base", "stability": "candidate", "kind": "presentational" },
-    { "entry": "@scnx/core-ui/components/edge-layout-base", "stability": "candidate", "kind": "layout" },
-    { "entry": "@scnx/core-ui/components/flex-base", "stability": "candidate", "kind": "presentational" },
-    { "entry": "@scnx/core-ui/components/floating-layout-base", "stability": "candidate", "kind": "layout" },
-    { "entry": "@scnx/core-ui/components/grid-base", "stability": "candidate", "kind": "presentational" },
-    { "entry": "@scnx/core-ui/components/heading-base", "stability": "candidate", "kind": "presentational" },
-    { "entry": "@scnx/core-ui/components/list-base", "stability": "candidate", "kind": "presentational" },
-    { "entry": "@scnx/core-ui/components/navigation-bar-base", "stability": "candidate", "kind": "presentational" },
-    { "entry": "@scnx/core-ui/components/text-base", "stability": "candidate", "kind": "presentational" },
-    { "entry": "@scnx/core-ui/components/transition-base", "stability": "candidate", "kind": "motion" },
-    { "entry": "@scnx/core-ui/hooks/use-on-click-outside", "stability": "candidate", "kind": "hook" },
-    { "entry": "@scnx/core-ui/providers/theme-provider-base", "stability": "candidate", "kind": "provider" },
-    { "entry": "@scnx/system/components", "stability": "candidate", "kind": "aggregate" },
-    { "entry": "@scnx/system/components/accordion", "stability": "candidate", "kind": "interactive" },
-    { "entry": "@scnx/system/components/box", "stability": "candidate", "kind": "presentational" },
-    { "entry": "@scnx/system/components/button", "stability": "candidate", "kind": "interactive" },
-    { "entry": "@scnx/system/components/code", "stability": "candidate", "kind": "presentational" },
-    { "entry": "@scnx/system/components/code-select", "stability": "candidate", "kind": "interactive" },
-    { "entry": "@scnx/system/components/code-showcase", "stability": "candidate", "kind": "interactive" },
-    { "entry": "@scnx/system/components/container", "stability": "candidate", "kind": "presentational" },
-    { "entry": "@scnx/system/components/dialog", "stability": "candidate", "kind": "interactive" },
-    { "entry": "@scnx/system/components/divider", "stability": "candidate", "kind": "presentational" },
-    { "entry": "@scnx/system/components/edge-layout", "stability": "candidate", "kind": "layout" },
-    { "entry": "@scnx/system/components/flex", "stability": "candidate", "kind": "presentational" },
-    { "entry": "@scnx/system/components/floating-layout", "stability": "candidate", "kind": "layout" },
-    { "entry": "@scnx/system/components/grid", "stability": "candidate", "kind": "presentational" },
-    { "entry": "@scnx/system/components/heading", "stability": "candidate", "kind": "presentational" },
-    { "entry": "@scnx/system/components/list", "stability": "candidate", "kind": "presentational" },
-    { "entry": "@scnx/system/components/navbar", "stability": "candidate", "kind": "presentational" },
-    { "entry": "@scnx/system/components/navigation", "stability": "candidate", "kind": "interactive" },
-    { "entry": "@scnx/system/components/sidebar", "stability": "candidate", "kind": "interactive" },
-    { "entry": "@scnx/system/components/stack", "stability": "candidate", "kind": "presentational" },
-    { "entry": "@scnx/system/components/table-of-contents", "stability": "candidate", "kind": "interactive" },
-    { "entry": "@scnx/system/components/tabs", "stability": "candidate", "kind": "interactive" },
-    { "entry": "@scnx/system/components/text", "stability": "candidate", "kind": "presentational" },
-    { "entry": "@scnx/system/components/text-field", "stability": "candidate", "kind": "interactive" },
-    { "entry": "@scnx/system/components/transition", "stability": "candidate", "kind": "motion" }
+    {
+      "entry": "@scnx/core-ui/components/box-base",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/core-ui/components/code-showcase-base",
+      "stability": "candidate",
+      "kind": "interactive"
+    },
+    {
+      "entry": "@scnx/core-ui/components/collapsible-base",
+      "stability": "candidate",
+      "kind": "interactive"
+    },
+    {
+      "entry": "@scnx/core-ui/components/container-base",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/core-ui/components/disclosure-base",
+      "stability": "candidate",
+      "kind": "interactive"
+    },
+    {
+      "entry": "@scnx/core-ui/components/divider-base",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/core-ui/components/edge-layout-base",
+      "stability": "candidate",
+      "kind": "layout"
+    },
+    {
+      "entry": "@scnx/core-ui/components/flex-base",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/core-ui/components/floating-layout-base",
+      "stability": "candidate",
+      "kind": "layout"
+    },
+    {
+      "entry": "@scnx/core-ui/components/grid-base",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/core-ui/components/heading-base",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/core-ui/components/list-base",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/core-ui/components/navigation-bar-base",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/core-ui/components/text-base",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/core-ui/components/transition-base",
+      "stability": "candidate",
+      "kind": "motion"
+    },
+    {
+      "entry": "@scnx/core-ui/hooks/use-on-click-outside",
+      "stability": "candidate",
+      "kind": "hook"
+    },
+    {
+      "entry": "@scnx/core-ui/providers/theme-provider-base",
+      "stability": "candidate",
+      "kind": "provider"
+    },
+    {
+      "entry": "@scnx/system/components",
+      "stability": "candidate",
+      "kind": "aggregate"
+    },
+    {
+      "entry": "@scnx/system/components/accordion",
+      "stability": "candidate",
+      "kind": "interactive"
+    },
+    {
+      "entry": "@scnx/system/components/box",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/system/components/button",
+      "stability": "candidate",
+      "kind": "interactive"
+    },
+    {
+      "entry": "@scnx/system/components/code",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/system/components/code-select",
+      "stability": "candidate",
+      "kind": "interactive"
+    },
+    {
+      "entry": "@scnx/system/components/code-showcase",
+      "stability": "candidate",
+      "kind": "interactive"
+    },
+    {
+      "entry": "@scnx/system/components/container",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/system/components/dialog",
+      "stability": "candidate",
+      "kind": "interactive"
+    },
+    {
+      "entry": "@scnx/system/components/divider",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/system/components/edge-layout",
+      "stability": "candidate",
+      "kind": "layout"
+    },
+    {
+      "entry": "@scnx/system/components/flex",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/system/components/floating-layout",
+      "stability": "candidate",
+      "kind": "layout"
+    },
+    {
+      "entry": "@scnx/system/components/grid",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/system/components/heading",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/system/components/list",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/system/components/navbar",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/system/components/navigation",
+      "stability": "candidate",
+      "kind": "interactive"
+    },
+    {
+      "entry": "@scnx/system/components/sidebar",
+      "stability": "candidate",
+      "kind": "interactive"
+    },
+    {
+      "entry": "@scnx/system/components/stack",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/system/components/table-of-contents",
+      "stability": "candidate",
+      "kind": "interactive"
+    },
+    {
+      "entry": "@scnx/system/components/tabs",
+      "stability": "candidate",
+      "kind": "interactive"
+    },
+    {
+      "entry": "@scnx/system/components/text",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/system/components/text-field",
+      "stability": "candidate",
+      "kind": "interactive"
+    },
+    {
+      "entry": "@scnx/system/components/transition",
+      "stability": "candidate",
+      "kind": "motion"
+    }
   ]
 }

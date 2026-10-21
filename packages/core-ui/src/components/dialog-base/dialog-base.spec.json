@@ -1,0 +1,98 @@
+{
+  "$schema": "../../../../../scripts/specs/schema/primitive.schema.json",
+  "kind": "primitive",
+  "name": "DialogBase",
+  "entry": "@scnx/core-ui/components/dialog-base",
+  "stability": "candidate",
+  "root": "dialog",
+  "parts": [
+    {
+      "name": "trigger",
+      "element": "button",
+      "selector": "[data-inventory='DialogBase'] [data-fixture='dialog-trigger']"
+    },
+    {
+      "name": "dialog",
+      "element": "dialog",
+      "selector": "[data-inventory='DialogBase'] dialog"
+    },
+    {
+      "name": "title",
+      "element": "h2",
+      "selector": "[data-inventory='DialogBase'] [data-part='title']"
+    },
+    {
+      "name": "description",
+      "element": "p",
+      "selector": "[data-inventory='DialogBase'] [data-part='description']"
+    },
+    {
+      "name": "close",
+      "element": "button",
+      "selector": "[data-inventory='DialogBase'] [data-part='close']"
+    }
+  ],
+  "controlledProps": [
+    "open"
+  ],
+  "states": [
+    "closed",
+    "open"
+  ],
+  "keys": [
+    {
+      "key": "Enter",
+      "part": "trigger",
+      "condition": "closed",
+      "effect": "the consumer opens it; showModal() shows it",
+      "expect": {
+        "part": "dialog",
+        "attribute": "open",
+        "value": ""
+      }
+    },
+    {
+      "key": "Escape",
+      "part": "close",
+      "condition": "open",
+      "effect": "the close request closes it and reports onOpenChange(false)",
+      "expect": {
+        "part": "dialog",
+        "attribute": "open",
+        "value": null
+      }
+    },
+    {
+      "key": "Enter",
+      "part": "trigger",
+      "condition": "closed again",
+      "effect": "it reopens",
+      "expect": {
+        "part": "dialog",
+        "attribute": "open",
+        "value": ""
+      }
+    },
+    {
+      "key": "Enter",
+      "part": "close",
+      "condition": "open",
+      "effect": "Close closes it",
+      "expect": {
+        "part": "dialog",
+        "attribute": "open",
+        "value": null
+      }
+    }
+  ],
+  "focus": {
+    "initial": "the browser's dialog focusing steps (first focusable descendant)",
+    "movement": "native Tab order; the rest of the document is inert",
+    "restoration": "the browser returns focus to the previously focused element"
+  },
+  "accessibleName": "DialogBase.Title through aria-labelledby, or aria-label",
+  "dataHooks": [
+    "data-state",
+    "data-part"
+  ]
+}
