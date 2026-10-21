@@ -14,12 +14,6 @@ doc_meta:
 
 # TDD-ui-platform-styled-004: Styled Components and CSS Delivery
 
-> **Revision pending exact-commit ratification.** Decisions GV4–GV7 (spacing and
-> typography values, recorded local geometry, and pointer target size) are
-> pending under GDC-000 section 2.6.7; the revision ratified on 2026-10-21
-> (`fa73759`) remains binding until the authorized human authority approves the
-> exact commit containing these changes.
-
 ## Purpose
 
 Define the exact seam between headless behavior, styled wrappers, token usage,
