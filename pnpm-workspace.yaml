@@ -35,8 +35,15 @@ catalogs:
 # override when an oxfmt release in eslint-plugin-format's range no longer pins
 # it. source-map-js below 1.2.2 has GHSA-68fv-2mgg-jv7q (high); remove that
 # override when the lockfile resolves 1.2.2 or later without it.
+# vite 8.3.0-8.3.2 bundle launch-editor with GHSA-587h-7wmj-h5pm (high,
+# published 2026-10-20). 8.3.3 is the first patched 8.3 release and, unlike
+# 8.3.4 and later, still uses rolldown ~1.2.11, the version tsdown builds the
+# packages with; rolldown 1.2.14 breaks the API report (API Extractor reads a
+# declaration source map as a folder). Remove the override when the root vite
+# range starts at 8.3.3 or later.
 overrides:
   'postcss@<8.5.23': ^8.5.28
   'browserslist@<4.28.7': ^4.29.3
   'tinypool@<2.1.2': ^2.1.2
   'source-map-js@<1.2.2': ^1.2.2
+  'vite@<8.3.3': 8.3.3
