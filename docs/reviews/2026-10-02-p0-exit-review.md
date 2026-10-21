@@ -273,6 +273,23 @@ Sequence deviation, recorded as a fact: both candidates were merged on
 2.2.0 and `f528152` (TDD styled) remained binding while `main` showed no
 pending-ratification notice.
 
+Ninth ratification, appended 2026-10-21: the interaction traces of the theme
+and transition runtime.
+
+| Repository  | Ratified revision                                                                             | Candidate commit (ratified)                | Merge commit | Pull request | CI at candidate and merge                       |
+| :---------- | :-------------------------------------------------------------------------------------------- | :----------------------------------------- | :----------- | :----------- | :---------------------------------------------- |
+| ui-platform | TDD theme X1–X5 (interaction traces) and the corrected layout-read text of the transition FSM | `07c10c384735ba4d6ef4fc4a14381acfe6c14c82` | `b28af99`    | #83          | CI, Chromatic, and P0 evidence workflows passed |
+
+Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+2026-10-21: "Saya, sebagai ARB dan UI Platform Lead, meratifikasi 07c10c3 (TDD
+theme X1–X5) beserta bukti CI-nya, per 2026-10-21." ("As ARB and UI Platform
+Lead, I ratify 07c10c3 (TDD theme X1–X5) with their CI evidence, as of
+2026-10-21.") It supersedes `773a864` as the ratified revision of TDD theme.
+
+Sequence deviation, recorded as a fact: the candidate was merged on 2026-10-21
+(#83) before this statement; in that interval `773a864` remained binding while
+`main` showed no pending-ratification notice.
+
 ## D2 recommendation: `oklch`
 
 Appended 2026-10-02. The `oklch` trial ended on 2026-08-01 with no recorded
