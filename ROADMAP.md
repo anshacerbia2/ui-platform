@@ -43,7 +43,7 @@ Phase evidence:
   ComboboxBase, an APG editable combobox built without a third-party library
   (ADR-UIP-PLT-001 UIP-DEC-001 revised and accepted 2026-10-21; TDD primitives
   P18); TableOfContents scrolling respects reduced motion and ends at
-  `scrollend` (P19). Button's recipe follows the token doctrine: the primary
+  `scrollend` (P19). The Tier-1 color scales have one producer: a generator on the Radix Colors custom-palette algorithm with WCAG 2.2 constraints solved on the gate's display paths, checked for a fresh generation in CI (TDD tokens PG1–PG10). Button's recipe follows the token doctrine: the primary
   label is its scheme's `contrast` token (it was near-black on blue in dark
   mode), the secondary is tonal, and disabled is a token pair, not opacity (TDD
   styled BR1–BR3, tokens SD1–SD2). The release pipeline exists (accepted ADR-UIP-REL-001; TDD

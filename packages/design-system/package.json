@@ -156,6 +156,8 @@
     "build": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\" && tsdown --config-loader native && node scripts/tokens/emit.mjs --out dist && node scripts/styles/assemble.mjs --out dist && node ../../scripts/specs/publish.mjs --out dist",
     "codegen": "panda codegen",
     "prepare": "panda codegen",
+    "palette": "node scripts/palette/generate.mjs",
+    "palette:check": "node scripts/palette/generate.mjs --check",
     "test": "vitest run",
     "test:watch": "vitest"
   },
@@ -166,6 +168,7 @@
   },
   "devDependencies": {
     "@pandacss/dev": "^1.8.2",
+    "@radix-ui/colors": "3.0.0",
     "@scnx/core-ui": "workspace:*",
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",

@@ -1,0 +1,33 @@
+{
+  "$comment": "Input of the palette generator (TDD tokens, Palette generation PG1-PG10). Every Tier-1 color is generated from this file; edit it, never the generated Sass. Seeds are step 9, the solid fill, shared by both modes; label is the polarity of the text on that fill.",
+  "schemaVersion": 1,
+  "reference": {
+    "package": "@radix-ui/colors",
+    "version": "3.0.0",
+    "variant": "P3"
+  },
+  "backgrounds": { "light": "#ffffff", "dark": "#111111" },
+  "neutral": { "seed": "oklch(0.65 0.014 259)", "label": "light" },
+  "hues": {
+    "red": { "seed": "#e5484d", "label": "light" },
+    "orange": { "seed": "#f76b15", "label": "light" },
+    "yellow": { "seed": "#ffe629", "label": "dark" },
+    "lime": { "seed": "#bdee63", "label": "dark" },
+    "green": { "seed": "#30a46c", "label": "light" },
+    "teal": { "seed": "#12a594", "label": "light" },
+    "blue": { "seed": "#0a6cf2", "label": "light" },
+    "purple": { "seed": "#8e4ec6", "label": "light" },
+    "magenta": { "seed": "#d6409f", "label": "light" }
+  },
+  "surfaces": {
+    "$comment": "The neutral surfaces text sits on, as the default recipe resolves tokens.config.json contrast.neutralBackgrounds: canvas 1, sunken, raised, floating, subtle 2, default 3.",
+    "light": ["white", 1, 2, 3],
+    "dark": [1, 2, 3]
+  },
+  "targets": {
+    "margin": 0.05,
+    "disabledFloor": 2.5,
+    "srgbClipDeltaE": 0.02
+  },
+  "precision": { "lightness": 4, "chroma": 4, "hue": 2, "alpha": 3 }
+}

@@ -5,7 +5,6 @@
 @use "sass:map";
 @use "sass:meta";
 @use "sass:string";
-@use "styles/abstracts/contrast";
 @use "styles/abstracts/core-token" as core;
 
 // ─── Private Ternary Helper ────────────────────────────────────────────────
@@ -14,32 +13,6 @@
 // @see https://sass-lang.com/d/if-function
 @function -if($condition, $if-true, $if-false) {
   @if $condition { @return $if-true; } @else { @return $if-false; }
-}
-
-@function math-max($v1, $v2) {
-  @if $v1 > $v2 {
-    @return $v1;
-  }
-  @return $v2;
-}
-
-@function math-clamp($val, $min, $max) {
-  @if $val < $min {
-    @return $min;
-  }
-  @if $val > $max {
-    @return $max;
-  }
-  @return $val;
-}
-
-// Snap sub-epsilon float residues to exact 0 to prevent
-// floating-point noise like 0.0000119209 in computed OKLCH output.
-@function snap-epsilon($val, $threshold: 0.0001) {
-  @if $val < $threshold {
-    @return 0;
-  }
-  @return $val;
 }
 
 @function get-raw-channels($hue, $step, $mode) {
@@ -130,65 +103,59 @@ $role-states: (
   @return $scheme;
 }
 
-// ─── Solid fills: WCAG 2.2 SC 1.4.3 by construction ────────────────────────
-// Each scheme keeps its designed label polarity. The recipe picks the solid
-// step nearest the design step, moving away from the label by at most two
-// steps, whose contrast with the label meets the target; every interaction
-// state moves further from the label. If no step qualifies, the build fails.
-$solid-design-step: (light: 10, dark: 9);
-// SC 1.4.3 minimum 4.5:1 plus a margin: this recipe clips out-of-gamut
-// channels, while the token gate verifies with CSS Color 4 gamut mapping.
-$solid-contrast-target: 4.6;
+// ─── Solid fills (TDD tokens PG3) ───────────────────────────────────────────
+// Steps 9, 10, and 10B are one ramp, identical in both modes: the fill, its
+// hover, and its pressed state. Hover and pressed step away from the label, and
+// the generator proves the label meets WCAG 2.2 SC 1.4.3 on all three, so the
+// recipe needs no contrast search and the brand fill is the same in both modes.
 
-@function solid-label-polarity($scheme, $mode) {
-  @if $scheme == "warning" { @return "dark"; }
-  @if $scheme == "neutral" and $mode == "dark" { @return "dark"; }
-  @return "light";
-}
-
-@function -solid-label-channels($polarity, $mode) {
-  @if $polarity == "light" { @return (1 0 0); }
-  @return get-raw-channels("neutral", -if($mode == "light", 12, 1), $mode);
-}
-
-/// Label color of a solid fill: the `contrast` emphasis of text and icon.
-@function solid-label-color($scheme, $mode) {
-  @if solid-label-polarity($scheme, $mode) == "light" {
-    @return resolve-core-color("white", null, $mode);
-  }
-  @return resolve-core-color("neutral", -if($mode == "light", 12, 1), $mode);
-}
-
-@function solid-plan($scheme, $mode) {
+/// Label polarity of a scheme's solid fill, from the generated palette.
+@function solid-label-polarity($scheme) {
   $hue: get-scheme-hue($scheme);
-  $design: map.get($solid-design-step, $mode);
-  $polarity: solid-label-polarity($scheme, $mode);
-  $label: -solid-label-channels($polarity, $mode);
-  // Steps grow darker in the light scale and lighter in the dark scale.
-  $darker: -if($mode == "light", 1, -1);
-  $away: -if($polarity == "light", $darker, -1 * $darker);
-  @for $offset from 0 through 2 {
-    $step: $design + $offset * $away;
-    @if $step >= 1 and $step <= 12 {
-      @if contrast.ratio($label, get-raw-channels($hue, $step, $mode)) >= $solid-contrast-target {
-        @return (base: $step, away: $away);
-      }
-    }
+  @each $key, $polarity in core.$solid-label {
+    @if meta.inspect($key) == $hue { @return "#{$polarity}"; }
   }
-  @error "#{$scheme}/#{$mode}: no solid step within two steps of #{$design} gives its #{$polarity} label #{$solid-contrast-target}:1 contrast.";
+  @error "No solid label polarity for hue #{$hue}";
 }
 
-@function solid-state-step($plan, $state) {
+/// Label color of a solid fill: the `contrast` emphasis of text and icon. The
+/// dark label is neutral step 12 of the light axis in both modes, so a label
+/// does not change with the mode while its fill does not either.
+@function solid-label-color($scheme) {
+  @if solid-label-polarity($scheme) == "light" {
+    @return resolve-core-color("white", null, "light");
+  }
+  @return resolve-core-color("neutral", 12, "light");
+}
+
+@function solid-state-step($state) {
   // Disabled controls are exempt from SC 1.4.3; they keep a quiet fill.
   @if $state == "disabled" { @return 3; }
-  $shift: map.get((default: 0, hover: 1, selected: 1, pressed: 2), $state);
-  @return math-clamp(map.get($plan, base) + $shift * map.get($plan, away), 1, 12);
+  @return map.get((default: 9, hover: 10, selected: 10, pressed: "10B"), $state);
+}
+
+// ─── Shadows (TDD tokens PG9) ──────────────────────────────────────────────
+// A shadow is darker than every surface it falls on. Light mode inks with
+// neutral step 12 of the light axis, a tinted near-black; dark mode inks with
+// black, because a shadow in the color of a dark surface step reads as a glow.
+// Opacity rises with emphasis; hover lifts one level and pressed sinks one.
+$shadow-opacity: (
+  light: (0.04, 0.07, 0.11, 0.16, 0.22),
+  dark: (0.2, 0.3, 0.42, 0.55, 0.68)
+);
+$shadow-level: (subtle: 2, default: 3, strong: 4);
+
+@function shadow-color($emphasis, $state, $mode) {
+  $shift: map.get((default: 0, hover: 1, pressed: -1), $state);
+  $level: map.get($shadow-level, $emphasis) + $shift;
+  $opacity: list.nth(map.get($shadow-opacity, $mode), $level);
+  $ink: -if($mode == "light", get-raw-channels("neutral", 12, "light"), (0 0 0));
+  @return string.unquote("oklch(#{$ink} / #{$opacity})");
 }
 
 @function generate-scheme-matrix($scheme, $mode) {
   $role-map: ();
   $hue: get-scheme-hue($scheme);
-  $solid: solid-plan($scheme, $mode);
 
   @each $role, $emphases in $role-emphases {
     $emphasis-map: ();
@@ -218,12 +185,12 @@ $solid-contrast-target: 4.6;
             // step, which drops the scheme's chroma in every scheme.
             $value: resolve-core-color("neutral", get-state-step(12, "disabled", text, $mode), $mode);
           } @else if $recipe-role == "text" or $recipe-role == "icon" {
-            $value: solid-label-color($scheme, $mode);
+            $value: solid-label-color($scheme);
           } @else if $recipe-role == "shadow" {
             $value: -if($mode == "light", resolve-core-color("white", null, $mode), resolve-core-color("black", null, $mode));
           }
         } @else if $recipe-role == "solid" {
-          $value: resolve-core-color($hue, solid-state-step($solid, $state), $mode);
+          $value: resolve-core-color($hue, solid-state-step($state), $mode);
         } @else {
           $base-step: map.get($role-base-steps, $target-role, $recipe-emphasis);
           $step: get-state-step($base-step, $state, $recipe-role, $mode);
@@ -234,8 +201,7 @@ $solid-contrast-target: 4.6;
             // gate verifies the pairs (STD-GLB-FE-005 section 3.9).
             $value: resolve-core-color($hue, -if($recipe-emphasis == "strong", 12, 11), $mode);
           } @else if $recipe-role == "shadow" {
-            $raw: get-raw-channels($hue, $step, $mode);
-            $value: string.unquote("oklch(#{$raw} / 0.15)");
+            $value: shadow-color($recipe-emphasis, $state, $mode);
           } @else {
             $value: resolve-core-color($hue, $step, $mode);
           }
@@ -256,9 +222,13 @@ $solid-contrast-target: 4.6;
 @function get-color-tokens($mode: "light") {
   $neutral-matrix: generate-scheme-matrix("neutral", $mode);
   
+  // Elevation (TDD tokens PG9). Steps 1-2 are backgrounds and 3-5 component
+  // fills (Radix), so a panel never takes step 3: in dark mode raised and
+  // floating panels are both step 2, told apart by shadow and border, and a
+  // step-3 hover stays visible on every panel. Light panels are white on step 1.
   $canvas-val: resolve-core-color("neutral", 1, $mode);
   $surface-raised-val: -if($mode == "light", resolve-core-color("white", null, $mode), resolve-core-color("neutral", 2, $mode));
-  $surface-floating-val: -if($mode == "light", resolve-core-color("white", null, $mode), resolve-core-color("neutral", 3, $mode));
+  $surface-floating-val: -if($mode == "light", resolve-core-color("white", null, $mode), resolve-core-color("neutral", 2, $mode));
   $surface-sunken-val: -if($mode == "light", resolve-core-color("neutral", 2, $mode), resolve-core-color("neutral", 1, $mode));
   
   // Neutral-only elevation emphases are surface emphases (STD-UIP-TKN-001).
