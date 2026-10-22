@@ -4,12 +4,40 @@
 
 ```ts
 
-import { t as CodeSelect } from '../../index-CBSm004y.js';
-import { n as CodeSelectOption } from '../../index-CBSm004y.js';
+import { JSX } from 'react';
+import { ReactNode } from 'react';
 
-export { CodeSelect }
+// @public
+export function CodeSelect(input: CodeSelectProps): JSX.Element;
 
-export { CodeSelectOption }
+// @public (undocumented)
+export namespace CodeSelect {
+    var // (undocumented)
+    displayName: string;
+}
+
+// @public (undocumented)
+export interface CodeSelectOption {
+    // (undocumented)
+    id: string | number;
+    // (undocumented)
+    title: string;
+}
+
+// @public (undocumented)
+export interface CodeSelectProps {
+    "aria-label"?: string;
+    // (undocumented)
+    icon?: ReactNode;
+    // (undocumented)
+    onChange: (value: any) => void;
+    // (undocumented)
+    options: CodeSelectOption[];
+    // (undocumented)
+    placeholder?: string;
+    // (undocumented)
+    value: string | number;
+}
 
 // (No @packageDocumentation comment for this package)
 

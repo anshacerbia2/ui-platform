@@ -18,6 +18,12 @@ export type GridProps = Omit<GridBaseProps, "className" | "columns" | "gap" | "r
     className?: string;
 };
 
+// @public (undocumented)
+export type GridVariants = {
+    columns?: "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11" | "12";
+    gap?: "none" | "compact" | "default" | "comfortable" | "section";
+};
+
 // (No @packageDocumentation comment for this package)
 
 ```

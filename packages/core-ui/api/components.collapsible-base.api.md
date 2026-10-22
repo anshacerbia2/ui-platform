@@ -4,33 +4,94 @@
 
 ```ts
 
-import { a as CollapsibleBase } from '../../index-Cpa-UTl3.js';
-import { t as CollapsibleBaseContent } from '../../index-Cpa-UTl3.js';
-import { t as CollapsibleBaseContentProps } from '../../types-gLOf8c7F.js';
-import { r as CollapsibleBaseItem } from '../../index-Cpa-UTl3.js';
-import { n as CollapsibleBaseItemProps } from '../../types-gLOf8c7F.js';
-import { i as CollapsibleBaseRoot } from '../../index-Cpa-UTl3.js';
-import { r as CollapsibleBaseRootProps } from '../../types-gLOf8c7F.js';
-import { n as CollapsibleBaseTrigger } from '../../index-Cpa-UTl3.js';
-import { i as CollapsibleBaseTriggerProps } from '../../types-gLOf8c7F.js';
+import { ComponentPropsWithRef } from 'react';
+import { JSX } from 'react';
+import { ReactNode } from 'react';
 
-export { CollapsibleBase }
+// @public (undocumented)
+export const CollapsibleBase: {
+    (props: CollapsibleBaseRootProps): JSX.Element;
+    displayName: string;
+} & {
+    Item: {
+        (input: CollapsibleBaseItemProps): JSX.Element;
+        displayName: string;
+    };
+    Trigger: {
+        (input: CollapsibleBaseTriggerProps): JSX.Element;
+        displayName: string;
+    };
+    Content: {
+        (input: CollapsibleBaseContentProps): JSX.Element | null;
+        displayName: string;
+    };
+};
 
-export { CollapsibleBaseContent }
+// @public
+export const CollapsibleBaseContent: {
+    (input: CollapsibleBaseContentProps): JSX.Element | null;
+    displayName: string;
+};
 
-export { CollapsibleBaseContentProps }
+// @public
+export type CollapsibleBaseContentProps = Omit<ComponentPropsWithRef<"div">, "id"> & {
+    children: ReactNode;
+    forceMount?: boolean;
+    region?: boolean;
+};
 
-export { CollapsibleBaseItem }
+// @public
+export const CollapsibleBaseItem: {
+    (input: CollapsibleBaseItemProps): JSX.Element;
+    displayName: string;
+};
 
-export { CollapsibleBaseItemProps }
+// @public (undocumented)
+export type CollapsibleBaseItemProps = DisclosureItemOptions & {
+    children: ReactNode;
+} & ComponentPropsWithRef<"div">;
 
-export { CollapsibleBaseRoot }
+// @public
+export const CollapsibleBaseRoot: {
+    (input: CollapsibleBaseRootProps): JSX.Element;
+    displayName: string;
+};
 
-export { CollapsibleBaseRootProps }
+// @public
+export type CollapsibleBaseRootProps = DisclosureProviderProps & Omit<ComponentPropsWithRef<"div">, "defaultValue" | "onChange">;
 
-export { CollapsibleBaseTrigger }
+// @public
+export const CollapsibleBaseTrigger: {
+    (input: CollapsibleBaseTriggerProps): JSX.Element;
+    displayName: string;
+};
 
-export { CollapsibleBaseTriggerProps }
+// @public
+export type CollapsibleBaseTriggerProps = Omit<ComponentPropsWithRef<"button">, "children" | "type" | "id"> & {
+    children: ReactNode | ((state: {
+        isOpen: boolean;
+    }) => ReactNode);
+};
+
+// @public
+export type DisclosureItemOptions = {
+    value?: string;
+    open?: boolean;
+    defaultOpen?: boolean;
+    onOpenChange?: (open: boolean) => void;
+    disabled?: boolean;
+};
+
+// @public
+export type DisclosureProviderProps = {
+    type?: "single" | "multiple";
+    value?: string | string[];
+    defaultValue?: string | string[];
+    onValueChange?: (value: string | string[]) => void;
+    collapsible?: boolean;
+    disabled?: boolean;
+    disabledAnimations?: boolean;
+};
 
 // (No @packageDocumentation comment for this package)
 

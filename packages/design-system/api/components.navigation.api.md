@@ -4,63 +4,136 @@
 
 ```ts
 
-import { t as Navigation } from '../../index-ClQZguPk.js';
-import { i as NavigationBadge } from '../../index-ClQZguPk.js';
-import { d as NavigationBadgeProps } from '../../index-ClQZguPk.js';
-import { l as NavigationGroup } from '../../index-ClQZguPk.js';
-import { c as NavigationGroupHeader } from '../../index-ClQZguPk.js';
-import { f as NavigationGroupHeaderProps } from '../../index-ClQZguPk.js';
-import { p as NavigationGroupProps } from '../../index-ClQZguPk.js';
-import { o as NavigationIcon } from '../../index-ClQZguPk.js';
-import { m as NavigationIconProps } from '../../index-ClQZguPk.js';
-import { s as NavigationItem } from '../../index-ClQZguPk.js';
-import { n as NavigationItemContent } from '../../index-ClQZguPk.js';
-import { h as NavigationItemContentProps } from '../../index-ClQZguPk.js';
-import { g as NavigationItemProps } from '../../index-ClQZguPk.js';
-import { _ as NavigationProps } from '../../index-ClQZguPk.js';
-import { u as NavigationRoot } from '../../index-ClQZguPk.js';
-import { a as NavigationText } from '../../index-ClQZguPk.js';
-import { v as NavigationTextProps } from '../../index-ClQZguPk.js';
-import { r as NavigationTrailingIcon } from '../../index-ClQZguPk.js';
-import { y as NavigationTrailingIconProps } from '../../index-ClQZguPk.js';
+import { JSX } from 'react';
+import { NavigationBaseBadgeProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseGroupHeaderProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseGroupProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseIconProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseItemContentProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseItemProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseRootProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseTextProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseTrailingIconProps } from '@scnx/core-ui/components/navigation-base';
 
-export { Navigation }
+// @public
+export const Navigation: {
+    (props: NavigationProps): JSX.Element;
+    displayName: string;
+} & {
+    Group: {
+        (input: NavigationGroupProps): JSX.Element;
+        displayName: string;
+    };
+    GroupHeader: {
+        (input: NavigationGroupHeaderProps): JSX.Element;
+        displayName: string;
+    };
+    Item: {
+        (input: NavigationItemProps): JSX.Element;
+        displayName: string;
+    };
+    Icon: {
+        (input: NavigationIconProps): JSX.Element;
+        displayName: string;
+    };
+    ItemContent: {
+        (input: NavigationItemContentProps): JSX.Element;
+        displayName: string;
+    };
+    Text: {
+        (input: NavigationTextProps): JSX.Element;
+        displayName: string;
+    };
+    Badge: {
+        (input: NavigationBadgeProps): JSX.Element;
+        displayName: string;
+    };
+    TrailingIcon: {
+        (input: NavigationTrailingIconProps): JSX.Element;
+        displayName: string;
+    };
+};
 
-export { NavigationBadge }
+// @public
+export const NavigationBadge: {
+    (input: NavigationBadgeProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationBadgeProps }
+// @public (undocumented)
+export type NavigationBadgeProps = NavigationBaseBadgeProps;
 
-export { NavigationGroup }
+// @public (undocumented)
+export const NavigationGroup: {
+    (input: NavigationGroupProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationGroupHeader }
+// @public
+export const NavigationGroupHeader: {
+    (input: NavigationGroupHeaderProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationGroupHeaderProps }
+// @public (undocumented)
+export type NavigationGroupHeaderProps = NavigationBaseGroupHeaderProps;
 
-export { NavigationGroupProps }
+// @public (undocumented)
+export type NavigationGroupProps = NavigationBaseGroupProps;
 
-export { NavigationIcon }
+// @public
+export const NavigationIcon: {
+    (input: NavigationIconProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationIconProps }
+// @public (undocumented)
+export type NavigationIconProps = NavigationBaseIconProps;
 
-export { NavigationItem }
+// @public
+export const NavigationItem: {
+    (input: NavigationItemProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationItemContent }
+// @public
+export const NavigationItemContent: {
+    (input: NavigationItemContentProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationItemContentProps }
+// @public (undocumented)
+export type NavigationItemContentProps = NavigationBaseItemContentProps;
 
-export { NavigationItemProps }
+// @public (undocumented)
+export type NavigationItemProps = NavigationBaseItemProps;
 
-export { NavigationProps }
+// @public (undocumented)
+export type NavigationProps = NavigationBaseRootProps;
 
-export { NavigationRoot }
+// @public
+export const NavigationRoot: {
+    (input: NavigationProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationText }
+// @public
+export const NavigationText: {
+    (input: NavigationTextProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationTextProps }
+// @public (undocumented)
+export type NavigationTextProps = NavigationBaseTextProps;
 
-export { NavigationTrailingIcon }
+// @public
+export const NavigationTrailingIcon: {
+    (input: NavigationTrailingIconProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationTrailingIconProps }
+// @public (undocumented)
+export type NavigationTrailingIconProps = NavigationBaseTrailingIconProps;
 
 // (No @packageDocumentation comment for this package)
 

@@ -4,9 +4,14 @@
 
 ```ts
 
+import { ComponentPropsWithRef } from 'react';
+import { JSX } from 'react';
 import { ReactElement } from 'react';
-import { t } from '../../polymorphic-DaOKo9BZ.js';
-import { i as TextTag } from '../../polymorphic-DaOKo9BZ.js';
+
+// @public
+export type ClosedAsProps<T extends keyof JSX.IntrinsicElements, P = {}> = P & {
+    as?: T;
+} & Omit<ComponentPropsWithRef<T>, keyof P | "as">;
 
 // @public
 export const TextBase: {
@@ -15,9 +20,10 @@ export const TextBase: {
 };
 
 // @public
-export type TextBaseProps<T extends TextTag = "p"> = t<T>;
+export type TextBaseProps<T extends TextTag = "p"> = ClosedAsProps<T>;
 
-export { TextTag }
+// @public
+export type TextTag = "p" | "span" | "div" | "label" | "strong" | "em" | "small" | "figcaption" | "blockquote" | "cite" | "time";
 
 // (No @packageDocumentation comment for this package)
 

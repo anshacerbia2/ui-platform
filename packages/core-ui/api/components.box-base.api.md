@@ -4,9 +4,9 @@
 
 ```ts
 
-import { r as LayoutTag } from '../../polymorphic-DaOKo9BZ.js';
+import { ComponentPropsWithRef } from 'react';
+import { JSX } from 'react';
 import { ReactElement } from 'react';
-import { t } from '../../polymorphic-DaOKo9BZ.js';
 
 // @public
 export const BoxBase: {
@@ -15,9 +15,15 @@ export const BoxBase: {
 };
 
 // @public
-export type BoxBaseProps<T extends LayoutTag = "div"> = t<T>;
+export type BoxBaseProps<T extends LayoutTag = "div"> = ClosedAsProps<T>;
 
-export { LayoutTag }
+// @public
+export type ClosedAsProps<T extends keyof JSX.IntrinsicElements, P = {}> = P & {
+    as?: T;
+} & Omit<ComponentPropsWithRef<T>, keyof P | "as">;
+
+// @public
+export type LayoutTag = "div" | "section" | "article" | "aside" | "header" | "footer" | "main" | "nav" | "span";
 
 // (No @packageDocumentation comment for this package)
 

@@ -5,11 +5,8 @@
 ```ts
 
 import { ComponentPropsWithRef } from 'react';
-import { i } from '../../types-gLOf8c7F.js';
 import { JSX } from 'react';
-import { n } from '../../types-gLOf8c7F.js';
-import { r } from '../../types-gLOf8c7F.js';
-import { t } from '../../types-gLOf8c7F.js';
+import { ReactNode } from 'react';
 
 // @public (undocumented)
 export const CodeShowcaseBase: {
@@ -41,7 +38,7 @@ export const CodeShowcaseBaseContent: {
 };
 
 // @public (undocumented)
-export type CodeShowcaseBaseContentProps = t;
+export type CodeShowcaseBaseContentProps = CollapsibleBaseContentProps;
 
 // @public (undocumented)
 export const CodeShowcaseBaseNav: {
@@ -68,7 +65,7 @@ export const CodeShowcaseBaseRoot: {
 };
 
 // @public
-export type CodeShowcaseBaseRootProps = Omit<r, "type" | "value" | "defaultValue" | "onValueChange" | "collapsible"> & Pick<n, "open" | "defaultOpen" | "onOpenChange">;
+export type CodeShowcaseBaseRootProps = Omit<CollapsibleBaseRootProps, "type" | "value" | "defaultValue" | "onValueChange" | "collapsible"> & Pick<CollapsibleBaseItemProps, "open" | "defaultOpen" | "onOpenChange">;
 
 // @public
 export const CodeShowcaseBaseTrigger: {
@@ -77,7 +74,49 @@ export const CodeShowcaseBaseTrigger: {
 };
 
 // @public (undocumented)
-export type CodeShowcaseBaseTriggerProps = i;
+export type CodeShowcaseBaseTriggerProps = CollapsibleBaseTriggerProps;
+
+// @public
+export type CollapsibleBaseContentProps = Omit<ComponentPropsWithRef<"div">, "id"> & {
+    children: ReactNode;
+    forceMount?: boolean;
+    region?: boolean;
+};
+
+// @public (undocumented)
+export type CollapsibleBaseItemProps = DisclosureItemOptions & {
+    children: ReactNode;
+} & ComponentPropsWithRef<"div">;
+
+// @public
+export type CollapsibleBaseRootProps = DisclosureProviderProps & Omit<ComponentPropsWithRef<"div">, "defaultValue" | "onChange">;
+
+// @public
+export type CollapsibleBaseTriggerProps = Omit<ComponentPropsWithRef<"button">, "children" | "type" | "id"> & {
+    children: ReactNode | ((state: {
+        isOpen: boolean;
+    }) => ReactNode);
+};
+
+// @public
+export type DisclosureItemOptions = {
+    value?: string;
+    open?: boolean;
+    defaultOpen?: boolean;
+    onOpenChange?: (open: boolean) => void;
+    disabled?: boolean;
+};
+
+// @public
+export type DisclosureProviderProps = {
+    type?: "single" | "multiple";
+    value?: string | string[];
+    defaultValue?: string | string[];
+    onValueChange?: (value: string | string[]) => void;
+    collapsible?: boolean;
+    disabled?: boolean;
+    disabledAnimations?: boolean;
+};
 
 // (No @packageDocumentation comment for this package)
 

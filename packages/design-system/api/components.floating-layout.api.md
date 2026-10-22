@@ -4,27 +4,227 @@
 
 ```ts
 
-import { q as FloatingLayout } from '../../index-2RwKSyQg.js';
-import { W as FloatingLayoutContent } from '../../index-2RwKSyQg.js';
-import { J as FloatingLayoutContentProps } from '../../index-2RwKSyQg.js';
-import { Y as FloatingLayoutProps } from '../../index-2RwKSyQg.js';
-import { K as FloatingLayoutRoot } from '../../index-2RwKSyQg.js';
-import { G as FloatingLayoutSidebar } from '../../index-2RwKSyQg.js';
-import { X as FloatingLayoutSidebarProps } from '../../index-2RwKSyQg.js';
+import { FloatingLayoutBaseContentProps as FloatingLayoutContentProps } from '@scnx/core-ui/components/floating-layout-base';
+import { FloatingLayoutBaseRootProps as FloatingLayoutProps } from '@scnx/core-ui/components/floating-layout-base';
+import { FloatingLayoutBaseSidebarProps as FloatingLayoutSidebarProps } from '@scnx/core-ui/components/floating-layout-base';
+import { JSX } from 'react';
+import { NavigationBaseBadgeProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseGroupHeaderProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseGroupProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseIconProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseItemContentProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseItemProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseRootProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseTextProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseTrailingIconProps } from '@scnx/core-ui/components/navigation-base';
+import { SidebarBaseFooterProps } from '@scnx/core-ui/components/sidebar-base';
+import { SidebarBaseHeaderProps } from '@scnx/core-ui/components/sidebar-base';
+import { SidebarBaseNavProps } from '@scnx/core-ui/components/sidebar-base';
+import { SidebarBaseRootProps } from '@scnx/core-ui/components/sidebar-base';
+import { SidebarBaseToggleProps } from '@scnx/core-ui/components/sidebar-base';
 
-export { FloatingLayout }
+// @public
+export const FloatingLayout: {
+    (props: FloatingLayoutProps): JSX.Element;
+    displayName: string;
+} & {
+    Sidebar: {
+        (input: FloatingLayoutSidebarProps): JSX.Element;
+        displayName: string;
+    } & {
+        (input: SidebarProps): JSX.Element;
+        displayName: string;
+    } & {
+        Toggle: {
+            (input: SidebarToggleProps): JSX.Element;
+            displayName: string;
+        };
+        Header: {
+            (input: SidebarHeaderProps): JSX.Element;
+            displayName: string;
+        };
+        Nav: ((input: SidebarNavProps) => JSX.Element) & {
+            (props: NavigationProps): JSX.Element;
+            displayName: string;
+        } & {
+            Group: {
+                (input: NavigationGroupProps): JSX.Element;
+                displayName: string;
+            };
+            GroupHeader: {
+                (input: NavigationGroupHeaderProps): JSX.Element;
+                displayName: string;
+            };
+            Item: {
+                (input: NavigationItemProps): JSX.Element;
+                displayName: string;
+            };
+            Icon: {
+                (input: NavigationIconProps): JSX.Element;
+                displayName: string;
+            };
+            ItemContent: {
+                (input: NavigationItemContentProps): JSX.Element;
+                displayName: string;
+            };
+            Text: {
+                (input: NavigationTextProps): JSX.Element;
+                displayName: string;
+            };
+            Badge: {
+                (input: NavigationBadgeProps): JSX.Element;
+                displayName: string;
+            };
+            TrailingIcon: {
+                (input: NavigationTrailingIconProps): JSX.Element;
+                displayName: string;
+            };
+        } & {
+            Item: {
+                (input: any): JSX.Element;
+                displayName: string;
+            };
+            displayName: string;
+        };
+        Footer: {
+            (input: SidebarFooterProps): JSX.Element;
+            displayName: string;
+        };
+    };
+    Content: {
+        (input: FloatingLayoutContentProps): JSX.Element;
+        displayName: string;
+    };
+};
 
-export { FloatingLayoutContent }
+// @public
+export const FloatingLayoutContent: {
+    (input: FloatingLayoutContentProps): JSX.Element;
+    displayName: string;
+};
 
 export { FloatingLayoutContentProps }
 
 export { FloatingLayoutProps }
 
-export { FloatingLayoutRoot }
+// @public
+export const FloatingLayoutRoot: {
+    (input: FloatingLayoutProps): JSX.Element;
+    displayName: string;
+};
 
-export { FloatingLayoutSidebar }
+// @public (undocumented)
+export const FloatingLayoutSidebar: {
+    (input: FloatingLayoutSidebarProps): JSX.Element;
+    displayName: string;
+} & {
+    (input: SidebarProps): JSX.Element;
+    displayName: string;
+} & {
+    Toggle: {
+        (input: SidebarToggleProps): JSX.Element;
+        displayName: string;
+    };
+    Header: {
+        (input: SidebarHeaderProps): JSX.Element;
+        displayName: string;
+    };
+    Nav: ((input: SidebarNavProps) => JSX.Element) & {
+        (props: NavigationProps): JSX.Element;
+        displayName: string;
+    } & {
+        Group: {
+            (input: NavigationGroupProps): JSX.Element;
+            displayName: string;
+        };
+        GroupHeader: {
+            (input: NavigationGroupHeaderProps): JSX.Element;
+            displayName: string;
+        };
+        Item: {
+            (input: NavigationItemProps): JSX.Element;
+            displayName: string;
+        };
+        Icon: {
+            (input: NavigationIconProps): JSX.Element;
+            displayName: string;
+        };
+        ItemContent: {
+            (input: NavigationItemContentProps): JSX.Element;
+            displayName: string;
+        };
+        Text: {
+            (input: NavigationTextProps): JSX.Element;
+            displayName: string;
+        };
+        Badge: {
+            (input: NavigationBadgeProps): JSX.Element;
+            displayName: string;
+        };
+        TrailingIcon: {
+            (input: NavigationTrailingIconProps): JSX.Element;
+            displayName: string;
+        };
+    } & {
+        Item: {
+            (input: any): JSX.Element;
+            displayName: string;
+        };
+        displayName: string;
+    };
+    Footer: {
+        (input: SidebarFooterProps): JSX.Element;
+        displayName: string;
+    };
+};
 
 export { FloatingLayoutSidebarProps }
+
+// @public (undocumented)
+export type NavigationBadgeProps = NavigationBaseBadgeProps;
+
+// @public (undocumented)
+export type NavigationGroupHeaderProps = NavigationBaseGroupHeaderProps;
+
+// @public (undocumented)
+export type NavigationGroupProps = NavigationBaseGroupProps;
+
+// @public (undocumented)
+export type NavigationIconProps = NavigationBaseIconProps;
+
+// @public (undocumented)
+export type NavigationItemContentProps = NavigationBaseItemContentProps;
+
+// @public (undocumented)
+export type NavigationItemProps = NavigationBaseItemProps;
+
+// @public (undocumented)
+export type NavigationProps = NavigationBaseRootProps;
+
+// @public (undocumented)
+export type NavigationTextProps = NavigationBaseTextProps;
+
+// @public (undocumented)
+export type NavigationTrailingIconProps = NavigationBaseTrailingIconProps;
+
+// @public (undocumented)
+export type SidebarFooterProps = SidebarBaseFooterProps;
+
+// @public (undocumented)
+export type SidebarHeaderProps = SidebarBaseHeaderProps;
+
+// @public (undocumented)
+export type SidebarNavProps = SidebarBaseNavProps;
+
+// @public (undocumented)
+export type SidebarProps = {
+    variant?: "dark" | "light";
+} & SidebarBaseRootProps;
+
+// @public (undocumented)
+export type SidebarToggleProps = SidebarBaseToggleProps & {
+    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+};
 
 // (No @packageDocumentation comment for this package)
 

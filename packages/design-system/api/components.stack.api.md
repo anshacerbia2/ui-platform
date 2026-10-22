@@ -4,8 +4,22 @@
 
 ```ts
 
+import { FlexBaseProps } from '@scnx/core-ui/components/flex-base';
 import { JSX } from 'react';
-import { n } from '../../index-BIO9JNoq.js';
+
+// @public (undocumented)
+export type FlexProps = Omit<FlexBaseProps, "className" | "direction" | "align" | "justify" | "wrap" | "gap"> & FlexVariants & {
+    className?: string;
+};
+
+// @public (undocumented)
+export type FlexVariants = {
+    direction?: "row" | "col" | "row-reverse" | "col-reverse";
+    align?: "start" | "center" | "end" | "stretch" | "baseline";
+    justify?: "start" | "center" | "end" | "between" | "around" | "evenly";
+    wrap?: "nowrap" | "wrap" | "wrap-reverse";
+    gap?: "none" | "compact" | "default" | "comfortable" | "section";
+};
 
 // @public
 export const Stack: {
@@ -14,7 +28,7 @@ export const Stack: {
 };
 
 // @public (undocumented)
-export type StackProps = Omit<n, "direction">;
+export type StackProps = Omit<FlexProps, "direction">;
 
 // (No @packageDocumentation comment for this package)
 

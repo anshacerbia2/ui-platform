@@ -4,12 +4,28 @@
 
 ```ts
 
-import { t as Flex } from '../../index-BIO9JNoq.js';
-import { n as FlexProps } from '../../index-BIO9JNoq.js';
+import { FlexBaseProps } from '@scnx/core-ui/components/flex-base';
+import { JSX } from 'react';
 
-export { Flex }
+// @public
+export const Flex: {
+    (input: FlexProps): JSX.Element;
+    displayName: string;
+};
 
-export { FlexProps }
+// @public (undocumented)
+export type FlexProps = Omit<FlexBaseProps, "className" | "direction" | "align" | "justify" | "wrap" | "gap"> & FlexVariants & {
+    className?: string;
+};
+
+// @public (undocumented)
+export type FlexVariants = {
+    direction?: "row" | "col" | "row-reverse" | "col-reverse";
+    align?: "start" | "center" | "end" | "stretch" | "baseline";
+    justify?: "start" | "center" | "end" | "between" | "around" | "evenly";
+    wrap?: "nowrap" | "wrap" | "wrap-reverse";
+    gap?: "none" | "compact" | "default" | "comfortable" | "section";
+};
 
 // (No @packageDocumentation comment for this package)
 

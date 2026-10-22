@@ -82,6 +82,17 @@ export type ComboboxBaseStatusProps = Omit<ComponentPropsWithRef<"div">, "role" 
     children: (count: number) => ReactNode;
 };
 
+// @public (undocumented)
+export type ComboboxSelection = {
+    value: string | null;
+    onValueChange: (value: string) => void;
+    defaultValue?: never;
+} | {
+    defaultValue?: string | null;
+    onValueChange?: (value: string) => void;
+    value?: never;
+};
+
 // (No @packageDocumentation comment for this package)
 
 ```

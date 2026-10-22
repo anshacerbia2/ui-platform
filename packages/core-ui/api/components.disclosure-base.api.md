@@ -4,15 +4,38 @@
 
 ```ts
 
-import { t as DisclosureItemContextValue } from '../../types-BfsUojwB.js';
-import { n as DisclosureItemOptions } from '../../types-BfsUojwB.js';
-import { r as DisclosureProviderProps } from '../../types-BfsUojwB.js';
+// @public
+export type DisclosureItemContextValue = {
+    value: string;
+    open: boolean;
+    disabled: boolean;
+    locked: boolean;
+    triggerId: string;
+    contentId: string;
+    disabledAnimations: boolean;
+    setOpen(open: boolean): void;
+    toggle(): void;
+};
 
-export { DisclosureItemContextValue }
+// @public
+export type DisclosureItemOptions = {
+    value?: string;
+    open?: boolean;
+    defaultOpen?: boolean;
+    onOpenChange?: (open: boolean) => void;
+    disabled?: boolean;
+};
 
-export { DisclosureItemOptions }
-
-export { DisclosureProviderProps }
+// @public
+export type DisclosureProviderProps = {
+    type?: "single" | "multiple";
+    value?: string | string[];
+    defaultValue?: string | string[];
+    onValueChange?: (value: string | string[]) => void;
+    collapsible?: boolean;
+    disabled?: boolean;
+    disabledAnimations?: boolean;
+};
 
 // @public
 export function useDisclosureItem(component?: string): DisclosureItemContextValue;

@@ -4,81 +4,293 @@
 
 ```ts
 
-import { h as FlyoutContextValue } from '../../index-2RwKSyQg.js';
-import { n as FlyoutProvider } from '../../index-2RwKSyQg.js';
-import { g as FlyoutState } from '../../index-2RwKSyQg.js';
-import { r as InsideFlyoutProvider } from '../../index-2RwKSyQg.js';
-import { _ as NavigableChildProps } from '../../index-2RwKSyQg.js';
-import { t as Sidebar } from '../../index-2RwKSyQg.js';
-import { v as SidebarContextValue } from '../../index-2RwKSyQg.js';
-import { c as SidebarFlyout } from '../../index-2RwKSyQg.js';
-import { y as SidebarFlyoutProps } from '../../index-2RwKSyQg.js';
-import { u as SidebarFooter } from '../../index-2RwKSyQg.js';
-import { b as SidebarFooterProps } from '../../index-2RwKSyQg.js';
-import { f as SidebarHeader } from '../../index-2RwKSyQg.js';
-import { x as SidebarHeaderProps } from '../../index-2RwKSyQg.js';
-import { d as SidebarNav } from '../../index-2RwKSyQg.js';
-import { l as SidebarNavItem } from '../../index-2RwKSyQg.js';
-import { S as SidebarNavProps } from '../../index-2RwKSyQg.js';
-import { C as SidebarProps } from '../../index-2RwKSyQg.js';
-import { o as SidebarProvider } from '../../index-2RwKSyQg.js';
-import { w as SidebarProviderProps } from '../../index-2RwKSyQg.js';
-import { m as SidebarRoot } from '../../index-2RwKSyQg.js';
-import { p as SidebarToggle } from '../../index-2RwKSyQg.js';
-import { T as SidebarToggleProps } from '../../index-2RwKSyQg.js';
-import { i as useFlyout } from '../../index-2RwKSyQg.js';
-import { a as useInsideFlyout } from '../../index-2RwKSyQg.js';
-import { s as useSidebar } from '../../index-2RwKSyQg.js';
+import { JSX } from 'react';
+import { NavigationBaseBadgeProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseGroupHeaderProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseGroupProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseIconProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseItemContentProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseItemProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseRootProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseTextProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseTrailingIconProps } from '@scnx/core-ui/components/navigation-base';
+import { ReactNode } from 'react';
+import { ReactPortal } from 'react';
+import { SidebarBaseFooterProps } from '@scnx/core-ui/components/sidebar-base';
+import { SidebarBaseHeaderProps } from '@scnx/core-ui/components/sidebar-base';
+import { SidebarBaseNavProps } from '@scnx/core-ui/components/sidebar-base';
+import { SidebarBaseRootProps } from '@scnx/core-ui/components/sidebar-base';
+import { SidebarBaseToggleProps } from '@scnx/core-ui/components/sidebar-base';
 
-export { FlyoutContextValue }
+// @public (undocumented)
+export type FlyoutContextValue = {
+    activeFlyout: FlyoutState | null;
+    isFlyoutClosing: boolean;
+    setFlyout: (ownerId: string, triggerRef: HTMLElement, content: ReactNode) => void;
+    closeFlyout: () => void;
+    cleanupFlyout: () => void;
+};
 
-export { FlyoutProvider }
+// @public
+export const FlyoutProvider: {
+    (input: {
+        children: ReactNode;
+    }): JSX.Element;
+    displayName: string;
+};
 
-export { FlyoutState }
+// @public (undocumented)
+export type FlyoutState = {
+    ownerId: string;
+    triggerRef: HTMLElement | null;
+    content: ReactNode | null;
+};
 
-export { InsideFlyoutProvider }
+// @public
+export const InsideFlyoutProvider: {
+    (input: {
+        children: ReactNode;
+    }): JSX.Element;
+    displayName: string;
+};
 
-export { NavigableChildProps }
+// @public (undocumented)
+export type NavigableChildProps = {
+    to?: string;
+    href?: string;
+    children?: ReactNode;
+};
 
-export { Sidebar }
+// @public (undocumented)
+export type NavigationBadgeProps = NavigationBaseBadgeProps;
 
-export { SidebarContextValue }
+// @public (undocumented)
+export type NavigationGroupHeaderProps = NavigationBaseGroupHeaderProps;
 
-export { SidebarFlyout }
+// @public (undocumented)
+export type NavigationGroupProps = NavigationBaseGroupProps;
 
-export { SidebarFlyoutProps }
+// @public (undocumented)
+export type NavigationIconProps = NavigationBaseIconProps;
 
-export { SidebarFooter }
+// @public (undocumented)
+export type NavigationItemContentProps = NavigationBaseItemContentProps;
 
-export { SidebarFooterProps }
+// @public (undocumented)
+export type NavigationItemProps = NavigationBaseItemProps;
 
-export { SidebarHeader }
+// @public (undocumented)
+export type NavigationProps = NavigationBaseRootProps;
 
-export { SidebarHeaderProps }
+// @public (undocumented)
+export type NavigationTextProps = NavigationBaseTextProps;
 
-export { SidebarNav }
+// @public (undocumented)
+export type NavigationTrailingIconProps = NavigationBaseTrailingIconProps;
 
-export { SidebarNavItem }
+// @public
+export const Sidebar: {
+    (input: SidebarProps): JSX.Element;
+    displayName: string;
+} & {
+    Toggle: {
+        (input: SidebarToggleProps): JSX.Element;
+        displayName: string;
+    };
+    Header: {
+        (input: SidebarHeaderProps): JSX.Element;
+        displayName: string;
+    };
+    Nav: ((input: SidebarNavProps) => JSX.Element) & {
+        (props: NavigationProps): JSX.Element;
+        displayName: string;
+    } & {
+        Group: {
+            (input: NavigationGroupProps): JSX.Element;
+            displayName: string;
+        };
+        GroupHeader: {
+            (input: NavigationGroupHeaderProps): JSX.Element;
+            displayName: string;
+        };
+        Item: {
+            (input: NavigationItemProps): JSX.Element;
+            displayName: string;
+        };
+        Icon: {
+            (input: NavigationIconProps): JSX.Element;
+            displayName: string;
+        };
+        ItemContent: {
+            (input: NavigationItemContentProps): JSX.Element;
+            displayName: string;
+        };
+        Text: {
+            (input: NavigationTextProps): JSX.Element;
+            displayName: string;
+        };
+        Badge: {
+            (input: NavigationBadgeProps): JSX.Element;
+            displayName: string;
+        };
+        TrailingIcon: {
+            (input: NavigationTrailingIconProps): JSX.Element;
+            displayName: string;
+        };
+    } & {
+        Item: {
+            (input: any): JSX.Element;
+            displayName: string;
+        };
+        displayName: string;
+    };
+    Footer: {
+        (input: SidebarFooterProps): JSX.Element;
+        displayName: string;
+    };
+};
 
-export { SidebarNavProps }
+// @public (undocumented)
+export type SidebarContextValue = {
+    sidebarId: string;
+    activePath: string;
+    isOpen: boolean;
+    expandedMap: Record<string, boolean>;
+    setIsOpen: (value: boolean) => void;
+    toggleOpen: () => void;
+    setExpanded: (id: string, value: boolean) => void;
+    toggleExpanded: (id: string) => void;
+};
 
-export { SidebarProps }
+// @public
+export const SidebarFlyout: {
+    (input: SidebarFlyoutProps): ReactPortal | null;
+    displayName: string;
+};
 
-export { SidebarProvider }
+// @public (undocumented)
+export type SidebarFlyoutProps = {
+    className?: string;
+    width?: string | number;
+    variant?: "dark" | "light";
+};
 
-export { SidebarProviderProps }
+// @public
+export const SidebarFooter: {
+    (input: SidebarFooterProps): JSX.Element;
+    displayName: string;
+};
 
-export { SidebarRoot }
+// @public (undocumented)
+export type SidebarFooterProps = SidebarBaseFooterProps;
 
-export { SidebarToggle }
+// @public
+export const SidebarHeader: {
+    (input: SidebarHeaderProps): JSX.Element;
+    displayName: string;
+};
 
-export { SidebarToggleProps }
+// @public (undocumented)
+export type SidebarHeaderProps = SidebarBaseHeaderProps;
 
-export { useFlyout }
+// @public (undocumented)
+export const SidebarNav: ((input: SidebarNavProps) => JSX.Element) & {
+    (props: NavigationProps): JSX.Element;
+    displayName: string;
+} & {
+    Group: {
+        (input: NavigationGroupProps): JSX.Element;
+        displayName: string;
+    };
+    GroupHeader: {
+        (input: NavigationGroupHeaderProps): JSX.Element;
+        displayName: string;
+    };
+    Item: {
+        (input: NavigationItemProps): JSX.Element;
+        displayName: string;
+    };
+    Icon: {
+        (input: NavigationIconProps): JSX.Element;
+        displayName: string;
+    };
+    ItemContent: {
+        (input: NavigationItemContentProps): JSX.Element;
+        displayName: string;
+    };
+    Text: {
+        (input: NavigationTextProps): JSX.Element;
+        displayName: string;
+    };
+    Badge: {
+        (input: NavigationBadgeProps): JSX.Element;
+        displayName: string;
+    };
+    TrailingIcon: {
+        (input: NavigationTrailingIconProps): JSX.Element;
+        displayName: string;
+    };
+} & {
+    Item: {
+        (input: any): JSX.Element;
+        displayName: string;
+    };
+    displayName: string;
+};
 
-export { useInsideFlyout }
+// @public
+export const SidebarNavItem: {
+    (input: any): JSX.Element;
+    displayName: string;
+};
 
-export { useSidebar }
+// @public (undocumented)
+export type SidebarNavProps = SidebarBaseNavProps;
+
+// @public (undocumented)
+export type SidebarProps = {
+    variant?: "dark" | "light";
+} & SidebarBaseRootProps;
+
+// @public
+export const SidebarProvider: {
+    (input: SidebarProviderProps): JSX.Element;
+    displayName: string;
+};
+
+// @public (undocumented)
+export type SidebarProviderProps = {
+    children?: ReactNode;
+    activePath?: string;
+    defaultIsOpen?: boolean;
+    withFlyout?: boolean;
+};
+
+// @public
+export const SidebarRoot: {
+    (input: SidebarProps): JSX.Element;
+    displayName: string;
+};
+
+// @public (undocumented)
+export const SidebarToggle: {
+    (input: SidebarToggleProps): JSX.Element;
+    displayName: string;
+};
+
+// @public (undocumented)
+export type SidebarToggleProps = SidebarBaseToggleProps & {
+    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+};
+
+// @public
+export const useFlyout: () => FlyoutContextValue;
+
+// @public
+export const useInsideFlyout: () => boolean;
+
+// @public
+export const useSidebar: () => SidebarContextValue;
 
 // (No @packageDocumentation comment for this package)
 

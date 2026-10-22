@@ -35,3 +35,16 @@ export {
 } from "./FlyoutContext";
 
 export { Sidebar } from "./Sidebar";
+
+// Reached from this entry's public signatures (TDD packaging RC7).
+export type {
+  NavigationBadgeProps,
+  NavigationGroupHeaderProps,
+  NavigationGroupProps,
+  NavigationIconProps,
+  NavigationItemContentProps,
+  NavigationItemProps,
+  NavigationProps,
+  NavigationTextProps,
+  NavigationTrailingIconProps,
+} from "../navigation";

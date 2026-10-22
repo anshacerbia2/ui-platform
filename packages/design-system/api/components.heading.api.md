@@ -19,6 +19,12 @@ export type HeadingProps<T extends HeadingTag = "h2"> = Omit<HeadingBaseProps<T>
 
 export { HeadingTag }
 
+// @public (undocumented)
+export type HeadingVariants = {
+    size?: "xxlarge" | "xlarge" | "large" | "medium" | "small" | "xsmall";
+    weight?: "bold" | "semibold" | "medium" | "regular";
+};
+
 // (No @packageDocumentation comment for this package)
 
 ```

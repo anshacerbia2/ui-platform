@@ -12,3 +12,9 @@ export { CollapsibleBaseRoot } from "./CollapsibleBaseRoot";
 export { CollapsibleBaseItem } from "./CollapsibleBaseItem";
 export { CollapsibleBaseTrigger } from "./CollapsibleBaseTrigger";
 export { CollapsibleBaseContent } from "./CollapsibleBaseContent";
+
+// Reached from this entry's public signatures (TDD packaging RC7).
+export type {
+  DisclosureItemOptions,
+  DisclosureProviderProps,
+} from "../disclosure-base/types";

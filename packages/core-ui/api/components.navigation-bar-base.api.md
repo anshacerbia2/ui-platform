@@ -4,19 +4,14 @@
 
 ```ts
 
-import { _ } from '../../index-CTfzJNC1.js';
-import { b } from '../../index-CTfzJNC1.js';
 import { ComponentPropsWithRef } from 'react';
-import { g } from '../../index-CTfzJNC1.js';
-import { h } from '../../index-CTfzJNC1.js';
+import { CSSProperties } from 'react';
+import { HTMLAttributes } from 'react';
 import { JSX } from 'react';
-import { m } from '../../index-CTfzJNC1.js';
-import { p } from '../../index-CTfzJNC1.js';
+import { MouseEvent as MouseEvent_2 } from 'react';
 import { ReactElement } from 'react';
 import { ReactNode } from 'react';
-import { v } from '../../index-CTfzJNC1.js';
-import { x } from '../../index-CTfzJNC1.js';
-import { y } from '../../index-CTfzJNC1.js';
+import { Ref } from 'react';
 
 // @public
 export const NavigationBarBase: {
@@ -40,39 +35,39 @@ export const NavigationBarBase: {
         displayName: string;
     };
     Nav: {
-        (input: y): JSX.Element;
+        (input: NavigationBaseRootProps): JSX.Element;
         displayName: string;
     } & {
         Group: {
-            (input: h): JSX.Element;
+            (input: NavigationBaseGroupProps): JSX.Element;
             displayName: string;
         };
         GroupHeader: {
-            (input: m): JSX.Element;
+            (input: NavigationBaseGroupHeaderProps): JSX.Element;
             displayName: string;
         };
         Item: {
-            (props: v): ReactElement;
+            (props: NavigationBaseItemProps): ReactElement;
             displayName: string;
         };
         Icon: {
-            (input: g): JSX.Element;
+            (input: NavigationBaseIconProps): JSX.Element;
             displayName: string;
         };
         ItemContent: {
-            (input: _): JSX.Element;
+            (input: NavigationBaseItemContentProps): JSX.Element;
             displayName: string;
         };
         Text: {
-            (input: b): JSX.Element;
+            (input: NavigationBaseTextProps): JSX.Element;
             displayName: string;
         };
         Badge: {
-            (input: p): JSX.Element;
+            (input: NavigationBaseBadgeProps): JSX.Element;
             displayName: string;
         };
         TrailingIcon: {
-            (input: x): JSX.Element;
+            (input: NavigationBaseTrailingIconProps): JSX.Element;
             displayName: string;
         };
     };
@@ -98,39 +93,39 @@ export type NavigationBarBaseEndProps = Omit<ComponentPropsWithRef<"div">, "ref"
 
 // @public
 export const NavigationBarBaseNav: {
-    (input: y): JSX.Element;
+    (input: NavigationBaseRootProps): JSX.Element;
     displayName: string;
 } & {
     Group: {
-        (input: h): JSX.Element;
+        (input: NavigationBaseGroupProps): JSX.Element;
         displayName: string;
     };
     GroupHeader: {
-        (input: m): JSX.Element;
+        (input: NavigationBaseGroupHeaderProps): JSX.Element;
         displayName: string;
     };
     Item: {
-        (props: v): ReactElement;
+        (props: NavigationBaseItemProps): ReactElement;
         displayName: string;
     };
     Icon: {
-        (input: g): JSX.Element;
+        (input: NavigationBaseIconProps): JSX.Element;
         displayName: string;
     };
     ItemContent: {
-        (input: _): JSX.Element;
+        (input: NavigationBaseItemContentProps): JSX.Element;
         displayName: string;
     };
     Text: {
-        (input: b): JSX.Element;
+        (input: NavigationBaseTextProps): JSX.Element;
         displayName: string;
     };
     Badge: {
-        (input: p): JSX.Element;
+        (input: NavigationBaseBadgeProps): JSX.Element;
         displayName: string;
     };
     TrailingIcon: {
-        (input: x): JSX.Element;
+        (input: NavigationBaseTrailingIconProps): JSX.Element;
         displayName: string;
     };
 };
@@ -157,6 +152,73 @@ export const NavigationBarBaseStart: {
 
 // @public (undocumented)
 export type NavigationBarBaseStartProps = Omit<ComponentPropsWithRef<"div">, "ref">;
+
+// @public (undocumented)
+export type NavigationBaseBadgeProps = ComponentPropsWithRef<"span">;
+
+// @public (undocumented)
+export type NavigationBaseGroupHeaderProps = Omit<ComponentPropsWithRef<"li">, "ref">;
+
+// @public (undocumented)
+export type NavigationBaseGroupProps = Omit<ComponentPropsWithRef<"ul">, "ref">;
+
+// @public (undocumented)
+export type NavigationBaseIconProps = ComponentPropsWithRef<"span">;
+
+// @public (undocumented)
+export type NavigationBaseItemCommonProps = {
+    badgeClassName?: string;
+    itemContentClassName?: string;
+    iconClassName?: string;
+    textClassName?: string;
+    trailingIconClassName?: string;
+    label: string;
+    icon?: ReactNode;
+    badge?: ReactNode;
+    trailingIcon?: ReactNode;
+    isActive?: boolean;
+    isDisabled?: boolean;
+    className?: string;
+    style?: CSSProperties;
+    onClick?: (event: MouseEvent_2<HTMLElement>) => void;
+    ref?: Ref<HTMLElement>;
+} & Omit<HTMLAttributes<HTMLElement>, "children" | "onClick" | "className" | "style">;
+
+// @public (undocumented)
+export type NavigationBaseItemContentProps = ComponentPropsWithRef<"span">;
+
+// @public
+export type NavigationBaseItemProps = NavigationBaseItemCommonProps & ({
+    href: string;
+    asChild?: false;
+    children?: undefined;
+    isExpanded?: undefined;
+    defaultExpanded?: undefined;
+    onExpandedChange?: undefined;
+} | {
+    asChild: true;
+    children: ReactElement;
+    href?: undefined;
+    isExpanded?: undefined;
+    defaultExpanded?: undefined;
+    onExpandedChange?: undefined;
+} | {
+    children?: ReactNode;
+    href?: undefined;
+    asChild?: false;
+    isExpanded?: boolean;
+    defaultExpanded?: boolean;
+    onExpandedChange?: (expanded: boolean) => void;
+});
+
+// @public (undocumented)
+export type NavigationBaseRootProps = Omit<ComponentPropsWithRef<"nav">, "ref">;
+
+// @public (undocumented)
+export type NavigationBaseTextProps = ComponentPropsWithRef<"span">;
+
+// @public (undocumented)
+export type NavigationBaseTrailingIconProps = ComponentPropsWithRef<"span">;
 
 // (No @packageDocumentation comment for this package)
 

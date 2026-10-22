@@ -4,39 +4,80 @@
 
 ```ts
 
-import { o as CodeShowcase } from '../../index-BfUpBnCU.js';
-import { t as CodeShowcaseContent } from '../../index-BfUpBnCU.js';
-import { s as CodeShowcaseContentProps } from '../../index-BfUpBnCU.js';
-import { r as CodeShowcaseNav } from '../../index-BfUpBnCU.js';
-import { c as CodeShowcaseNavProps } from '../../index-BfUpBnCU.js';
-import { i as CodeShowcasePreview } from '../../index-BfUpBnCU.js';
-import { l as CodeShowcasePreviewProps } from '../../index-BfUpBnCU.js';
-import { a as CodeShowcaseRoot } from '../../index-BfUpBnCU.js';
-import { u as CodeShowcaseRootProps } from '../../index-BfUpBnCU.js';
-import { n as CodeShowcaseTrigger } from '../../index-BfUpBnCU.js';
-import { d as CodeShowcaseTriggerProps } from '../../index-BfUpBnCU.js';
+import { CodeShowcaseBaseContentProps } from '@scnx/core-ui/components/code-showcase-base';
+import { CodeShowcaseBaseNavProps } from '@scnx/core-ui/components/code-showcase-base';
+import { CodeShowcaseBasePreviewProps } from '@scnx/core-ui/components/code-showcase-base';
+import { CodeShowcaseBaseRootProps } from '@scnx/core-ui/components/code-showcase-base';
+import { CodeShowcaseBaseTriggerProps } from '@scnx/core-ui/components/code-showcase-base';
+import { JSX } from 'react';
 
-export { CodeShowcase }
+// @public
+export const CodeShowcase: {
+    (props: CodeShowcaseRootProps): JSX.Element;
+    displayName: string;
+} & {
+    Nav: {
+        (input: CodeShowcaseNavProps): JSX.Element;
+        displayName: string;
+    };
+    Preview: {
+        (input: CodeShowcasePreviewProps): JSX.Element;
+        displayName: string;
+    };
+    Trigger: {
+        (input: CodeShowcaseTriggerProps): JSX.Element;
+        displayName: string;
+    };
+    Content: {
+        (input: CodeShowcaseBaseContentProps): JSX.Element;
+        displayName: string;
+    };
+};
 
-export { CodeShowcaseContent }
+// @public
+export const CodeShowcaseContent: {
+    (input: CodeShowcaseBaseContentProps): JSX.Element;
+    displayName: string;
+};
 
-export { CodeShowcaseContentProps }
+// @public (undocumented)
+export type CodeShowcaseContentProps = CodeShowcaseBaseContentProps;
 
-export { CodeShowcaseNav }
+// @public
+export const CodeShowcaseNav: {
+    (input: CodeShowcaseNavProps): JSX.Element;
+    displayName: string;
+};
 
-export { CodeShowcaseNavProps }
+// @public (undocumented)
+export type CodeShowcaseNavProps = CodeShowcaseBaseNavProps;
 
-export { CodeShowcasePreview }
+// @public
+export const CodeShowcasePreview: {
+    (input: CodeShowcasePreviewProps): JSX.Element;
+    displayName: string;
+};
 
-export { CodeShowcasePreviewProps }
+// @public (undocumented)
+export type CodeShowcasePreviewProps = CodeShowcaseBasePreviewProps;
 
-export { CodeShowcaseRoot }
+// @public
+export const CodeShowcaseRoot: {
+    (input: CodeShowcaseRootProps): JSX.Element;
+    displayName: string;
+};
 
-export { CodeShowcaseRootProps }
+// @public
+export type CodeShowcaseRootProps = CodeShowcaseBaseRootProps;
 
-export { CodeShowcaseTrigger }
+// @public
+export const CodeShowcaseTrigger: {
+    (input: CodeShowcaseTriggerProps): JSX.Element;
+    displayName: string;
+};
 
-export { CodeShowcaseTriggerProps }
+// @public (undocumented)
+export type CodeShowcaseTriggerProps = CodeShowcaseBaseTriggerProps;
 
 // (No @packageDocumentation comment for this package)
 

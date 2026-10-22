@@ -67,6 +67,17 @@ export type TabsBaseTabProps = Omit<ComponentPropsWithRef<"button">, "role" | "i
     value: string;
 };
 
+// @public (undocumented)
+export type TabsSelection = {
+    value: string;
+    onValueChange: (value: string) => void;
+    defaultValue?: never;
+} | {
+    defaultValue: string;
+    onValueChange?: (value: string) => void;
+    value?: never;
+};
+
 // (No @packageDocumentation comment for this package)
 
 ```

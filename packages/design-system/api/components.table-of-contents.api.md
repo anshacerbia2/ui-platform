@@ -4,36 +4,68 @@
 
 ```ts
 
-import { t as TableOfContents } from '../../index-VAgNsLaa.js';
-import { r as TableOfContentsItem } from '../../index-VAgNsLaa.js';
-import { o as TableOfContentsItemProps } from '../../index-VAgNsLaa.js';
-import { s as TableOfContentsItemState } from '../../index-VAgNsLaa.js';
-import { n as TableOfContentsLink } from '../../index-VAgNsLaa.js';
-import { c as TableOfContentsLinkProps } from '../../index-VAgNsLaa.js';
-import { i as TableOfContentsList } from '../../index-VAgNsLaa.js';
-import { l as TableOfContentsListProps } from '../../index-VAgNsLaa.js';
-import { u as TableOfContentsProps } from '../../index-VAgNsLaa.js';
-import { a as TableOfContentsRoot } from '../../index-VAgNsLaa.js';
+import { JSX } from 'react';
+import { TableOfContentsBaseRootProps } from '@scnx/core-ui/components/table-of-contents-base';
+import { TableOfContentsBaseItemProps as TableOfContentsItemProps } from '@scnx/core-ui/components/table-of-contents-base';
+import { TableOfContentsItemState } from '@scnx/core-ui/components/table-of-contents-base';
+import { TableOfContentsBaseLinkProps as TableOfContentsLinkProps } from '@scnx/core-ui/components/table-of-contents-base';
+import { TableOfContentsBaseListProps as TableOfContentsListProps } from '@scnx/core-ui/components/table-of-contents-base';
 
-export { TableOfContents }
+// @public
+export const TableOfContents: {
+    (props: TableOfContentsProps): JSX.Element;
+    displayName: string;
+} & {
+    List: {
+        (input: TableOfContentsListProps): JSX.Element;
+        displayName: string;
+    };
+    Item: {
+        (input: TableOfContentsItemProps): JSX.Element;
+        displayName: string;
+    };
+    Link: {
+        (input: TableOfContentsLinkProps): JSX.Element;
+        displayName: string;
+    };
+};
 
-export { TableOfContentsItem }
+// @public
+export const TableOfContentsItem: {
+    (input: TableOfContentsItemProps): JSX.Element;
+    displayName: string;
+};
 
 export { TableOfContentsItemProps }
 
 export { TableOfContentsItemState }
 
-export { TableOfContentsLink }
+// @public
+export const TableOfContentsLink: {
+    (input: TableOfContentsLinkProps): JSX.Element;
+    displayName: string;
+};
 
 export { TableOfContentsLinkProps }
 
-export { TableOfContentsList }
+// @public
+export const TableOfContentsList: {
+    (input: TableOfContentsListProps): JSX.Element;
+    displayName: string;
+};
 
 export { TableOfContentsListProps }
 
-export { TableOfContentsProps }
+// @public
+export type TableOfContentsProps = TableOfContentsBaseRootProps & {
+    label?: string;
+};
 
-export { TableOfContentsRoot }
+// @public
+export const TableOfContentsRoot: {
+    (input: TableOfContentsProps): JSX.Element;
+    displayName: string;
+};
 
 // (No @packageDocumentation comment for this package)
 
