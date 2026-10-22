@@ -5,12 +5,9 @@
 ```ts
 
 import { ComponentPropsWithRef } from 'react';
-import { i } from '../../types-gLOf8c7F.js';
 import { JSX } from 'react';
-import { n } from '../../types-gLOf8c7F.js';
-import { r } from '../../types-gLOf8c7F.js';
 import { ReactElement } from 'react';
-import { t } from '../../types-gLOf8c7F.js';
+import { ReactNode } from 'react';
 
 // @public (undocumented)
 export const AccordionBase: {
@@ -30,11 +27,11 @@ export const AccordionBase: {
         displayName: string;
     };
     Trigger: {
-        (input: i): JSX.Element;
+        (input: CollapsibleBaseTriggerProps): JSX.Element;
         displayName: string;
     };
     Content: {
-        (input: t): JSX.Element | null;
+        (input: CollapsibleBaseContentProps): JSX.Element | null;
         displayName: string;
     };
 };
@@ -55,7 +52,7 @@ export const AccordionBaseItem: {
 };
 
 // @public (undocumented)
-export type AccordionBaseItemProps = n;
+export type AccordionBaseItemProps = CollapsibleBaseItemProps;
 
 // @public
 export const AccordionBaseRoot: {
@@ -64,10 +61,60 @@ export const AccordionBaseRoot: {
 };
 
 // @public
-export type AccordionBaseRootProps = r;
+export type AccordionBaseRootProps = CollapsibleBaseRootProps;
 
 // @public (undocumented)
 export type AccordionType = "single" | "multiple";
+
+// @public
+export type ClosedAsProps<T extends keyof JSX.IntrinsicElements, P = {}> = P & {
+    as?: T;
+} & Omit<ComponentPropsWithRef<T>, keyof P | "as">;
+
+// @public
+export type CollapsibleBaseContentProps = Omit<ComponentPropsWithRef<"div">, "id"> & {
+    children: ReactNode;
+    forceMount?: boolean;
+    region?: boolean;
+};
+
+// @public (undocumented)
+export type CollapsibleBaseItemProps = DisclosureItemOptions & {
+    children: ReactNode;
+} & ComponentPropsWithRef<"div">;
+
+// @public
+export type CollapsibleBaseRootProps = DisclosureProviderProps & Omit<ComponentPropsWithRef<"div">, "defaultValue" | "onChange">;
+
+// @public
+export type CollapsibleBaseTriggerProps = Omit<ComponentPropsWithRef<"button">, "children" | "type" | "id"> & {
+    children: ReactNode | ((state: {
+        isOpen: boolean;
+    }) => ReactNode);
+};
+
+// @public
+export type DisclosureItemOptions = {
+    value?: string;
+    open?: boolean;
+    defaultOpen?: boolean;
+    onOpenChange?: (open: boolean) => void;
+    disabled?: boolean;
+};
+
+// @public
+export type DisclosureProviderProps = {
+    type?: "single" | "multiple";
+    value?: string | string[];
+    defaultValue?: string | string[];
+    onValueChange?: (value: string | string[]) => void;
+    collapsible?: boolean;
+    disabled?: boolean;
+    disabledAnimations?: boolean;
+};
+
+// @public
+export type HeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span" | "div";
 
 // (No @packageDocumentation comment for this package)
 

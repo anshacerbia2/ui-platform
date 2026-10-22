@@ -4,33 +4,266 @@
 
 ```ts
 
-import { z as EdgeLayout } from '../../index-2RwKSyQg.js';
-import { L as EdgeLayoutContent } from '../../index-2RwKSyQg.js';
-import { B as EdgeLayoutContentProps } from '../../index-2RwKSyQg.js';
-import { I as EdgeLayoutNavbar } from '../../index-2RwKSyQg.js';
-import { V as EdgeLayoutNavbarProps } from '../../index-2RwKSyQg.js';
-import { R as EdgeLayoutRoot } from '../../index-2RwKSyQg.js';
-import { H as EdgeLayoutRootProps } from '../../index-2RwKSyQg.js';
-import { F as EdgeLayoutSidebar } from '../../index-2RwKSyQg.js';
-import { U as EdgeLayoutSidebarProps } from '../../index-2RwKSyQg.js';
+import { EdgeLayoutBaseContentProps as EdgeLayoutContentProps } from '@scnx/core-ui/components/edge-layout-base';
+import { EdgeLayoutBaseNavbarProps as EdgeLayoutNavbarProps } from '@scnx/core-ui/components/edge-layout-base';
+import { EdgeLayoutBaseRootProps as EdgeLayoutRootProps } from '@scnx/core-ui/components/edge-layout-base';
+import { EdgeLayoutBaseSidebarProps as EdgeLayoutSidebarProps } from '@scnx/core-ui/components/edge-layout-base';
+import { JSX } from 'react';
+import { NavigationBarBaseCenterProps } from '@scnx/core-ui/components/navigation-bar-base';
+import { NavigationBarBaseEndProps } from '@scnx/core-ui/components/navigation-bar-base';
+import { NavigationBarBaseStartProps } from '@scnx/core-ui/components/navigation-bar-base';
+import { NavigationBaseBadgeProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseGroupHeaderProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseGroupProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseIconProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseItemContentProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseItemProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseRootProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseTextProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseTrailingIconProps } from '@scnx/core-ui/components/navigation-base';
+import { SidebarBaseFooterProps } from '@scnx/core-ui/components/sidebar-base';
+import { SidebarBaseHeaderProps } from '@scnx/core-ui/components/sidebar-base';
+import { SidebarBaseNavProps } from '@scnx/core-ui/components/sidebar-base';
+import { SidebarBaseToggleProps } from '@scnx/core-ui/components/sidebar-base';
 
-export { EdgeLayout }
+// @public
+export const EdgeLayout: {
+    (input: EdgeLayoutRootProps): JSX.Element;
+    displayName: string;
+} & {
+    Navbar: {
+        (input: EdgeLayoutNavbarProps): JSX.Element;
+        displayName: string;
+    } & {
+        Start: {
+            (input: NavbarStartProps): JSX.Element;
+            displayName: string;
+        };
+        Center: {
+            (input: NavbarCenterProps): JSX.Element;
+            displayName: string;
+        };
+        End: {
+            (input: NavbarEndProps): JSX.Element;
+            displayName: string;
+        };
+    };
+    Sidebar: {
+        (input: EdgeLayoutSidebarProps): JSX.Element;
+        displayName: string;
+    } & {
+        Header: {
+            (input: SidebarHeaderProps): JSX.Element;
+            displayName: string;
+        };
+        Toggle: {
+            (input: SidebarToggleProps): JSX.Element;
+            displayName: string;
+        };
+        Nav: ((input: SidebarNavProps) => JSX.Element) & {
+            (props: NavigationProps): JSX.Element;
+            displayName: string;
+        } & {
+            Group: {
+                (input: NavigationGroupProps): JSX.Element;
+                displayName: string;
+            };
+            GroupHeader: {
+                (input: NavigationGroupHeaderProps): JSX.Element;
+                displayName: string;
+            };
+            Item: {
+                (input: NavigationItemProps): JSX.Element;
+                displayName: string;
+            };
+            Icon: {
+                (input: NavigationIconProps): JSX.Element;
+                displayName: string;
+            };
+            ItemContent: {
+                (input: NavigationItemContentProps): JSX.Element;
+                displayName: string;
+            };
+            Text: {
+                (input: NavigationTextProps): JSX.Element;
+                displayName: string;
+            };
+            Badge: {
+                (input: NavigationBadgeProps): JSX.Element;
+                displayName: string;
+            };
+            TrailingIcon: {
+                (input: NavigationTrailingIconProps): JSX.Element;
+                displayName: string;
+            };
+        } & {
+            Item: {
+                (input: any): JSX.Element;
+                displayName: string;
+            };
+            displayName: string;
+        };
+        Footer: {
+            (input: SidebarFooterProps): JSX.Element;
+            displayName: string;
+        };
+    };
+    Content: {
+        (input: EdgeLayoutContentProps): JSX.Element;
+        displayName: string;
+    };
+};
 
-export { EdgeLayoutContent }
+// @public
+export const EdgeLayoutContent: {
+    (input: EdgeLayoutContentProps): JSX.Element;
+    displayName: string;
+};
 
 export { EdgeLayoutContentProps }
 
-export { EdgeLayoutNavbar }
+// @public
+export const EdgeLayoutNavbar: {
+    (input: EdgeLayoutNavbarProps): JSX.Element;
+    displayName: string;
+} & {
+    Start: {
+        (input: NavbarStartProps): JSX.Element;
+        displayName: string;
+    };
+    Center: {
+        (input: NavbarCenterProps): JSX.Element;
+        displayName: string;
+    };
+    End: {
+        (input: NavbarEndProps): JSX.Element;
+        displayName: string;
+    };
+};
 
 export { EdgeLayoutNavbarProps }
 
-export { EdgeLayoutRoot }
+// @public
+export const EdgeLayoutRoot: {
+    (input: EdgeLayoutRootProps): JSX.Element;
+    displayName: string;
+};
 
 export { EdgeLayoutRootProps }
 
-export { EdgeLayoutSidebar }
+// @public
+export const EdgeLayoutSidebar: {
+    (input: EdgeLayoutSidebarProps): JSX.Element;
+    displayName: string;
+} & {
+    Header: {
+        (input: SidebarHeaderProps): JSX.Element;
+        displayName: string;
+    };
+    Toggle: {
+        (input: SidebarToggleProps): JSX.Element;
+        displayName: string;
+    };
+    Nav: ((input: SidebarNavProps) => JSX.Element) & {
+        (props: NavigationProps): JSX.Element;
+        displayName: string;
+    } & {
+        Group: {
+            (input: NavigationGroupProps): JSX.Element;
+            displayName: string;
+        };
+        GroupHeader: {
+            (input: NavigationGroupHeaderProps): JSX.Element;
+            displayName: string;
+        };
+        Item: {
+            (input: NavigationItemProps): JSX.Element;
+            displayName: string;
+        };
+        Icon: {
+            (input: NavigationIconProps): JSX.Element;
+            displayName: string;
+        };
+        ItemContent: {
+            (input: NavigationItemContentProps): JSX.Element;
+            displayName: string;
+        };
+        Text: {
+            (input: NavigationTextProps): JSX.Element;
+            displayName: string;
+        };
+        Badge: {
+            (input: NavigationBadgeProps): JSX.Element;
+            displayName: string;
+        };
+        TrailingIcon: {
+            (input: NavigationTrailingIconProps): JSX.Element;
+            displayName: string;
+        };
+    } & {
+        Item: {
+            (input: any): JSX.Element;
+            displayName: string;
+        };
+        displayName: string;
+    };
+    Footer: {
+        (input: SidebarFooterProps): JSX.Element;
+        displayName: string;
+    };
+};
 
 export { EdgeLayoutSidebarProps }
+
+// @public (undocumented)
+export type NavbarCenterProps = NavigationBarBaseCenterProps;
+
+// @public (undocumented)
+export type NavbarEndProps = NavigationBarBaseEndProps;
+
+// @public (undocumented)
+export type NavbarStartProps = NavigationBarBaseStartProps;
+
+// @public (undocumented)
+export type NavigationBadgeProps = NavigationBaseBadgeProps;
+
+// @public (undocumented)
+export type NavigationGroupHeaderProps = NavigationBaseGroupHeaderProps;
+
+// @public (undocumented)
+export type NavigationGroupProps = NavigationBaseGroupProps;
+
+// @public (undocumented)
+export type NavigationIconProps = NavigationBaseIconProps;
+
+// @public (undocumented)
+export type NavigationItemContentProps = NavigationBaseItemContentProps;
+
+// @public (undocumented)
+export type NavigationItemProps = NavigationBaseItemProps;
+
+// @public (undocumented)
+export type NavigationProps = NavigationBaseRootProps;
+
+// @public (undocumented)
+export type NavigationTextProps = NavigationBaseTextProps;
+
+// @public (undocumented)
+export type NavigationTrailingIconProps = NavigationBaseTrailingIconProps;
+
+// @public (undocumented)
+export type SidebarFooterProps = SidebarBaseFooterProps;
+
+// @public (undocumented)
+export type SidebarHeaderProps = SidebarBaseHeaderProps;
+
+// @public (undocumented)
+export type SidebarNavProps = SidebarBaseNavProps;
+
+// @public (undocumented)
+export type SidebarToggleProps = SidebarBaseToggleProps & {
+    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+};
 
 // (No @packageDocumentation comment for this package)
 

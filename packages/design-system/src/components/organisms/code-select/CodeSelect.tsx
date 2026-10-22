@@ -6,7 +6,7 @@ export interface CodeSelectOption {
   title: string;
 }
 
-interface CodeSelectProps {
+export interface CodeSelectProps {
   options: CodeSelectOption[];
   value: string | number;
   onChange: (value: any) => void;

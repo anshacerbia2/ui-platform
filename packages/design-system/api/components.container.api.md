@@ -17,6 +17,11 @@ export const Container: {
 // @public (undocumented)
 export type ContainerProps<T extends LayoutTag = "div"> = ContainerBaseProps<T> & ContainerVariants;
 
+// @public (undocumented)
+export type ContainerVariants = {
+    size?: "prose" | "base" | "wide" | "fluid";
+};
+
 // (No @packageDocumentation comment for this package)
 
 ```

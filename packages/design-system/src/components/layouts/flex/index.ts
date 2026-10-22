@@ -1,3 +1,3 @@
-export type { FlexProps } from "./types";
+export type { FlexVariants, FlexProps } from "./types";
 
 export { Flex } from "./Flex";

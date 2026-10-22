@@ -1,6 +1,7 @@
 "use client";
 
 export type {
+  ComboboxSelection,
   ComboboxBaseInputProps,
   ComboboxBaseItem,
   ComboboxBaseListboxProps,

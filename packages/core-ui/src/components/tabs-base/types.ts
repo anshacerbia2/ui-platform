@@ -1,6 +1,6 @@
 import type { ComponentPropsWithRef, ReactNode } from "react";
 
-type TabsSelection =
+export type TabsSelection =
   | {
       /** The selected tab's value (controlled). */
       value: string;

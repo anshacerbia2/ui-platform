@@ -6,7 +6,7 @@ export type NavigationBaseGroupProps = Omit<ComponentPropsWithRef<"ul">, "ref">;
 
 export type NavigationBaseGroupHeaderProps = Omit<ComponentPropsWithRef<"li">, "ref">;
 
-type NavigationBaseItemCommonProps = {
+export type NavigationBaseItemCommonProps = {
   /** Custom CSS classes for the badge. */
   badgeClassName?: string;
   /** Custom CSS classes for the item container. */

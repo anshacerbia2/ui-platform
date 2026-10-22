@@ -4,393 +4,1242 @@
 
 ```ts
 
-import { r as Accordion } from '../index-DQBx46ip.js';
-import { i as AccordionContentProps } from '../index-DQBx46ip.js';
-import { t as AccordionItem } from '../index-DQBx46ip.js';
-import { a as AccordionItemProps } from '../index-DQBx46ip.js';
-import { n as AccordionRoot } from '../index-DQBx46ip.js';
-import { o as AccordionRootProps } from '../index-DQBx46ip.js';
-import { s as AccordionTriggerProps } from '../index-DQBx46ip.js';
-import { at as Box } from '../index-2RwKSyQg.js';
-import { ot as BoxProps } from '../index-2RwKSyQg.js';
-import { Ct as Button } from '../index-2RwKSyQg.js';
-import { wt as ButtonProps } from '../index-2RwKSyQg.js';
-import { xt as Code } from '../index-2RwKSyQg.js';
-import { St as CodeProps } from '../index-2RwKSyQg.js';
-import { t as CodeSelect } from '../index-CBSm004y.js';
-import { n as CodeSelectOption } from '../index-CBSm004y.js';
-import { o as CodeShowcase } from '../index-BfUpBnCU.js';
-import { t as CodeShowcaseContent } from '../index-BfUpBnCU.js';
-import { s as CodeShowcaseContentProps } from '../index-BfUpBnCU.js';
-import { r as CodeShowcaseNav } from '../index-BfUpBnCU.js';
-import { c as CodeShowcaseNavProps } from '../index-BfUpBnCU.js';
-import { i as CodeShowcasePreview } from '../index-BfUpBnCU.js';
-import { l as CodeShowcasePreviewProps } from '../index-BfUpBnCU.js';
-import { a as CodeShowcaseRoot } from '../index-BfUpBnCU.js';
-import { u as CodeShowcaseRootProps } from '../index-BfUpBnCU.js';
-import { n as CodeShowcaseTrigger } from '../index-BfUpBnCU.js';
-import { d as CodeShowcaseTriggerProps } from '../index-BfUpBnCU.js';
-import { rt as Container } from '../index-2RwKSyQg.js';
-import { it as ContainerProps } from '../index-2RwKSyQg.js';
-import { yt as Divider } from '../index-2RwKSyQg.js';
-import { bt as DividerProps } from '../index-2RwKSyQg.js';
-import { z as EdgeLayout } from '../index-2RwKSyQg.js';
-import { L as EdgeLayoutContent } from '../index-2RwKSyQg.js';
-import { B as EdgeLayoutContentProps } from '../index-2RwKSyQg.js';
-import { I as EdgeLayoutNavbar } from '../index-2RwKSyQg.js';
-import { V as EdgeLayoutNavbarProps } from '../index-2RwKSyQg.js';
-import { R as EdgeLayoutRoot } from '../index-2RwKSyQg.js';
-import { H as EdgeLayoutRootProps } from '../index-2RwKSyQg.js';
-import { F as EdgeLayoutSidebar } from '../index-2RwKSyQg.js';
-import { U as EdgeLayoutSidebarProps } from '../index-2RwKSyQg.js';
-import { tt as Flex } from '../index-2RwKSyQg.js';
-import { nt as FlexProps } from '../index-2RwKSyQg.js';
-import { q as FloatingLayout } from '../index-2RwKSyQg.js';
-import { W as FloatingLayoutContent } from '../index-2RwKSyQg.js';
-import { J as FloatingLayoutContentProps } from '../index-2RwKSyQg.js';
-import { Y as FloatingLayoutProps } from '../index-2RwKSyQg.js';
-import { K as FloatingLayoutRoot } from '../index-2RwKSyQg.js';
-import { G as FloatingLayoutSidebar } from '../index-2RwKSyQg.js';
-import { X as FloatingLayoutSidebarProps } from '../index-2RwKSyQg.js';
-import { h as FlyoutContextValue } from '../index-2RwKSyQg.js';
-import { n as FlyoutProvider } from '../index-2RwKSyQg.js';
-import { g as FlyoutState } from '../index-2RwKSyQg.js';
-import { Z as Grid } from '../index-2RwKSyQg.js';
-import { Q as GridProps } from '../index-2RwKSyQg.js';
-import { gt as Heading } from '../index-2RwKSyQg.js';
-import { _t as HeadingProps } from '../index-2RwKSyQg.js';
-import { vt as HeadingTag } from '../index-2RwKSyQg.js';
-import { r as InsideFlyoutProvider } from '../index-2RwKSyQg.js';
-import { lt as List } from '../index-2RwKSyQg.js';
-import { st as ListItem } from '../index-2RwKSyQg.js';
-import { ut as ListItemProps } from '../index-2RwKSyQg.js';
-import { dt as ListProps } from '../index-2RwKSyQg.js';
-import { ct as ListRoot } from '../index-2RwKSyQg.js';
-import { ft as ListVariants } from '../index-2RwKSyQg.js';
-import { E as Navbar } from '../index-2RwKSyQg.js';
-import { O as NavbarCenter } from '../index-2RwKSyQg.js';
-import { j as NavbarCenterProps } from '../index-2RwKSyQg.js';
-import { D as NavbarEnd } from '../index-2RwKSyQg.js';
-import { M as NavbarEndProps } from '../index-2RwKSyQg.js';
-import { N as NavbarProps } from '../index-2RwKSyQg.js';
-import { A as NavbarRoot } from '../index-2RwKSyQg.js';
-import { k as NavbarStart } from '../index-2RwKSyQg.js';
-import { P as NavbarStartProps } from '../index-2RwKSyQg.js';
-import { _ as NavigableChildProps } from '../index-2RwKSyQg.js';
-import { t as Navigation } from '../index-ClQZguPk.js';
-import { i as NavigationBadge } from '../index-ClQZguPk.js';
-import { d as NavigationBadgeProps } from '../index-ClQZguPk.js';
-import { l as NavigationGroup } from '../index-ClQZguPk.js';
-import { c as NavigationGroupHeader } from '../index-ClQZguPk.js';
-import { f as NavigationGroupHeaderProps } from '../index-ClQZguPk.js';
-import { p as NavigationGroupProps } from '../index-ClQZguPk.js';
-import { o as NavigationIcon } from '../index-ClQZguPk.js';
-import { m as NavigationIconProps } from '../index-ClQZguPk.js';
-import { s as NavigationItem } from '../index-ClQZguPk.js';
-import { n as NavigationItemContent } from '../index-ClQZguPk.js';
-import { h as NavigationItemContentProps } from '../index-ClQZguPk.js';
-import { g as NavigationItemProps } from '../index-ClQZguPk.js';
-import { _ as NavigationProps } from '../index-ClQZguPk.js';
-import { u as NavigationRoot } from '../index-ClQZguPk.js';
-import { a as NavigationText } from '../index-ClQZguPk.js';
-import { v as NavigationTextProps } from '../index-ClQZguPk.js';
-import { r as NavigationTrailingIcon } from '../index-ClQZguPk.js';
-import { y as NavigationTrailingIconProps } from '../index-ClQZguPk.js';
-import { t as Sidebar } from '../index-2RwKSyQg.js';
-import { v as SidebarContextValue } from '../index-2RwKSyQg.js';
-import { c as SidebarFlyout } from '../index-2RwKSyQg.js';
-import { y as SidebarFlyoutProps } from '../index-2RwKSyQg.js';
-import { u as SidebarFooter } from '../index-2RwKSyQg.js';
-import { b as SidebarFooterProps } from '../index-2RwKSyQg.js';
-import { f as SidebarHeader } from '../index-2RwKSyQg.js';
-import { x as SidebarHeaderProps } from '../index-2RwKSyQg.js';
-import { d as SidebarNav } from '../index-2RwKSyQg.js';
-import { l as SidebarNavItem } from '../index-2RwKSyQg.js';
-import { S as SidebarNavProps } from '../index-2RwKSyQg.js';
-import { C as SidebarProps } from '../index-2RwKSyQg.js';
-import { o as SidebarProvider } from '../index-2RwKSyQg.js';
-import { w as SidebarProviderProps } from '../index-2RwKSyQg.js';
-import { m as SidebarRoot } from '../index-2RwKSyQg.js';
-import { p as SidebarToggle } from '../index-2RwKSyQg.js';
-import { T as SidebarToggleProps } from '../index-2RwKSyQg.js';
-import { $ as Stack } from '../index-2RwKSyQg.js';
-import { et as StackProps } from '../index-2RwKSyQg.js';
-import { t as TableOfContents } from '../index-VAgNsLaa.js';
-import { r as TableOfContentsItem } from '../index-VAgNsLaa.js';
-import { o as TableOfContentsItemProps } from '../index-VAgNsLaa.js';
-import { s as TableOfContentsItemState } from '../index-VAgNsLaa.js';
-import { n as TableOfContentsLink } from '../index-VAgNsLaa.js';
-import { c as TableOfContentsLinkProps } from '../index-VAgNsLaa.js';
-import { i as TableOfContentsList } from '../index-VAgNsLaa.js';
-import { l as TableOfContentsListProps } from '../index-VAgNsLaa.js';
-import { u as TableOfContentsProps } from '../index-VAgNsLaa.js';
-import { a as TableOfContentsRoot } from '../index-VAgNsLaa.js';
-import { pt as Text_2 } from '../index-2RwKSyQg.js';
-import { mt as TextProps } from '../index-2RwKSyQg.js';
-import { ht as TextVariants } from '../index-2RwKSyQg.js';
-import { t as Transition } from '../index-CtLktQ4j.js';
-import { n as TransitionProps } from '../index-CtLktQ4j.js';
-import { i as useFlyout } from '../index-2RwKSyQg.js';
-import { a as useInsideFlyout } from '../index-2RwKSyQg.js';
-import { s as useSidebar } from '../index-2RwKSyQg.js';
+import { AccordionBaseItemProps } from '@scnx/core-ui/components/accordion-base';
+import { AccordionBaseRootProps } from '@scnx/core-ui/components/accordion-base';
+import { BoxBaseProps } from '@scnx/core-ui/components/box-base';
+import { ButtonBaseProps } from '@scnx/core-ui/components/button-base';
+import { CodeShowcaseBaseContentProps } from '@scnx/core-ui/components/code-showcase-base';
+import { CodeShowcaseBaseNavProps } from '@scnx/core-ui/components/code-showcase-base';
+import { CodeShowcaseBasePreviewProps } from '@scnx/core-ui/components/code-showcase-base';
+import { CodeShowcaseBaseRootProps } from '@scnx/core-ui/components/code-showcase-base';
+import { CodeShowcaseBaseTriggerProps } from '@scnx/core-ui/components/code-showcase-base';
+import { CollapsibleBaseContentProps } from '@scnx/core-ui/components/collapsible-base';
+import { CollapsibleBaseTriggerProps } from '@scnx/core-ui/components/collapsible-base';
+import { ComponentPropsWithRef } from 'react';
+import { ContainerBaseProps } from '@scnx/core-ui/components/container-base';
+import { DividerBaseProps } from '@scnx/core-ui/components/divider-base';
+import { EdgeLayoutBaseContentProps as EdgeLayoutContentProps } from '@scnx/core-ui/components/edge-layout-base';
+import { EdgeLayoutBaseNavbarProps as EdgeLayoutNavbarProps } from '@scnx/core-ui/components/edge-layout-base';
+import { EdgeLayoutBaseRootProps as EdgeLayoutRootProps } from '@scnx/core-ui/components/edge-layout-base';
+import { EdgeLayoutBaseSidebarProps as EdgeLayoutSidebarProps } from '@scnx/core-ui/components/edge-layout-base';
+import { FlexBaseProps } from '@scnx/core-ui/components/flex-base';
+import { FloatingLayoutBaseContentProps as FloatingLayoutContentProps } from '@scnx/core-ui/components/floating-layout-base';
+import { FloatingLayoutBaseRootProps as FloatingLayoutProps } from '@scnx/core-ui/components/floating-layout-base';
+import { FloatingLayoutBaseSidebarProps as FloatingLayoutSidebarProps } from '@scnx/core-ui/components/floating-layout-base';
+import { GridBaseProps } from '@scnx/core-ui/components/grid-base';
+import { HeadingBaseProps } from '@scnx/core-ui/components/heading-base';
+import { HeadingTag } from '@scnx/core-ui/components/heading-base';
+import { JSX } from 'react';
+import { LayoutTag } from '@scnx/core-ui/components/container-base';
+import { ListBaseItemProps } from '@scnx/core-ui/components/list-base';
+import { ListBaseRootProps } from '@scnx/core-ui/components/list-base';
+import { NavigationBarBaseCenterProps } from '@scnx/core-ui/components/navigation-bar-base';
+import { NavigationBarBaseEndProps } from '@scnx/core-ui/components/navigation-bar-base';
+import { NavigationBarBaseRootProps } from '@scnx/core-ui/components/navigation-bar-base';
+import { NavigationBarBaseStartProps } from '@scnx/core-ui/components/navigation-bar-base';
+import { NavigationBaseBadgeProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseGroupHeaderProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseGroupProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseIconProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseItemContentProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseItemProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseRootProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseTextProps } from '@scnx/core-ui/components/navigation-base';
+import { NavigationBaseTrailingIconProps } from '@scnx/core-ui/components/navigation-base';
+import { ReactNode } from 'react';
+import { ReactPortal } from 'react';
+import { SidebarBaseFooterProps } from '@scnx/core-ui/components/sidebar-base';
+import { SidebarBaseHeaderProps } from '@scnx/core-ui/components/sidebar-base';
+import { SidebarBaseNavProps } from '@scnx/core-ui/components/sidebar-base';
+import { SidebarBaseRootProps } from '@scnx/core-ui/components/sidebar-base';
+import { SidebarBaseToggleProps } from '@scnx/core-ui/components/sidebar-base';
+import { TableOfContentsBaseRootProps } from '@scnx/core-ui/components/table-of-contents-base';
+import { TableOfContentsBaseItemProps as TableOfContentsItemProps } from '@scnx/core-ui/components/table-of-contents-base';
+import { TableOfContentsItemState } from '@scnx/core-ui/components/table-of-contents-base';
+import { TableOfContentsBaseLinkProps as TableOfContentsLinkProps } from '@scnx/core-ui/components/table-of-contents-base';
+import { TableOfContentsBaseListProps as TableOfContentsListProps } from '@scnx/core-ui/components/table-of-contents-base';
+import { TextBaseProps } from '@scnx/core-ui/components/text-base';
+import { TextTag } from '@scnx/core-ui/components/text-base';
+import { TransitionBaseProps } from '@scnx/core-ui/components/transition-base';
 
-export { Accordion }
+// @public
+export const Accordion: {
+    (props: AccordionRootProps): JSX.Element;
+    displayName: string;
+} & {
+    Root: {
+        (input: AccordionRootProps): JSX.Element;
+        displayName: string;
+    };
+    Item: ((input: AccordionItemProps) => JSX.Element) & {
+        Trigger: {
+            (input: AccordionTriggerProps): JSX.Element;
+            displayName: string;
+        };
+        Content: {
+            (input: AccordionContentProps): JSX.Element;
+            displayName: string;
+        };
+        displayName: string;
+    };
+    Trigger: {
+        (input: AccordionTriggerProps): JSX.Element;
+        displayName: string;
+    };
+    Content: {
+        (input: AccordionContentProps): JSX.Element;
+        displayName: string;
+    };
+};
 
-export { AccordionContentProps }
+// @public (undocumented)
+export type AccordionContentProps = CollapsibleBaseContentProps;
 
-export { AccordionItem }
+// @public (undocumented)
+export const AccordionItem: ((input: AccordionItemProps) => JSX.Element) & {
+    Trigger: {
+        (input: AccordionTriggerProps): JSX.Element;
+        displayName: string;
+    };
+    Content: {
+        (input: AccordionContentProps): JSX.Element;
+        displayName: string;
+    };
+    displayName: string;
+};
 
-export { AccordionItemProps }
+// @public (undocumented)
+export type AccordionItemProps = AccordionBaseItemProps;
 
-export { AccordionRoot }
+// @public
+export const AccordionRoot: {
+    (input: AccordionRootProps): JSX.Element;
+    displayName: string;
+};
 
-export { AccordionRootProps }
+// @public (undocumented)
+export type AccordionRootProps = AccordionBaseRootProps & {
+    variant?: "separated" | "stacked";
+};
 
-export { AccordionTriggerProps }
+// @public (undocumented)
+export type AccordionTriggerProps = CollapsibleBaseTriggerProps & {
+    headingAs?: HeadingTag;
+};
 
-export { Box }
+// @public
+export const Box: {
+    (input: BoxProps): JSX.Element;
+    displayName: string;
+};
 
-export { BoxProps }
+// @public (undocumented)
+export type BoxProps = BoxBaseProps & {
+    className?: string;
+};
 
-export { Button }
+// @public
+export const Button: {
+    (input: ButtonProps): JSX.Element;
+    displayName: string;
+};
 
-export { ButtonProps }
+// @public (undocumented)
+export type ButtonProps = {
+    variant?: "primary" | "secondary";
+} & ButtonBaseProps;
 
-export { Code }
+// @public
+export const Code: {
+    (input: CodeProps): JSX.Element;
+    displayName: string;
+};
 
-export { CodeProps }
+// @public (undocumented)
+export type CodeProps = {
+    children: ReactNode;
+    intent?: "primary" | "info" | "success" | "warning" | "danger";
+} & Omit<ComponentPropsWithRef<"code">, "intent">;
 
-export { CodeSelect }
+// @public
+export function CodeSelect(input: CodeSelectProps): JSX.Element;
 
-export { CodeSelectOption }
+// @public (undocumented)
+export namespace CodeSelect {
+    var // (undocumented)
+    displayName: string;
+}
 
-export { CodeShowcase }
+// @public (undocumented)
+export interface CodeSelectOption {
+    // (undocumented)
+    id: string | number;
+    // (undocumented)
+    title: string;
+}
 
-export { CodeShowcaseContent }
+// @public (undocumented)
+export interface CodeSelectProps {
+    "aria-label"?: string;
+    // (undocumented)
+    icon?: ReactNode;
+    // (undocumented)
+    onChange: (value: any) => void;
+    // (undocumented)
+    options: CodeSelectOption[];
+    // (undocumented)
+    placeholder?: string;
+    // (undocumented)
+    value: string | number;
+}
 
-export { CodeShowcaseContentProps }
+// @public
+export const CodeShowcase: {
+    (props: CodeShowcaseRootProps): JSX.Element;
+    displayName: string;
+} & {
+    Nav: {
+        (input: CodeShowcaseNavProps): JSX.Element;
+        displayName: string;
+    };
+    Preview: {
+        (input: CodeShowcasePreviewProps): JSX.Element;
+        displayName: string;
+    };
+    Trigger: {
+        (input: CodeShowcaseTriggerProps): JSX.Element;
+        displayName: string;
+    };
+    Content: {
+        (input: CodeShowcaseBaseContentProps): JSX.Element;
+        displayName: string;
+    };
+};
 
-export { CodeShowcaseNav }
+// @public
+export const CodeShowcaseContent: {
+    (input: CodeShowcaseBaseContentProps): JSX.Element;
+    displayName: string;
+};
 
-export { CodeShowcaseNavProps }
+// @public (undocumented)
+export type CodeShowcaseContentProps = CodeShowcaseBaseContentProps;
 
-export { CodeShowcasePreview }
+// @public
+export const CodeShowcaseNav: {
+    (input: CodeShowcaseNavProps): JSX.Element;
+    displayName: string;
+};
 
-export { CodeShowcasePreviewProps }
+// @public (undocumented)
+export type CodeShowcaseNavProps = CodeShowcaseBaseNavProps;
 
-export { CodeShowcaseRoot }
+// @public
+export const CodeShowcasePreview: {
+    (input: CodeShowcasePreviewProps): JSX.Element;
+    displayName: string;
+};
 
-export { CodeShowcaseRootProps }
+// @public (undocumented)
+export type CodeShowcasePreviewProps = CodeShowcaseBasePreviewProps;
 
-export { CodeShowcaseTrigger }
+// @public
+export const CodeShowcaseRoot: {
+    (input: CodeShowcaseRootProps): JSX.Element;
+    displayName: string;
+};
 
-export { CodeShowcaseTriggerProps }
+// @public
+export type CodeShowcaseRootProps = CodeShowcaseBaseRootProps;
 
-export { Container }
+// @public
+export const CodeShowcaseTrigger: {
+    (input: CodeShowcaseTriggerProps): JSX.Element;
+    displayName: string;
+};
 
-export { ContainerProps }
+// @public (undocumented)
+export type CodeShowcaseTriggerProps = CodeShowcaseBaseTriggerProps;
 
-export { Divider }
+// @public
+export const Container: {
+    <T extends LayoutTag = "div">(input: ContainerProps<T>): JSX.Element;
+    displayName: string;
+};
 
-export { DividerProps }
+// @public (undocumented)
+export type ContainerProps<T extends LayoutTag = "div"> = ContainerBaseProps<T> & ContainerVariants;
 
-export { EdgeLayout }
+// @public (undocumented)
+export type ContainerVariants = {
+    size?: "prose" | "base" | "wide" | "fluid";
+};
 
-export { EdgeLayoutContent }
+// @public
+export const Divider: {
+    (input: DividerProps): JSX.Element;
+    displayName: string;
+};
+
+// @public (undocumented)
+export type DividerProps = DividerBaseProps;
+
+// @public
+export const EdgeLayout: {
+    (input: EdgeLayoutRootProps): JSX.Element;
+    displayName: string;
+} & {
+    Navbar: {
+        (input: EdgeLayoutNavbarProps): JSX.Element;
+        displayName: string;
+    } & {
+        Start: {
+            (input: NavbarStartProps): JSX.Element;
+            displayName: string;
+        };
+        Center: {
+            (input: NavbarCenterProps): JSX.Element;
+            displayName: string;
+        };
+        End: {
+            (input: NavbarEndProps): JSX.Element;
+            displayName: string;
+        };
+    };
+    Sidebar: {
+        (input: EdgeLayoutSidebarProps): JSX.Element;
+        displayName: string;
+    } & {
+        Header: {
+            (input: SidebarHeaderProps): JSX.Element;
+            displayName: string;
+        };
+        Toggle: {
+            (input: SidebarToggleProps): JSX.Element;
+            displayName: string;
+        };
+        Nav: ((input: SidebarNavProps) => JSX.Element) & {
+            (props: NavigationProps): JSX.Element;
+            displayName: string;
+        } & {
+            Group: {
+                (input: NavigationGroupProps): JSX.Element;
+                displayName: string;
+            };
+            GroupHeader: {
+                (input: NavigationGroupHeaderProps): JSX.Element;
+                displayName: string;
+            };
+            Item: {
+                (input: NavigationItemProps): JSX.Element;
+                displayName: string;
+            };
+            Icon: {
+                (input: NavigationIconProps): JSX.Element;
+                displayName: string;
+            };
+            ItemContent: {
+                (input: NavigationItemContentProps): JSX.Element;
+                displayName: string;
+            };
+            Text: {
+                (input: NavigationTextProps): JSX.Element;
+                displayName: string;
+            };
+            Badge: {
+                (input: NavigationBadgeProps): JSX.Element;
+                displayName: string;
+            };
+            TrailingIcon: {
+                (input: NavigationTrailingIconProps): JSX.Element;
+                displayName: string;
+            };
+        } & {
+            Item: {
+                (input: any): JSX.Element;
+                displayName: string;
+            };
+            displayName: string;
+        };
+        Footer: {
+            (input: SidebarFooterProps): JSX.Element;
+            displayName: string;
+        };
+    };
+    Content: {
+        (input: EdgeLayoutContentProps): JSX.Element;
+        displayName: string;
+    };
+};
+
+// @public
+export const EdgeLayoutContent: {
+    (input: EdgeLayoutContentProps): JSX.Element;
+    displayName: string;
+};
 
 export { EdgeLayoutContentProps }
 
-export { EdgeLayoutNavbar }
+// @public
+export const EdgeLayoutNavbar: {
+    (input: EdgeLayoutNavbarProps): JSX.Element;
+    displayName: string;
+} & {
+    Start: {
+        (input: NavbarStartProps): JSX.Element;
+        displayName: string;
+    };
+    Center: {
+        (input: NavbarCenterProps): JSX.Element;
+        displayName: string;
+    };
+    End: {
+        (input: NavbarEndProps): JSX.Element;
+        displayName: string;
+    };
+};
 
 export { EdgeLayoutNavbarProps }
 
-export { EdgeLayoutRoot }
+// @public
+export const EdgeLayoutRoot: {
+    (input: EdgeLayoutRootProps): JSX.Element;
+    displayName: string;
+};
 
 export { EdgeLayoutRootProps }
 
-export { EdgeLayoutSidebar }
+// @public
+export const EdgeLayoutSidebar: {
+    (input: EdgeLayoutSidebarProps): JSX.Element;
+    displayName: string;
+} & {
+    Header: {
+        (input: SidebarHeaderProps): JSX.Element;
+        displayName: string;
+    };
+    Toggle: {
+        (input: SidebarToggleProps): JSX.Element;
+        displayName: string;
+    };
+    Nav: ((input: SidebarNavProps) => JSX.Element) & {
+        (props: NavigationProps): JSX.Element;
+        displayName: string;
+    } & {
+        Group: {
+            (input: NavigationGroupProps): JSX.Element;
+            displayName: string;
+        };
+        GroupHeader: {
+            (input: NavigationGroupHeaderProps): JSX.Element;
+            displayName: string;
+        };
+        Item: {
+            (input: NavigationItemProps): JSX.Element;
+            displayName: string;
+        };
+        Icon: {
+            (input: NavigationIconProps): JSX.Element;
+            displayName: string;
+        };
+        ItemContent: {
+            (input: NavigationItemContentProps): JSX.Element;
+            displayName: string;
+        };
+        Text: {
+            (input: NavigationTextProps): JSX.Element;
+            displayName: string;
+        };
+        Badge: {
+            (input: NavigationBadgeProps): JSX.Element;
+            displayName: string;
+        };
+        TrailingIcon: {
+            (input: NavigationTrailingIconProps): JSX.Element;
+            displayName: string;
+        };
+    } & {
+        Item: {
+            (input: any): JSX.Element;
+            displayName: string;
+        };
+        displayName: string;
+    };
+    Footer: {
+        (input: SidebarFooterProps): JSX.Element;
+        displayName: string;
+    };
+};
 
 export { EdgeLayoutSidebarProps }
 
-export { Flex }
+// @public
+export const Flex: {
+    (input: FlexProps): JSX.Element;
+    displayName: string;
+};
 
-export { FlexProps }
+// @public (undocumented)
+export type FlexProps = Omit<FlexBaseProps, "className" | "direction" | "align" | "justify" | "wrap" | "gap"> & FlexVariants & {
+    className?: string;
+};
 
-export { FloatingLayout }
+// @public (undocumented)
+export type FlexVariants = {
+    direction?: "row" | "col" | "row-reverse" | "col-reverse";
+    align?: "start" | "center" | "end" | "stretch" | "baseline";
+    justify?: "start" | "center" | "end" | "between" | "around" | "evenly";
+    wrap?: "nowrap" | "wrap" | "wrap-reverse";
+    gap?: "none" | "compact" | "default" | "comfortable" | "section";
+};
 
-export { FloatingLayoutContent }
+// @public
+export const FloatingLayout: {
+    (props: FloatingLayoutProps): JSX.Element;
+    displayName: string;
+} & {
+    Sidebar: {
+        (input: FloatingLayoutSidebarProps): JSX.Element;
+        displayName: string;
+    } & {
+        (input: SidebarProps): JSX.Element;
+        displayName: string;
+    } & {
+        Toggle: {
+            (input: SidebarToggleProps): JSX.Element;
+            displayName: string;
+        };
+        Header: {
+            (input: SidebarHeaderProps): JSX.Element;
+            displayName: string;
+        };
+        Nav: ((input: SidebarNavProps) => JSX.Element) & {
+            (props: NavigationProps): JSX.Element;
+            displayName: string;
+        } & {
+            Group: {
+                (input: NavigationGroupProps): JSX.Element;
+                displayName: string;
+            };
+            GroupHeader: {
+                (input: NavigationGroupHeaderProps): JSX.Element;
+                displayName: string;
+            };
+            Item: {
+                (input: NavigationItemProps): JSX.Element;
+                displayName: string;
+            };
+            Icon: {
+                (input: NavigationIconProps): JSX.Element;
+                displayName: string;
+            };
+            ItemContent: {
+                (input: NavigationItemContentProps): JSX.Element;
+                displayName: string;
+            };
+            Text: {
+                (input: NavigationTextProps): JSX.Element;
+                displayName: string;
+            };
+            Badge: {
+                (input: NavigationBadgeProps): JSX.Element;
+                displayName: string;
+            };
+            TrailingIcon: {
+                (input: NavigationTrailingIconProps): JSX.Element;
+                displayName: string;
+            };
+        } & {
+            Item: {
+                (input: any): JSX.Element;
+                displayName: string;
+            };
+            displayName: string;
+        };
+        Footer: {
+            (input: SidebarFooterProps): JSX.Element;
+            displayName: string;
+        };
+    };
+    Content: {
+        (input: FloatingLayoutContentProps): JSX.Element;
+        displayName: string;
+    };
+};
+
+// @public
+export const FloatingLayoutContent: {
+    (input: FloatingLayoutContentProps): JSX.Element;
+    displayName: string;
+};
 
 export { FloatingLayoutContentProps }
 
 export { FloatingLayoutProps }
 
-export { FloatingLayoutRoot }
+// @public
+export const FloatingLayoutRoot: {
+    (input: FloatingLayoutProps): JSX.Element;
+    displayName: string;
+};
 
-export { FloatingLayoutSidebar }
+// @public (undocumented)
+export const FloatingLayoutSidebar: {
+    (input: FloatingLayoutSidebarProps): JSX.Element;
+    displayName: string;
+} & {
+    (input: SidebarProps): JSX.Element;
+    displayName: string;
+} & {
+    Toggle: {
+        (input: SidebarToggleProps): JSX.Element;
+        displayName: string;
+    };
+    Header: {
+        (input: SidebarHeaderProps): JSX.Element;
+        displayName: string;
+    };
+    Nav: ((input: SidebarNavProps) => JSX.Element) & {
+        (props: NavigationProps): JSX.Element;
+        displayName: string;
+    } & {
+        Group: {
+            (input: NavigationGroupProps): JSX.Element;
+            displayName: string;
+        };
+        GroupHeader: {
+            (input: NavigationGroupHeaderProps): JSX.Element;
+            displayName: string;
+        };
+        Item: {
+            (input: NavigationItemProps): JSX.Element;
+            displayName: string;
+        };
+        Icon: {
+            (input: NavigationIconProps): JSX.Element;
+            displayName: string;
+        };
+        ItemContent: {
+            (input: NavigationItemContentProps): JSX.Element;
+            displayName: string;
+        };
+        Text: {
+            (input: NavigationTextProps): JSX.Element;
+            displayName: string;
+        };
+        Badge: {
+            (input: NavigationBadgeProps): JSX.Element;
+            displayName: string;
+        };
+        TrailingIcon: {
+            (input: NavigationTrailingIconProps): JSX.Element;
+            displayName: string;
+        };
+    } & {
+        Item: {
+            (input: any): JSX.Element;
+            displayName: string;
+        };
+        displayName: string;
+    };
+    Footer: {
+        (input: SidebarFooterProps): JSX.Element;
+        displayName: string;
+    };
+};
 
 export { FloatingLayoutSidebarProps }
 
-export { FlyoutContextValue }
+// @public (undocumented)
+export type FlyoutContextValue = {
+    activeFlyout: FlyoutState | null;
+    isFlyoutClosing: boolean;
+    setFlyout: (ownerId: string, triggerRef: HTMLElement, content: ReactNode) => void;
+    closeFlyout: () => void;
+    cleanupFlyout: () => void;
+};
 
-export { FlyoutProvider }
+// @public
+export const FlyoutProvider: {
+    (input: {
+        children: ReactNode;
+    }): JSX.Element;
+    displayName: string;
+};
 
-export { FlyoutState }
+// @public (undocumented)
+export type FlyoutState = {
+    ownerId: string;
+    triggerRef: HTMLElement | null;
+    content: ReactNode | null;
+};
 
-export { Grid }
+// @public
+export const Grid: {
+    (input: GridProps): JSX.Element;
+    displayName: string;
+};
 
-export { GridProps }
+// @public (undocumented)
+export type GridProps = Omit<GridBaseProps, "className" | "columns" | "gap" | "rows" | "flow"> & GridVariants & {
+    className?: string;
+};
 
-export { Heading }
+// @public (undocumented)
+export type GridVariants = {
+    columns?: "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11" | "12";
+    gap?: "none" | "compact" | "default" | "comfortable" | "section";
+};
 
-export { HeadingProps }
+// @public
+export const Heading: {
+    <T extends HeadingTag = "h2">(input: HeadingProps<T>): JSX.Element;
+    displayName: string;
+};
+
+// @public
+export type HeadingProps<T extends HeadingTag = "h2"> = Omit<HeadingBaseProps<T>, "size" | "weight"> & HeadingVariants;
 
 export { HeadingTag }
 
-export { InsideFlyoutProvider }
+// @public (undocumented)
+export type HeadingVariants = {
+    size?: "xxlarge" | "xlarge" | "large" | "medium" | "small" | "xsmall";
+    weight?: "bold" | "semibold" | "medium" | "regular";
+};
 
-export { List }
+// @public
+export const InsideFlyoutProvider: {
+    (input: {
+        children: ReactNode;
+    }): JSX.Element;
+    displayName: string;
+};
 
-export { ListItem }
+// @public
+export const List: {
+    (input: ListProps): JSX.Element;
+    displayName: string;
+} & {
+    Root: {
+        (input: ListProps): JSX.Element;
+        displayName: string;
+    };
+    Item: {
+        (input: ListItemProps): JSX.Element;
+        displayName: string;
+    };
+};
 
-export { ListItemProps }
+// @public
+export const ListItem: {
+    (input: ListItemProps): JSX.Element;
+    displayName: string;
+};
 
-export { ListProps }
+// @public (undocumented)
+export type ListItemProps = ListBaseItemProps & {
+    className?: string;
+};
 
-export { ListRoot }
+// @public (undocumented)
+export type ListProps = ListBaseRootProps & ListVariants & {
+    className?: string;
+};
 
-export { ListVariants }
+// @public
+export const ListRoot: {
+    (input: ListProps): JSX.Element;
+    displayName: string;
+};
 
-export { Navbar }
+// @public (undocumented)
+export type ListVariants = {
+    variant?: "unordered" | "ordered" | "unstyled";
+    spacing?: "compact" | "default" | "comfortable";
+};
 
-export { NavbarCenter }
+// @public
+export const Navbar: {
+    (props: NavbarProps): JSX.Element;
+    displayName: string;
+} & {
+    Root: {
+        (input: NavbarProps): JSX.Element;
+        displayName: string;
+    };
+    Start: {
+        (input: NavbarStartProps): JSX.Element;
+        displayName: string;
+    };
+    Center: {
+        (input: NavbarCenterProps): JSX.Element;
+        displayName: string;
+    };
+    End: {
+        (input: NavbarEndProps): JSX.Element;
+        displayName: string;
+    };
+};
 
-export { NavbarCenterProps }
+// @public
+export const NavbarCenter: {
+    (input: NavbarCenterProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavbarEnd }
+// @public (undocumented)
+export type NavbarCenterProps = NavigationBarBaseCenterProps;
 
-export { NavbarEndProps }
+// @public
+export const NavbarEnd: {
+    (input: NavbarEndProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavbarProps }
+// @public (undocumented)
+export type NavbarEndProps = NavigationBarBaseEndProps;
 
-export { NavbarRoot }
+// @public (undocumented)
+export type NavbarProps = NavigationBarBaseRootProps;
 
-export { NavbarStart }
+// @public
+export const NavbarRoot: {
+    (input: NavbarProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavbarStartProps }
+// @public
+export const NavbarStart: {
+    (input: NavbarStartProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigableChildProps }
+// @public (undocumented)
+export type NavbarStartProps = NavigationBarBaseStartProps;
 
-export { Navigation }
+// @public (undocumented)
+export type NavigableChildProps = {
+    to?: string;
+    href?: string;
+    children?: ReactNode;
+};
 
-export { NavigationBadge }
+// @public
+export const Navigation: {
+    (props: NavigationProps): JSX.Element;
+    displayName: string;
+} & {
+    Group: {
+        (input: NavigationGroupProps): JSX.Element;
+        displayName: string;
+    };
+    GroupHeader: {
+        (input: NavigationGroupHeaderProps): JSX.Element;
+        displayName: string;
+    };
+    Item: {
+        (input: NavigationItemProps): JSX.Element;
+        displayName: string;
+    };
+    Icon: {
+        (input: NavigationIconProps): JSX.Element;
+        displayName: string;
+    };
+    ItemContent: {
+        (input: NavigationItemContentProps): JSX.Element;
+        displayName: string;
+    };
+    Text: {
+        (input: NavigationTextProps): JSX.Element;
+        displayName: string;
+    };
+    Badge: {
+        (input: NavigationBadgeProps): JSX.Element;
+        displayName: string;
+    };
+    TrailingIcon: {
+        (input: NavigationTrailingIconProps): JSX.Element;
+        displayName: string;
+    };
+};
 
-export { NavigationBadgeProps }
+// @public
+export const NavigationBadge: {
+    (input: NavigationBadgeProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationGroup }
+// @public (undocumented)
+export type NavigationBadgeProps = NavigationBaseBadgeProps;
 
-export { NavigationGroupHeader }
+// @public (undocumented)
+export const NavigationGroup: {
+    (input: NavigationGroupProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationGroupHeaderProps }
+// @public
+export const NavigationGroupHeader: {
+    (input: NavigationGroupHeaderProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationGroupProps }
+// @public (undocumented)
+export type NavigationGroupHeaderProps = NavigationBaseGroupHeaderProps;
 
-export { NavigationIcon }
+// @public (undocumented)
+export type NavigationGroupProps = NavigationBaseGroupProps;
 
-export { NavigationIconProps }
+// @public
+export const NavigationIcon: {
+    (input: NavigationIconProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationItem }
+// @public (undocumented)
+export type NavigationIconProps = NavigationBaseIconProps;
 
-export { NavigationItemContent }
+// @public
+export const NavigationItem: {
+    (input: NavigationItemProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationItemContentProps }
+// @public
+export const NavigationItemContent: {
+    (input: NavigationItemContentProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationItemProps }
+// @public (undocumented)
+export type NavigationItemContentProps = NavigationBaseItemContentProps;
 
-export { NavigationProps }
+// @public (undocumented)
+export type NavigationItemProps = NavigationBaseItemProps;
 
-export { NavigationRoot }
+// @public (undocumented)
+export type NavigationProps = NavigationBaseRootProps;
 
-export { NavigationText }
+// @public
+export const NavigationRoot: {
+    (input: NavigationProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationTextProps }
+// @public
+export const NavigationText: {
+    (input: NavigationTextProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationTrailingIcon }
+// @public (undocumented)
+export type NavigationTextProps = NavigationBaseTextProps;
 
-export { NavigationTrailingIconProps }
+// @public
+export const NavigationTrailingIcon: {
+    (input: NavigationTrailingIconProps): JSX.Element;
+    displayName: string;
+};
 
-export { Sidebar }
+// @public (undocumented)
+export type NavigationTrailingIconProps = NavigationBaseTrailingIconProps;
 
-export { SidebarContextValue }
+// @public
+export const Sidebar: {
+    (input: SidebarProps): JSX.Element;
+    displayName: string;
+} & {
+    Toggle: {
+        (input: SidebarToggleProps): JSX.Element;
+        displayName: string;
+    };
+    Header: {
+        (input: SidebarHeaderProps): JSX.Element;
+        displayName: string;
+    };
+    Nav: ((input: SidebarNavProps) => JSX.Element) & {
+        (props: NavigationProps): JSX.Element;
+        displayName: string;
+    } & {
+        Group: {
+            (input: NavigationGroupProps): JSX.Element;
+            displayName: string;
+        };
+        GroupHeader: {
+            (input: NavigationGroupHeaderProps): JSX.Element;
+            displayName: string;
+        };
+        Item: {
+            (input: NavigationItemProps): JSX.Element;
+            displayName: string;
+        };
+        Icon: {
+            (input: NavigationIconProps): JSX.Element;
+            displayName: string;
+        };
+        ItemContent: {
+            (input: NavigationItemContentProps): JSX.Element;
+            displayName: string;
+        };
+        Text: {
+            (input: NavigationTextProps): JSX.Element;
+            displayName: string;
+        };
+        Badge: {
+            (input: NavigationBadgeProps): JSX.Element;
+            displayName: string;
+        };
+        TrailingIcon: {
+            (input: NavigationTrailingIconProps): JSX.Element;
+            displayName: string;
+        };
+    } & {
+        Item: {
+            (input: any): JSX.Element;
+            displayName: string;
+        };
+        displayName: string;
+    };
+    Footer: {
+        (input: SidebarFooterProps): JSX.Element;
+        displayName: string;
+    };
+};
 
-export { SidebarFlyout }
+// @public (undocumented)
+export type SidebarContextValue = {
+    sidebarId: string;
+    activePath: string;
+    isOpen: boolean;
+    expandedMap: Record<string, boolean>;
+    setIsOpen: (value: boolean) => void;
+    toggleOpen: () => void;
+    setExpanded: (id: string, value: boolean) => void;
+    toggleExpanded: (id: string) => void;
+};
 
-export { SidebarFlyoutProps }
+// @public
+export const SidebarFlyout: {
+    (input: SidebarFlyoutProps): ReactPortal | null;
+    displayName: string;
+};
 
-export { SidebarFooter }
+// @public (undocumented)
+export type SidebarFlyoutProps = {
+    className?: string;
+    width?: string | number;
+    variant?: "dark" | "light";
+};
 
-export { SidebarFooterProps }
+// @public
+export const SidebarFooter: {
+    (input: SidebarFooterProps): JSX.Element;
+    displayName: string;
+};
 
-export { SidebarHeader }
+// @public (undocumented)
+export type SidebarFooterProps = SidebarBaseFooterProps;
 
-export { SidebarHeaderProps }
+// @public
+export const SidebarHeader: {
+    (input: SidebarHeaderProps): JSX.Element;
+    displayName: string;
+};
 
-export { SidebarNav }
+// @public (undocumented)
+export type SidebarHeaderProps = SidebarBaseHeaderProps;
 
-export { SidebarNavItem }
+// @public (undocumented)
+export const SidebarNav: ((input: SidebarNavProps) => JSX.Element) & {
+    (props: NavigationProps): JSX.Element;
+    displayName: string;
+} & {
+    Group: {
+        (input: NavigationGroupProps): JSX.Element;
+        displayName: string;
+    };
+    GroupHeader: {
+        (input: NavigationGroupHeaderProps): JSX.Element;
+        displayName: string;
+    };
+    Item: {
+        (input: NavigationItemProps): JSX.Element;
+        displayName: string;
+    };
+    Icon: {
+        (input: NavigationIconProps): JSX.Element;
+        displayName: string;
+    };
+    ItemContent: {
+        (input: NavigationItemContentProps): JSX.Element;
+        displayName: string;
+    };
+    Text: {
+        (input: NavigationTextProps): JSX.Element;
+        displayName: string;
+    };
+    Badge: {
+        (input: NavigationBadgeProps): JSX.Element;
+        displayName: string;
+    };
+    TrailingIcon: {
+        (input: NavigationTrailingIconProps): JSX.Element;
+        displayName: string;
+    };
+} & {
+    Item: {
+        (input: any): JSX.Element;
+        displayName: string;
+    };
+    displayName: string;
+};
 
-export { SidebarNavProps }
+// @public
+export const SidebarNavItem: {
+    (input: any): JSX.Element;
+    displayName: string;
+};
 
-export { SidebarProps }
+// @public (undocumented)
+export type SidebarNavProps = SidebarBaseNavProps;
 
-export { SidebarProvider }
+// @public (undocumented)
+export type SidebarProps = {
+    variant?: "dark" | "light";
+} & SidebarBaseRootProps;
 
-export { SidebarProviderProps }
+// @public
+export const SidebarProvider: {
+    (input: SidebarProviderProps): JSX.Element;
+    displayName: string;
+};
 
-export { SidebarRoot }
+// @public (undocumented)
+export type SidebarProviderProps = {
+    children?: ReactNode;
+    activePath?: string;
+    defaultIsOpen?: boolean;
+    withFlyout?: boolean;
+};
 
-export { SidebarToggle }
+// @public
+export const SidebarRoot: {
+    (input: SidebarProps): JSX.Element;
+    displayName: string;
+};
 
-export { SidebarToggleProps }
+// @public (undocumented)
+export const SidebarToggle: {
+    (input: SidebarToggleProps): JSX.Element;
+    displayName: string;
+};
 
-export { Stack }
+// @public (undocumented)
+export type SidebarToggleProps = SidebarBaseToggleProps & {
+    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+};
 
-export { StackProps }
+// @public
+export const Stack: {
+    (input: StackProps): JSX.Element;
+    displayName: string;
+};
 
-export { TableOfContents }
+// @public (undocumented)
+export type StackProps = Omit<FlexProps, "direction">;
 
-export { TableOfContentsItem }
+// @public
+export const TableOfContents: {
+    (props: TableOfContentsProps): JSX.Element;
+    displayName: string;
+} & {
+    List: {
+        (input: TableOfContentsListProps): JSX.Element;
+        displayName: string;
+    };
+    Item: {
+        (input: TableOfContentsItemProps): JSX.Element;
+        displayName: string;
+    };
+    Link: {
+        (input: TableOfContentsLinkProps): JSX.Element;
+        displayName: string;
+    };
+};
+
+// @public
+export const TableOfContentsItem: {
+    (input: TableOfContentsItemProps): JSX.Element;
+    displayName: string;
+};
 
 export { TableOfContentsItemProps }
 
 export { TableOfContentsItemState }
 
-export { TableOfContentsLink }
+// @public
+export const TableOfContentsLink: {
+    (input: TableOfContentsLinkProps): JSX.Element;
+    displayName: string;
+};
 
 export { TableOfContentsLinkProps }
 
-export { TableOfContentsList }
+// @public
+export const TableOfContentsList: {
+    (input: TableOfContentsListProps): JSX.Element;
+    displayName: string;
+};
 
 export { TableOfContentsListProps }
 
-export { TableOfContentsProps }
+// @public
+export type TableOfContentsProps = TableOfContentsBaseRootProps & {
+    label?: string;
+};
 
-export { TableOfContentsRoot }
+// @public
+export const TableOfContentsRoot: {
+    (input: TableOfContentsProps): JSX.Element;
+    displayName: string;
+};
 
+// @public
+const Text_2: {
+    <T extends TextTag = "p">(input: TextProps<T>): JSX.Element;
+    displayName: string;
+};
 export { Text_2 as Text }
 
-export { TextProps }
+// @public
+export type TextProps<T extends TextTag = "p"> = Omit<TextBaseProps<T>, keyof TextVariants> & TextVariants;
 
-export { TextVariants }
+// @public (undocumented)
+export type TextVariants = {
+    variant?: "body-large" | "body-default" | "body-small" | "label-default" | "label-small";
+    weight?: "bold" | "semibold" | "medium" | "regular";
+    align?: "left" | "center" | "right";
+    dimmed?: boolean;
+};
 
-export { Transition }
+// @public
+export const Transition: {
+    (input: TransitionProps): JSX.Element;
+    displayName: string;
+};
 
-export { TransitionProps }
+// @public (undocumented)
+export type TransitionProps = TransitionBaseProps;
 
-export { useFlyout }
+// @public
+export const useFlyout: () => FlyoutContextValue;
 
-export { useInsideFlyout }
+// @public
+export const useInsideFlyout: () => boolean;
 
-export { useSidebar }
+// @public
+export const useSidebar: () => SidebarContextValue;
 
 // (No @packageDocumentation comment for this package)
 

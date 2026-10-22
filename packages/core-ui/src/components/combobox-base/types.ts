@@ -10,7 +10,7 @@ export type ComboboxBaseItem = {
   disabled?: boolean;
 };
 
-type ComboboxSelection =
+export type ComboboxSelection =
   | {
       /** The accepted option's value, or null when none is (controlled). */
       value: string | null;

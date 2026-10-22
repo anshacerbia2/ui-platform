@@ -4,9 +4,14 @@
 
 ```ts
 
-import { n as HeadingTag } from '../../polymorphic-DaOKo9BZ.js';
+import { ComponentPropsWithRef } from 'react';
+import { JSX } from 'react';
 import { ReactElement } from 'react';
-import { t } from '../../polymorphic-DaOKo9BZ.js';
+
+// @public
+export type ClosedAsProps<T extends keyof JSX.IntrinsicElements, P = {}> = P & {
+    as?: T;
+} & Omit<ComponentPropsWithRef<T>, keyof P | "as">;
 
 // @public
 export const HeadingBase: {
@@ -15,9 +20,10 @@ export const HeadingBase: {
 };
 
 // @public
-export type HeadingBaseProps<T extends HeadingTag = "h2"> = t<T>;
+export type HeadingBaseProps<T extends HeadingTag = "h2"> = ClosedAsProps<T>;
 
-export { HeadingTag }
+// @public
+export type HeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span" | "div";
 
 // (No @packageDocumentation comment for this package)
 

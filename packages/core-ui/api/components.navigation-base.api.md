@@ -4,69 +4,181 @@
 
 ```ts
 
-import { r as NavigationBase } from '../../index-CTfzJNC1.js';
-import { a as NavigationBaseBadge } from '../../index-CTfzJNC1.js';
-import { p as NavigationBaseBadgeProps } from '../../index-CTfzJNC1.js';
-import { d as NavigationBaseGroup } from '../../index-CTfzJNC1.js';
-import { u as NavigationBaseGroupHeader } from '../../index-CTfzJNC1.js';
-import { m as NavigationBaseGroupHeaderProps } from '../../index-CTfzJNC1.js';
-import { h as NavigationBaseGroupProps } from '../../index-CTfzJNC1.js';
-import { c as NavigationBaseIcon } from '../../index-CTfzJNC1.js';
-import { g as NavigationBaseIconProps } from '../../index-CTfzJNC1.js';
-import { l as NavigationBaseItem } from '../../index-CTfzJNC1.js';
-import { s as NavigationBaseItemContent } from '../../index-CTfzJNC1.js';
-import { _ as NavigationBaseItemContentProps } from '../../index-CTfzJNC1.js';
-import { v as NavigationBaseItemProps } from '../../index-CTfzJNC1.js';
-import { f as NavigationBaseRoot } from '../../index-CTfzJNC1.js';
-import { y as NavigationBaseRootProps } from '../../index-CTfzJNC1.js';
-import { o as NavigationBaseText } from '../../index-CTfzJNC1.js';
-import { b as NavigationBaseTextProps } from '../../index-CTfzJNC1.js';
-import { i as NavigationBaseTrailingIcon } from '../../index-CTfzJNC1.js';
-import { x as NavigationBaseTrailingIconProps } from '../../index-CTfzJNC1.js';
-import { t as NavigationLevelContext } from '../../index-CTfzJNC1.js';
-import { n as useNavigationLevel } from '../../index-CTfzJNC1.js';
+import { ComponentPropsWithRef } from 'react';
+import { Context } from 'react';
+import { CSSProperties } from 'react';
+import { HTMLAttributes } from 'react';
+import { JSX } from 'react';
+import { MouseEvent as MouseEvent_2 } from 'react';
+import { ReactElement } from 'react';
+import { ReactNode } from 'react';
+import { Ref } from 'react';
 
-export { NavigationBase }
+// @public
+export const NavigationBase: {
+    (input: NavigationBaseRootProps): JSX.Element;
+    displayName: string;
+} & {
+    Group: {
+        (input: NavigationBaseGroupProps): JSX.Element;
+        displayName: string;
+    };
+    GroupHeader: {
+        (input: NavigationBaseGroupHeaderProps): JSX.Element;
+        displayName: string;
+    };
+    Item: {
+        (props: NavigationBaseItemProps): ReactElement;
+        displayName: string;
+    };
+    Icon: {
+        (input: NavigationBaseIconProps): JSX.Element;
+        displayName: string;
+    };
+    ItemContent: {
+        (input: NavigationBaseItemContentProps): JSX.Element;
+        displayName: string;
+    };
+    Text: {
+        (input: NavigationBaseTextProps): JSX.Element;
+        displayName: string;
+    };
+    Badge: {
+        (input: NavigationBaseBadgeProps): JSX.Element;
+        displayName: string;
+    };
+    TrailingIcon: {
+        (input: NavigationBaseTrailingIconProps): JSX.Element;
+        displayName: string;
+    };
+};
 
-export { NavigationBaseBadge }
+// @public
+export const NavigationBaseBadge: {
+    (input: NavigationBaseBadgeProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationBaseBadgeProps }
+// @public (undocumented)
+export type NavigationBaseBadgeProps = ComponentPropsWithRef<"span">;
 
-export { NavigationBaseGroup }
+// @public
+export const NavigationBaseGroup: {
+    (input: NavigationBaseGroupProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationBaseGroupHeader }
+// @public
+export const NavigationBaseGroupHeader: {
+    (input: NavigationBaseGroupHeaderProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationBaseGroupHeaderProps }
+// @public (undocumented)
+export type NavigationBaseGroupHeaderProps = Omit<ComponentPropsWithRef<"li">, "ref">;
 
-export { NavigationBaseGroupProps }
+// @public (undocumented)
+export type NavigationBaseGroupProps = Omit<ComponentPropsWithRef<"ul">, "ref">;
 
-export { NavigationBaseIcon }
+// @public
+export const NavigationBaseIcon: {
+    (input: NavigationBaseIconProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationBaseIconProps }
+// @public (undocumented)
+export type NavigationBaseIconProps = ComponentPropsWithRef<"span">;
 
-export { NavigationBaseItem }
+// @public
+export const NavigationBaseItem: {
+    (props: NavigationBaseItemProps): ReactElement;
+    displayName: string;
+};
 
-export { NavigationBaseItemContent }
+// @public (undocumented)
+export type NavigationBaseItemCommonProps = {
+    badgeClassName?: string;
+    itemContentClassName?: string;
+    iconClassName?: string;
+    textClassName?: string;
+    trailingIconClassName?: string;
+    label: string;
+    icon?: ReactNode;
+    badge?: ReactNode;
+    trailingIcon?: ReactNode;
+    isActive?: boolean;
+    isDisabled?: boolean;
+    className?: string;
+    style?: CSSProperties;
+    onClick?: (event: MouseEvent_2<HTMLElement>) => void;
+    ref?: Ref<HTMLElement>;
+} & Omit<HTMLAttributes<HTMLElement>, "children" | "onClick" | "className" | "style">;
 
-export { NavigationBaseItemContentProps }
+// @public
+export const NavigationBaseItemContent: {
+    (input: NavigationBaseItemContentProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationBaseItemProps }
+// @public (undocumented)
+export type NavigationBaseItemContentProps = ComponentPropsWithRef<"span">;
 
-export { NavigationBaseRoot }
+// @public
+export type NavigationBaseItemProps = NavigationBaseItemCommonProps & ({
+    href: string;
+    asChild?: false;
+    children?: undefined;
+    isExpanded?: undefined;
+    defaultExpanded?: undefined;
+    onExpandedChange?: undefined;
+} | {
+    asChild: true;
+    children: ReactElement;
+    href?: undefined;
+    isExpanded?: undefined;
+    defaultExpanded?: undefined;
+    onExpandedChange?: undefined;
+} | {
+    children?: ReactNode;
+    href?: undefined;
+    asChild?: false;
+    isExpanded?: boolean;
+    defaultExpanded?: boolean;
+    onExpandedChange?: (expanded: boolean) => void;
+});
 
-export { NavigationBaseRootProps }
+// @public
+export const NavigationBaseRoot: {
+    (input: NavigationBaseRootProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationBaseText }
+// @public (undocumented)
+export type NavigationBaseRootProps = Omit<ComponentPropsWithRef<"nav">, "ref">;
 
-export { NavigationBaseTextProps }
+// @public
+export const NavigationBaseText: {
+    (input: NavigationBaseTextProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationBaseTrailingIcon }
+// @public (undocumented)
+export type NavigationBaseTextProps = ComponentPropsWithRef<"span">;
 
-export { NavigationBaseTrailingIconProps }
+// @public
+export const NavigationBaseTrailingIcon: {
+    (input: NavigationBaseTrailingIconProps): JSX.Element;
+    displayName: string;
+};
 
-export { NavigationLevelContext }
+// @public (undocumented)
+export type NavigationBaseTrailingIconProps = ComponentPropsWithRef<"span">;
 
-export { useNavigationLevel }
+// @public (undocumented)
+export const NavigationLevelContext: Context<number>;
+
+// @public (undocumented)
+export const useNavigationLevel: () => number;
 
 // (No @packageDocumentation comment for this package)
 

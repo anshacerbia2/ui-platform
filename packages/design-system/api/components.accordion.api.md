@@ -4,27 +4,77 @@
 
 ```ts
 
-import { r as Accordion } from '../../index-DQBx46ip.js';
-import { i as AccordionContentProps } from '../../index-DQBx46ip.js';
-import { t as AccordionItem } from '../../index-DQBx46ip.js';
-import { a as AccordionItemProps } from '../../index-DQBx46ip.js';
-import { n as AccordionRoot } from '../../index-DQBx46ip.js';
-import { o as AccordionRootProps } from '../../index-DQBx46ip.js';
-import { s as AccordionTriggerProps } from '../../index-DQBx46ip.js';
+import { AccordionBaseItemProps } from '@scnx/core-ui/components/accordion-base';
+import { AccordionBaseRootProps } from '@scnx/core-ui/components/accordion-base';
+import { CollapsibleBaseContentProps } from '@scnx/core-ui/components/collapsible-base';
+import { CollapsibleBaseTriggerProps } from '@scnx/core-ui/components/collapsible-base';
+import { HeadingTag } from '@scnx/core-ui/components/heading-base';
+import { JSX } from 'react';
 
-export { Accordion }
+// @public
+export const Accordion: {
+    (props: AccordionRootProps): JSX.Element;
+    displayName: string;
+} & {
+    Root: {
+        (input: AccordionRootProps): JSX.Element;
+        displayName: string;
+    };
+    Item: ((input: AccordionItemProps) => JSX.Element) & {
+        Trigger: {
+            (input: AccordionTriggerProps): JSX.Element;
+            displayName: string;
+        };
+        Content: {
+            (input: AccordionContentProps): JSX.Element;
+            displayName: string;
+        };
+        displayName: string;
+    };
+    Trigger: {
+        (input: AccordionTriggerProps): JSX.Element;
+        displayName: string;
+    };
+    Content: {
+        (input: AccordionContentProps): JSX.Element;
+        displayName: string;
+    };
+};
 
-export { AccordionContentProps }
+// @public (undocumented)
+export type AccordionContentProps = CollapsibleBaseContentProps;
 
-export { AccordionItem }
+// @public (undocumented)
+export const AccordionItem: ((input: AccordionItemProps) => JSX.Element) & {
+    Trigger: {
+        (input: AccordionTriggerProps): JSX.Element;
+        displayName: string;
+    };
+    Content: {
+        (input: AccordionContentProps): JSX.Element;
+        displayName: string;
+    };
+    displayName: string;
+};
 
-export { AccordionItemProps }
+// @public (undocumented)
+export type AccordionItemProps = AccordionBaseItemProps;
 
-export { AccordionRoot }
+// @public
+export const AccordionRoot: {
+    (input: AccordionRootProps): JSX.Element;
+    displayName: string;
+};
 
-export { AccordionRootProps }
+// @public (undocumented)
+export type AccordionRootProps = AccordionBaseRootProps & {
+    variant?: "separated" | "stacked";
+};
 
-export { AccordionTriggerProps }
+// @public (undocumented)
+export type AccordionTriggerProps = CollapsibleBaseTriggerProps & {
+    headingAs?: HeadingTag;
+};
 
 // (No @packageDocumentation comment for this package)
 

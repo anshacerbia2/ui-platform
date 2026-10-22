@@ -1,6 +1,7 @@
 "use client";
 
 export type {
+  NavigationBaseItemCommonProps,
   NavigationBaseBadgeProps,
   NavigationBaseGroupProps,
   NavigationBaseGroupHeaderProps,

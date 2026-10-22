@@ -4,12 +4,17 @@
 
 ```ts
 
-import { t as Transition } from '../../index-CtLktQ4j.js';
-import { n as TransitionProps } from '../../index-CtLktQ4j.js';
+import { JSX } from 'react';
+import { TransitionBaseProps } from '@scnx/core-ui/components/transition-base';
 
-export { Transition }
+// @public
+export const Transition: {
+    (input: TransitionProps): JSX.Element;
+    displayName: string;
+};
 
-export { TransitionProps }
+// @public (undocumented)
+export type TransitionProps = TransitionBaseProps;
 
 // (No @packageDocumentation comment for this package)
 

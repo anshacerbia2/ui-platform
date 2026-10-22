@@ -102,7 +102,14 @@ function main() {
 
 function reportPackage(consumerDir, pkg) {
   const failures = [];
-  const installed = path.join(consumerDir, "node_modules", ...pkg.name.split("/"));
+  // API Extractor treats every declaration file under node_modules as an external package's, so
+  // a shared chunk (`export { r as Accordion } from "../../index-<hash>.js"`) was reported as an
+  // import instead of the declarations it holds (TDD packaging RC1). The installed package is
+  // analysed from a copy outside node_modules; its own imports still resolve through the
+  // consumer's node_modules.
+  const installedCopy = path.join(consumerDir, "node_modules", ...pkg.name.split("/"));
+  const installed = path.join(consumerDir, "api-src", ...pkg.name.split("/"));
+  fs.cpSync(fs.realpathSync(installedCopy), installed, { recursive: true });
   const manifest = JSON.parse(fs.readFileSync(path.join(installed, "package.json"), "utf8"));
   const reportFolder = path.resolve(packageDirOf(pkg.name), "api");
   const tempFolder = fs.mkdtempSync(path.join(consumerDir, "api-temp-"));
@@ -131,7 +138,7 @@ function reportPackage(consumerDir, pkg) {
         newlineKind: "lf",
         messages: {
           compilerMessageReporting: { default: { logLevel: "error" } },
-          extractorMessageReporting: { default: { logLevel: "none", addToApiReportFile: false } },
+          extractorMessageReporting: { default: { logLevel: "none", addToApiReportFile: false }, "ae-forgotten-export": { logLevel: "error", addToApiReportFile: false } },
           tsdocMessageReporting: { default: { logLevel: "none", addToApiReportFile: false } },
         },
       },
@@ -139,7 +146,12 @@ function reportPackage(consumerDir, pkg) {
       packageJsonFullPath: path.join(installed, "package.json"),
     });
     compilerState ??= CompilerState.create(config, { additionalEntryPoints: declarations });
-    const result = Extractor.invoke(config, { localBuild: !check, compilerState, messageCallback: (message) => { message.handled = message.logLevel !== "error"; } });
+    const result = Extractor.invoke(config, { localBuild: !check, compilerState, messageCallback: (message) => {
+      if (message.messageId === "ae-forgotten-export") {
+        failures.push(`${pkg.name}${subpath.slice(1)}: ${message.text} (TDD packaging RC7)`);
+        message.handled = true;
+      } else message.handled = message.logLevel !== "error";
+    } });
     if (!result.succeeded && !(check && result.apiReportChanged)) failures.push(`${pkg.name}${subpath.slice(1)}: API Extractor failed (${result.errorCount} errors)`);
     if (check && result.apiReportChanged) failures.push(`${pkg.name}${subpath.slice(1)}: public API differs from api/${name}.api.md`);
   }
