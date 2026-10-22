@@ -1,7 +1,178 @@
 {
-  "$schema": "../../../../../../scripts/specs/schema/entry.schema.json",
-  "kind": "entry",
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
   "entry": "@scnx/system/components/text",
   "entryKind": "presentational",
-  "stability": "candidate"
+  "stability": "candidate",
+  "primitive": null,
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-text"
+    }
+  ],
+  "options": {
+    "variant": {
+      "values": [
+        "body-large",
+        "body-default",
+        "body-small",
+        "label-default",
+        "label-small"
+      ],
+      "default": "body-default",
+      "selector": ".scnx-text--variant_{value}"
+    },
+    "weight": {
+      "values": [
+        "bold",
+        "semibold",
+        "medium",
+        "regular"
+      ],
+      "default": null,
+      "selector": ".scnx-text--weight_{value}"
+    },
+    "align": {
+      "values": [
+        "left",
+        "center",
+        "right"
+      ],
+      "default": "left",
+      "selector": ".scnx-text--align_{value}"
+    },
+    "dimmed": {
+      "values": [
+        "false",
+        "true"
+      ],
+      "default": null,
+      "selector": ".scnx-text--dimmed_{value}"
+    }
+  },
+  "states": [],
+  "fixture": {
+    "props": {
+      "children": "Net pay is paid on the last working day."
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "color": "{color.neutral.text.default.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "variant": "body-default"
+      },
+      "declarations": {
+        "font-family": "{typography.body.default.font-family}",
+        "font-size": "{typography.body.default.font-size}",
+        "font-weight": "{typography.body.default.font-weight}",
+        "line-height": "{typography.body.default.line-height}",
+        "letter-spacing": "{typography.body.default.letter-spacing}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "variant": "body-large"
+      },
+      "declarations": {
+        "font-family": "{typography.body.large.font-family}",
+        "font-size": "{typography.body.large.font-size}",
+        "font-weight": "{typography.body.large.font-weight}",
+        "line-height": "{typography.body.large.line-height}",
+        "letter-spacing": "{typography.body.large.letter-spacing}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "variant": "body-small"
+      },
+      "declarations": {
+        "font-family": "{typography.body.small.font-family}",
+        "font-size": "{typography.body.small.font-size}",
+        "font-weight": "{typography.body.small.font-weight}",
+        "line-height": "{typography.body.small.line-height}",
+        "letter-spacing": "{typography.body.small.letter-spacing}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "variant": "label-default"
+      },
+      "declarations": {
+        "font-family": "{typography.label.default.font-family}",
+        "font-size": "{typography.label.default.font-size}",
+        "font-weight": "{typography.label.default.font-weight}",
+        "line-height": "{typography.label.default.line-height}",
+        "letter-spacing": "{typography.label.default.letter-spacing}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "variant": "label-small"
+      },
+      "declarations": {
+        "font-family": "{typography.label.small.font-family}",
+        "font-size": "{typography.label.small.font-size}",
+        "font-weight": "{typography.label.small.font-weight}",
+        "line-height": "{typography.label.small.line-height}",
+        "letter-spacing": "{typography.label.small.letter-spacing}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "weight": "bold"
+      },
+      "declarations": {
+        "font-weight": "{typography.weight.bold}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "weight": "semibold"
+      },
+      "declarations": {
+        "font-weight": "{typography.weight.semibold}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "weight": "medium"
+      },
+      "declarations": {
+        "font-weight": "{typography.weight.medium}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "weight": "regular"
+      },
+      "declarations": {
+        "font-weight": "{typography.weight.regular}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "dimmed": "true"
+      },
+      "declarations": {
+        "color": "{color.neutral.text.subtle.default}"
+      }
+    }
+  ]
 }

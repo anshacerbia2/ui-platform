@@ -51,13 +51,13 @@ function selfTest() {
   };
   const css = (tone = "a", disabled = ":disabled,.scnx-x[data-tone=a][data-disabled]") =>
     `.scnx-x{gap:var(--ds-dimension-gap);display:flex}.scnx-x[data-tone=${tone}]{color:var(--ds-color-fg);background:var(--ds-color-bg)}.scnx-x[data-tone=a]${disabled}{color:var(--ds-color-off)}`;
-  const context = (over = {}) => ({ css: css(), report: 'tone?: "a" | "b";', tokens: new Set(["--ds-dimension-gap", "--ds-color-fg", "--ds-color-bg", "--ds-color-off"]), ...over });
+  const context = (over = {}) => ({ css: css(), report: 'tone?: "a" | "b";', tokens: new Set(["dimension.gap", "color.fg", "color.bg", "color.off"]), ...over });
   cases.push(
     [styledFindings(spec, context()).length, 0],
     [styledFindings(spec, context({ css: css("b") })).length > 0, true],
     [styledFindings(spec, context({ css: css("a", ":disabled") })).length, 1],
     [styledFindings(spec, context({ report: 'tone?: "a";' })).length, 1],
-    [styledFindings(spec, context({ tokens: new Set(["--ds-dimension-gap", "--ds-color-fg", "--ds-color-bg"]) })).length, 1],
+    [styledFindings(spec, context({ tokens: new Set(["dimension.gap", "color.fg", "color.bg"]) })).length, 1],
     [styledFindings(spec, context({ css: `${css()}.scnx-x:hover{color:var(--ds-color-fg)}` })).length, 1],
     [contrastPairs(spec).length, 1],
   );

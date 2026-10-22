@@ -40,6 +40,8 @@ const LONGHANDS = {
   padding: ["padding-top", "padding-right", "padding-bottom", "padding-left"],
   margin: ["margin-top", "margin-right", "margin-bottom", "margin-left"],
   border: ["border-top-width", "border-top-style", "border-top-color", "border-right-width", "border-right-color", "border-bottom-width", "border-bottom-color", "border-left-width", "border-left-color"],
+  "border-width": ["border-top-width", "border-right-width", "border-bottom-width", "border-left-width"],
+  "border-color": ["border-top-color", "border-right-color", "border-bottom-color", "border-left-color"],
   "border-radius": ["border-top-left-radius", "border-top-right-radius", "border-bottom-right-radius", "border-bottom-left-radius"],
   background: ["background-color", "background-image"],
   gap: ["row-gap", "column-gap"],
@@ -66,7 +68,9 @@ const cases = [];
 for (const spec of styled) {
   for (const option of combinations(spec)) {
     for (const state of [null, ...spec.states.filter((s) => s.enter.props)]) {
-      cases.push({ spec, option, state: state?.name ?? "", rootProps: { ...option, ...(state?.enter.props ?? {}) } });
+      // A boolean option's values are "false" and "true"; the prop takes the boolean.
+      const props = Object.fromEntries(Object.entries(option).map(([k, v]) => [k, spec.options[k].values.join() === "false,true" ? v === "true" : v]));
+      cases.push({ spec, option, state: state?.name ?? "", rootProps: { ...props, ...(state?.enter.props ?? {}) } });
     }
   }
 }
@@ -126,6 +130,11 @@ function measure({ caseId, root, selector, exclude, declarations, properties, ma
     return { marked: true };
   }
   const probe = document.createElement("span");
+  // A border or outline width computes 0 without a style; the style may be a literal the
+  // bindings do not name, so the probe takes the element's computed style first.
+  const element = getComputedStyle(el);
+  for (const side of ["top", "right", "bottom", "left"]) probe.style.setProperty(`border-${side}-style`, element.getPropertyValue(`border-${side}-style`));
+  probe.style.setProperty("outline-style", element.getPropertyValue("outline-style"));
   for (const [property, value] of Object.entries(declarations)) probe.style.setProperty(property, value);
   if (!("opacity" in declarations)) probe.style.setProperty("opacity", "1");
   scope.append(probe);
@@ -179,6 +188,12 @@ for (const engine of browserEngines()) {
               const declarations = Object.fromEntries(Object.entries(merged).map(([p, v]) => [p, toCss(v)]));
               // State is carried by tokens: an unbound opacity must compute 1 (TDD styled CS4).
               const properties = [...Object.keys(merged).flatMap(longhands), ...("opacity" in merged ? [] : ["opacity"])];
+              // A bound border width must draw: its side's style may not be none (TDD styled CS9).
+              const drawn = Object.entries(merged)
+                .filter(([p, v]) => /^border(-(top|right|bottom|left))?(-width)?$/.test(p) && v.includes("{dimension.border-width."))
+                .flatMap(([p]) => (/(top|right|bottom|left)/.exec(p) ? [/(top|right|bottom|left)/.exec(p)[1]] : ["top", "right", "bottom", "left"]))
+                .map((side) => `border-${side}-style`);
+              properties.push(...drawn.filter((p) => !properties.includes(p)));
               // A pointer or rest state is measured on an element in no part-level state.
               const located = pointer ? "" : stateName;
               const selector = selectorFor(spec, { part: part.name, option: c.option, state: located });
@@ -203,6 +218,9 @@ for (const engine of browserEngines()) {
               }
               if (missing) continue;
               measuredParts.add(`${spec.entry} ${part.name}`);
+              for (const property of drawn) {
+                if (values[property]?.[0] === "none") failures.push(`${where}: ${property} is none, so the bound border width draws nothing`);
+              }
               for (const [property, [have, want]] of Object.entries(values)) {
                 checked++;
                 if (have !== want) failures.push(`${where}: ${property} computes ${have}, its binding computes ${want}`);

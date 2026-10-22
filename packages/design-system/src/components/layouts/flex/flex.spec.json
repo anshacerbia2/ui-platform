@@ -1,7 +1,125 @@
 {
-  "$schema": "../../../../../../scripts/specs/schema/entry.schema.json",
-  "kind": "entry",
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
   "entry": "@scnx/system/components/flex",
   "entryKind": "presentational",
-  "stability": "candidate"
+  "stability": "candidate",
+  "primitive": null,
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-flex"
+    }
+  ],
+  "options": {
+    "direction": {
+      "values": [
+        "row",
+        "col",
+        "row-reverse",
+        "col-reverse"
+      ],
+      "default": "row",
+      "selector": ".scnx-flex--direction_{value}"
+    },
+    "align": {
+      "values": [
+        "start",
+        "center",
+        "end",
+        "stretch",
+        "baseline"
+      ],
+      "default": "start",
+      "selector": ".scnx-flex--align_{value}"
+    },
+    "justify": {
+      "values": [
+        "start",
+        "center",
+        "end",
+        "between",
+        "around",
+        "evenly"
+      ],
+      "default": "start",
+      "selector": ".scnx-flex--justify_{value}"
+    },
+    "wrap": {
+      "values": [
+        "nowrap",
+        "wrap",
+        "wrap-reverse"
+      ],
+      "default": "nowrap",
+      "selector": ".scnx-flex--wrap_{value}"
+    },
+    "gap": {
+      "values": [
+        "none",
+        "compact",
+        "default",
+        "comfortable",
+        "section"
+      ],
+      "default": "none",
+      "selector": ".scnx-flex--gap_{value}"
+    }
+  },
+  "states": [],
+  "fixture": {
+    "props": {
+      "children": "Item"
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "option": {
+        "gap": "none"
+      },
+      "declarations": {
+        "gap": "0"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "gap": "compact"
+      },
+      "declarations": {
+        "row-gap": "{dimension.spacing.stack-compact}",
+        "column-gap": "{dimension.spacing.inline-compact}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "gap": "default"
+      },
+      "declarations": {
+        "row-gap": "{dimension.spacing.stack-default}",
+        "column-gap": "{dimension.spacing.inline-default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "gap": "comfortable"
+      },
+      "declarations": {
+        "row-gap": "{dimension.spacing.stack-comfortable}",
+        "column-gap": "{dimension.spacing.inline-comfortable}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "gap": "section"
+      },
+      "declarations": {
+        "gap": "{dimension.spacing.section}"
+      }
+    }
+  ]
 }
