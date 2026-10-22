@@ -156,17 +156,19 @@ type ReleaseEvidence = {
 
 Target public families are explicit, generated lists—never `./*`:
 
-| Package         | Public family                        | Contract                                       |
-| :-------------- | :----------------------------------- | :--------------------------------------------- |
-| `@scnx/core-ui` | `components/<name>`                  | Headless component JS and types                |
-| `@scnx/core-ui` | `hooks/<name>`                       | Explicit client hook JS and types              |
-| `@scnx/core-ui` | `providers/<name>`                   | Explicit client provider JS and types          |
-| `@scnx/system`  | `components/<name>` and `components` | Styled JS/types without CSS side-effect import |
-| `@scnx/system`  | `styles/components.css`              | One aggregate component stylesheet             |
-| `@scnx/system`  | `tokens/css/<theme-id>.css`          | Scoped theme variables                         |
-| `@scnx/system`  | `tokens/json/<theme-id>.json`        | Tool-neutral token output                      |
-| `@scnx/system`  | `tokens/scss`                        | Supported Sass contract                        |
-| `@scnx/system`  | `fonts/<asset>`                      | Declared font assets and license               |
+| Package         | Public family                        | Contract                                                      |
+| :-------------- | :----------------------------------- | :------------------------------------------------------------ |
+| `@scnx/core-ui` | `components/<name>`                  | Headless component JS and types                               |
+| `@scnx/core-ui` | `hooks/<name>`                       | Explicit client hook JS and types                             |
+| `@scnx/core-ui` | `providers/<name>`                   | Explicit client provider JS and types                         |
+| `@scnx/system`  | `components/<name>` and `components` | Styled JS/types without CSS side-effect import                |
+| `@scnx/system`  | `styles/components.css`              | One aggregate component stylesheet                            |
+| `@scnx/system`  | `tokens/css/<theme-id>.css`          | Scoped theme variables                                        |
+| `@scnx/system`  | `tokens/json/<theme-id>.json`        | Tool-neutral token output                                     |
+| `@scnx/system`  | `tokens/scss`                        | Supported Sass contract                                       |
+| `@scnx/system`  | `fonts/<asset>`                      | Declared font assets and license                              |
+| both            | `specs/<name>.json` and `specs`      | Component specifications and their index (TDD primitives P24) |
+| both            | `specs/schema/<kind>.schema.json`    | The JSON Schemas those specifications name                    |
 
 Manifests provide `types` and ESM targets for JavaScript entries. CJS remains
 only if an external fixture proves a named supported consumer. `system` declares
