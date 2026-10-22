@@ -302,6 +302,11 @@ try {
   report.result = "fail";
   report.error = `${error.message}\n${error.stdout ?? ""}${error.stderr ?? ""}`.trim();
   console.error(`Performance measurements: FAILED\n${report.error}`);
+  // A workflow annotation carries the cause where the job log cannot be read.
+  if (process.env.GITHUB_ACTIONS) {
+    const escape = (text) => text.replaceAll("%", "%25").replaceAll("\r", "%0D").replaceAll("\n", "%0A");
+    console.log(`::error title=Performance measurements::${escape(report.error.slice(0, 4000))}`);
+  }
 } finally {
   server?.close();
   fs.rmSync(dir, { recursive: true, force: true });

@@ -112,12 +112,47 @@ const PACKAGES = {
   "@scnx/system": { dir: "packages/design-system", entries: systemEntries },
 };
 
+/**
+ * The specification file of a JavaScript entry: `<name>.spec.json` next to its
+ * source, `<name>` being the last segment of the subpath (TDD primitives P20).
+ * @param {{ subpath: string, source: string }} entry source relative to the package
+ */
+export function specSource(entry) {
+  return path.join(path.dirname(entry.source), `${entry.subpath.split("/").pop()}.spec.json`).replaceAll("\\", "/");
+}
+
+/** Specification kinds each package publishes a schema for (TDD primitives P24). */
+export const SPEC_SCHEMAS = { "@scnx/core-ui": ["common", "primitive", "entry"], "@scnx/system": ["common", "styled", "entry"] };
+
+/**
+ * Published specification assets (TDD primitives P24): one `./specs/<name>.json`
+ * per JavaScript entry that has a specification, the `./specs` index, and the
+ * schemas the specifications name.
+ */
+function specEntries(name, packageDir, entries) {
+  const out = [];
+  for (const entry of entries.filter((e) => e.kind === "javascript")) {
+    const source = path.join(packageDir, specSource({ ...entry, source: path.relative(packageDir, entry.source) }));
+    if (!fs.existsSync(source)) continue;
+    const file = entry.subpath.split("/").pop();
+    out.push({ subpath: `./specs/${file}.json`, kind: "asset", source, out: `dist/specs/${file}.json` });
+  }
+  if (out.length === 0) return out;
+  const schemaDir = path.resolve(packageDir, "../../scripts/specs/schema");
+  for (const kind of SPEC_SCHEMAS[name]) {
+    out.push({ subpath: `./specs/schema/${kind}.schema.json`, kind: "asset", source: path.join(schemaDir, `${kind}.schema.json`), out: `dist/specs/schema/${kind}.schema.json` });
+  }
+  out.push({ subpath: "./specs", kind: "asset", source: path.join(packageDir, "package.json"), out: "dist/specs/index.json" });
+  return out;
+}
+
 /** Entries for the package in `packageDir` (absolute), with sources relative to it. */
 export function packageEntries(packageDir) {
   const manifest = JSON.parse(fs.readFileSync(path.join(packageDir, "package.json"), "utf8"));
   const spec = PACKAGES[manifest.name];
   if (!spec) throw new Error(`No entry specification for ${manifest.name}`);
-  return spec.entries(packageDir).map((entry) => ({
+  const entries = spec.entries(packageDir);
+  return [...entries, ...specEntries(manifest.name, packageDir, entries)].map((entry) => ({
     ...entry,
     source: path.relative(packageDir, entry.source).replaceAll("\\", "/"),
     ...(entry.kind === "javascript" ? { environment: entryEnvironment(fs.readFileSync(entry.source, "utf8")) } : {}),

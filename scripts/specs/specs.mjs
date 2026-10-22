@@ -7,7 +7,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import Ajv2020 from "ajv/dist/2020.js";
-import { packageEntries } from "../package-entries.mjs";
+import { packageEntries, specSource } from "../package-entries.mjs";
 import { styledContext, styledFindings } from "./styled.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
@@ -30,8 +30,7 @@ function validators() {
 
 /** The specification file a public entry must have, relative to the repository root. */
 export function specPath(packageDir, entry) {
-  const name = entry.subpath.split("/").pop();
-  return path.join(packageDir, path.dirname(entry.source), `${name}.spec.json`).replaceAll("\\", "/");
+  return path.join(packageDir, specSource(entry)).replaceAll("\\", "/");
 }
 
 /**
