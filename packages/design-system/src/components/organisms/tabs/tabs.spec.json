@@ -1,7 +1,241 @@
 {
-  "$schema": "../../../../../../scripts/specs/schema/entry.schema.json",
-  "kind": "entry",
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
   "entry": "@scnx/system/components/tabs",
   "entryKind": "interactive",
-  "stability": "candidate"
+  "stability": "candidate",
+  "primitive": "TabsBase",
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-tabs"
+    },
+    {
+      "name": "list",
+      "selector": ".scnx-tabs [data-part=list]",
+      "primitivePart": "list"
+    },
+    {
+      "name": "tab",
+      "selector": ".scnx-tabs [data-part=tab]"
+    },
+    {
+      "name": "panel",
+      "selector": ".scnx-tabs [data-part=panel]"
+    }
+  ],
+  "options": {
+    "orientation": {
+      "values": [
+        "horizontal",
+        "vertical"
+      ],
+      "default": "horizontal",
+      "selector": "[data-orientation={value}]"
+    }
+  },
+  "states": [
+    {
+      "name": "hover",
+      "selectors": [
+        ":hover:not(:disabled)"
+      ],
+      "enter": {
+        "interaction": "hover"
+      }
+    },
+    {
+      "name": "selected",
+      "selectors": [
+        "[aria-selected=true]"
+      ],
+      "enter": {
+        "fixture": true
+      }
+    },
+    {
+      "name": "disabled",
+      "selectors": [
+        ":disabled"
+      ],
+      "enter": {
+        "fixture": true
+      }
+    }
+  ],
+  "fixture": {
+    "tree": {
+      "type": "Tabs",
+      "props": {
+        "defaultValue": "pay"
+      },
+      "children": [
+        {
+          "type": "Tabs.List",
+          "props": {
+            "aria-label": "Employee"
+          },
+          "children": [
+            {
+              "type": "Tabs.Tab",
+              "props": {
+                "value": "pay"
+              },
+              "children": [
+                "Pay"
+              ]
+            },
+            {
+              "type": "Tabs.Tab",
+              "props": {
+                "value": "leave"
+              },
+              "children": [
+                "Leave"
+              ]
+            },
+            {
+              "type": "Tabs.Tab",
+              "props": {
+                "value": "tax",
+                "disabled": true
+              },
+              "children": [
+                "Tax"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Tabs.Panel",
+          "props": {
+            "value": "pay",
+            "tabIndex": -1
+          },
+          "children": [
+            "Pay panel"
+          ]
+        },
+        {
+          "type": "Tabs.Panel",
+          "props": {
+            "value": "leave",
+            "tabIndex": -1
+          },
+          "children": [
+            "Leave panel"
+          ]
+        },
+        {
+          "type": "Tabs.Panel",
+          "props": {
+            "value": "tax",
+            "tabIndex": -1
+          },
+          "children": [
+            "Tax panel"
+          ]
+        }
+      ]
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "gap": "{dimension.spacing.stack.default}"
+      }
+    },
+    {
+      "part": "list",
+      "declarations": {
+        "gap": "{dimension.spacing.inline.compact}",
+        "border-bottom": "{dimension.border.width.default} solid {color.neutral.border.subtle.default}"
+      }
+    },
+    {
+      "part": "list",
+      "option": {
+        "orientation": "vertical"
+      },
+      "declarations": {
+        "border-bottom": "0",
+        "border-inline-end": "{dimension.border.width.default} solid {color.neutral.border.subtle.default}"
+      }
+    },
+    {
+      "part": "tab",
+      "declarations": {
+        "font-family": "{typography.label.default.font-family}",
+        "font-size": "{typography.label.default.font-size}",
+        "font-weight": "{typography.label.default.font-weight}",
+        "line-height": "{typography.label.default.line-height}",
+        "letter-spacing": "{typography.label.default.letter-spacing}",
+        "padding": "{dimension.spacing.inset.compact} {dimension.spacing.inset.default}",
+        "border-bottom": "{dimension.border.width.strong} solid transparent",
+        "margin-bottom": "calc(-1 * {dimension.border.width.default})",
+        "background": "transparent",
+        "color": "{color.neutral.text.subtle.default}",
+        "transition-duration": "{motion.feedback.duration}",
+        "transition-timing-function": "{motion.feedback.easing}"
+      }
+    },
+    {
+      "part": "tab",
+      "state": "hover",
+      "declarations": {
+        "background": "{color.neutral.surface.default.hover}",
+        "color": "{color.neutral.text.default.default}"
+      }
+    },
+    {
+      "part": "tab",
+      "state": "selected",
+      "declarations": {
+        "color": "{color.neutral.text.default.default}",
+        "font-weight": "{typography.weight.semibold}",
+        "border-bottom-color": "{color.primary.surface.solid.default}"
+      }
+    },
+    {
+      "part": "tab",
+      "state": "disabled",
+      "declarations": {
+        "color": "{color.neutral.text.default.disabled}"
+      }
+    },
+    {
+      "part": "tab",
+      "option": {
+        "orientation": "vertical"
+      },
+      "declarations": {
+        "border-bottom": "0",
+        "margin-bottom": "0",
+        "border-inline-end": "{dimension.border.width.strong} solid transparent",
+        "margin-inline-end": "calc(-1 * {dimension.border.width.default})"
+      }
+    },
+    {
+      "part": "tab",
+      "option": {
+        "orientation": "vertical"
+      },
+      "state": "selected",
+      "declarations": {
+        "border-inline-end-color": "{color.primary.surface.solid.default}"
+      }
+    },
+    {
+      "part": "panel",
+      "declarations": {
+        "font-family": "{typography.body.default.font-family}",
+        "font-size": "{typography.body.default.font-size}",
+        "font-weight": "{typography.body.default.font-weight}",
+        "line-height": "{typography.body.default.line-height}",
+        "letter-spacing": "{typography.body.default.letter-spacing}",
+        "color": "{color.neutral.text.default.default}"
+      }
+    }
+  ]
 }

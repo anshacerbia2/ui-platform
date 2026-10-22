@@ -1,19 +1,57 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/anshacerbia2/ui-platform/blob/main/scripts/specs/schema/styled.schema.json",
-  "title": "Styled specification: the presentation contract of an @scnx/system component (ADR-UIP-CMP-001; TDD styled CS1-CS6)",
+  "title": "Styled specification: the presentation contract of an @scnx/system component (ADR-UIP-CMP-001; TDD styled CS1-CS8)",
   "type": "object",
   "additionalProperties": false,
-  "required": ["$schema", "kind", "entry", "entryKind", "stability", "primitive", "anatomy", "options", "states", "fixture", "bindings"],
+  "required": [
+    "$schema",
+    "kind",
+    "entry",
+    "entryKind",
+    "stability",
+    "primitive",
+    "anatomy",
+    "options",
+    "states",
+    "fixture",
+    "bindings"
+  ],
   "properties": {
-    "$schema": { "type": "string" },
-    "kind": { "const": "styled" },
-    "entry": { "allOf": [{ "$ref": "common.schema.json#/$defs/entry" }, { "type": "string", "pattern": "^@scnx/system/components/" }] },
-    "entryKind": { "enum": ["presentational", "interactive", "layout", "motion"] },
-    "stability": { "$ref": "common.schema.json#/$defs/stability" },
+    "$schema": {
+      "type": "string"
+    },
+    "kind": {
+      "const": "styled"
+    },
+    "entry": {
+      "allOf": [
+        {
+          "$ref": "common.schema.json#/$defs/entry"
+        },
+        {
+          "type": "string",
+          "pattern": "^@scnx/system/components/"
+        }
+      ]
+    },
+    "entryKind": {
+      "enum": [
+        "presentational",
+        "interactive",
+        "layout",
+        "motion"
+      ]
+    },
+    "stability": {
+      "$ref": "common.schema.json#/$defs/stability"
+    },
     "primitive": {
       "description": "Name of the primitive specification this component styles, or null.",
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "pattern": "^[A-Z][A-Za-z]*Base$"
     },
     "anatomy": {
@@ -22,26 +60,57 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["name", "selector"],
+        "required": [
+          "name",
+          "selector"
+        ],
         "properties": {
-          "name": { "$ref": "common.schema.json#/$defs/name" },
-          "selector": { "description": "The part's class selector in the published stylesheet.", "type": "string", "pattern": "^\\.scnx-[a-z0-9_-]+$" },
-          "primitivePart": { "description": "The primitive part this part styles.", "$ref": "common.schema.json#/$defs/name" }
+          "name": {
+            "$ref": "common.schema.json#/$defs/name"
+          },
+          "selector": {
+            "description": "The part's selector in the published stylesheet: the root's class for the first part, the root's class followed by a combinator and simple selectors, or a pseudo-element, for the others.",
+            "type": "string",
+            "pattern": "^\\.scnx-[a-z0-9_-]+"
+          },
+          "primitivePart": {
+            "description": "The primitive part this part styles.",
+            "$ref": "common.schema.json#/$defs/name"
+          }
         }
       }
     },
     "options": {
       "description": "Styling options; each value is selected by a selector fragment on the root part.",
       "type": "object",
-      "propertyNames": { "pattern": "^[a-z][A-Za-z]*$" },
+      "propertyNames": {
+        "pattern": "^[a-z][A-Za-z]*$"
+      },
       "additionalProperties": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["values", "default", "selector"],
+        "required": [
+          "values",
+          "default",
+          "selector"
+        ],
         "properties": {
-          "values": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "common.schema.json#/$defs/name" } },
-          "default": { "$ref": "common.schema.json#/$defs/name" },
-          "selector": { "description": "Selector fragment with {value}, for example [data-variant={value}].", "type": "string", "pattern": "\\{value\\}" }
+          "values": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "$ref": "common.schema.json#/$defs/name"
+            }
+          },
+          "default": {
+            "$ref": "common.schema.json#/$defs/name"
+          },
+          "selector": {
+            "description": "Selector fragment with {value}, for example [data-variant={value}].",
+            "type": "string",
+            "pattern": "\\{value\\}"
+          }
         }
       }
     },
@@ -51,43 +120,187 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["name", "selectors", "enter"],
+        "required": [
+          "name",
+          "selectors",
+          "enter"
+        ],
         "properties": {
-          "name": { "$ref": "common.schema.json#/$defs/name" },
-          "selectors": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+          "name": {
+            "$ref": "common.schema.json#/$defs/name"
+          },
+          "selectors": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
           "enter": {
             "oneOf": [
-              { "type": "object", "additionalProperties": false, "required": ["props"], "properties": { "props": { "type": "object" } } },
-              { "type": "object", "additionalProperties": false, "required": ["interaction"], "properties": { "interaction": { "enum": ["hover", "press"] } } }
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "props"
+                ],
+                "properties": {
+                  "props": {
+                    "type": "object"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "interaction"
+                ],
+                "properties": {
+                  "interaction": {
+                    "enum": [
+                      "hover",
+                      "press"
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "fixture"
+                ],
+                "properties": {
+                  "fixture": {
+                    "const": true,
+                    "description": "The fixture tree already renders elements in this state."
+                  }
+                }
+              }
+            ]
+          },
+          "on": {
+            "description": "Where the state's selector fragment attaches: the root part, or (default) the part each binding names.",
+            "enum": [
+              "root",
+              "part"
             ]
           }
         }
       }
     },
     "fixture": {
-      "description": "How the conformance fixture renders the component: base props, passed with each option value and state's props.",
+      "description": "How the conformance fixture renders the component. `props` renders the component itself; `tree` renders a node tree whose root is the component (`type` names an export, `Name.Sub` a sub-component, or a lowercase HTML element). Option values and prop-entered states are passed to the root node.",
       "type": "object",
       "additionalProperties": false,
-      "required": ["props"],
-      "properties": { "props": { "type": "object" } }
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "props"
+          ],
+          "properties": {
+            "props": {
+              "type": "object"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "tree"
+          ],
+          "properties": {
+            "tree": {
+              "$ref": "#/$defs/node"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "props": {
+          "type": "object"
+        },
+        "tree": {
+          "$ref": "#/$defs/node"
+        },
+        "activate": {
+          "description": "A method called on the root element before measuring and undone after, for example showModal for a native dialog.",
+          "enum": [
+            "showModal"
+          ]
+        }
+      }
     },
     "bindings": {
-      "description": "Every token-bearing declaration of the component's stylesheet, by part, option value, and state. Values are the declared value with each token written as {token.path}.",
+      "description": "Every token-bearing declaration of the component's stylesheet, and every literal override of a token-bound property, by part, option value, and state.",
       "type": "array",
       "minItems": 1,
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["part", "declarations"],
+        "required": [
+          "part",
+          "declarations"
+        ],
         "properties": {
-          "part": { "$ref": "common.schema.json#/$defs/name" },
-          "option": { "type": "object", "additionalProperties": { "$ref": "common.schema.json#/$defs/name" } },
-          "state": { "$ref": "common.schema.json#/$defs/name" },
+          "part": {
+            "$ref": "common.schema.json#/$defs/name"
+          },
+          "option": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "common.schema.json#/$defs/name"
+            }
+          },
+          "state": {
+            "$ref": "common.schema.json#/$defs/name"
+          },
           "declarations": {
             "type": "object",
             "minProperties": 1,
-            "propertyNames": { "pattern": "^[a-z-]+$" },
-            "additionalProperties": { "type": "string", "pattern": "\\{[a-z0-9.-]+\\}" }
+            "propertyNames": {
+              "pattern": "^[a-z-]+$"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "Declared values with each token as {token.path}; a literal value records an override of a property the part binds to a token elsewhere."
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "^([A-Z][A-Za-z]*(\\.[A-Z][A-Za-z]*)?|[a-z][a-z0-9]*)$"
+        },
+        "props": {
+          "type": "object"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/node"
+              }
+            ]
           }
         }
       }

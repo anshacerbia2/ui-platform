@@ -17,7 +17,7 @@ import os from "node:os";
 import path from "node:path";
 import { browserEngines } from "./browser-engines.mjs";
 import { loadSpecs } from "./specs/specs.mjs";
-import { combinations, effective, toCss } from "./specs/styled.mjs";
+import { combinations, effective, selectorFor, toCss } from "./specs/styled.mjs";
 
 const arg = (name, fallback) => {
   const index = process.argv.indexOf(name);
@@ -60,16 +60,17 @@ const stylesheets = ["./styles/components.css", ...themes.map((t) => `./tokens/c
 );
 
 // The matrix: one rendered case per theme root, option combination, and
-// state entered by props; interaction states reuse the rest-state element.
+// state entered by props. States the fixture tree already renders (for
+// example a selected tab) and pointer states are measured in the rest case.
 const cases = [];
 for (const spec of styled) {
   for (const option of combinations(spec)) {
-    for (const state of [null, ...spec.states]) {
-      if (state && !state.enter.props) continue;
-      cases.push({ spec, option, state: state?.name ?? "", props: { ...spec.fixture.props, ...option, ...(state?.enter.props ?? {}) } });
+    for (const state of [null, ...spec.states.filter((s) => s.enter.props)]) {
+      cases.push({ spec, option, state: state?.name ?? "", rootProps: { ...option, ...(state?.enter.props ?? {}) } });
     }
   }
 }
+const treeOf = (spec) => spec.fixture.tree ?? { type: null, props: spec.fixture.props };
 const modes = ["light", "dark"];
 fs.writeFileSync(
   path.join(dir, "render.mjs"),
@@ -77,12 +78,21 @@ fs.writeFileSync(
 import { renderToStaticMarkup } from "react-dom/server";
 ${styled.map((spec, i) => `import * as m${i} from ${JSON.stringify(spec.entry)};`).join("\n")}
 const modules = [${styled.map((_, i) => `m${i}`).join(", ")}];
-const entries = ${JSON.stringify(styled.map((spec) => spec.entry))};
-const cases = ${JSON.stringify(cases.map(({ spec, props }, id) => ({ id, module: styled.indexOf(spec), props })))};
-const component = (mod, entry) => Object.values(mod).find((v) => typeof v === "function") ?? (() => { throw new Error("no component in " + entry); })();
+const trees = ${JSON.stringify(styled.map(treeOf))};
+const cases = ${JSON.stringify(cases.map(({ spec, rootProps }, id) => ({ id, module: styled.indexOf(spec), rootProps })))};
+// A node type is an export ("Tabs"), a sub-component ("Tabs.List"), or an HTML element ("span").
+const resolve = (mod, type) => {
+  if (type === null) return Object.values(mod).find((v) => typeof v === "function");
+  if (/^[a-z]/.test(type)) return type;
+  const found = type.split(".").reduce((value, key) => value?.[key], mod);
+  if (!found) throw new Error("no export " + type);
+  return found;
+};
+const build = (mod, node, extra) => typeof node === "string" ? node
+  : h(resolve(mod, node.type), { ...node.props, ...extra }, ...(node.children ?? []).map((child) => build(mod, child)));
 const roots = ${JSON.stringify(themes)}.flatMap((theme) => ${JSON.stringify(modes)}.map((mode) =>
-  h("div", { "data-scnx-theme": theme, "data-scnx-resolved-mode": mode, "data-root": theme + "/" + mode },
-    ...cases.map((c) => h("div", { key: c.id, "data-case": c.id }, h(component(modules[c.module], entries[c.module]), c.props))))));
+  h("div", { key: theme + mode, "data-scnx-theme": theme, "data-scnx-resolved-mode": mode, "data-root": theme + "/" + mode },
+    ...cases.map((c) => h("div", { key: c.id, "data-case": c.id }, build(modules[c.module], trees[c.module], c.rootProps))))));
 process.stdout.write(renderToStaticMarkup(h("main", null, ...roots)));
 `,
 );
@@ -99,26 +109,49 @@ const server = http.createServer((request, response) => {
 await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
 const origin = `http://127.0.0.1:${server.address().port}`;
 
-/** In the page: the case's part, and a probe in the same root carrying the merged declarations. */
-function measure({ caseId, root, selector, declarations, properties }) {
+/**
+ * In the page: find the case's element of one identity (the first element
+ * matching its selector and none of the excluded state selectors), mark it,
+ * and measure it, or its pseudo-element, against a probe in the same case
+ * carrying the merged declarations.
+ */
+function measure({ caseId, root, selector, exclude, declarations, properties, mark }) {
   const scope = document.querySelector(`[data-root="${root}"] [data-case="${caseId}"]`);
-  const el = scope.matches(selector) ? scope : scope.querySelector(selector);
+  const [host, pseudo] = selector.includes("::") ? [selector.slice(0, selector.indexOf("::")), selector.slice(selector.indexOf("::"))] : [selector, null];
+  const el = [...scope.querySelectorAll(host)].find((candidate) => !exclude.some((x) => candidate.matches(x)));
+  document.querySelectorAll("[data-spec-target]").forEach((old) => old.removeAttribute("data-spec-target"));
   if (!el) return { missing: true };
+  if (mark) {
+    el.setAttribute("data-spec-target", "");
+    return { marked: true };
+  }
   const probe = document.createElement("span");
   for (const [property, value] of Object.entries(declarations)) probe.style.setProperty(property, value);
   if (!("opacity" in declarations)) probe.style.setProperty("opacity", "1");
   scope.append(probe);
-  const have = getComputedStyle(el);
+  const have = getComputedStyle(el, pseudo);
   const want = getComputedStyle(probe);
   const out = Object.fromEntries(properties.map((p) => [p, [have.getPropertyValue(p), want.getPropertyValue(p)]]));
   probe.remove();
   return { values: out };
 }
 
-async function settle(tab, handle) {
-  await tab.evaluate(async (el) => {
-    await Promise.all(el.getAnimations().map((a) => a.finished.catch(() => undefined)));
-  }, handle);
+/** Wait for the transitions of every element of a case. */
+async function settle(tab, root, caseId) {
+  await tab.evaluate(async ({ root, caseId }) => {
+    const scope = document.querySelector(`[data-root="${root}"] [data-case="${caseId}"]`);
+    await Promise.all(scope.getAnimations({ subtree: true }).map((a) => a.finished.catch(() => undefined)));
+  }, { root, caseId });
+}
+
+/** Run a fixture activation (TDD styled CS7) on the case's root element. */
+async function activate(tab, spec, root, caseId, on) {
+  if (spec.fixture.activate !== "showModal") return;
+  await tab.evaluate(({ root, caseId, selector, on }) => {
+    const el = document.querySelector(`[data-root="${root}"] [data-case="${caseId}"] ${selector}`);
+    if (on) el.showModal();
+    else el.close();
+  }, { root, caseId, selector: spec.anatomy[0].selector, on });
 }
 
 const failures = [];
@@ -126,6 +159,7 @@ const result = { scenario: "packed-browser-specs", specs: styled.map((s) => s.en
 for (const engine of browserEngines()) {
   const browser = await engine.type.launch();
   let checked = 0;
+  const measuredParts = new Set();
   try {
     const tab = await browser.newPage();
     await tab.goto(`${origin}/`, { waitUntil: "load" });
@@ -133,39 +167,57 @@ for (const engine of browserEngines()) {
       for (const mode of modes) {
         const root = `${theme}/${mode}`;
         for (const [caseId, c] of cases.entries()) {
-          const states = c.state ? [c.spec.states.find((s) => s.name === c.state)] : [null, ...c.spec.states.filter((s) => s.enter.interaction)];
-          for (const state of states) {
-            for (const part of c.spec.anatomy) {
-              const merged = effective(c.spec, part.name, c.option, state?.name ?? "");
+          const { spec } = c;
+          const states = c.state ? [c.state] : ["", ...spec.states.filter((s) => s.enter.fixture || s.enter.interaction).map((s) => s.name)];
+          await activate(tab, spec, root, caseId, true);
+          for (const stateName of states) {
+            const state = spec.states.find((s) => s.name === stateName);
+            const pointer = state?.enter.interaction;
+            for (const part of spec.anatomy) {
+              const merged = effective(spec, part.name, c.option, stateName);
               if (Object.keys(merged).length === 0) continue;
               const declarations = Object.fromEntries(Object.entries(merged).map(([p, v]) => [p, toCss(v)]));
               // State is carried by tokens: an unbound opacity must compute 1 (TDD styled CS4).
               const properties = [...Object.keys(merged).flatMap(longhands), ...("opacity" in merged ? [] : ["opacity"])];
-              const handle = await tab.$(`[data-root="${root}"] [data-case="${caseId}"] ${part.selector}, [data-root="${root}"] [data-case="${caseId}"]${part.selector}`);
-              if (!handle) {
-                failures.push(`${engine.name}: ${c.spec.entry} ${root} case ${JSON.stringify(c.option)}: no ${part.selector}`);
-                continue;
+              // A pointer or rest state is measured on an element in no part-level state.
+              const located = pointer ? "" : stateName;
+              const selector = selectorFor(spec, { part: part.name, option: c.option, state: located });
+              const exclude = located || state?.on === "root"
+                ? []
+                : spec.states.filter((s) => s.on !== "root" && !s.enter.interaction).flatMap((s) => s.selectors.map((_, alternative) => selectorFor(spec, { part: part.name, option: c.option, state: s.name, alternative })));
+              const where = `${engine.name}: ${spec.entry} ${part.name} ${JSON.stringify(c.option)} ${stateName || "rest"} in ${root}`;
+              const args = { caseId, root, selector, exclude, declarations, properties };
+              if (pointer) {
+                const { missing } = await tab.evaluate(measure, { ...args, mark: true });
+                if (missing) continue;
+                const target = await tab.$("[data-spec-target]");
+                await target.hover();
+                if (pointer === "press") await tab.mouse.down();
               }
-              if (state?.enter.interaction) {
-                await handle.hover();
-                if (state.enter.interaction === "press") await tab.mouse.down();
+              await settle(tab, root, caseId);
+              const { values, missing } = await tab.evaluate(measure, args);
+              if (pointer === "press") await tab.mouse.up();
+              if (pointer) {
+                await tab.mouse.move(0, 0);
+                await settle(tab, root, caseId);
               }
-              await settle(tab, handle);
-              const { values, missing } = await tab.evaluate(measure, { caseId, root, selector: part.selector, declarations, properties });
-              if (state?.enter.interaction === "press") await tab.mouse.up();
-              if (state?.enter.interaction) await tab.mouse.move(0, 0);
-              await settle(tab, handle);
-              const where = `${engine.name}: ${c.spec.entry} ${part.name} ${JSON.stringify(c.option)} ${state?.name ?? (c.state || "rest")} in ${root}`;
-              if (missing) failures.push(`${where}: part not rendered`);
-              else {
-                for (const [property, [have, want]] of Object.entries(values)) {
-                  checked++;
-                  if (have !== want) failures.push(`${where}: ${property} computes ${have}, its binding computes ${want}`);
-                }
+              if (missing) continue;
+              measuredParts.add(`${spec.entry} ${part.name}`);
+              for (const [property, [have, want]] of Object.entries(values)) {
+                checked++;
+                if (have !== want) failures.push(`${where}: ${property} computes ${have}, its binding computes ${want}`);
               }
             }
           }
+          await activate(tab, spec, root, caseId, false);
         }
+      }
+    }
+    // A part may render only in some states (an error message); it must be measured at least once.
+    for (const spec of styled) {
+      for (const part of spec.anatomy) {
+        const bound = spec.bindings.some((b) => b.part === part.name);
+        if (bound && !measuredParts.has(`${spec.entry} ${part.name}`)) failures.push(`${engine.name}: ${spec.entry} ${part.name} was never rendered by the fixture`);
       }
     }
     result.engines.push({ engine: engine.name, version: browser.version(), properties: checked });

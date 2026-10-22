@@ -61,6 +61,28 @@ function selfTest() {
     [styledFindings(spec, context({ css: `${css()}.scnx-x:hover{color:var(--ds-color-fg)}` })).length, 1],
     [contrastPairs(spec).length, 1],
   );
+  // CS7-CS8: a child part, a root state, a literal override, and cascade order.
+  const nested = {
+    ...spec,
+    anatomy: [{ name: "root", selector: ".scnx-x" }, { name: "item", selector: ".scnx-x > [data-part=item]" }],
+    states: [{ name: "invalid", on: "root", selectors: ["[data-invalid]"], enter: { props: { error: "x" } } }, { name: "selected", selectors: ["[aria-selected=true]"], enter: { fixture: true } }],
+    bindings: [
+      { part: "item", declarations: { "border-bottom": "{dimension.gap} solid transparent" } },
+      { part: "item", state: "selected", declarations: { "border-bottom-color": "{color.fg}" } },
+      { part: "item", option: { tone: "b" }, declarations: { "border-bottom": "0" } },
+      { part: "item", state: "invalid", declarations: { color: "{color.off}" } },
+    ],
+  };
+  const nestedCss = (swap = false) => {
+    const selected = ".scnx-x>[data-part=item][aria-selected=true]{border-bottom-color:var(--ds-color-fg)}";
+    const tone = ".scnx-x[data-tone=b]>[data-part=item]{border-bottom:0}";
+    return `.scnx-x>[data-part=item]{border-bottom:var(--ds-dimension-gap) solid transparent}${swap ? tone + selected : selected + tone}.scnx-x[data-invalid]>[data-part=item]{color:var(--ds-color-off)}`;
+  };
+  cases.push(
+    [styledFindings(nested, context({ css: nestedCss() })).length, 0],
+    [styledFindings(nested, context({ css: nestedCss(true) })).length, 1],
+    [styledFindings(nested, context({ css: nestedCss().replace("[data-invalid]", "[data-error]") })).length > 0, true],
+  );
   const failed = cases.map(([actual, want], i) => [i, actual, want]).filter(([, actual, want]) => actual !== want);
   if (failed.length > 0) {
     console.error(`Specification self-test failed: ${failed.map(([i, a, w]) => `case ${i} gave ${a}, expected ${w}`).join("; ")}`);
