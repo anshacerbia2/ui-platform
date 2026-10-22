@@ -70,7 +70,7 @@
     },
     {
       "rule": "spacing-literal",
-      "selector": ".code",
+      "selector": ".scnx-code",
       "properties": [
         "padding-block",
         "padding-inline"
@@ -81,7 +81,7 @@
     },
     {
       "rule": "spacing-literal",
-      "selector": ".list--variant_unordered",
+      "selector": ".scnx-list--variant_unordered",
       "properties": [
         "padding-left"
       ],
@@ -91,7 +91,7 @@
     },
     {
       "rule": "spacing-literal",
-      "selector": ".list--variant_ordered",
+      "selector": ".scnx-list--variant_ordered",
       "properties": [
         "padding-left"
       ],
@@ -141,7 +141,7 @@
     },
     {
       "rule": "typography-literal",
-      "selector": ".code",
+      "selector": ".scnx-code",
       "properties": [
         "font-size"
       ],

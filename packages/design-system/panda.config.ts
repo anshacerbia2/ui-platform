@@ -1,7 +1,7 @@
 import { defineConfig, defineRecipe } from "@pandacss/dev";
 
 const containerRecipe = defineRecipe({
-  className: "container",
+  className: "scnx-container",
   base: {
     width: "100%",
     mx: "auto",
@@ -21,7 +21,7 @@ const containerRecipe = defineRecipe({
 });
 
 const flexRecipe = defineRecipe({
-  className: "flex",
+  className: "scnx-flex",
   base: {
     display: "flex",
   },
@@ -72,7 +72,7 @@ const flexRecipe = defineRecipe({
 });
 
 const gridRecipe = defineRecipe({
-  className: "grid",
+  className: "scnx-grid",
   base: {
     display: "grid",
   },
@@ -108,7 +108,7 @@ const gridRecipe = defineRecipe({
 });
 
 const headingRecipe = defineRecipe({
-  className: "heading",
+  className: "scnx-heading",
   base: {
     color: "var(--ds-color-neutral-text-default-default)",
   },
@@ -136,7 +136,7 @@ const headingRecipe = defineRecipe({
 });
 
 const codeRecipe = defineRecipe({
-  className: "code",
+  className: "scnx-code",
   base: {
     fontFamily: "var(--ds-typography-code-default-font-family)",
     fontSize: "0.9em",
@@ -182,7 +182,7 @@ const codeRecipe = defineRecipe({
 });
 
 const textRecipe = defineRecipe({
-  className: "text",
+  className: "scnx-text",
   base: {
     color: "var(--ds-color-neutral-text-default-default)",
   },
@@ -217,7 +217,7 @@ const textRecipe = defineRecipe({
 });
 
 const listRecipe = defineRecipe({
-  className: "list",
+  className: "scnx-list",
   base: {
     display: "flex",
     flexDirection: "column",
@@ -241,7 +241,7 @@ const listRecipe = defineRecipe({
 });
 
 const listItemRecipe = defineRecipe({
-  className: "list-item",
+  className: "scnx-list-item",
   base: {
     display: "list-item",
     color: "inherit",
