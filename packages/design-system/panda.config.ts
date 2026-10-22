@@ -142,7 +142,9 @@ const codeRecipe = defineRecipe({
     fontSize: "0.9em",
     fontWeight: "var(--ds-typography-weight-medium)",
     backgroundColor: "var(--ds-color-neutral-surface-subtle-default)",
-    borderWidth: "1px",
+    // A border needs a style: the reset sets none, so a width and color alone drew nothing.
+    borderStyle: "solid",
+    borderWidth: "var(--ds-dimension-border-width-default)",
     borderColor: "var(--ds-color-neutral-border-subtle-default)",
     borderRadius: "var(--ds-dimension-radius-element)",
     px: "0.4em",
@@ -207,7 +209,8 @@ const textRecipe = defineRecipe({
       right: { textAlign: "right" },
     },
     dimmed: {
-      true: { opacity: 0.7, color: "var(--ds-color-neutral-text-subtle-default)" },
+      // The subtle text token carries the dimming; opacity would also fade the text below its measured contrast.
+      true: { color: "var(--ds-color-neutral-text-subtle-default)" },
     },
   },
   defaultVariants: {

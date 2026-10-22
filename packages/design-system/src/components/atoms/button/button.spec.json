@@ -5,23 +5,67 @@
   "entryKind": "interactive",
   "stability": "candidate",
   "primitive": "ButtonBase",
-  "anatomy": [{ "name": "root", "selector": ".scnx-btn", "primitivePart": "button" }],
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-btn",
+      "primitivePart": "button"
+    }
+  ],
   "options": {
-    "variant": { "values": ["primary", "secondary"], "default": "primary", "selector": "[data-variant={value}]" }
+    "variant": {
+      "values": [
+        "primary",
+        "secondary"
+      ],
+      "default": "primary",
+      "selector": "[data-variant={value}]"
+    }
   },
   "states": [
-    { "name": "hover", "selectors": [":hover:not(:disabled, [data-disabled])"], "enter": { "interaction": "hover" } },
-    { "name": "pressed", "selectors": [":active:not(:disabled, [data-disabled])"], "enter": { "interaction": "press" } },
-    { "name": "disabled", "selectors": [":disabled", "[data-disabled]"], "enter": { "props": { "disabled": true } } }
+    {
+      "name": "hover",
+      "selectors": [
+        ":hover:not(:disabled, [data-disabled])"
+      ],
+      "enter": {
+        "interaction": "hover"
+      }
+    },
+    {
+      "name": "pressed",
+      "selectors": [
+        ":active:not(:disabled, [data-disabled])"
+      ],
+      "enter": {
+        "interaction": "press"
+      }
+    },
+    {
+      "name": "disabled",
+      "selectors": [
+        ":disabled",
+        "[data-disabled]"
+      ],
+      "enter": {
+        "props": {
+          "disabled": true
+        }
+      }
+    }
   ],
-  "fixture": { "props": { "children": "Save changes" } },
+  "fixture": {
+    "props": {
+      "children": "Save changes"
+    }
+  },
   "bindings": [
     {
       "part": "root",
       "declarations": {
-        "padding": "{dimension.spacing.inset.compact} {dimension.spacing.inset.default}",
+        "padding": "{dimension.spacing.inset-compact} {dimension.spacing.inset-default}",
         "border-radius": "{dimension.radius.control}",
-        "border": "{dimension.border.width.default} solid transparent",
+        "border": "{dimension.border-width.default} solid transparent",
         "font-family": "{typography.label.default.font-family}",
         "font-size": "{typography.label.default.font-size}",
         "line-height": "{typography.label.default.line-height}",
@@ -29,17 +73,24 @@
         "font-weight": "{typography.weight.semibold}",
         "transition-duration": "{motion.feedback.duration}",
         "transition-timing-function": "{motion.feedback.easing}",
-        "gap": "{dimension.spacing.inline.default}"
+        "gap": "{dimension.spacing.inline-default}"
       }
     },
     {
       "part": "root",
-      "option": { "variant": "primary" },
-      "declarations": { "background": "{color.primary.surface.solid.default}", "color": "{color.primary.text.contrast.default}" }
+      "option": {
+        "variant": "primary"
+      },
+      "declarations": {
+        "background": "{color.primary.surface.solid.default}",
+        "color": "{color.primary.text.contrast.default}"
+      }
     },
     {
       "part": "root",
-      "option": { "variant": "primary" },
+      "option": {
+        "variant": "primary"
+      },
       "state": "hover",
       "declarations": {
         "background": "{color.primary.surface.solid.hover}",
@@ -49,38 +100,66 @@
     },
     {
       "part": "root",
-      "option": { "variant": "primary" },
+      "option": {
+        "variant": "primary"
+      },
       "state": "pressed",
-      "declarations": { "background": "{color.primary.surface.solid.pressed}", "color": "{color.primary.text.contrast.default}" }
+      "declarations": {
+        "background": "{color.primary.surface.solid.pressed}",
+        "color": "{color.primary.text.contrast.default}"
+      }
     },
     {
       "part": "root",
-      "option": { "variant": "primary" },
+      "option": {
+        "variant": "primary"
+      },
       "state": "disabled",
-      "declarations": { "background": "{color.primary.surface.solid.disabled}", "color": "{color.primary.text.contrast.disabled}" }
+      "declarations": {
+        "background": "{color.primary.surface.solid.disabled}",
+        "color": "{color.primary.text.contrast.disabled}"
+      }
     },
     {
       "part": "root",
-      "option": { "variant": "secondary" },
-      "declarations": { "background": "{color.neutral.surface.default.default}", "color": "{color.neutral.text.default.default}" }
+      "option": {
+        "variant": "secondary"
+      },
+      "declarations": {
+        "background": "{color.neutral.surface.default.default}",
+        "color": "{color.neutral.text.default.default}"
+      }
     },
     {
       "part": "root",
-      "option": { "variant": "secondary" },
+      "option": {
+        "variant": "secondary"
+      },
       "state": "hover",
-      "declarations": { "background": "{color.neutral.surface.default.hover}" }
+      "declarations": {
+        "background": "{color.neutral.surface.default.hover}"
+      }
     },
     {
       "part": "root",
-      "option": { "variant": "secondary" },
+      "option": {
+        "variant": "secondary"
+      },
       "state": "pressed",
-      "declarations": { "background": "{color.neutral.surface.default.pressed}" }
+      "declarations": {
+        "background": "{color.neutral.surface.default.pressed}"
+      }
     },
     {
       "part": "root",
-      "option": { "variant": "secondary" },
+      "option": {
+        "variant": "secondary"
+      },
       "state": "disabled",
-      "declarations": { "background": "{color.neutral.surface.default.disabled}", "color": "{color.neutral.text.default.disabled}" }
+      "declarations": {
+        "background": "{color.neutral.surface.default.disabled}",
+        "color": "{color.neutral.text.default.disabled}"
+      }
     }
   ]
 }

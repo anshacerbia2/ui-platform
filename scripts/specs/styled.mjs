@@ -38,7 +38,8 @@ export function grammar(spec) {
   const root = [];
   const own = [];
   for (const [option, { values, selector }] of Object.entries(spec.options)) {
-    for (const value of values) root.push({ kind: "option", option, value, text: strip(selector.replace("{value}", value)) });
+    // A fragment starting with "." is a class on the root element (a Panda recipe variant, a BEM modifier).
+    for (const value of values) root.push({ kind: "option", option, value, text: strip(selector.replace("{value}", value)), standalone: selector.startsWith(".") });
   }
   for (const state of spec.states) {
     state.selectors.forEach((selector, index) => (state.on === "root" ? root : own).push({ kind: "state", state: state.name, index, text: strip(selector) }));
@@ -47,17 +48,31 @@ export function grammar(spec) {
   return { R, parts: parts.sort((a, b) => (b.rel?.length ?? -1) - (a.rel?.length ?? -1)), root: root.sort(longest), own: own.sort(longest) };
 }
 
-/** The stylesheet selector of one identity, for locating its element in a rendered fixture. */
-export function selectorFor(spec, { part, option = {}, state = "", alternative = 0 }) {
+/**
+ * The selector of one identity. `locate` (default) finds its element in a
+ * rendered fixture; `stylesheet` is the form the stylesheet writes, which
+ * omits the root's class when only class fragments select the root, and gives
+ * the specificity the cascade uses.
+ */
+export function selectorFor(spec, { part, option = {}, state = "", alternative = 0 }, form = "locate") {
   const g = grammar(spec);
   const rel = g.parts.find((p) => p.name === part).rel;
-  const pick = (list) => list.filter((f) => (f.kind === "option" ? option[f.option] === f.value : f.state === state && f.index === alternative)).map((f) => f.text).join("");
-  return `${g.R}${pick(g.root)}${rel}${pick(g.own)}`;
+  const chosen = (list) => list.filter((f) => (f.kind === "option" ? option[f.option] === f.value : f.state === state && f.index === alternative));
+  const rootFragments = chosen(g.root);
+  const rootText = rootFragments.map((f) => f.text).join("");
+  const own = chosen(g.own).map((f) => f.text).join("");
+  const bare = form === "stylesheet" && rootFragments.length > 0 && rootFragments.every((f) => f.standalone);
+  return `${bare ? "" : g.R}${rootText}${rel}${own}`;
 }
 
 /** Map one serialized selector to a binding identity, null when the specification does not describe it, undefined when it is another component's. */
 function describe(selector, g) {
-  if (!selector.startsWith(g.R) || /^[a-z0-9_-]/i.test(selector.slice(g.R.length))) return undefined;
+  // A selector that starts with a root class fragment selects the root element.
+  if (g.root.some((f) => f.standalone && selector.startsWith(f.text) && !/^[a-z0-9_-]/i.test(selector.slice(f.text.length)))) selector = `${g.R}${selector}`;
+  if (!selector.startsWith(g.R)) return undefined;
+  // Another class that only shares the root's prefix (a modifier no option declares) is undescribed, not foreign.
+  // A BEM element or modifier of the root (`__`, `--`) is this component's; `.scnx-code-select` is another component, not `.scnx-code`'s.
+  if (/^[a-z0-9_-]/i.test(selector.slice(g.R.length))) return /^(--|__)/.test(selector.slice(g.R.length)) ? null : undefined;
   for (const part of g.parts) {
     if (part.rel === null) continue;
     let rest = selector.slice(g.R.length);
@@ -140,7 +155,10 @@ export function stylesheetBindings(css, spec) {
 /** Option unions of the public-API report: `name?: "a" | "b";`. */
 export function apiUnion(report, option) {
   const line = new RegExp(`\\b${option}\\??:\\s*([^;]+);`).exec(report)?.[1];
-  return line ? [...line.matchAll(/"([^"]+)"/g)].map((m) => m[1]) : null;
+  if (!line) return null;
+  const values = [...line.matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+  if (/\bboolean\b/.test(line)) values.push("false", "true");
+  return values;
 }
 
 /**
@@ -161,7 +179,7 @@ export function styledFindings(spec, { css, report, primitive, tokens }) {
     }
   }
   for (const [option, { values, default: fallback }] of Object.entries(spec.options)) {
-    if (!values.includes(fallback)) findings.push(`option ${option}: default ${fallback} is not one of its values`);
+    if (fallback !== null && !values.includes(fallback)) findings.push(`option ${option}: default ${fallback} is not one of its values`);
     const union = apiUnion(report, option);
     if (!union) findings.push(`option ${option}: the public-API report declares no such prop`);
     else if ([...union].sort().join() !== [...values].sort().join()) findings.push(`option ${option}: values ${values.join(" | ")} differ from the published union ${union.join(" | ")}`);
@@ -174,7 +192,8 @@ export function styledFindings(spec, { css, report, primitive, tokens }) {
       if (!spec.options[option]?.values.includes(value)) findings.push(`binding names undeclared option value ${option}=${value}`);
     }
     for (const template of Object.values(binding.declarations)) {
-      for (const token of tokensIn(template)) if (!tokens.has(`--ds-${token.replaceAll(".", "-")}`)) findings.push(`binding names token ${token}, which the token stylesheets do not emit`);
+      // A token is named by its canonical path (STD-UIP-TKN-001), as the token output lists it.
+      for (const token of tokensIn(template)) if (!tokens.has(token)) findings.push(`binding names token ${token}, which is not a canonical token name of the token output`);
     }
     const key = bindingKey(binding);
     if (declared.has(key)) findings.push(`two bindings for ${key}`);
@@ -230,7 +249,7 @@ export function effective(spec, part, option, state) {
   const matches = (b) =>
     b.part === part && (!b.state || b.state === state) && Object.entries(b.option ?? {}).every(([k, v]) => option[k] === v);
   const ordered = spec.bindings
-    .map((b, index) => ({ b, index, weight: specificity(selectorFor(spec, b)) }))
+    .map((b, index) => ({ b, index, weight: specificity(selectorFor(spec, b, "stylesheet")) }))
     .filter(({ b }) => matches(b))
     .sort((x, y) => compare(x.weight, y.weight) || x.index - y.index);
   const out = {};
@@ -253,7 +272,7 @@ const overlap = (a, b) => a === b || a.startsWith(`${b}-`) || b.startsWith(`${a}
  */
 export function orderFindings(spec, sourceOrder) {
   const findings = [];
-  const rows = spec.bindings.map((b, index) => ({ b, index, key: bindingKey(b), weight: specificity(selectorFor(spec, b)) }));
+  const rows = spec.bindings.map((b, index) => ({ b, index, key: bindingKey(b), weight: specificity(selectorFor(spec, b, "stylesheet")) }));
   for (const x of rows) {
     for (const y of rows) {
       if (x.index >= y.index || x.b.part !== y.b.part || compare(x.weight, y.weight) !== 0) continue;
@@ -268,10 +287,20 @@ export function orderFindings(spec, sourceOrder) {
 
 /** Every option-value combination of a specification. */
 export function combinations(spec) {
-  return Object.entries(spec.options).reduce(
-    (acc, [option, { values }]) => acc.flatMap((combo) => values.map((value) => ({ ...combo, [option]: value }))),
-    [{}],
-  );
+  const defaults = Object.fromEntries(Object.entries(spec.options).filter(([, o]) => o.default !== null).map(([k, o]) => [k, o.default]));
+  const key = (combo) => JSON.stringify(Object.entries(combo).sort(([a], [b]) => a.localeCompare(b)));
+  const out = new Map([[key(defaults), defaults]]);
+  const add = (combo) => out.set(key(combo), combo);
+  // Each option varies alone from the defaults (options do not interact) ...
+  for (const [option, { values }] of Object.entries(spec.options)) for (const value of values) add({ ...defaults, [option]: value });
+  // ... except options a binding names together, which vary jointly.
+  for (const binding of spec.bindings) {
+    const joint = Object.keys(binding.option ?? {});
+    if (joint.length < 2) continue;
+    const product = joint.reduce((acc, option) => acc.flatMap((combo) => spec.options[option].values.map((value) => ({ ...combo, [option]: value }))), [defaults]);
+    product.forEach(add);
+  }
+  return [...out.values()];
 }
 
 /**
@@ -296,6 +325,14 @@ export function contrastPairs(spec) {
   return pairs;
 }
 
+/** A published declaration file and the chunks it imports. */
+function declarations(file) {
+  if (!fs.existsSync(file)) return [];
+  const text = fs.readFileSync(file, "utf8");
+  const chunks = [...text.matchAll(/from ["'](\.{1,2}\/[^"']+)\.js["']/g)].map((m) => path.resolve(path.dirname(file), `${m[1]}.d.ts`));
+  return [text, ...chunks.filter((c) => fs.existsSync(c)).map((c) => fs.readFileSync(c, "utf8"))];
+}
+
 /** Inputs the static rules read, for a styled specification. */
 export function styledContext(spec, primitives, tokens) {
   const name = spec.entry.split("/").pop();
@@ -307,6 +344,8 @@ export function styledContext(spec, primitives, tokens) {
       ...primitives
         .filter((p) => p.name === spec.primitive)
         .map((p) => fs.readFileSync(path.join(root, `packages/core-ui/api/components.${p.entry.split("/").pop()}.api.md`), "utf8")),
+      // The published declarations, where a union the report omits (a forgotten export) is spelled out.
+      ...declarations(path.join(root, "packages/design-system/dist/components", name, "index.d.ts")),
     ].join("\n"),
     primitive: primitives.find((p) => p.name === spec.primitive),
     tokens,

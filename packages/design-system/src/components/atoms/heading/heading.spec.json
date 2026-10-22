@@ -1,7 +1,160 @@
 {
-  "$schema": "../../../../../../scripts/specs/schema/entry.schema.json",
-  "kind": "entry",
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
   "entry": "@scnx/system/components/heading",
   "entryKind": "presentational",
-  "stability": "candidate"
+  "stability": "candidate",
+  "primitive": null,
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-heading"
+    }
+  ],
+  "options": {
+    "size": {
+      "values": [
+        "xxlarge",
+        "xlarge",
+        "large",
+        "medium",
+        "small",
+        "xsmall"
+      ],
+      "default": "medium",
+      "selector": ".scnx-heading--size_{value}"
+    },
+    "weight": {
+      "values": [
+        "bold",
+        "semibold",
+        "medium",
+        "regular"
+      ],
+      "default": "bold",
+      "selector": ".scnx-heading--weight_{value}"
+    }
+  },
+  "states": [],
+  "fixture": {
+    "props": {
+      "children": "Payroll runs"
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "color": "{color.neutral.text.default.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "size": "medium"
+      },
+      "declarations": {
+        "font-family": "{typography.heading.medium.font-family}",
+        "font-size": "{typography.heading.medium.font-size}",
+        "line-height": "{typography.heading.medium.line-height}",
+        "letter-spacing": "{typography.heading.medium.letter-spacing}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "weight": "bold"
+      },
+      "declarations": {
+        "font-weight": "{typography.weight.bold}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "size": "xxlarge"
+      },
+      "declarations": {
+        "font-family": "{typography.heading.xxlarge.font-family}",
+        "font-size": "{typography.heading.xxlarge.font-size}",
+        "line-height": "{typography.heading.xxlarge.line-height}",
+        "letter-spacing": "{typography.heading.xxlarge.letter-spacing}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "size": "xlarge"
+      },
+      "declarations": {
+        "font-family": "{typography.heading.xlarge.font-family}",
+        "font-size": "{typography.heading.xlarge.font-size}",
+        "line-height": "{typography.heading.xlarge.line-height}",
+        "letter-spacing": "{typography.heading.xlarge.letter-spacing}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "size": "large"
+      },
+      "declarations": {
+        "font-family": "{typography.heading.large.font-family}",
+        "font-size": "{typography.heading.large.font-size}",
+        "line-height": "{typography.heading.large.line-height}",
+        "letter-spacing": "{typography.heading.large.letter-spacing}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "size": "small"
+      },
+      "declarations": {
+        "font-family": "{typography.heading.small.font-family}",
+        "font-size": "{typography.heading.small.font-size}",
+        "line-height": "{typography.heading.small.line-height}",
+        "letter-spacing": "{typography.heading.small.letter-spacing}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "size": "xsmall"
+      },
+      "declarations": {
+        "font-family": "{typography.heading.xsmall.font-family}",
+        "font-size": "{typography.heading.xsmall.font-size}",
+        "line-height": "{typography.heading.xsmall.line-height}",
+        "letter-spacing": "{typography.heading.xsmall.letter-spacing}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "weight": "semibold"
+      },
+      "declarations": {
+        "font-weight": "{typography.weight.semibold}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "weight": "medium"
+      },
+      "declarations": {
+        "font-weight": "{typography.weight.medium}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "weight": "regular"
+      },
+      "declarations": {
+        "font-weight": "{typography.weight.regular}"
+      }
+    }
+  ]
 }

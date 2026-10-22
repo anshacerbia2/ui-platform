@@ -1,7 +1,40 @@
 {
-  "$schema": "../../../../../../scripts/specs/schema/entry.schema.json",
-  "kind": "entry",
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
   "entry": "@scnx/system/components/container",
   "entryKind": "presentational",
-  "stability": "candidate"
+  "stability": "candidate",
+  "primitive": null,
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-container"
+    }
+  ],
+  "options": {
+    "size": {
+      "values": [
+        "prose",
+        "base",
+        "wide",
+        "fluid"
+      ],
+      "default": "base",
+      "selector": ".scnx-container--size_{value}"
+    }
+  },
+  "states": [],
+  "fixture": {
+    "props": {
+      "children": "Content"
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "padding-inline": "{dimension.spacing.page}"
+      }
+    }
+  ]
 }

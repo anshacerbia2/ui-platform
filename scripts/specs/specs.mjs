@@ -104,10 +104,10 @@ export function loadSpecs() {
   // Styled rules read the built stylesheet and the API reports (TDD styled CS2, CS3).
   const styled = expected.filter((row) => row.spec?.kind === "styled");
   if (findings.length === 0 && styled.length > 0) {
-    const css = path.join(root, "packages/design-system/dist/tokens/css/default.css");
-    if (!fs.existsSync(css)) findings.push("styled specifications need the built packages; run pnpm build first");
+    const output = path.join(root, "packages/design-system/dist/tokens/json/default.json");
+    if (!fs.existsSync(output)) findings.push("styled specifications need the built packages; run pnpm build first");
     else {
-      const tokens = new Set([...fs.readFileSync(css, "utf8").matchAll(/(--ds-[a-z0-9-]+)\s*:/g)].map((m) => m[1]));
+      const tokens = new Set(JSON.parse(fs.readFileSync(output, "utf8")).tokens.map((t) => t.name));
       const primitives = expected.filter((row) => row.spec.kind === "primitive").map((row) => row.spec);
       for (const { file, spec } of styled) {
         for (const finding of styledFindings(spec, styledContext(spec, primitives, tokens))) findings.push(`${file}: ${finding}`);

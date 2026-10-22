@@ -100,14 +100,20 @@
             "minItems": 1,
             "uniqueItems": true,
             "items": {
-              "$ref": "common.schema.json#/$defs/name"
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]*$"
             }
           },
           "default": {
-            "$ref": "common.schema.json#/$defs/name"
+            "description": "The value the component applies when the prop is absent, or null when it applies none.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
           },
           "selector": {
-            "description": "Selector fragment with {value}, for example [data-variant={value}].",
+            "description": "Selector fragment with {value}: appended to the root's class (for example [data-variant={value}]), or a class on the root element when it starts with a period (for example .heading--size_{value}).",
             "type": "string",
             "pattern": "\\{value\\}"
           }

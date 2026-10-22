@@ -1,7 +1,101 @@
 {
-  "$schema": "../../../../../../scripts/specs/schema/entry.schema.json",
-  "kind": "entry",
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
   "entry": "@scnx/system/components/grid",
   "entryKind": "presentational",
-  "stability": "candidate"
+  "stability": "candidate",
+  "primitive": null,
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-grid"
+    }
+  ],
+  "options": {
+    "columns": {
+      "values": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12"
+      ],
+      "default": "1",
+      "selector": ".scnx-grid--columns_{value}"
+    },
+    "gap": {
+      "values": [
+        "none",
+        "compact",
+        "default",
+        "comfortable",
+        "section"
+      ],
+      "default": "none",
+      "selector": ".scnx-grid--gap_{value}"
+    }
+  },
+  "states": [],
+  "fixture": {
+    "props": {
+      "children": "Cell"
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "option": {
+        "gap": "none"
+      },
+      "declarations": {
+        "gap": "0"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "gap": "compact"
+      },
+      "declarations": {
+        "row-gap": "{dimension.spacing.stack-compact}",
+        "column-gap": "{dimension.spacing.inline-compact}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "gap": "default"
+      },
+      "declarations": {
+        "row-gap": "{dimension.spacing.stack-default}",
+        "column-gap": "{dimension.spacing.inline-default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "gap": "comfortable"
+      },
+      "declarations": {
+        "row-gap": "{dimension.spacing.stack-comfortable}",
+        "column-gap": "{dimension.spacing.inline-comfortable}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "gap": "section"
+      },
+      "declarations": {
+        "gap": "{dimension.spacing.section}"
+      }
+    }
+  ]
 }

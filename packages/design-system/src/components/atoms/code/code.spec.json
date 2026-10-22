@@ -1,7 +1,102 @@
 {
-  "$schema": "../../../../../../scripts/specs/schema/entry.schema.json",
-  "kind": "entry",
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
   "entry": "@scnx/system/components/code",
   "entryKind": "presentational",
-  "stability": "candidate"
+  "stability": "candidate",
+  "primitive": null,
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-code"
+    }
+  ],
+  "options": {
+    "intent": {
+      "values": [
+        "primary",
+        "info",
+        "success",
+        "warning",
+        "danger"
+      ],
+      "default": null,
+      "selector": ".scnx-code--intent_{value}"
+    }
+  },
+  "states": [],
+  "fixture": {
+    "props": {
+      "children": "pnpm add @scnx/system"
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "border-width": "{dimension.border-width.default}",
+        "border-color": "{color.neutral.border.subtle.default}",
+        "border-radius": "{dimension.radius.element}",
+        "font-family": "{typography.code.default.font-family}",
+        "font-weight": "{typography.weight.medium}",
+        "background-color": "{color.neutral.surface.subtle.default}",
+        "color": "inherit"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "intent": "primary"
+      },
+      "declarations": {
+        "border-color": "{color.primary.border.default.default}",
+        "color": "{color.primary.text.default.default}",
+        "background-color": "{color.primary.surface.subtle.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "intent": "info"
+      },
+      "declarations": {
+        "border-color": "{color.info.border.default.default}",
+        "color": "{color.info.text.default.default}",
+        "background-color": "{color.info.surface.subtle.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "intent": "success"
+      },
+      "declarations": {
+        "border-color": "{color.success.border.default.default}",
+        "color": "{color.success.text.default.default}",
+        "background-color": "{color.success.surface.subtle.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "intent": "warning"
+      },
+      "declarations": {
+        "border-color": "{color.warning.border.default.default}",
+        "color": "{color.warning.text.default.default}",
+        "background-color": "{color.warning.surface.subtle.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "intent": "danger"
+      },
+      "declarations": {
+        "border-color": "{color.danger.border.default.default}",
+        "color": "{color.danger.text.default.default}",
+        "background-color": "{color.danger.surface.subtle.default}"
+      }
+    }
+  ]
 }
