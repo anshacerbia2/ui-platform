@@ -21,31 +21,85 @@ const normalizeSelector = (selector) => csstree.generate(csstree.parse(selector,
 export const bindingKey = ({ part, option = {}, state = "" }) =>
   `${part}|${Object.entries(option).sort(([a], [b]) => a.localeCompare(b)).map(([k, v]) => `${k}=${v}`).join(",")}|${state}`;
 
+/** Split a serialized selector into compound selectors and the combinators between them. */
+export function compounds(selector) {
+  const parts = [""];
+  const combinators = [];
+  let depth = 0;
+  for (let i = 0; i < selector.length; i++) {
+    const ch = selector[i];
+    if (ch === "(" || ch === "[") depth++;
+    else if (ch === ")" || ch === "]") depth--;
+    if (depth === 0 && (ch === " " || ch === ">" || ch === "+" || ch === "~")) {
+      let combinator = ch;
+      while (selector[i + 1] === " " || ">+~".includes(selector[i + 1])) {
+        i++;
+        if (selector[i] !== " ") combinator = selector[i];
+      }
+      combinators.push(combinator);
+      parts.push("");
+    } else parts[parts.length - 1] += ch;
+  }
+  return { compounds: parts, combinators };
+}
+
+const continuesName = (rest) => /^[a-z0-9_-]/i.test(rest);
+
 /**
- * The selector grammar of a specification: the root part's class `R`, each
- * part's selector relative to `R` (a combinator and simple selectors, or a
- * pseudo-element), and the fragments options and states add. Options and
- * `on: "root"` states attach to `R`; other states attach to their part. All
- * text is normalized as the stylesheet serializes it.
+ * The selector grammar of a specification. Each part is a selector of one or
+ * more compounds (`.scnx-accordion__item`, `.scnx-tabs [data-part=tab]`,
+ * `.scnx-toc__item .scnx-toc__list`); the first part, the root, is one class
+ * `R`. Options and `on: "root"` states add fragments to the root's compound;
+ * an option fragment starting with a period is a class on the root element.
+ * Other states add fragments to the measured part's last compound, or, with
+ * `on: <part>`, to that part's compound written as the measured part's
+ * context (`.scnx-accordion__trigger[data-state=open] .scnx-accordion__icon`).
+ * All text is normalized as the stylesheet serializes it.
  */
 export function grammar(spec) {
   const R = normalizeSelector(spec.anatomy[0].selector);
-  const strip = (fragment) => normalizeSelector(`${R}${fragment}`).slice(R.length);
+  const strip = (base, fragment) => normalizeSelector(`${base}${fragment}`).slice(base.length);
   const parts = spec.anatomy.map((part, index) => {
     const full = normalizeSelector(part.selector);
-    return { name: part.name, rel: full.startsWith(R) ? full.slice(R.length) : null, root: index === 0 };
+    return { name: part.name, full, ...compounds(full), root: index === 0, extends: part.extends ?? null };
   });
   const root = [];
   const own = [];
+  const anchored = new Map();
   for (const [option, { values, selector }] of Object.entries(spec.options)) {
-    // A fragment starting with "." is a class on the root element (a Panda recipe variant, a BEM modifier).
-    for (const value of values) root.push({ kind: "option", option, value, text: strip(selector.replace("{value}", value)), standalone: selector.startsWith(".") });
+    for (const value of values) root.push({ kind: "option", option, value, text: strip(R, selector.replace("{value}", value)), standalone: selector.startsWith(".") });
   }
   for (const state of spec.states) {
-    state.selectors.forEach((selector, index) => (state.on === "root" ? root : own).push({ kind: "state", state: state.name, index, text: strip(selector) }));
+    const on = state.on ?? "part";
+    state.selectors.forEach((selector, index) => {
+      const fragment = { kind: "state", state: state.name, index };
+      if (on === "root") root.push({ ...fragment, text: strip(R, selector) });
+      else if (on === "part") own.push({ ...fragment, text: strip(R, selector) });
+      else anchored.set(on, [...(anchored.get(on) ?? []), { ...fragment, text: strip(R, selector) }]);
+    });
   }
   const longest = (a, b) => b.text.length - a.text.length;
-  return { R, parts: parts.sort((a, b) => (b.rel?.length ?? -1) - (a.rel?.length ?? -1)), root: root.sort(longest), own: own.sort(longest) };
+  root.sort(longest);
+  own.sort(longest);
+  for (const list of anchored.values()) list.sort(longest);
+  return { R, parts: parts.sort((a, b) => b.compounds.length - a.compounds.length || b.full.length - a.full.length), root, own, anchored };
+}
+
+/** Consume fragments from the start of `rest`; null when something is left or two states occur. */
+function consume(rest, list, found) {
+  for (let hit = list.find((f) => rest.startsWith(f.text)); hit; hit = list.find((f) => rest.startsWith(f.text))) {
+    if (hit.kind === "option") found.option[hit.option] = hit.value;
+    else if (found.state) return null;
+    else [found.state, found.alternative] = [hit.state, hit.index];
+    rest = rest.slice(hit.text.length);
+  }
+  return rest;
+}
+
+/** A compound that selects the root element: `R` and fragments, or root class fragments alone. */
+function rootCompound(text, g) {
+  if (g.root.some((f) => f.standalone && text.startsWith(f.text) && !continuesName(text.slice(f.text.length)))) return `${g.R}${text}`;
+  return text.startsWith(g.R) && !continuesName(text.slice(g.R.length)) ? text : null;
 }
 
 /**
@@ -56,43 +110,68 @@ export function grammar(spec) {
  */
 export function selectorFor(spec, { part, option = {}, state = "", alternative = 0 }, form = "locate") {
   const g = grammar(spec);
-  const rel = g.parts.find((p) => p.name === part).rel;
-  const chosen = (list) => list.filter((f) => (f.kind === "option" ? option[f.option] === f.value : f.state === state && f.index === alternative));
-  const rootFragments = chosen(g.root);
-  const rootText = rootFragments.map((f) => f.text).join("");
-  const own = chosen(g.own).map((f) => f.text).join("");
+  const target = g.parts.find((p) => p.name === part);
+  const pick = (list) => (list ?? []).filter((f) => (f.kind === "option" ? option[f.option] === f.value : f.state === state && f.index === alternative));
+  const rootFragments = pick(g.root);
   const bare = form === "stylesheet" && rootFragments.length > 0 && rootFragments.every((f) => f.standalone);
-  return `${bare ? "" : g.R}${rootText}${rel}${own}`;
+  const rootText = `${bare ? "" : g.R}${rootFragments.map((f) => f.text).join("")}`;
+  const c = [...target.compounds];
+  const ownText = pick(g.own).map((f) => f.text).join("");
+  let prefix = "";
+  if (c[0] === g.R) c[0] = `${rootText}${c[0].slice(g.R.length)}`;
+  else if (rootFragments.length > 0) prefix = `${rootText} `;
+  c[c.length - 1] += ownText;
+  const stateDef = spec.states.find((s) => s.name === state);
+  if (stateDef && stateDef.on && stateDef.on !== "root" && stateDef.on !== "part") {
+    const anchor = g.parts.find((p) => p.name === stateDef.on);
+    prefix += `${anchor.full}${pick(g.anchored.get(stateDef.on)).map((f) => f.text).join("")} `;
+  }
+  return prefix + c.map((text, i) => (i === 0 ? text : `${target.combinators[i - 1] === " " ? " " : target.combinators[i - 1]}${text}`)).join("");
 }
 
 /** Map one serialized selector to a binding identity, null when the specification does not describe it, undefined when it is another component's. */
 function describe(selector, g) {
-  // A selector that starts with a root class fragment selects the root element.
-  if (g.root.some((f) => f.standalone && selector.startsWith(f.text) && !/^[a-z0-9_-]/i.test(selector.slice(f.text.length)))) selector = `${g.R}${selector}`;
-  if (!selector.startsWith(g.R)) return undefined;
-  // Another class that only shares the root's prefix (a modifier no option declares) is undescribed, not foreign.
-  // A BEM element or modifier of the root (`__`, `--`) is this component's; `.scnx-code-select` is another component, not `.scnx-code`'s.
-  if (/^[a-z0-9_-]/i.test(selector.slice(g.R.length))) return /^(--|__)/.test(selector.slice(g.R.length)) ? null : undefined;
-  for (const part of g.parts) {
-    if (part.rel === null) continue;
-    let rest = selector.slice(g.R.length);
-    const option = {};
-    let state = "";
-    let alternative = -1;
-    const consume = (list) => {
-      for (let hit = list.find((f) => rest.startsWith(f.text)); hit; hit = list.find((f) => rest.startsWith(f.text))) {
-        if (hit.kind === "option") option[hit.option] = hit.value;
-        else if (state) return false;
-        else [state, alternative] = [hit.state, hit.index];
-        rest = rest.slice(hit.text.length);
+  const s = compounds(selector);
+  const ours = (text) => rootCompound(text, g) !== null || g.parts.some((p) => text.startsWith(p.compounds[0]) && !continuesName(text.slice(p.compounds[0].length)));
+  // A rule belongs to the component its first compound starts at: `.scnx-edge-layout__header
+  // .scnx-navbar` is EdgeLayout's rule about a Navbar, not Navbar's.
+  const first = s.compounds[0];
+  if (!ours(first)) {
+    // A BEM element or modifier of the root that no part declares is undescribed, not foreign.
+    return first.startsWith(g.R) && /^(--|__)/.test(first.slice(g.R.length)) ? null : undefined;
+  }
+  for (const target of g.parts) {
+    const m = target.compounds.length;
+    const start = s.compounds.length - m;
+    if (start < 0) continue;
+    if (target.combinators.some((k, i) => k !== s.combinators[start + i])) continue;
+    const found = { option: {}, state: "", alternative: -1 };
+    let ok = true;
+    for (let j = 0; j < m && ok; j++) {
+      let text = s.compounds[start + j];
+      const base = target.compounds[j];
+      if (base === g.R) text = rootCompound(text, g) ?? "";
+      if (!text.startsWith(base) || continuesName(text.slice(base.length))) {
+        ok = false;
+        break;
       }
-      return true;
-    };
-    if (!consume(part.root ? [...g.root, ...g.own] : g.root)) continue;
-    if (!rest.startsWith(part.rel)) continue;
-    rest = rest.slice(part.rel.length);
-    if (!part.root && !consume(g.own)) continue;
-    if (rest === "") return { part: part.name, option, state, alternative };
+      const lists = [...(base === g.R ? g.root : []), ...(j === m - 1 ? g.own : [])];
+      const rest = consume(text.slice(base.length), lists, found);
+      if (rest !== "") ok = false;
+    }
+    if (!ok) continue;
+    if (start === 0) return { part: target.name, ...found };
+    if (start !== 1 || ![" ", ">"].includes(s.combinators[0])) continue;
+    const context = s.compounds[0];
+    const asRoot = rootCompound(context, g);
+    if (asRoot !== null) {
+      if (consume(asRoot.slice(g.R.length), g.root, found) === "") return { part: target.name, ...found };
+      continue;
+    }
+    for (const anchor of g.parts.filter((p) => p.compounds.length === 1 && !p.root)) {
+      if (!context.startsWith(anchor.full) || continuesName(context.slice(anchor.full.length))) continue;
+      if (consume(context.slice(anchor.full.length), g.anchored.get(anchor.name) ?? [], found) === "" && found.state) return { part: target.name, ...found };
+    }
   }
   return null;
 }
@@ -156,9 +235,18 @@ export function stylesheetBindings(css, spec) {
 export function apiUnion(report, option) {
   const line = new RegExp(`\\b${option}\\??:\\s*([^;]+);`).exec(report)?.[1];
   if (!line) return null;
-  const values = [...line.matchAll(/"([^"]+)"/g)].map((m) => m[1]);
-  if (/\bboolean\b/.test(line)) values.push("false", "true");
-  return values;
+  const values = new Set();
+  const resolve = (text, depth) => {
+    for (const m of text.matchAll(/"([^"]+)"/g)) values.add(m[1]);
+    if (/\bboolean\b/.test(text)) ["false", "true"].forEach((v) => values.add(v));
+    // A named union (`weight?: DividerWeight`) resolves through its type alias.
+    for (const [name] of text.replace(/"[^"]*"/g, "").matchAll(/\b[A-Z][A-Za-z0-9]*\b/g)) {
+      const alias = new RegExp(`type ${name}\\s*=\\s*([^;]+);`).exec(report)?.[1];
+      if (alias && depth < 5) resolve(alias, depth + 1);
+    }
+  };
+  resolve(line, 0);
+  return [...values];
 }
 
 /**
@@ -172,7 +260,12 @@ export function styledFindings(spec, { css, report, primitive, tokens }) {
   const states = new Set(spec.states.map((s) => s.name));
   if (spec.primitive && !primitive) findings.push(`primitive ${spec.primitive} has no primitive specification`);
   if (!/^\.scnx-[a-z0-9_-]+$/.test(spec.anatomy[0].selector)) findings.push(`the first part, the root, must be a single class selector`);
-  for (const part of grammar(spec).parts) if (part.rel === null) findings.push(`part ${part.name} is not selected from the root ${spec.anatomy[0].selector}`);
+  for (const part of spec.anatomy) {
+    if (part.extends && !spec.anatomy.some((p) => p.name === part.extends)) findings.push(`part ${part.name} extends undeclared part ${part.extends}`);
+  }
+  for (const state of spec.states) {
+    if (state.on && !["root", "part"].includes(state.on) && !spec.anatomy.some((p) => p.name === state.on)) findings.push(`state ${state.name} is on undeclared part ${state.on}`);
+  }
   for (const part of spec.anatomy) {
     if (part.primitivePart && primitive && !primitive.parts.some((p) => p.name === part.primitivePart)) {
       findings.push(`part ${part.name} styles ${part.primitivePart}, which ${spec.primitive} does not declare`);
@@ -246,8 +339,11 @@ const compare = (a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2];
  * moves to the end, so a later shorthand resets an earlier longhand.
  */
 export function effective(spec, part, option, state) {
+  // A part that `extends` another also takes that part's bindings (a nested list is a list).
+  const chain = [];
+  for (let p = part; p; p = spec.anatomy.find((a) => a.name === p)?.extends) chain.push(p);
   const matches = (b) =>
-    b.part === part && (!b.state || b.state === state) && Object.entries(b.option ?? {}).every(([k, v]) => option[k] === v);
+    chain.includes(b.part) && (!b.state || b.state === state) && Object.entries(b.option ?? {}).every(([k, v]) => option[k] === v);
   const ordered = spec.bindings
     .map((b, index) => ({ b, index, weight: specificity(selectorFor(spec, b, "stylesheet")) }))
     .filter(({ b }) => matches(b))
@@ -326,11 +422,14 @@ export function contrastPairs(spec) {
 }
 
 /** A published declaration file and the chunks it imports. */
-function declarations(file) {
-  if (!fs.existsSync(file)) return [];
+function declarations(file, seen = new Set()) {
+  if (!fs.existsSync(file) || seen.has(file)) return [];
+  seen.add(file);
   const text = fs.readFileSync(file, "utf8");
   const chunks = [...text.matchAll(/from ["'](\.{1,2}\/[^"']+)\.js["']/g)].map((m) => path.resolve(path.dirname(file), `${m[1]}.d.ts`));
-  return [text, ...chunks.filter((c) => fs.existsSync(c)).map((c) => fs.readFileSync(c, "utf8"))];
+  // A prop passed through to a primitive is declared in @scnx/core-ui's published declarations.
+  const core = [...text.matchAll(/from ["']@scnx\/core-ui\/(components|hooks|providers)\/([a-z0-9-]+)["']/g)].map((m) => path.join(root, "packages/core-ui/dist", m[1], m[2], "index.d.ts"));
+  return [text, ...[...chunks, ...core].flatMap((c) => declarations(c, seen))];
 }
 
 /** Inputs the static rules read, for a styled specification. */

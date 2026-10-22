@@ -1,7 +1,146 @@
 {
-  "$schema": "../../../../../../scripts/specs/schema/entry.schema.json",
-  "kind": "entry",
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
   "entry": "@scnx/system/components/table-of-contents",
   "entryKind": "interactive",
-  "stability": "candidate"
+  "stability": "candidate",
+  "primitive": "TableOfContentsBase",
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-toc"
+    },
+    {
+      "name": "label",
+      "selector": ".scnx-toc__label"
+    },
+    {
+      "name": "list",
+      "selector": ".scnx-toc__list"
+    },
+    {
+      "name": "nested-list",
+      "selector": ".scnx-toc__item .scnx-toc__list",
+      "extends": "list"
+    },
+    {
+      "name": "item",
+      "selector": ".scnx-toc__item"
+    },
+    {
+      "name": "link",
+      "selector": ".scnx-toc__link"
+    }
+  ],
+  "options": {},
+  "states": [
+    {
+      "name": "hover",
+      "selectors": [
+        ":hover"
+      ],
+      "enter": {
+        "interaction": "hover"
+      }
+    },
+    {
+      "name": "active",
+      "selectors": [
+        "[data-active=true]"
+      ],
+      "enter": {
+        "attribute": {
+          "data-active": "true"
+        }
+      }
+    }
+  ],
+  "fixture": {
+    "props": {
+      "label": "On this page",
+      "items": [
+        {
+          "id": "pay",
+          "title": "Pay",
+          "url": "#pay",
+          "subcontent": [
+            {
+              "id": "tax",
+              "title": "Tax",
+              "url": "#tax"
+            }
+          ]
+        },
+        {
+          "id": "leave",
+          "title": "Leave",
+          "url": "#leave"
+        }
+      ]
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "font-family": "{typography.body.default.font-family}"
+      }
+    },
+    {
+      "part": "label",
+      "declarations": {
+        "font-family": "{typography.label.default.font-family}",
+        "font-size": "{typography.label.default.font-size}",
+        "line-height": "{typography.label.default.line-height}",
+        "font-weight": "{typography.weight.semibold}",
+        "letter-spacing": "{typography.label.small.letter-spacing}",
+        "color": "{color.neutral.text.default.default}",
+        "margin-bottom": "{dimension.spacing.stack-default}"
+      }
+    },
+    {
+      "part": "list",
+      "declarations": {
+        "margin-top": "{dimension.spacing.stack-default}"
+      }
+    },
+    {
+      "part": "nested-list",
+      "declarations": {
+        "margin-left": "{dimension.spacing.inline-comfortable}"
+      }
+    },
+    {
+      "part": "item",
+      "declarations": {
+        "margin-bottom": "{dimension.spacing.stack-default}"
+      }
+    },
+    {
+      "part": "link",
+      "declarations": {
+        "font-family": "{typography.body.small.font-family}",
+        "font-size": "{typography.body.small.font-size}",
+        "font-weight": "{typography.body.small.font-weight}",
+        "line-height": "{typography.body.small.line-height}",
+        "letter-spacing": "{typography.body.small.letter-spacing}",
+        "color": "{color.neutral.text.subtle.default}",
+        "transition": "color {motion.feedback.duration} {motion.feedback.easing}"
+      }
+    },
+    {
+      "part": "link",
+      "state": "hover",
+      "declarations": {
+        "color": "{color.neutral.text.default.default}"
+      }
+    },
+    {
+      "part": "link",
+      "state": "active",
+      "declarations": {
+        "color": "{color.neutral.text.default.default}"
+      }
+    }
+  ]
 }

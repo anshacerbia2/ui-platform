@@ -37,3 +37,6 @@ export const Default: Story = {
     await expect(trigger).toHaveAttribute("aria-expanded", "true");
   },
 };
+
+/** `variant="stacked"` draws the items as one bordered group. */
+export const Stacked: Story = { args: { variant: "stacked" } };

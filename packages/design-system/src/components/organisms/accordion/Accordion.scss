@@ -7,8 +7,9 @@
   gap: $dimension-spacing-stack-default;
   width: 100%;
 
-  // Variant: single border (stacked)
-  &--stacked {
+  // Variant: one bordered group (stacked). Selected by the `variant` prop; the
+  // `--stacked` modifier class it replaces was reachable only by hand.
+  &[data-variant="stacked"] {
     gap: 0;
     
     .scnx-accordion__item {
@@ -23,13 +24,13 @@
       &:last-child {
         border-bottom-left-radius: $dimension-radius-container;
         border-bottom-right-radius: $dimension-radius-container;
-        border-bottom: 1px solid $color-border-default;
+        border-bottom: $dimension-border-width-default solid $color-border-default;
       }
     }
   }
 
   &__item {
-    border: 1px solid $color-border-default;
+    border: $dimension-border-width-default solid $color-border-default;
     border-radius: $dimension-radius-container;
     background-color: $color-surface-canvas;
     overflow: hidden;
@@ -78,7 +79,7 @@
     // without padding-box calculations interfering
     &-inner {
       padding: $dimension-spacing-inset-default;
-      border-top: 1px solid $color-border-default;
+      border-top: $dimension-border-width-default solid $color-border-default;
     }
   }
 

@@ -12,8 +12,8 @@
 
   min-height: 100vh;
   width: 100%;
-  border-left: 1px solid $color-border-default;
-  border-right: 1px solid $color-border-default;
+  border-left: $dimension-border-width-default solid $color-border-default;
+  border-right: $dimension-border-width-default solid $color-border-default;
 
   &__sidebar {
     grid-area: sidebar;
@@ -24,7 +24,7 @@
 
     .scnx-sidebar {
       height: 100%;
-      border-right: 1px solid $color-border-default;
+      border-right: $dimension-border-width-default solid $color-border-default;
     }
   }
 
@@ -36,10 +36,10 @@
     height: geometry.$navbar-height;
 
     .scnx-navbar {
-      border-bottom: 1px solid $color-border-default;
+      border-bottom: $dimension-border-width-default solid $color-border-default;
 
       .scnx-navbar__start {
-        border-right: 1px solid $color-border-default; 
+        border-right: $dimension-border-width-default solid $color-border-default; 
       }
     }
   }

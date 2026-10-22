@@ -12,7 +12,6 @@
       ],
       "classes": [
         "scnx-accordion",
-        "scnx-accordion--stacked",
         "scnx-accordion__content",
         "scnx-accordion__content-inner",
         "scnx-accordion__icon",

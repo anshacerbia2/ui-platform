@@ -4,13 +4,13 @@
 
 ```ts
 
-import { r as Accordion } from '../../index-CQbg08vt.js';
-import { i as AccordionContentProps } from '../../index-CQbg08vt.js';
-import { t as AccordionItem } from '../../index-CQbg08vt.js';
-import { a as AccordionItemProps } from '../../index-CQbg08vt.js';
-import { n as AccordionRoot } from '../../index-CQbg08vt.js';
-import { o as AccordionRootProps } from '../../index-CQbg08vt.js';
-import { s as AccordionTriggerProps } from '../../index-CQbg08vt.js';
+import { r as Accordion } from '../../index-DQBx46ip.js';
+import { i as AccordionContentProps } from '../../index-DQBx46ip.js';
+import { t as AccordionItem } from '../../index-DQBx46ip.js';
+import { a as AccordionItemProps } from '../../index-DQBx46ip.js';
+import { n as AccordionRoot } from '../../index-DQBx46ip.js';
+import { o as AccordionRootProps } from '../../index-DQBx46ip.js';
+import { s as AccordionTriggerProps } from '../../index-DQBx46ip.js';
 
 export { Accordion }
 
