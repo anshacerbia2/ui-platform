@@ -11,6 +11,6 @@ describe("Stack", () => {
     );
     const stack = screen.getByText("Child").parentElement;
 
-    expect(stack).toHaveClass("scnx-stack", "flex", "flex--direction_col", "consumer");
+    expect(stack).toHaveClass("scnx-stack", "scnx-flex", "scnx-flex--direction_col", "consumer");
   });
 });

@@ -94,7 +94,10 @@ const set = () => h("div", null,
 );
 const roots = themes.flatMap((theme) => modes.map((mode) =>
   h("div", { "data-scnx-theme": theme, "data-scnx-resolved-mode": mode, "data-fixture-root": theme + "/" + mode }, set())));
-const host = h("div", { id: "host" }, h("h1", null, "Host"), h("p", null, "Host text"), h("button", null, "Host button"), h("a", { href: "#host" }, "Host link"), h("input", { "aria-label": "Host input" }));
+// Host markup also carries class names common in host frameworks (Bootstrap, Tailwind): a UI
+// Platform class must not match them (TDD styled RN1).
+const host = h("div", { id: "host" }, h("h1", null, "Host"), h("p", null, "Host text"), h("button", null, "Host button"), h("a", { href: "#host" }, "Host link"), h("input", { "aria-label": "Host input" }),
+  h("div", { className: "container" }, h("div", { className: "flex grid" }, h("p", { className: "text" }, "Host class text"), h("h2", { className: "heading" }, "Host class heading"), h("code", { className: "code" }, "host"), h("ul", { className: "list" }, h("li", { className: "list-item" }, "Host item")))));
 process.stdout.write(renderToStaticMarkup(h("main", null, host, ...roots)));
 `);
 const body = execSync("node render.mjs", { cwd: dir, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
@@ -118,7 +121,7 @@ const server = http.createServer((request, response) => {
 await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
 const origin = `http://127.0.0.1:${server.address().port}`;
 
-const HOST_PROPERTIES = ["box-sizing", "margin-top", "padding-top", "font-family", "font-size", "line-height", "color", "background-color", "border-top-style", "text-decoration-line"];
+const HOST_PROPERTIES = ["box-sizing", "margin-top", "padding-top", "font-family", "font-size", "line-height", "color", "background-color", "border-top-style", "text-decoration-line", "display", "flex-direction", "max-width", "width", "margin-left", "padding-left", "row-gap", "font-weight", "border-top-width"];
 const hostStyles = (properties) =>
   [...document.querySelectorAll("#host, #host *")].map((el) => {
     const style = getComputedStyle(el);

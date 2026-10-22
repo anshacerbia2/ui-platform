@@ -172,6 +172,20 @@ disabled link or child.
 The bindings of BR1–BR3 are recorded in `button.spec.json` and checked by the
 specification gate and its browser fixture (CS1–CS6).
 
+#### Decision record: recipe class namespace
+
+The eight frozen Panda recipes (ADR-GLB-FE-013 5.3.2) emitted unprefixed
+classes, `.container`, `.flex`, `.grid`, `.heading`, `.text`, `.code`, `.list`,
+`.list-item`, and their variant classes, without a theme-root scope. A host
+element with one of those common class names (Bootstrap's `.container`,
+Tailwind's `.flex` and `.grid`) took UI Platform styles anywhere in the page.
+The component fixture's host markup had none of those names, so host isolation
+passed.
+
+| ID  | Decision                                                                                                                                                                                                                                                                                                                                                                                        | Source                                                                                                       | Tradeoff                                                                                                                                                                                             |
+| :-- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| RN1 | Every recipe's `className` carries the `scnx-` namespace of the Sass components (`.scnx-heading`, `.scnx-heading--size_large`); the stylesheet gate accepts recipe selectors only in that namespace, and the component fixture's host markup carries the eight common names, with display, sizing, spacing, and font properties compared. The recipe inventory and its ownership are unchanged. | STD-UIP-STY-001 3, "Style Encapsulation in Federated Environments"; TDD styled, Testing Strategy "Isolation" | A published class-name change: a consumer selecting `.heading` must select `.scnx-heading`. Against `main`'s packages the extended fixture fails on the `.grid`, `.code`, and `.list` host elements. |
+
 #### Decision record: styled specifications
 
 How ADR-UIP-CMP-001 (accepted 2026-10-22) and STD-UIP-STY-001 2.2.0,

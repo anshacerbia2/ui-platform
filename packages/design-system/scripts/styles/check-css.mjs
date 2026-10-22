@@ -138,7 +138,8 @@ const COLOR_FUNCTIONS = new Set(["rgb", "rgba", "hsl", "hsla", "hwb", "lab", "lc
 const NAMED_COLORS = new Set(("aliceblue antiquewhite aqua aquamarine azure beige bisque black blanchedalmond blue blueviolet brown burlywood cadetblue chartreuse chocolate coral cornflowerblue cornsilk crimson cyan darkblue darkcyan darkgoldenrod darkgray darkgreen darkgrey darkkhaki darkmagenta darkolivegreen darkorange darkorchid darkred darksalmon darkseagreen darkslateblue darkslategray darkslategrey darkturquoise darkviolet deeppink deepskyblue dimgray dimgrey dodgerblue firebrick floralwhite forestgreen fuchsia gainsboro ghostwhite gold goldenrod gray green greenyellow grey honeydew hotpink indianred indigo ivory khaki lavender lavenderblush lawngreen lemonchiffon lightblue lightcoral lightcyan lightgoldenrodyellow lightgray lightgreen lightgrey lightpink lightsalmon lightseagreen lightskyblue lightslategray lightslategrey lightsteelblue lightyellow lime limegreen linen magenta maroon mediumaquamarine mediumblue mediumorchid mediumpurple mediumseagreen mediumslateblue mediumspringgreen mediumturquoise mediumvioletred midnightblue mintcream mistyrose moccasin navajowhite navy oldlace olive olivedrab orange orangered orchid palegoldenrod palegreen paleturquoise palevioletred papayawhip peru pink plum powderblue purple rebeccapurple red rosybrown royalblue saddlebrown salmon sandybrown seagreen seashell sienna silver skyblue slateblue slategray slategrey snow springgreen steelblue tan teal thistle tomato turquoise violet wheat white whitesmoke yellow yellowgreen").split(" "));
 
 const TOKEN_ROOT = /^\[data-scnx-theme="[a-z0-9]+(?:-[a-z0-9]+)*"\]\[data-scnx-resolved-mode="(?:light|dark)"\]$/;
-const RECIPE_CLASS = new RegExp(`^\\.(?:${RECIPES.join("|")})(?:--[\\w-]+)?(?=$|[\\s.:[>+~])`);
+// Recipe classes share the .scnx- namespace, so they cannot match host class names (TDD styled RN1).
+const RECIPE_CLASS = new RegExp(`^\\.scnx-(?:${RECIPES.join("|")})(?:--[\\w-]+)?(?=$|[\\s.:[>+~])`);
 
 function selectorFinding(layer, selector) {
   if (layer === "reset" || layer === "base") {
@@ -322,7 +323,7 @@ const SELF_TESTS = [
   ["no order statement", "@layer components { .scnx-a { color: red } }", "does not open with"],
   ["unlayered rule", `${STATEMENT}\n.scnx-a { color: red }`, "outside every layer"],
   ["undeclared layer", `${STATEMENT}\n@layer theme { .scnx-a { color: red } }`, "not a canonical layer"],
-  ["nested layer", `${STATEMENT}\n@layer recipes { @layer _base { .flex { display: flex } } }`, "nested inside"],
+  ["nested layer", `${STATEMENT}\n@layer recipes { @layer _base { .scnx-flex { display: flex } } }`, "nested inside"],
   ["global reset", `${STATEMENT}\n@layer reset { * { box-sizing: border-box } }`, "is not below"],
   ["host body rule", `${STATEMENT}\n@layer base { body { margin: 0 } }`, "is not below"],
   ["root token block", `${STATEMENT}\n@layer tokens { :root { --ds-x: red } }`, "not a theme/mode root"],
@@ -330,7 +331,7 @@ const SELF_TESTS = [
   ["new recipe", `${STATEMENT}\n@layer recipes { .badge { color: red } }`, "not a frozen Panda recipe"],
   ["utility rule", `${STATEMENT}\n@layer utilities { .d_flex { display: flex } }`, "emits no rules in the utilities"],
   ["undefined variable", `${STATEMENT}\n@layer components { .scnx-a { color: var(--ds-missing) } }`, "var(--ds-missing)"],
-  ["duplicate owner", `${STATEMENT}\n@layer components { .flex { gap: 0 } }\n@layer recipes { .flex { gap: 1px } }`, "owned by both"],
+  ["duplicate owner", `${STATEMENT}\n@layer components { .scnx-flex { gap: 0 } }\n@layer recipes { .scnx-flex { gap: 1px } }`, "owned by both"],
   ["import", `${STATEMENT}\n@import "x.css";`, "@import is not allowed"],
   ["integer z-index", `${STATEMENT}\n@layer components { .scnx-a { z-index: 10 } }`, "is not a z-index token"],
   ["important", `${STATEMENT}\n@layer components { .scnx-a { padding: 0 !important } }`, "has no recorded exception"],

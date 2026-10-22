@@ -8,7 +8,7 @@ describe("Text", () => {
     const text = screen.getByText("Body copy");
 
     expect(text.tagName).toBe("P");
-    expect(text).toHaveClass("text", "text--variant_body-default", "text--align_left");
+    expect(text).toHaveClass("scnx-text", "scnx-text--variant_body-default", "scnx-text--align_left");
     // The composite carries its own weight; `weight` only overrides it.
     expect(text.className).not.toMatch(/text--weight_/);
   });
@@ -22,6 +22,6 @@ describe("Text", () => {
     const text = screen.getByText("Inline");
 
     expect(text.tagName).toBe("SPAN");
-    expect(text).toHaveClass("text", "consumer");
+    expect(text).toHaveClass("scnx-text", "consumer");
   });
 });
