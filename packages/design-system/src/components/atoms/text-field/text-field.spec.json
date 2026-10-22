@@ -1,7 +1,141 @@
 {
-  "$schema": "../../../../../../scripts/specs/schema/entry.schema.json",
-  "kind": "entry",
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
   "entry": "@scnx/system/components/text-field",
   "entryKind": "interactive",
-  "stability": "candidate"
+  "stability": "candidate",
+  "primitive": "TextFieldBase",
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-text-field"
+    },
+    {
+      "name": "label",
+      "selector": ".scnx-text-field > [data-part=label]",
+      "primitivePart": "label"
+    },
+    {
+      "name": "description",
+      "selector": ".scnx-text-field > [data-part=description]",
+      "primitivePart": "description"
+    },
+    {
+      "name": "error",
+      "selector": ".scnx-text-field > [data-part=error]",
+      "primitivePart": "error"
+    },
+    {
+      "name": "input",
+      "selector": ".scnx-text-field > [data-part=input]",
+      "primitivePart": "input"
+    }
+  ],
+  "options": {},
+  "states": [
+    {
+      "name": "invalid",
+      "on": "root",
+      "selectors": [
+        "[data-invalid]"
+      ],
+      "enter": {
+        "props": {
+          "error": "Enter an email address"
+        }
+      }
+    },
+    {
+      "name": "disabled",
+      "selectors": [
+        ":disabled"
+      ],
+      "enter": {
+        "props": {
+          "disabled": true
+        }
+      }
+    }
+  ],
+  "fixture": {
+    "props": {
+      "label": "Email",
+      "description": "Work address",
+      "type": "email"
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "gap": "{dimension.spacing.stack.compact}"
+      }
+    },
+    {
+      "part": "label",
+      "declarations": {
+        "font-family": "{typography.label.default.font-family}",
+        "font-size": "{typography.label.default.font-size}",
+        "font-weight": "{typography.weight.medium}",
+        "line-height": "{typography.label.default.line-height}",
+        "letter-spacing": "{typography.label.default.letter-spacing}",
+        "color": "{color.neutral.text.default.default}"
+      }
+    },
+    {
+      "part": "description",
+      "declarations": {
+        "font-family": "{typography.body.small.font-family}",
+        "font-size": "{typography.body.small.font-size}",
+        "font-weight": "{typography.body.small.font-weight}",
+        "line-height": "{typography.body.small.line-height}",
+        "letter-spacing": "{typography.body.small.letter-spacing}",
+        "color": "{color.neutral.text.subtle.default}"
+      }
+    },
+    {
+      "part": "error",
+      "declarations": {
+        "font-family": "{typography.body.small.font-family}",
+        "font-size": "{typography.body.small.font-size}",
+        "font-weight": "{typography.weight.medium}",
+        "line-height": "{typography.body.small.line-height}",
+        "letter-spacing": "{typography.body.small.letter-spacing}",
+        "color": "{color.danger.text.default.default}"
+      }
+    },
+    {
+      "part": "input",
+      "declarations": {
+        "font-family": "{typography.body.default.font-family}",
+        "font-size": "{typography.body.default.font-size}",
+        "font-weight": "{typography.body.default.font-weight}",
+        "line-height": "{typography.body.default.line-height}",
+        "letter-spacing": "{typography.body.default.letter-spacing}",
+        "color": "{color.neutral.text.default.default}",
+        "background": "{color.neutral.surface.raised.default}",
+        "border": "{dimension.border.width.default} solid {color.neutral.border.strong.default}",
+        "border-radius": "{dimension.radius.control}",
+        "padding": "{dimension.spacing.inset.compact}",
+        "transition-duration": "{motion.feedback.duration}",
+        "transition-timing-function": "{motion.feedback.easing}"
+      }
+    },
+    {
+      "part": "input",
+      "state": "disabled",
+      "declarations": {
+        "color": "{color.neutral.text.default.disabled}",
+        "border-color": "{color.neutral.border.default.disabled}",
+        "background": "{color.neutral.surface.default.disabled}"
+      }
+    },
+    {
+      "part": "input",
+      "state": "invalid",
+      "declarations": {
+        "border-color": "{color.danger.border.strong.default}"
+      }
+    }
+  ]
 }
