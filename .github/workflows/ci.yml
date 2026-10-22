@@ -142,16 +142,17 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Exports match source entries
         run: node scripts/sync-exports.mjs --check
-      # TDD primitives P20-P22: one specification per public entry; the
+      - name: Stylesheet gate rejects known violations
+        run: node packages/design-system/scripts/styles/check-css.mjs --self-test
+      # The build runs the stylesheet gate on every published stylesheet.
+      - run: pnpm run build
+      # TDD primitives P20-P22, styled CS2-CS3: one specification per public
+      # entry, checked against the built stylesheet and the API reports; the
       # behavior inventory is generated from them.
       - name: Component specifications and the generated inventory
         run: |
           node scripts/specs/inventory.mjs --self-test
           node scripts/specs/inventory.mjs --check
-      - name: Stylesheet gate rejects known violations
-        run: node packages/design-system/scripts/styles/check-css.mjs --self-test
-      # The build runs the stylesheet gate on every published stylesheet.
-      - run: pnpm run build
       - name: Inspector rejects known violations
         run: node scripts/inspect-packages.mjs --self-test
       - name: Release verification rejects known violations
@@ -185,6 +186,8 @@ jobs:
         run: node scripts/browser-gamut.mjs --packs artifacts/packages
       - name: Packed components in a browser (layers, isolation, focus, forced colors)
         run: node scripts/browser-components.mjs --packs artifacts/packages
+      - name: Styled specifications compute their bound tokens in every engine
+        run: node scripts/browser-specs.mjs --packs artifacts/packages
       - name: Packed ThemeProvider in a browser (SSR, hydration, isolation, strict CSP)
         run: node scripts/browser-theme.mjs --packs artifacts/packages
       - name: Import side effects of every public entry (strict CSP)

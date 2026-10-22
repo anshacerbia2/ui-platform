@@ -1,7 +1,86 @@
 {
-  "$schema": "../../../../../../scripts/specs/schema/entry.schema.json",
-  "kind": "entry",
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
   "entry": "@scnx/system/components/button",
   "entryKind": "interactive",
-  "stability": "candidate"
+  "stability": "candidate",
+  "primitive": "ButtonBase",
+  "anatomy": [{ "name": "root", "selector": ".scnx-btn", "primitivePart": "button" }],
+  "options": {
+    "variant": { "values": ["primary", "secondary"], "default": "primary", "selector": "[data-variant={value}]" }
+  },
+  "states": [
+    { "name": "hover", "selectors": [":hover:not(:disabled, [data-disabled])"], "enter": { "interaction": "hover" } },
+    { "name": "pressed", "selectors": [":active:not(:disabled, [data-disabled])"], "enter": { "interaction": "press" } },
+    { "name": "disabled", "selectors": [":disabled", "[data-disabled]"], "enter": { "props": { "disabled": true } } }
+  ],
+  "fixture": { "props": { "children": "Save changes" } },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "padding": "{dimension.spacing.inset.compact} {dimension.spacing.inset.default}",
+        "border-radius": "{dimension.radius.control}",
+        "border": "{dimension.border.width.default} solid transparent",
+        "font-family": "{typography.label.default.font-family}",
+        "font-size": "{typography.label.default.font-size}",
+        "line-height": "{typography.label.default.line-height}",
+        "letter-spacing": "{typography.label.default.letter-spacing}",
+        "font-weight": "{typography.weight.semibold}",
+        "transition-duration": "{motion.feedback.duration}",
+        "transition-timing-function": "{motion.feedback.easing}",
+        "gap": "{dimension.spacing.inline.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": { "variant": "primary" },
+      "declarations": { "background": "{color.primary.surface.solid.default}", "color": "{color.primary.text.contrast.default}" }
+    },
+    {
+      "part": "root",
+      "option": { "variant": "primary" },
+      "state": "hover",
+      "declarations": {
+        "background": "{color.primary.surface.solid.hover}",
+        "color": "{color.primary.text.contrast.hover}",
+        "box-shadow": "{effect.shadow.low}"
+      }
+    },
+    {
+      "part": "root",
+      "option": { "variant": "primary" },
+      "state": "pressed",
+      "declarations": { "background": "{color.primary.surface.solid.pressed}", "color": "{color.primary.text.contrast.default}" }
+    },
+    {
+      "part": "root",
+      "option": { "variant": "primary" },
+      "state": "disabled",
+      "declarations": { "background": "{color.primary.surface.solid.disabled}", "color": "{color.primary.text.contrast.disabled}" }
+    },
+    {
+      "part": "root",
+      "option": { "variant": "secondary" },
+      "declarations": { "background": "{color.neutral.surface.default.default}", "color": "{color.neutral.text.default.default}" }
+    },
+    {
+      "part": "root",
+      "option": { "variant": "secondary" },
+      "state": "hover",
+      "declarations": { "background": "{color.neutral.surface.default.hover}" }
+    },
+    {
+      "part": "root",
+      "option": { "variant": "secondary" },
+      "state": "pressed",
+      "declarations": { "background": "{color.neutral.surface.default.pressed}" }
+    },
+    {
+      "part": "root",
+      "option": { "variant": "secondary" },
+      "state": "disabled",
+      "declarations": { "background": "{color.neutral.surface.default.disabled}", "color": "{color.neutral.text.default.disabled}" }
+    }
+  ]
 }
