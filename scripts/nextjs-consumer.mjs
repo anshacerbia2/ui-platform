@@ -30,7 +30,7 @@ import { browserEngines } from "./browser-engines.mjs";
 const POLICY = "default-src 'self'; script-src 'nonce-{nonce}'; style-src 'nonce-{nonce}'; object-src 'none'; base-uri 'none'";
 
 // Pinned (TDD packaging K5, reference [5]); bump deliberately, with a run of this fixture.
-const NEXT_VERSION = "16.3.8";
+const NEXT_VERSION = "16.4.2";
 
 const arg = (name, fallback) => {
   const index = process.argv.indexOf(name);

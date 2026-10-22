@@ -517,8 +517,11 @@ References (retrieved 2026-10-02):
 4. Vercel Analytics `packages/web/tsup.config.js`, cited by [2]:
    <https://github.com/vercel/analytics/blob/main/packages/web/tsup.config.js>
    builds with `splitting: false` and `treeshake: false`.
-5. npm registry, 2026-10-02: `next` 16.3.8 (MIT), peer `react` and
-   `react-dom` `^18.2.0 || ^19.0.0`.
+5. npm registry, 2026-10-23: `next` 16.4.2 (MIT), peer `react` and
+   `react-dom` `^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0`. The
+   fixture moved from 16.3.8 when GHSA-2464-fhr4-w9xw and GHSA-673q-mjm6-r5xr
+   (critical) and GHSA-p3m5-59mp-jv5r (high), published 2026-10-22 for
+   `next` `>=16.0.0 <=16.4.0`, failed the advisory gate (V1-V2).
 6. React `packages/react-server-dom-turbopack/src/ReactFlightTurbopackReferences.js`
    at commit `7c6ac13e19fef500b7f669a16bbd01ecc95965ca`:
    <https://github.com/facebook/react/blob/7c6ac13e19fef500b7f669a16bbd01ecc95965ca/packages/react-server-dom-turbopack/src/ReactFlightTurbopackReferences.js#L224-L229>.
@@ -733,12 +736,13 @@ References (retrieved 2026-10-02):
     The scanner, `crates/rolldown/src/ast_scanner/impl_visit.rs` at the same
     commit, pushes `module_level_directive` for every top-level directive that
     is not `use strict`, without regard to whether the module is an entry.
-40. Next.js 16.3.8, How to set a Content Security Policy, App Router, at tag
-    `v16.3.8` (commit `b0fad0d45eb4c4430fda5eeeb442e8a5af08a5f6`, retrieved
-    2026-10-03):
-    <https://github.com/vercel/next.js/blob/b0fad0d45eb4c4430fda5eeeb442e8a5af08a5f6/docs/01-app/02-guides/content-security-policy.mdx>.
+40. Next.js 16.4.2, How to set a Content Security Policy, App Router, at tag
+    `v16.4.2` (commit `2864b1772c37242a9b40ab4d366eb7d368c2a070`, retrieved
+    2026-10-23; the same text as at `v16.3.8`):
+    <https://github.com/vercel/next.js/blob/2864b1772c37242a9b40ab4d366eb7d368c2a070/docs/01-app/02-guides/content-security-policy.mdx>.
     "Every time a page is viewed, a fresh nonce should be generated. This
-    means that you **must use dynamic rendering to add nonces**"; "Next.js
+    means that you **must use dynamic rendering to add nonces**" (link markup
+    omitted); "Next.js
     parses the `Content-Security-Policy` header and extracts the nonce using
     the `'nonce-{value}'` pattern"; it "attaches the nonce to: Framework
     scripts (React, Next.js runtime); Page-specific JavaScript bundles; Inline
