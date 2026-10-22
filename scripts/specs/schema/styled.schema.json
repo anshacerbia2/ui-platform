@@ -69,12 +69,16 @@
             "$ref": "common.schema.json#/$defs/name"
           },
           "selector": {
-            "description": "The part's selector in the published stylesheet: the root's class for the first part, the root's class followed by a combinator and simple selectors, or a pseudo-element, for the others.",
+            "description": "The part's selector in the published stylesheet: the root's class for the first part; for the others, one or more compounds starting with a .scnx- class (a BEM element, the root followed by a combinator, or another part followed by a combinator), or a pseudo-element.",
             "type": "string",
             "pattern": "^\\.scnx-[a-z0-9_-]+"
           },
           "primitivePart": {
             "description": "The primitive part this part styles.",
+            "$ref": "common.schema.json#/$defs/name"
+          },
+          "extends": {
+            "description": "A part this part refines, whose bindings it also takes (a nested list).",
             "$ref": "common.schema.json#/$defs/name"
           }
         }
@@ -168,8 +172,11 @@
                   "interaction": {
                     "enum": [
                       "hover",
-                      "press"
-                    ]
+                      "press",
+                      "focus",
+                      "focus-within"
+                    ],
+                    "description": "hover and press use the pointer; focus focuses the element, focus-within its first focusable descendant."
                   }
                 }
               },
@@ -185,15 +192,29 @@
                     "description": "The fixture tree already renders elements in this state."
                   }
                 }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "attribute"
+                ],
+                "properties": {
+                  "attribute": {
+                    "type": "object",
+                    "description": "Attributes the fixture sets on the element for the measurement, for a state the primitive sets at run time (a table of contents marks the section in view).",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                }
               }
             ]
           },
           "on": {
-            "description": "Where the state's selector fragment attaches: the root part, or (default) the part each binding names.",
-            "enum": [
-              "root",
-              "part"
-            ]
+            "description": "Where the state's selector fragment attaches: the root part, the measured part (default), or the named part written as the measured part's context.",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
           }
         }
       }

@@ -119,12 +119,15 @@ const origin = `http://127.0.0.1:${server.address().port}`;
  * and measure it, or its pseudo-element, against a probe in the same case
  * carrying the merged declarations.
  */
-function measure({ caseId, root, selector, exclude, declarations, properties, mark }) {
+function measure({ caseId, root, selector, exclude, declarations, properties, mark, marked }) {
   const scope = document.querySelector(`[data-root="${root}"] [data-case="${caseId}"]`);
   const [host, pseudo] = selector.includes("::") ? [selector.slice(0, selector.indexOf("::")), selector.slice(selector.indexOf("::"))] : [selector, null];
-  const el = [...scope.querySelectorAll(host)].find((candidate) => !exclude.some((x) => candidate.matches(x)));
-  document.querySelectorAll("[data-spec-target]").forEach((old) => old.removeAttribute("data-spec-target"));
+  // An element whose state was just entered is measured as marked; otherwise the first match in no excluded state.
+  const el = marked ? scope.querySelector("[data-spec-target]") : [...scope.querySelectorAll(host)].find((candidate) => !exclude.some((x) => candidate.matches(x)));
+  if (!marked) document.querySelectorAll("[data-spec-target]").forEach((old) => old.removeAttribute("data-spec-target"));
   if (!el) return { missing: true };
+  // A vendor pseudo-element (::-webkit-scrollbar) exists only in engines that support it.
+  if (pseudo && !CSS.supports(`selector(${pseudo})`)) return { unsupported: true };
   if (mark) {
     el.setAttribute("data-spec-target", "");
     return { marked: true };
@@ -169,6 +172,7 @@ for (const engine of browserEngines()) {
   const browser = await engine.type.launch();
   let checked = 0;
   const measuredParts = new Set();
+  const measuredStates = new Set();
   try {
     const tab = await browser.newPage();
     await tab.goto(`${origin}/`, { waitUntil: "load" });
@@ -177,47 +181,80 @@ for (const engine of browserEngines()) {
         const root = `${theme}/${mode}`;
         for (const [caseId, c] of cases.entries()) {
           const { spec } = c;
-          const states = c.state ? [c.state] : ["", ...spec.states.filter((s) => s.enter.fixture || s.enter.interaction).map((s) => s.name)];
+          const states = c.state ? [c.state] : ["", ...spec.states.filter((s) => s.enter.fixture || s.enter.interaction || s.enter.attribute).map((s) => s.name)];
           await activate(tab, spec, root, caseId, true);
           for (const stateName of states) {
             const state = spec.states.find((s) => s.name === stateName);
             const pointer = state?.enter.interaction;
+            const attribute = state?.enter.attribute;
             for (const part of spec.anatomy) {
+              // A state is measured on the parts it binds; every part is measured at rest.
+              if (stateName && !c.state && !spec.bindings.some((b) => b.part === part.name && b.state === stateName)) continue;
               const merged = effective(spec, part.name, c.option, stateName);
               if (Object.keys(merged).length === 0) continue;
               const declarations = Object.fromEntries(Object.entries(merged).map(([p, v]) => [p, toCss(v)]));
               // State is carried by tokens: an unbound opacity must compute 1 (TDD styled CS4).
               const properties = [...Object.keys(merged).flatMap(longhands), ...("opacity" in merged ? [] : ["opacity"])];
               // A bound border width must draw: its side's style may not be none (TDD styled CS9).
-              const drawn = Object.entries(merged)
-                .filter(([p, v]) => /^border(-(top|right|bottom|left))?(-width)?$/.test(p) && v.includes("{dimension.border-width."))
-                .flatMap(([p]) => (/(top|right|bottom|left)/.exec(p) ? [/(top|right|bottom|left)/.exec(p)[1]] : ["top", "right", "bottom", "left"]))
-                .map((side) => `border-${side}-style`);
+              // The last declaration that sets a side's width decides, in cascade order (`border-bottom: 0` after `border`).
+              const sideBound = {};
+              for (const [p, v] of Object.entries(merged)) {
+                if (!/^border(-(top|right|bottom|left))?(-width)?$/.test(p)) continue;
+                const side = /(top|right|bottom|left)/.exec(p)?.[1];
+                for (const s of side ? [side] : ["top", "right", "bottom", "left"]) sideBound[s] = v.includes("{dimension.border-width.");
+              }
+              const drawn = Object.entries(sideBound).filter(([, bound]) => bound).map(([side]) => `border-${side}-style`);
               properties.push(...drawn.filter((p) => !properties.includes(p)));
               // A pointer or rest state is measured on an element in no part-level state.
-              const located = pointer ? "" : stateName;
+              // An interaction or a set attribute is entered on an element in no part-level state.
+              const located = pointer || attribute ? "" : stateName;
               const selector = selectorFor(spec, { part: part.name, option: c.option, state: located });
               const exclude = located || state?.on === "root"
                 ? []
-                : spec.states.filter((s) => s.on !== "root" && !s.enter.interaction).flatMap((s) => s.selectors.map((_, alternative) => selectorFor(spec, { part: part.name, option: c.option, state: s.name, alternative })));
+                : spec.states.filter((s) => (s.on ?? "part") === "part" && !s.enter.interaction && spec.bindings.some((b) => b.part === part.name && b.state === s.name)).flatMap((s) => s.selectors.map((_, alternative) => selectorFor(spec, { part: part.name, option: c.option, state: s.name, alternative })));
               const where = `${engine.name}: ${spec.entry} ${part.name} ${JSON.stringify(c.option)} ${stateName || "rest"} in ${root}`;
               const args = { caseId, root, selector, exclude, declarations, properties };
-              if (pointer) {
-                const { missing } = await tab.evaluate(measure, { ...args, mark: true });
+              // A state on another part (`on: "trigger"`) is entered on that part's element, not the measured one.
+              const entering = state && state.on && !["root", "part"].includes(state.on);
+              if (pointer || attribute) {
+                const markArgs = entering ? { ...args, selector: selectorFor(spec, { part: state.on, option: c.option }), exclude: [] } : args;
+                const { missing } = await tab.evaluate(measure, { ...markArgs, mark: true });
                 if (missing) continue;
                 const target = await tab.$("[data-spec-target]");
-                await target.hover();
+                if (attribute) await target.evaluate((el, attrs) => Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v)), attribute);
+                if (pointer === "hover" || pointer === "press") {
+                  try {
+                    await target.hover({ timeout: 5000 });
+                  } catch {
+                    failures.push(`${where}: the element is not visible, so the pointer cannot enter ${stateName}`);
+                    continue;
+                  }
+                }
                 if (pointer === "press") await tab.mouse.down();
+                if (pointer === "focus") await target.focus();
+                if (pointer === "focus-within") await target.evaluate((el) => el.querySelector("a[href], button:not(:disabled), input:not(:disabled), select, textarea, [tabindex]:not([tabindex='-1'])")?.focus());
+                if (attribute) await target.evaluate((el) => el.setAttribute("data-spec-entered", ""));
+                if (entering) await tab.evaluate(() => document.querySelectorAll("[data-spec-target]").forEach((el) => el.removeAttribute("data-spec-target")));
               }
               await settle(tab, root, caseId);
-              const { values, missing } = await tab.evaluate(measure, args);
+              const { values, missing, unsupported } = await tab.evaluate(measure, { ...args, marked: Boolean((pointer || attribute) && !entering) });
               if (pointer === "press") await tab.mouse.up();
-              if (pointer) {
+              if (pointer?.startsWith("focus")) await tab.evaluate(() => document.activeElement?.blur());
+              if (attribute) {
+                await tab.evaluate((attrs) => {
+                  const el = document.querySelector("[data-spec-entered]");
+                  el?.removeAttribute("data-spec-entered");
+                  Object.keys(attrs).forEach((k) => el?.removeAttribute(k));
+                }, attribute);
+              }
+              if (pointer || attribute) {
                 await tab.mouse.move(0, 0);
                 await settle(tab, root, caseId);
               }
               if (missing) continue;
               measuredParts.add(`${spec.entry} ${part.name}`);
+              if (stateName && spec.bindings.some((b) => b.part === part.name && b.state === stateName)) measuredStates.add(`${spec.entry} ${stateName}`);
+              if (unsupported) continue;
               for (const property of drawn) {
                 if (values[property]?.[0] === "none") failures.push(`${where}: ${property} is none, so the bound border width draws nothing`);
               }
@@ -236,6 +273,10 @@ for (const engine of browserEngines()) {
       for (const part of spec.anatomy) {
         const bound = spec.bindings.some((b) => b.part === part.name);
         if (bound && !measuredParts.has(`${spec.entry} ${part.name}`)) failures.push(`${engine.name}: ${spec.entry} ${part.name} was never rendered by the fixture`);
+      }
+      // Every bound state must have been entered and measured at least once.
+      for (const state of spec.states) {
+        if (spec.bindings.some((b) => b.state === state.name) && !measuredStates.has(`${spec.entry} ${state.name}`)) failures.push(`${engine.name}: ${spec.entry} state ${state.name} was never measured`);
       }
     }
     result.engines.push({ engine: engine.name, version: browser.version(), properties: checked });

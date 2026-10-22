@@ -1,7 +1,310 @@
 {
-  "$schema": "../../../../../../scripts/specs/schema/entry.schema.json",
-  "kind": "entry",
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
   "entry": "@scnx/system/components/accordion",
   "entryKind": "interactive",
-  "stability": "candidate"
+  "stability": "candidate",
+  "primitive": null,
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-accordion"
+    },
+    {
+      "name": "item",
+      "selector": ".scnx-accordion__item"
+    },
+    {
+      "name": "trigger",
+      "selector": ".scnx-accordion__trigger"
+    },
+    {
+      "name": "icon",
+      "selector": ".scnx-accordion__icon"
+    },
+    {
+      "name": "content",
+      "selector": ".scnx-accordion__content"
+    },
+    {
+      "name": "content-inner",
+      "selector": ".scnx-accordion__content-inner"
+    }
+  ],
+  "options": {
+    "variant": {
+      "values": [
+        "separated",
+        "stacked"
+      ],
+      "default": "separated",
+      "selector": "[data-variant={value}]"
+    }
+  },
+  "states": [
+    {
+      "name": "first",
+      "selectors": [
+        ":first-child"
+      ],
+      "enter": {
+        "fixture": true
+      }
+    },
+    {
+      "name": "last",
+      "selectors": [
+        ":last-child"
+      ],
+      "enter": {
+        "fixture": true
+      }
+    },
+    {
+      "name": "focus-within",
+      "selectors": [
+        ":focus-within"
+      ],
+      "enter": {
+        "interaction": "focus-within"
+      }
+    },
+    {
+      "name": "hover",
+      "selectors": [
+        ":hover"
+      ],
+      "enter": {
+        "interaction": "hover"
+      }
+    },
+    {
+      "name": "open",
+      "on": "trigger",
+      "selectors": [
+        "[data-state=open]"
+      ],
+      "enter": {
+        "fixture": true
+      }
+    }
+  ],
+  "fixture": {
+    "tree": {
+      "type": "Accordion",
+      "props": {
+        "type": "multiple",
+        "defaultValue": [
+          "pay"
+        ]
+      },
+      "children": [
+        {
+          "type": "Accordion.Item",
+          "props": {
+            "value": "pay"
+          },
+          "children": [
+            {
+              "type": "Accordion.Trigger",
+              "children": [
+                "Pay",
+                {
+                  "type": "span",
+                  "props": {
+                    "className": "scnx-accordion__icon",
+                    "aria-hidden": "true"
+                  },
+                  "children": [
+                    "v"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Accordion.Content",
+              "children": [
+                "Net pay is paid monthly."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Accordion.Item",
+          "props": {
+            "value": "leave"
+          },
+          "children": [
+            {
+              "type": "Accordion.Trigger",
+              "children": [
+                "Leave",
+                {
+                  "type": "span",
+                  "props": {
+                    "className": "scnx-accordion__icon",
+                    "aria-hidden": "true"
+                  },
+                  "children": [
+                    "v"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Accordion.Content",
+              "children": [
+                "Annual leave accrues."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Accordion.Item",
+          "props": {
+            "value": "tax"
+          },
+          "children": [
+            {
+              "type": "Accordion.Trigger",
+              "children": [
+                "Tax",
+                {
+                  "type": "span",
+                  "props": {
+                    "className": "scnx-accordion__icon",
+                    "aria-hidden": "true"
+                  },
+                  "children": [
+                    "v"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Accordion.Content",
+              "children": [
+                "Tax is withheld."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "gap": "{dimension.spacing.stack-default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "variant": "stacked"
+      },
+      "declarations": {
+        "gap": "0"
+      }
+    },
+    {
+      "part": "item",
+      "option": {
+        "variant": "stacked"
+      },
+      "declarations": {
+        "border-radius": "0",
+        "border-bottom": "0"
+      }
+    },
+    {
+      "part": "item",
+      "option": {
+        "variant": "stacked"
+      },
+      "state": "first",
+      "declarations": {
+        "border-top-left-radius": "{dimension.radius.container}",
+        "border-top-right-radius": "{dimension.radius.container}"
+      }
+    },
+    {
+      "part": "item",
+      "option": {
+        "variant": "stacked"
+      },
+      "state": "last",
+      "declarations": {
+        "border-bottom-left-radius": "{dimension.radius.container}",
+        "border-bottom-right-radius": "{dimension.radius.container}",
+        "border-bottom": "{dimension.border-width.default} solid {color.neutral.border.default.default}"
+      }
+    },
+    {
+      "part": "item",
+      "declarations": {
+        "border": "{dimension.border-width.default} solid {color.neutral.border.default.default}",
+        "border-radius": "{dimension.radius.container}",
+        "background-color": "{color.neutral.surface.canvas.default}",
+        "transition": "border-color {motion.feedback.duration} {motion.feedback.easing}, box-shadow {motion.feedback.duration} {motion.feedback.easing}"
+      }
+    },
+    {
+      "part": "item",
+      "state": "focus-within",
+      "declarations": {
+        "border-color": "{color.neutral.border.default.focus}",
+        "box-shadow": "{effect.shadow.focus}"
+      }
+    },
+    {
+      "part": "trigger",
+      "declarations": {
+        "padding": "{dimension.spacing.inset-default}",
+        "background-color": "{color.neutral.surface.default.default}",
+        "font-family": "{typography.body.default.font-family}",
+        "font-size": "{typography.body.default.font-size}",
+        "line-height": "{typography.body.default.line-height}",
+        "letter-spacing": "{typography.body.default.letter-spacing}",
+        "font-weight": "{typography.weight.medium}",
+        "color": "{color.neutral.text.default.default}",
+        "transition": "background-color {motion.feedback.duration} {motion.feedback.easing}, color {motion.feedback.duration} {motion.feedback.easing}"
+      }
+    },
+    {
+      "part": "trigger",
+      "state": "hover",
+      "declarations": {
+        "background-color": "{color.neutral.surface.default.hover}"
+      }
+    },
+    {
+      "part": "content",
+      "declarations": {
+        "background-color": "{color.neutral.surface.canvas.default}",
+        "color": "{color.neutral.text.subtle.default}",
+        "font-family": "{typography.body.small.font-family}",
+        "font-size": "{typography.body.small.font-size}",
+        "font-weight": "{typography.body.small.font-weight}",
+        "line-height": "{typography.body.small.line-height}",
+        "letter-spacing": "{typography.body.small.letter-spacing}",
+        "transition": "height {motion.disclosure.duration} {motion.disclosure.easing}, opacity {motion.disclosure.duration} {motion.disclosure.easing}"
+      }
+    },
+    {
+      "part": "content-inner",
+      "declarations": {
+        "padding": "{dimension.spacing.inset-default}",
+        "border-top": "{dimension.border-width.default} solid {color.neutral.border.default.default}"
+      }
+    },
+    {
+      "part": "icon",
+      "declarations": {
+        "transition": "transform {motion.disclosure.duration} {motion.disclosure.easing}",
+        "color": "{color.neutral.text.subtle.default}"
+      }
+    }
+  ]
 }

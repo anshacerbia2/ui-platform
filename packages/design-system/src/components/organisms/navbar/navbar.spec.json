@@ -1,7 +1,83 @@
 {
-  "$schema": "../../../../../../scripts/specs/schema/entry.schema.json",
-  "kind": "entry",
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
   "entry": "@scnx/system/components/navbar",
   "entryKind": "presentational",
-  "stability": "candidate"
+  "stability": "candidate",
+  "primitive": null,
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-navbar"
+    },
+    {
+      "name": "start",
+      "selector": ".scnx-navbar__start"
+    },
+    {
+      "name": "center",
+      "selector": ".scnx-navbar__center"
+    },
+    {
+      "name": "end",
+      "selector": ".scnx-navbar__end"
+    }
+  ],
+  "options": {},
+  "states": [],
+  "fixture": {
+    "tree": {
+      "type": "Navbar",
+      "children": [
+        {
+          "type": "Navbar.Start",
+          "children": [
+            "Brand"
+          ]
+        },
+        {
+          "type": "Navbar.Center",
+          "children": [
+            "Search"
+          ]
+        },
+        {
+          "type": "Navbar.End",
+          "children": [
+            "Account"
+          ]
+        }
+      ]
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "background-color": "{color.neutral.surface.default.default}",
+        "border-bottom": "{dimension.border-width.default} solid {color.neutral.border.subtle.default}"
+      }
+    },
+    {
+      "part": "start",
+      "declarations": {
+        "gap": "{dimension.spacing.inline-comfortable}",
+        "padding": "0 {dimension.spacing.page}"
+      }
+    },
+    {
+      "part": "center",
+      "declarations": {
+        "gap": "{dimension.spacing.inline-comfortable}",
+        "padding": "0 {dimension.spacing.page}"
+      }
+    },
+    {
+      "part": "end",
+      "declarations": {
+        "gap": "{dimension.spacing.inline-comfortable}",
+        "padding": "0 {dimension.spacing.page}"
+      }
+    }
+  ]
 }

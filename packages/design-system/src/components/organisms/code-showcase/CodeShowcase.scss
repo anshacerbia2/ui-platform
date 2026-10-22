@@ -6,7 +6,7 @@
   flex-direction: column;
   width: 100%;
   margin-block: $dimension-spacing-stack-comfortable;
-  border: 1px solid $color-border-default;
+  border: $dimension-border-width-default solid $color-border-default;
   border-radius: $dimension-radius-container;
   background-color: $color-surface-canvas;
   box-shadow: $effect-shadow-low;
@@ -19,7 +19,7 @@
 
   // Principal-grade internal border management
   & > * + * {
-    border-top: 1px solid $color-border-default;
+    border-top: $dimension-border-width-default solid $color-border-default;
   }
 
   &__preview {

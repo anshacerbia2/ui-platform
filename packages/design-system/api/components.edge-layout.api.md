@@ -4,15 +4,15 @@
 
 ```ts
 
-import { z as EdgeLayout } from '../../index-DNN-qGMH.js';
-import { L as EdgeLayoutContent } from '../../index-DNN-qGMH.js';
-import { B as EdgeLayoutContentProps } from '../../index-DNN-qGMH.js';
-import { I as EdgeLayoutNavbar } from '../../index-DNN-qGMH.js';
-import { V as EdgeLayoutNavbarProps } from '../../index-DNN-qGMH.js';
-import { R as EdgeLayoutRoot } from '../../index-DNN-qGMH.js';
-import { H as EdgeLayoutRootProps } from '../../index-DNN-qGMH.js';
-import { F as EdgeLayoutSidebar } from '../../index-DNN-qGMH.js';
-import { U as EdgeLayoutSidebarProps } from '../../index-DNN-qGMH.js';
+import { z as EdgeLayout } from '../../index-2RwKSyQg.js';
+import { L as EdgeLayoutContent } from '../../index-2RwKSyQg.js';
+import { B as EdgeLayoutContentProps } from '../../index-2RwKSyQg.js';
+import { I as EdgeLayoutNavbar } from '../../index-2RwKSyQg.js';
+import { V as EdgeLayoutNavbarProps } from '../../index-2RwKSyQg.js';
+import { R as EdgeLayoutRoot } from '../../index-2RwKSyQg.js';
+import { H as EdgeLayoutRootProps } from '../../index-2RwKSyQg.js';
+import { F as EdgeLayoutSidebar } from '../../index-2RwKSyQg.js';
+import { U as EdgeLayoutSidebarProps } from '../../index-2RwKSyQg.js';
 
 export { EdgeLayout }
 

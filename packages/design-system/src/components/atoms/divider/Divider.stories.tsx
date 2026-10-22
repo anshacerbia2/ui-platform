@@ -34,3 +34,6 @@ export const Vertical: Story = {
     </div>
   ),
 };
+
+/** The primary color takes the primary scheme's default border token. */
+export const Primary: Story = { args: { color: "primary" } };

@@ -10,7 +10,7 @@
     display: flex;
     align-items: center;
     background-color: $color-surface-default;
-    border: 1px solid $color-border-default;
+    border: $dimension-border-width-default solid $color-border-default;
     border-radius: $dimension-radius-control;
     padding: $dimension-spacing-inset-compact;
     width: 100%;
@@ -73,7 +73,7 @@
     right: 0;
     margin-top: $dimension-spacing-stack-default;
     background-color: $color-surface-floating;
-    border: 1px solid $color-border-default;
+    border: $dimension-border-width-default solid $color-border-default;
     border-radius: $dimension-radius-control;
     box-shadow: var(--ds-effect-shadow-overlay);
     z-index: $dimension-z-index-dropdown;

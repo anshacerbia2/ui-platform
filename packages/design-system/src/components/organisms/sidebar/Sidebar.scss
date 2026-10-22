@@ -207,7 +207,7 @@ $-item-slide-offset: 1.5rem;
     justify-content: center;
     width: 24px;
     height: 24px;
-    border: 1px solid $color-border-default;
+    border: $dimension-border-width-default solid $color-border-default;
     border-radius: 50%;
     color: $color-text-secondary;
     cursor: pointer;
@@ -235,7 +235,7 @@ $-item-slide-offset: 1.5rem;
 
   &__footer {
     padding: $dimension-spacing-inset-default;
-    border-top: 1px solid $color-border-subtle;
+    border-top: $dimension-border-width-default solid $color-border-subtle;
     flex-shrink: 0;
   }
 

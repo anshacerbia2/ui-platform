@@ -4,31 +4,31 @@
 
 ```ts
 
-import { h as FlyoutContextValue } from '../../index-DNN-qGMH.js';
-import { n as FlyoutProvider } from '../../index-DNN-qGMH.js';
-import { g as FlyoutState } from '../../index-DNN-qGMH.js';
-import { r as InsideFlyoutProvider } from '../../index-DNN-qGMH.js';
-import { _ as NavigableChildProps } from '../../index-DNN-qGMH.js';
-import { t as Sidebar } from '../../index-DNN-qGMH.js';
-import { v as SidebarContextValue } from '../../index-DNN-qGMH.js';
-import { c as SidebarFlyout } from '../../index-DNN-qGMH.js';
-import { y as SidebarFlyoutProps } from '../../index-DNN-qGMH.js';
-import { u as SidebarFooter } from '../../index-DNN-qGMH.js';
-import { b as SidebarFooterProps } from '../../index-DNN-qGMH.js';
-import { f as SidebarHeader } from '../../index-DNN-qGMH.js';
-import { x as SidebarHeaderProps } from '../../index-DNN-qGMH.js';
-import { d as SidebarNav } from '../../index-DNN-qGMH.js';
-import { l as SidebarNavItem } from '../../index-DNN-qGMH.js';
-import { S as SidebarNavProps } from '../../index-DNN-qGMH.js';
-import { C as SidebarProps } from '../../index-DNN-qGMH.js';
-import { o as SidebarProvider } from '../../index-DNN-qGMH.js';
-import { w as SidebarProviderProps } from '../../index-DNN-qGMH.js';
-import { m as SidebarRoot } from '../../index-DNN-qGMH.js';
-import { p as SidebarToggle } from '../../index-DNN-qGMH.js';
-import { T as SidebarToggleProps } from '../../index-DNN-qGMH.js';
-import { i as useFlyout } from '../../index-DNN-qGMH.js';
-import { a as useInsideFlyout } from '../../index-DNN-qGMH.js';
-import { s as useSidebar } from '../../index-DNN-qGMH.js';
+import { h as FlyoutContextValue } from '../../index-2RwKSyQg.js';
+import { n as FlyoutProvider } from '../../index-2RwKSyQg.js';
+import { g as FlyoutState } from '../../index-2RwKSyQg.js';
+import { r as InsideFlyoutProvider } from '../../index-2RwKSyQg.js';
+import { _ as NavigableChildProps } from '../../index-2RwKSyQg.js';
+import { t as Sidebar } from '../../index-2RwKSyQg.js';
+import { v as SidebarContextValue } from '../../index-2RwKSyQg.js';
+import { c as SidebarFlyout } from '../../index-2RwKSyQg.js';
+import { y as SidebarFlyoutProps } from '../../index-2RwKSyQg.js';
+import { u as SidebarFooter } from '../../index-2RwKSyQg.js';
+import { b as SidebarFooterProps } from '../../index-2RwKSyQg.js';
+import { f as SidebarHeader } from '../../index-2RwKSyQg.js';
+import { x as SidebarHeaderProps } from '../../index-2RwKSyQg.js';
+import { d as SidebarNav } from '../../index-2RwKSyQg.js';
+import { l as SidebarNavItem } from '../../index-2RwKSyQg.js';
+import { S as SidebarNavProps } from '../../index-2RwKSyQg.js';
+import { C as SidebarProps } from '../../index-2RwKSyQg.js';
+import { o as SidebarProvider } from '../../index-2RwKSyQg.js';
+import { w as SidebarProviderProps } from '../../index-2RwKSyQg.js';
+import { m as SidebarRoot } from '../../index-2RwKSyQg.js';
+import { p as SidebarToggle } from '../../index-2RwKSyQg.js';
+import { T as SidebarToggleProps } from '../../index-2RwKSyQg.js';
+import { i as useFlyout } from '../../index-2RwKSyQg.js';
+import { a as useInsideFlyout } from '../../index-2RwKSyQg.js';
+import { s as useSidebar } from '../../index-2RwKSyQg.js';
 
 export { FlyoutContextValue }
 

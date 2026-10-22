@@ -1,7 +1,99 @@
 {
-  "$schema": "../../../../../../scripts/specs/schema/entry.schema.json",
-  "kind": "entry",
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
   "entry": "@scnx/system/components/divider",
   "entryKind": "presentational",
-  "stability": "candidate"
+  "stability": "candidate",
+  "primitive": null,
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-divider"
+    }
+  ],
+  "options": {
+    "orientation": {
+      "values": [
+        "horizontal",
+        "vertical"
+      ],
+      "default": "horizontal",
+      "selector": "[data-orientation={value}]"
+    },
+    "weight": {
+      "values": [
+        "thin",
+        "normal",
+        "thick"
+      ],
+      "default": "normal",
+      "selector": "[data-weight={value}]"
+    },
+    "color": {
+      "values": [
+        "default",
+        "muted",
+        "primary"
+      ],
+      "default": "default",
+      "selector": "[data-color={value}]"
+    }
+  },
+  "states": [],
+  "fixture": {
+    "props": {}
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "background-color": "{color.neutral.border.default.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "orientation": "horizontal"
+      },
+      "declarations": {
+        "margin": "{dimension.spacing.stack-comfortable} 0"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "orientation": "vertical"
+      },
+      "declarations": {
+        "margin": "0 {dimension.spacing.inline-comfortable}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "color": "default"
+      },
+      "declarations": {
+        "background-color": "{color.neutral.border.default.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "color": "muted"
+      },
+      "declarations": {
+        "background-color": "{color.neutral.border.subtle.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "color": "primary"
+      },
+      "declarations": {
+        "background-color": "{color.primary.border.default.default}"
+      }
+    }
+  ]
 }
