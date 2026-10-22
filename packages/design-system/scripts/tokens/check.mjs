@@ -17,6 +17,24 @@ import { fileURLToPath } from "node:url";
 import { STANDARD, parseTokenName, tokenType } from "./grammar.mjs";
 import { normalize } from "./normalize.mjs";
 import { CATEGORIES, callsiteFindings, validate } from "./validate.mjs";
+import { contrastPairs } from "../../../../scripts/specs/styled.mjs";
+
+/** Contrast pairs every styled specification renders (TDD styled CS5). */
+function renderedPairs(srcDir) {
+  const out = [];
+  const walk = (dir) => {
+    for (const item of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, item.name);
+      if (item.isDirectory()) walk(full);
+      else if (item.name.endsWith(".spec.json")) {
+        const spec = JSON.parse(fs.readFileSync(full, "utf8"));
+        if (spec.kind === "styled") out.push(...contrastPairs(spec));
+      }
+    }
+  };
+  walk(srcDir);
+  return out;
+}
 
 const packageDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 
@@ -135,7 +153,8 @@ function main() {
   const started = performance.now();
   const config = loadConfig(path.join(packageDir, "tokens.config.json"));
   const { themes } = normalize({ packageDir, config });
-  const { findings, stats } = validate({ themes, config, packageDir });
+  const rendered = renderedPairs(path.join(packageDir, "src"));
+  const { findings, stats } = validate({ themes, config, packageDir, rendered });
 
   const aliases = config.aliases ?? {};
   const names = new Set(Object.values(themes).flatMap((modes) => Object.values(modes).flatMap(({ records }) => [...records.keys()])));
