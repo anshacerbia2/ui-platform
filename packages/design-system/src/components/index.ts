@@ -1,9 +1,11 @@
 "use client";
 
 // Atoms
+export * from "./atoms/badge";
 export * from "./atoms/button";
 export * from "./atoms/code";
 export * from "./atoms/divider";
+export * from "./atoms/icon-button";
 export * from "./atoms/heading";
 export * from "./atoms/transition";
 export * from "./atoms/text";
@@ -17,6 +19,9 @@ export * from "./layouts/stack";
 export * from "./layouts/grid";
 export * from "./layouts/floating-layout";
 export * from "./layouts/edge-layout";
+
+// Molecules
+export * from "./molecules/alert";
 
 // Organisms
 export * from "./organisms/navbar";

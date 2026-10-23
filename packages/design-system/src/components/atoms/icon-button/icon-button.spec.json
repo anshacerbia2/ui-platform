@@ -1,0 +1,229 @@
+{
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
+  "entry": "@scnx/system/components/icon-button",
+  "entryKind": "interactive",
+  "stability": "candidate",
+  "primitive": "ButtonBase",
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-icon-btn",
+      "primitivePart": "button"
+    }
+  ],
+  "options": {
+    "variant": {
+      "values": [
+        "primary",
+        "secondary",
+        "ghost"
+      ],
+      "default": "secondary",
+      "selector": "[data-variant={value}]"
+    },
+    "size": {
+      "values": [
+        "small",
+        "medium"
+      ],
+      "default": "medium",
+      "selector": "[data-size={value}]"
+    }
+  },
+  "states": [
+    {
+      "name": "hover",
+      "selectors": [
+        ":hover:not(:disabled, [data-disabled])"
+      ],
+      "enter": {
+        "interaction": "hover"
+      }
+    },
+    {
+      "name": "pressed",
+      "selectors": [
+        ":active:not(:disabled, [data-disabled])"
+      ],
+      "enter": {
+        "interaction": "press"
+      }
+    },
+    {
+      "name": "disabled",
+      "selectors": [
+        ":disabled",
+        "[data-disabled]"
+      ],
+      "enter": {
+        "props": {
+          "disabled": true
+        }
+      }
+    }
+  ],
+  "fixture": {
+    "props": {
+      "aria-label": "Close",
+      "children": "×"
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "border-radius": "{dimension.radius.control}",
+        "border": "{dimension.border-width.default} solid transparent",
+        "transition-duration": "{motion.feedback.duration}",
+        "transition-timing-function": "{motion.feedback.easing}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "size": "medium"
+      },
+      "declarations": {
+        "padding": "{dimension.spacing.inline-default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "size": "small"
+      },
+      "declarations": {
+        "padding": "{dimension.spacing.inline-compact}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "variant": "primary"
+      },
+      "declarations": {
+        "background": "{color.primary.surface.solid.default}",
+        "color": "{color.primary.text.contrast.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "variant": "primary"
+      },
+      "state": "hover",
+      "declarations": {
+        "background": "{color.primary.surface.solid.hover}",
+        "color": "{color.primary.text.contrast.hover}",
+        "box-shadow": "{effect.shadow.low}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "variant": "primary"
+      },
+      "state": "pressed",
+      "declarations": {
+        "background": "{color.primary.surface.solid.pressed}",
+        "color": "{color.primary.text.contrast.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "variant": "primary"
+      },
+      "state": "disabled",
+      "declarations": {
+        "background": "{color.primary.surface.solid.disabled}",
+        "color": "{color.primary.text.contrast.disabled}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "variant": "secondary"
+      },
+      "declarations": {
+        "background": "{color.neutral.surface.default.default}",
+        "color": "{color.neutral.text.default.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "variant": "secondary"
+      },
+      "state": "hover",
+      "declarations": {
+        "background": "{color.neutral.surface.default.hover}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "variant": "secondary"
+      },
+      "state": "pressed",
+      "declarations": {
+        "background": "{color.neutral.surface.default.pressed}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "variant": "secondary"
+      },
+      "state": "disabled",
+      "declarations": {
+        "background": "{color.neutral.surface.default.disabled}",
+        "color": "{color.neutral.text.default.disabled}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "variant": "ghost"
+      },
+      "declarations": {
+        "background": "transparent",
+        "color": "{color.neutral.icon.subtle.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "variant": "ghost"
+      },
+      "state": "hover",
+      "declarations": {
+        "background": "{color.neutral.surface.subtle.hover}",
+        "color": "{color.neutral.icon.subtle.hover}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "variant": "ghost"
+      },
+      "state": "pressed",
+      "declarations": {
+        "background": "{color.neutral.surface.subtle.pressed}",
+        "color": "{color.neutral.icon.subtle.hover}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "variant": "ghost"
+      },
+      "state": "disabled",
+      "declarations": {
+        "background": "transparent",
+        "color": "{color.neutral.icon.default.disabled}"
+      }
+    }
+  ]
+}

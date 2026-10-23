@@ -760,6 +760,16 @@
   ],
   "entries": [
     {
+      "entry": "@scnx/core-ui/components/alert-base",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/core-ui/components/badge-base",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
       "entry": "@scnx/core-ui/components/box-base",
       "stability": "candidate",
       "kind": "presentational"
@@ -855,6 +865,16 @@
       "kind": "interactive"
     },
     {
+      "entry": "@scnx/system/components/alert",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/system/components/badge",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
       "entry": "@scnx/system/components/box",
       "stability": "candidate",
       "kind": "presentational"
@@ -918,6 +938,11 @@
       "entry": "@scnx/system/components/heading",
       "stability": "candidate",
       "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/system/components/icon-button",
+      "stability": "candidate",
+      "kind": "interactive"
     },
     {
       "entry": "@scnx/system/components/list",

@@ -1,0 +1,95 @@
+@use "sass:map";
+@use "styles/abstracts/variables" as *;
+
+// TDD styled AL1-AL3. The scheme's subtle fill (step 2) and subtle border
+// (step 6) under its low-contrast text (step 11), the title in its
+// high-contrast text (step 12): Radix Themes' surface callout. Text steps
+// meet 4.5:1 on steps 1-5 of their scale by construction (TDD tokens PG4).
+// Each token is spelled out so the token gate can check every reference (TKN-005).
+$alert-schemes: (
+  neutral: (
+    fill: var(--ds-color-neutral-surface-subtle-default),
+    border: var(--ds-color-neutral-border-subtle-default),
+    text: var(--ds-color-neutral-text-subtle-default),
+    icon: var(--ds-color-neutral-icon-subtle-default),
+    title: var(--ds-color-neutral-text-default-default),
+  ),
+  info: (
+    fill: var(--ds-color-info-surface-subtle-default),
+    border: var(--ds-color-info-border-subtle-default),
+    text: var(--ds-color-info-text-subtle-default),
+    icon: var(--ds-color-info-icon-subtle-default),
+    title: var(--ds-color-info-text-default-default),
+  ),
+  success: (
+    fill: var(--ds-color-success-surface-subtle-default),
+    border: var(--ds-color-success-border-subtle-default),
+    text: var(--ds-color-success-text-subtle-default),
+    icon: var(--ds-color-success-icon-subtle-default),
+    title: var(--ds-color-success-text-default-default),
+  ),
+  warning: (
+    fill: var(--ds-color-warning-surface-subtle-default),
+    border: var(--ds-color-warning-border-subtle-default),
+    text: var(--ds-color-warning-text-subtle-default),
+    icon: var(--ds-color-warning-icon-subtle-default),
+    title: var(--ds-color-warning-text-default-default),
+  ),
+  danger: (
+    fill: var(--ds-color-danger-surface-subtle-default),
+    border: var(--ds-color-danger-border-subtle-default),
+    text: var(--ds-color-danger-text-subtle-default),
+    icon: var(--ds-color-danger-icon-subtle-default),
+    title: var(--ds-color-danger-text-default-default),
+  ),
+);
+
+.scnx-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: $dimension-spacing-inline-default;
+  padding: $dimension-spacing-inset-default;
+  border: $dimension-border-width-default solid;
+  border-radius: $dimension-radius-container;
+  @include typography(body, small);
+
+  > [data-part="icon"] {
+    display: inline-flex;
+    flex: none;
+  }
+
+  > [data-part="content"] {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: $dimension-spacing-stack-compact;
+    min-inline-size: 0;
+  }
+
+  > [data-part="content"] > [data-part="title"] {
+    font-weight: $typography-weight-semibold;
+  }
+
+  > [data-part="actions"] {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: $dimension-spacing-inline-compact;
+  }
+
+  @each $scheme, $tokens in $alert-schemes {
+    &[data-scheme="#{$scheme}"] {
+      background-color: map.get($tokens, fill);
+      border-color: map.get($tokens, border);
+      color: map.get($tokens, text);
+
+      > [data-part="icon"] {
+        color: map.get($tokens, icon);
+      }
+
+      > [data-part="content"] > [data-part="title"] {
+        color: map.get($tokens, title);
+      }
+    }
+  }
+}

@@ -6,6 +6,9 @@
 
 import { AccordionBaseItemProps } from '@scnx/core-ui/components/accordion-base';
 import { AccordionBaseRootProps } from '@scnx/core-ui/components/accordion-base';
+import { AlertBaseProps } from '@scnx/core-ui/components/alert-base';
+import { AlertRole } from '@scnx/core-ui/components/alert-base';
+import { BadgeBaseProps } from '@scnx/core-ui/components/badge-base';
 import { BoxBaseProps } from '@scnx/core-ui/components/box-base';
 import { ButtonBaseProps } from '@scnx/core-ui/components/button-base';
 import { CodeShowcaseBaseContentProps } from '@scnx/core-ui/components/code-showcase-base';
@@ -126,6 +129,44 @@ export type AccordionRootProps = AccordionBaseRootProps & {
 export type AccordionTriggerProps = CollapsibleBaseTriggerProps & {
     headingAs?: HeadingTag;
 };
+
+// @public
+export const Alert: {
+    (input: AlertProps): JSX.Element;
+    displayName: string;
+};
+
+// @public (undocumented)
+export type AlertProps = {
+    scheme?: AlertScheme;
+} & AlertBaseProps;
+
+export { AlertRole }
+
+// @public
+export type AlertScheme = "neutral" | "info" | "success" | "warning" | "danger";
+
+// @public
+export const Badge: {
+    (input: BadgeProps): JSX.Element;
+    displayName: string;
+};
+
+// @public
+export type BadgeEmphasis = "subtle" | "solid";
+
+// @public (undocumented)
+export type BadgeProps = {
+    scheme?: BadgeScheme;
+    emphasis?: BadgeEmphasis;
+    size?: BadgeSize;
+} & BadgeBaseProps;
+
+// @public
+export type BadgeScheme = "neutral" | "primary" | "info" | "success" | "warning" | "danger";
+
+// @public (undocumented)
+export type BadgeSize = "small" | "medium";
 
 // @public
 export const Box: {
@@ -709,6 +750,33 @@ export type HeadingVariants = {
 };
 
 // @public
+export const IconButton: {
+    (input: IconButtonProps): JSX.Element;
+    displayName: string;
+};
+
+// @public
+export type IconButtonNameProps = {
+    "aria-label": string;
+    "aria-labelledby"?: undefined;
+} | {
+    "aria-label"?: undefined;
+    "aria-labelledby": string;
+};
+
+// @public (undocumented)
+export type IconButtonProps = IconButtonNameProps & {
+    variant?: IconButtonVariant;
+    size?: IconButtonSize;
+} & WithoutAccessibleName<ButtonBaseProps>;
+
+// @public
+export type IconButtonSize = "small" | "medium";
+
+// @public
+export type IconButtonVariant = "primary" | "secondary" | "ghost";
+
+// @public
 export const InsideFlyoutProvider: {
     (input: {
         children: ReactNode;
@@ -1240,6 +1308,9 @@ export const useInsideFlyout: () => boolean;
 
 // @public
 export const useSidebar: () => SidebarContextValue;
+
+// @public
+export type WithoutAccessibleName<T> = T extends unknown ? Omit<T, "aria-label" | "aria-labelledby"> : never;
 
 // (No @packageDocumentation comment for this package)
 

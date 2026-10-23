@@ -1,0 +1,54 @@
+@use "variables" as *;
+
+// Shared by Button and IconButton (TDD styled BR1-BR3, IB1-IB3): the variant
+// is the color axis. `primary` is the solid fill of its scheme under the
+// scheme's contrast label in each state; `secondary` is tonal, a neutral fill
+// with no stroke; disabled is a token pair at full opacity, and hover and
+// pressed exclude both disabled forms, so a disabled control does not react.
+@mixin button-variants {
+  &[data-variant="primary"] {
+    background: $color-primary-default;
+    color: $color-primary-contrast;
+
+    &:hover:not(:disabled, [data-disabled]) {
+      background: $color-primary-hover;
+      color: $color-primary-contrast-hover;
+      box-shadow: $effect-shadow-low;
+    }
+
+    &:active:not(:disabled, [data-disabled]) {
+      background: $color-primary-pressed;
+      color: $color-primary-contrast;
+    }
+
+    &:disabled,
+    &[data-disabled] {
+      background: $color-primary-disabled;
+      color: $color-primary-contrast-disabled;
+    }
+  }
+
+  &[data-variant="secondary"] {
+    background: $color-surface-default;
+    color: $color-text-primary;
+
+    &:hover:not(:disabled, [data-disabled]) {
+      background: $color-state-hover;
+    }
+
+    &:active:not(:disabled, [data-disabled]) {
+      background: $color-state-pressed;
+    }
+
+    &:disabled,
+    &[data-disabled] {
+      background: $color-state-disabled;
+      color: $color-text-disabled;
+    }
+  }
+
+  &:disabled,
+  &[data-disabled] {
+    cursor: not-allowed;
+  }
+}

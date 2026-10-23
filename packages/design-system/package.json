@@ -14,6 +14,14 @@
       "types": "./dist/components/accordion/index.d.ts",
       "default": "./dist/components/accordion/index.js"
     },
+    "./components/alert": {
+      "types": "./dist/components/alert/index.d.ts",
+      "default": "./dist/components/alert/index.js"
+    },
+    "./components/badge": {
+      "types": "./dist/components/badge/index.d.ts",
+      "default": "./dist/components/badge/index.js"
+    },
     "./components/box": {
       "types": "./dist/components/box/index.d.ts",
       "default": "./dist/components/box/index.js"
@@ -66,6 +74,10 @@
       "types": "./dist/components/heading/index.d.ts",
       "default": "./dist/components/heading/index.js"
     },
+    "./components/icon-button": {
+      "types": "./dist/components/icon-button/index.d.ts",
+      "default": "./dist/components/icon-button/index.js"
+    },
     "./components/list": {
       "types": "./dist/components/list/index.d.ts",
       "default": "./dist/components/list/index.js"
@@ -117,6 +129,8 @@
     "./fonts/inter-variable.woff2": "./dist/fonts/inter-variable.woff2",
     "./specs/components.json": "./dist/specs/components.json",
     "./specs/accordion.json": "./dist/specs/accordion.json",
+    "./specs/alert.json": "./dist/specs/alert.json",
+    "./specs/badge.json": "./dist/specs/badge.json",
     "./specs/box.json": "./dist/specs/box.json",
     "./specs/button.json": "./dist/specs/button.json",
     "./specs/code.json": "./dist/specs/code.json",
@@ -130,6 +144,7 @@
     "./specs/floating-layout.json": "./dist/specs/floating-layout.json",
     "./specs/grid.json": "./dist/specs/grid.json",
     "./specs/heading.json": "./dist/specs/heading.json",
+    "./specs/icon-button.json": "./dist/specs/icon-button.json",
     "./specs/list.json": "./dist/specs/list.json",
     "./specs/navbar.json": "./dist/specs/navbar.json",
     "./specs/navigation.json": "./dist/specs/navigation.json",

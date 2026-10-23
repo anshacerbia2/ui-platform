@@ -1,4 +1,5 @@
 @use "styles/abstracts/variables" as *;
+@use "styles/abstracts/button" as *;
 
 // Variant is the color axis: `primary` is the solid fill of its scheme with
 // the scheme's contrast label; `secondary` is tonal, a neutral fill with no
@@ -19,49 +20,5 @@
   transition-timing-function: $motion-feedback-easing;
   gap: $dimension-spacing-inline-default;
 
-  &[data-variant="primary"] {
-    background: $color-primary-default;
-    color: $color-primary-contrast;
-
-    &:hover:not(:disabled, [data-disabled]) {
-      background: $color-primary-hover;
-      color: $color-primary-contrast-hover;
-      box-shadow: $effect-shadow-low;
-    }
-
-    &:active:not(:disabled, [data-disabled]) {
-      background: $color-primary-pressed;
-      color: $color-primary-contrast;
-    }
-
-    &:disabled,
-    &[data-disabled] {
-      background: $color-primary-disabled;
-      color: $color-primary-contrast-disabled;
-    }
-  }
-
-  &[data-variant="secondary"] {
-    background: $color-surface-default;
-    color: $color-text-primary;
-
-    &:hover:not(:disabled, [data-disabled]) {
-      background: $color-state-hover;
-    }
-
-    &:active:not(:disabled, [data-disabled]) {
-      background: $color-state-pressed;
-    }
-
-    &:disabled,
-    &[data-disabled] {
-      background: $color-state-disabled;
-      color: $color-text-disabled;
-    }
-  }
-
-  &:disabled,
-  &[data-disabled] {
-    cursor: not-allowed;
-  }
+  @include button-variants;
 }

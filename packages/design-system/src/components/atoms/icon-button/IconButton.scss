@@ -1,0 +1,52 @@
+@use "styles/abstracts/variables" as *;
+@use "styles/abstracts/button" as *;
+
+// TDD styled IB1-IB3. The square geometry is the padding around a 16 px icon:
+// `small` is 24 px, the SC 2.5.8 minimum target, and `medium` 32 px. The
+// primary and secondary variants are Button's (BR1-BR3); `ghost` has no fill
+// at rest, the subtle neutral fill on hover and pressed (Radix steps 3 and 4),
+// and the subtle neutral icon color, high contrast on hover.
+.scnx-icon-btn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border-radius: $dimension-radius-control;
+  border: $dimension-border-width-default solid transparent;
+  cursor: pointer;
+  transition-property: background-color, border-color, box-shadow, color;
+  transition-duration: $motion-feedback-duration;
+  transition-timing-function: $motion-feedback-easing;
+
+  &[data-size="medium"] {
+    padding: $dimension-spacing-inline-default;
+  }
+
+  &[data-size="small"] {
+    padding: $dimension-spacing-inline-compact;
+  }
+
+  @include button-variants;
+
+  &[data-variant="ghost"] {
+    background: transparent;
+    color: var(--ds-color-neutral-icon-subtle-default);
+
+    &:hover:not(:disabled, [data-disabled]) {
+      background: var(--ds-color-neutral-surface-subtle-hover);
+      color: var(--ds-color-neutral-icon-subtle-hover);
+    }
+
+    &:active:not(:disabled, [data-disabled]) {
+      background: var(--ds-color-neutral-surface-subtle-pressed);
+      color: var(--ds-color-neutral-icon-subtle-hover);
+    }
+
+    &:disabled,
+    &[data-disabled] {
+      background: transparent;
+      color: var(--ds-color-neutral-icon-default-disabled);
+    }
+  }
+}
