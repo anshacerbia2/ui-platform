@@ -262,6 +262,22 @@ function contentSha256(file) {
   return createHash("sha256").update(gunzipSync(fs.readFileSync(file))).digest("hex");
 }
 
+/**
+ * The gzip header's operating-system byte (RFC 1952 section 2.3.1, byte 9) is
+ * zlib's compile-time OS_CODE: 3 on Linux (the "assume Unix" default), 10 on
+ * Windows, 19 on macOS (zlib 1.3.2 zutil.h; RFC 1952 itself lists 10 as TOPS-20
+ * and 11 as NTFS). On Windows it was the only byte by which a pack differed from
+ * the CI pack, so it is set to 3, the value of the Linux runner whose tarballs
+ * are attested. macOS packs have not been compared.
+ */
+function normalizeGzipOs(file) {
+  const bytes = fs.readFileSync(file);
+  if (bytes[0] !== 0x1f || bytes[1] !== 0x8b) throw new Error(`${file} is not a gzip stream`);
+  if (bytes[9] === 3) return;
+  bytes[9] = 3;
+  fs.writeFileSync(file, bytes);
+}
+
 function listFiles(root) {
   return fs
     .readdirSync(root, { recursive: true, withFileTypes: true })
@@ -285,6 +301,7 @@ function packAndInspect(outDir) {
     const tarball = fs.readdirSync(outDir).find((file) => file.endsWith(".tgz") && !before.has(file));
     if (!tarball) throw new Error(`pnpm pack produced no tarball for ${dir}`);
     const tarballPath = path.join(outDir, tarball);
+    normalizeGzipOs(tarballPath);
 
     const extractDir = path.join(outDir, tarball.replace(/\.tgz$/, ""));
     fs.mkdirSync(extractDir);
