@@ -262,6 +262,21 @@ function contentSha256(file) {
   return createHash("sha256").update(gunzipSync(fs.readFileSync(file))).digest("hex");
 }
 
+/**
+ * zlib writes the host's operating system into the gzip header (RFC 1952
+ * section 2.3.1, byte 9): 3 on Linux and macOS, 10 on Windows. It is the only
+ * byte of a pack that differs by platform, so it is set to 3 (Unix), the value
+ * of the CI runner whose tarballs are attested; a Windows pack then has the
+ * attested digest.
+ */
+function normalizeGzipOs(file) {
+  const bytes = fs.readFileSync(file);
+  if (bytes[0] !== 0x1f || bytes[1] !== 0x8b) throw new Error(`${file} is not a gzip stream`);
+  if (bytes[9] === 3) return;
+  bytes[9] = 3;
+  fs.writeFileSync(file, bytes);
+}
+
 function listFiles(root) {
   return fs
     .readdirSync(root, { recursive: true, withFileTypes: true })
@@ -285,6 +300,7 @@ function packAndInspect(outDir) {
     const tarball = fs.readdirSync(outDir).find((file) => file.endsWith(".tgz") && !before.has(file));
     if (!tarball) throw new Error(`pnpm pack produced no tarball for ${dir}`);
     const tarballPath = path.join(outDir, tarball);
+    normalizeGzipOs(tarballPath);
 
     const extractDir = path.join(outDir, tarball.replace(/\.tgz$/, ""));
     fs.mkdirSync(extractDir);
