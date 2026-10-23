@@ -1,0 +1,231 @@
+{
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
+  "entry": "@scnx/system/components/alert",
+  "entryKind": "presentational",
+  "stability": "candidate",
+  "primitive": null,
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-alert"
+    },
+    {
+      "name": "icon",
+      "selector": ".scnx-alert > [data-part=icon]"
+    },
+    {
+      "name": "content",
+      "selector": ".scnx-alert > [data-part=content]"
+    },
+    {
+      "name": "title",
+      "selector": ".scnx-alert > [data-part=content] > [data-part=title]"
+    },
+    {
+      "name": "actions",
+      "selector": ".scnx-alert > [data-part=actions]"
+    }
+  ],
+  "options": {
+    "scheme": {
+      "values": [
+        "neutral",
+        "info",
+        "success",
+        "warning",
+        "danger"
+      ],
+      "default": "info",
+      "selector": "[data-scheme={value}]"
+    }
+  },
+  "states": [],
+  "fixture": {
+    "props": {
+      "title": "Deployed",
+      "children": "Version 2.0 is live.",
+      "icon": "i",
+      "actions": "Undo"
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "gap": "{dimension.spacing.inline-default}",
+        "padding": "{dimension.spacing.inset-default}",
+        "border": "{dimension.border-width.default} solid",
+        "border-radius": "{dimension.radius.container}",
+        "font-family": "{typography.body.small.font-family}",
+        "font-size": "{typography.body.small.font-size}",
+        "font-weight": "{typography.body.small.font-weight}",
+        "line-height": "{typography.body.small.line-height}",
+        "letter-spacing": "{typography.body.small.letter-spacing}"
+      }
+    },
+    {
+      "part": "content",
+      "declarations": {
+        "gap": "{dimension.spacing.stack-compact}"
+      }
+    },
+    {
+      "part": "title",
+      "declarations": {
+        "font-weight": "{typography.weight.semibold}"
+      }
+    },
+    {
+      "part": "actions",
+      "declarations": {
+        "gap": "{dimension.spacing.inline-compact}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "scheme": "neutral"
+      },
+      "declarations": {
+        "background-color": "{color.neutral.surface.subtle.default}",
+        "border-color": "{color.neutral.border.subtle.default}",
+        "color": "{color.neutral.text.subtle.default}"
+      }
+    },
+    {
+      "part": "icon",
+      "option": {
+        "scheme": "neutral"
+      },
+      "declarations": {
+        "color": "{color.neutral.icon.subtle.default}"
+      }
+    },
+    {
+      "part": "title",
+      "option": {
+        "scheme": "neutral"
+      },
+      "declarations": {
+        "color": "{color.neutral.text.default.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "scheme": "info"
+      },
+      "declarations": {
+        "background-color": "{color.info.surface.subtle.default}",
+        "border-color": "{color.info.border.subtle.default}",
+        "color": "{color.info.text.subtle.default}"
+      }
+    },
+    {
+      "part": "icon",
+      "option": {
+        "scheme": "info"
+      },
+      "declarations": {
+        "color": "{color.info.icon.subtle.default}"
+      }
+    },
+    {
+      "part": "title",
+      "option": {
+        "scheme": "info"
+      },
+      "declarations": {
+        "color": "{color.info.text.default.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "scheme": "success"
+      },
+      "declarations": {
+        "background-color": "{color.success.surface.subtle.default}",
+        "border-color": "{color.success.border.subtle.default}",
+        "color": "{color.success.text.subtle.default}"
+      }
+    },
+    {
+      "part": "icon",
+      "option": {
+        "scheme": "success"
+      },
+      "declarations": {
+        "color": "{color.success.icon.subtle.default}"
+      }
+    },
+    {
+      "part": "title",
+      "option": {
+        "scheme": "success"
+      },
+      "declarations": {
+        "color": "{color.success.text.default.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "scheme": "warning"
+      },
+      "declarations": {
+        "background-color": "{color.warning.surface.subtle.default}",
+        "border-color": "{color.warning.border.subtle.default}",
+        "color": "{color.warning.text.subtle.default}"
+      }
+    },
+    {
+      "part": "icon",
+      "option": {
+        "scheme": "warning"
+      },
+      "declarations": {
+        "color": "{color.warning.icon.subtle.default}"
+      }
+    },
+    {
+      "part": "title",
+      "option": {
+        "scheme": "warning"
+      },
+      "declarations": {
+        "color": "{color.warning.text.default.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "scheme": "danger"
+      },
+      "declarations": {
+        "background-color": "{color.danger.surface.subtle.default}",
+        "border-color": "{color.danger.border.subtle.default}",
+        "color": "{color.danger.text.subtle.default}"
+      }
+    },
+    {
+      "part": "icon",
+      "option": {
+        "scheme": "danger"
+      },
+      "declarations": {
+        "color": "{color.danger.icon.subtle.default}"
+      }
+    },
+    {
+      "part": "title",
+      "option": {
+        "scheme": "danger"
+      },
+      "declarations": {
+        "color": "{color.danger.text.default.default}"
+      }
+    }
+  ]
+}

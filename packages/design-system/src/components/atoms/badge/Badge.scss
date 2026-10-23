@@ -1,0 +1,78 @@
+@use "sass:map";
+@use "styles/abstracts/variables" as *;
+
+// TDD styled BD1-BD3. `subtle` is the scheme's component fill (step 3) under
+// its low-contrast text (step 11), `solid` the scheme's solid fill under its
+// contrast label: Radix Themes' soft and solid badges. Both pairs meet 4.5:1
+// by construction (TDD tokens PG3, PG4) and are token-gate cases (CS5). The
+// transparent border draws the badge's boundary in forced-colors mode.
+// Each token is spelled out so the token gate can check every reference (TKN-005).
+$badge-schemes: (
+  neutral: (
+    subtle-fill: var(--ds-color-neutral-surface-default-default),
+    subtle-text: var(--ds-color-neutral-text-subtle-default),
+    solid-fill: var(--ds-color-neutral-surface-solid-default),
+    solid-text: var(--ds-color-neutral-text-contrast-default),
+  ),
+  primary: (
+    subtle-fill: var(--ds-color-primary-surface-default-default),
+    subtle-text: var(--ds-color-primary-text-subtle-default),
+    solid-fill: var(--ds-color-primary-surface-solid-default),
+    solid-text: var(--ds-color-primary-text-contrast-default),
+  ),
+  info: (
+    subtle-fill: var(--ds-color-info-surface-default-default),
+    subtle-text: var(--ds-color-info-text-subtle-default),
+    solid-fill: var(--ds-color-info-surface-solid-default),
+    solid-text: var(--ds-color-info-text-contrast-default),
+  ),
+  success: (
+    subtle-fill: var(--ds-color-success-surface-default-default),
+    subtle-text: var(--ds-color-success-text-subtle-default),
+    solid-fill: var(--ds-color-success-surface-solid-default),
+    solid-text: var(--ds-color-success-text-contrast-default),
+  ),
+  warning: (
+    subtle-fill: var(--ds-color-warning-surface-default-default),
+    subtle-text: var(--ds-color-warning-text-subtle-default),
+    solid-fill: var(--ds-color-warning-surface-solid-default),
+    solid-text: var(--ds-color-warning-text-contrast-default),
+  ),
+  danger: (
+    subtle-fill: var(--ds-color-danger-surface-default-default),
+    subtle-text: var(--ds-color-danger-text-subtle-default),
+    solid-fill: var(--ds-color-danger-surface-solid-default),
+    solid-text: var(--ds-color-danger-text-contrast-default),
+  ),
+);
+
+.scnx-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: $dimension-spacing-inline-compact;
+  border: $dimension-border-width-default solid transparent;
+  border-radius: $dimension-radius-element;
+  white-space: nowrap;
+
+  &[data-size="medium"] {
+    @include typography(label, default);
+    padding: 0 $dimension-spacing-inline-default;
+  }
+
+  &[data-size="small"] {
+    @include typography(label, small);
+    padding: 0 $dimension-spacing-inline-compact;
+  }
+
+  @each $scheme, $tokens in $badge-schemes {
+    &[data-scheme="#{$scheme}"][data-emphasis="subtle"] {
+      background-color: map.get($tokens, subtle-fill);
+      color: map.get($tokens, subtle-text);
+    }
+
+    &[data-scheme="#{$scheme}"][data-emphasis="solid"] {
+      background-color: map.get($tokens, solid-fill);
+      color: map.get($tokens, solid-text);
+    }
+  }
+}

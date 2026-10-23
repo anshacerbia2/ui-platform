@@ -69,6 +69,9 @@ const stylesheets = ["./styles/components.css", ...themes.map((t) => `./tokens/c
 fs.writeFileSync(path.join(dir, "render.mjs"), `import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Button } from "@scnx/system/components/button";
+import { IconButton } from "@scnx/system/components/icon-button";
+import { Alert } from "@scnx/system/components/alert";
+import { Badge } from "@scnx/system/components/badge";
 import { Accordion } from "@scnx/system/components/accordion";
 import { CodeShowcase } from "@scnx/system/components/code-showcase";
 import { CodeSelect } from "@scnx/system/components/code-select";
@@ -84,6 +87,12 @@ const set = () => h("div", null,
   h(Button, { variant: "secondary", href: "#link" }, "Link"),
   h(Button, { variant: "primary", disabled: true }, "Primary disabled"),
   h(Button, { variant: "secondary", disabled: true }, "Secondary disabled"),
+  h(IconButton, { "aria-label": "Close", variant: "primary" }, "×"),
+  h(IconButton, { "aria-label": "Settings", variant: "secondary", size: "small" }, "⚙"),
+  h(IconButton, { "aria-label": "More", variant: "ghost" }, "…"),
+  h(IconButton, { "aria-label": "Docs", variant: "ghost", href: "#docs" }, "?"),
+  h(Badge, { scheme: "success" }, "Live"),
+  h(Alert, { scheme: "warning", title: "Heads up", actions: h(Button, { variant: "secondary", href: "#alert" }, "Details") }, "Alert body"),
   h(Accordion, null, h(Accordion.Item, { value: "a" }, h(Accordion.Trigger, null, "Section"), h(Accordion.Content, null, "Body"))),
   h(CodeShowcase, null, h(CodeShowcase.Nav, null, h(CodeShowcase.Trigger, null, "Code")), h(CodeShowcase.Preview, null, "Preview"), h(CodeShowcase.Content, null, "const a = 1;")),
   h(CodeSelect, { options: [{ id: "ts", title: "TypeScript" }], value: "ts", onChange: () => {} }),

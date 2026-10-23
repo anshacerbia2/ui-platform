@@ -13,6 +13,14 @@
       "types": "./dist/components/accordion-base/index.d.ts",
       "default": "./dist/components/accordion-base/index.js"
     },
+    "./components/alert-base": {
+      "types": "./dist/components/alert-base/index.d.ts",
+      "default": "./dist/components/alert-base/index.js"
+    },
+    "./components/badge-base": {
+      "types": "./dist/components/badge-base/index.d.ts",
+      "default": "./dist/components/badge-base/index.js"
+    },
     "./components/box-base": {
       "types": "./dist/components/box-base/index.d.ts",
       "default": "./dist/components/box-base/index.js"
@@ -114,6 +122,8 @@
       "default": "./dist/providers/theme-provider-base/index.js"
     },
     "./specs/accordion-base.json": "./dist/specs/accordion-base.json",
+    "./specs/alert-base.json": "./dist/specs/alert-base.json",
+    "./specs/badge-base.json": "./dist/specs/badge-base.json",
     "./specs/box-base.json": "./dist/specs/box-base.json",
     "./specs/button-base.json": "./dist/specs/button-base.json",
     "./specs/code-showcase-base.json": "./dist/specs/code-showcase-base.json",

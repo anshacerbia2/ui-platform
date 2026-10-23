@@ -1,0 +1,220 @@
+{
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
+  "entry": "@scnx/system/components/badge",
+  "entryKind": "presentational",
+  "stability": "candidate",
+  "primitive": null,
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-badge"
+    }
+  ],
+  "options": {
+    "scheme": {
+      "values": [
+        "neutral",
+        "primary",
+        "info",
+        "success",
+        "warning",
+        "danger"
+      ],
+      "default": "neutral",
+      "selector": "[data-scheme={value}]"
+    },
+    "emphasis": {
+      "values": [
+        "subtle",
+        "solid"
+      ],
+      "default": "subtle",
+      "selector": "[data-emphasis={value}]"
+    },
+    "size": {
+      "values": [
+        "small",
+        "medium"
+      ],
+      "default": "medium",
+      "selector": "[data-size={value}]"
+    }
+  },
+  "states": [],
+  "fixture": {
+    "props": {
+      "children": "Beta"
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "gap": "{dimension.spacing.inline-compact}",
+        "border": "{dimension.border-width.default} solid transparent",
+        "border-radius": "{dimension.radius.element}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "size": "medium"
+      },
+      "declarations": {
+        "font-family": "{typography.label.default.font-family}",
+        "font-size": "{typography.label.default.font-size}",
+        "font-weight": "{typography.label.default.font-weight}",
+        "line-height": "{typography.label.default.line-height}",
+        "letter-spacing": "{typography.label.default.letter-spacing}",
+        "padding": "0 {dimension.spacing.inline-default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "size": "small"
+      },
+      "declarations": {
+        "font-family": "{typography.label.small.font-family}",
+        "font-size": "{typography.label.small.font-size}",
+        "font-weight": "{typography.label.small.font-weight}",
+        "line-height": "{typography.label.small.line-height}",
+        "letter-spacing": "{typography.label.small.letter-spacing}",
+        "padding": "0 {dimension.spacing.inline-compact}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "scheme": "neutral",
+        "emphasis": "subtle"
+      },
+      "declarations": {
+        "background-color": "{color.neutral.surface.default.default}",
+        "color": "{color.neutral.text.subtle.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "scheme": "neutral",
+        "emphasis": "solid"
+      },
+      "declarations": {
+        "background-color": "{color.neutral.surface.solid.default}",
+        "color": "{color.neutral.text.contrast.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "scheme": "primary",
+        "emphasis": "subtle"
+      },
+      "declarations": {
+        "background-color": "{color.primary.surface.default.default}",
+        "color": "{color.primary.text.subtle.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "scheme": "primary",
+        "emphasis": "solid"
+      },
+      "declarations": {
+        "background-color": "{color.primary.surface.solid.default}",
+        "color": "{color.primary.text.contrast.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "scheme": "info",
+        "emphasis": "subtle"
+      },
+      "declarations": {
+        "background-color": "{color.info.surface.default.default}",
+        "color": "{color.info.text.subtle.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "scheme": "info",
+        "emphasis": "solid"
+      },
+      "declarations": {
+        "background-color": "{color.info.surface.solid.default}",
+        "color": "{color.info.text.contrast.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "scheme": "success",
+        "emphasis": "subtle"
+      },
+      "declarations": {
+        "background-color": "{color.success.surface.default.default}",
+        "color": "{color.success.text.subtle.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "scheme": "success",
+        "emphasis": "solid"
+      },
+      "declarations": {
+        "background-color": "{color.success.surface.solid.default}",
+        "color": "{color.success.text.contrast.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "scheme": "warning",
+        "emphasis": "subtle"
+      },
+      "declarations": {
+        "background-color": "{color.warning.surface.default.default}",
+        "color": "{color.warning.text.subtle.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "scheme": "warning",
+        "emphasis": "solid"
+      },
+      "declarations": {
+        "background-color": "{color.warning.surface.solid.default}",
+        "color": "{color.warning.text.contrast.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "scheme": "danger",
+        "emphasis": "subtle"
+      },
+      "declarations": {
+        "background-color": "{color.danger.surface.default.default}",
+        "color": "{color.danger.text.subtle.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "scheme": "danger",
+        "emphasis": "solid"
+      },
+      "declarations": {
+        "background-color": "{color.danger.surface.solid.default}",
+        "color": "{color.danger.text.contrast.default}"
+      }
+    }
+  ]
+}
