@@ -9,7 +9,7 @@ doc_meta:
   parent_sad: SAD-003
   review_cycle_days: 30
   created_date: 2026-09-28
-  last_reviewed: 2026-10-23
+  last_reviewed: 2026-10-24
 ---
 
 # TDD-ui-platform-tokens-003: Theme and Token Output
@@ -223,6 +223,22 @@ step 9 changed by 0.12-0.14 OKLab between modes, so the brand did too.
 | PG10 | The recipe no longer searches for a solid step by contrast: `solid-plan`, its per-mode design step (light 10, dark 9), and the Sass contrast module are removed, because PG3 and PG11 prove the pairs and the gate re-verifies them. The component fixture tells modes apart by the secondary Button; whether a primary fill changes with the mode is the palette's rule, proven by the generator and by CS4 in each root.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | PG3; TDD styled CS4                                           | One contrast implementation, the gate's, instead of a second one in Sass that clipped instead of mapping.                                                                                                                                                                                                                                                                                                                                                                       |
 | PG11 | The neutral scale is a `contrast` scale: its solid fill (steps 9, 10, 10B) is its own step 12 of each mode under neutral step 1 of that mode as the label, so a neutral solid is near-black under a near-white label in light mode and near-white under a near-black label in dark mode. At that end of the lightness range hover and pressed take Radix's hover step toward the label; the label still meets 4.5:1 plus the margin on all three (9.0:1 at least in light, 13.6:1 in dark). The achromatic theme's primary scheme, the neutral matrix, inherits it. | [8]; WCAG 2.2 SC 1.4.3 | On 2026-10-23 the neutral seed ramp of PG3 gave the docs site's call to action a mid-gray fill (L 0.57) in both modes; Radix Themes' high-contrast solid uses step 12 under gray step 1 and lightens toward the label on hover [8]. Pressed continues in the hover's direction, so the three states stay ordered, where Radix's pressed filter darkens instead. The neutral fill changes with the mode, unlike a brand fill: its identity is contrast with the page, not a hue. |
 
+#### Decision record: spatial identity tokens
+
+How ADR-UIP-VIS-001 and STD-UIP-TKN-001 2.4.0 reach the token output. Until
+2026-10-24 the default theme set radius `element` 4px, `control` 6px, and
+`container` 8px, and the documentation site drew its 24px cards as Sass literals;
+shadows were the four generic elevations that each component combined with its
+own border.
+
+| ID  | Decision | Source | Rationale |
+| :-- | :------- | :----- | :-------- |
+| SI1 | Tier-2 radius is the ladder `mark`, `element`, `control`, `container`, `panel`, `pill`. Default: 4, 8, 12, 16, 24px from the Tier-1 steps `sm`, `lg`, `xl`, `2xl` (new, 1rem), `3xl` (new, 1.5rem). Achromatic: 2, 4, 8, 12, 20px. | ADR-UIP-VIS-001 item 2; STD-UIP-TKN-001 2.4.0 | Each step is the next one minus the 4px or 8px insets the components use, so nested shapes stay concentric. The achromatic theme keeps its sharper character and the same order. |
+| SI2 | The gate checks that radius values ascend strictly in every theme and mode, as it already does for z-index; `pill` is excluded as the sentinel. | STD-UIP-TKN-001 2.4.0 | A brand theme may move the ladder, not reorder it; a reordered ladder breaks every nested component at once. |
+| SI3 | Every public theme emits `effect.material.{flat, raised, panel, tooltip, menu, modal, sheet}` as one shadow list each: a 1px ring in `color.neutral.border.subtle.default` (none for `tooltip`), then contact and ambient layers in `color.neutral.shadow.{subtle, default, strong}.default`. Ambient offset, blur, and negative spread grow from `raised` (0 4px 8px −2px) to `sheet` (0 32px 72px −16px). | ADR-UIP-VIS-001 item 1; STD-UIP-TKN-001 2.4.0 | The ring is a shadow, not a border, so it adds no layout size and a component draws its whole edge with one declaration. Negative spread keeps the ambient under the surface instead of haloing it. |
+| SI4 | In dark mode `menu`, `modal`, and `sheet` start with `inset 0 1px 0 0` in `color.neutral.border.default.default`; the light-mode lists are unchanged. The dark theme map deep-merges the material set built with that layer. | STD-UIP-TKN-001 2.4.0 | Shadows of black on a near-black canvas read weakly (PG9); a lit top edge separates a floating surface from the page without a lighter fill, which PG9 rules out. |
+| SI5 | `effect.shadow.*` stays for compatibility; new and changed components use materials. | STD-UIP-TKN-001 2.4.0 | Removing the elevations is a breaking change that waits for every component to adopt a material. |
+
 #### Decision record: Figma design-tool profile
 
 How Figma receives the tokens and the library built on them (ADR-UIP-TKN-004). Until 2026-10-23 a design file
@@ -243,13 +259,14 @@ not shadows or durations.
 | FG7 | The repository's Figma plugin (`packages/design-system/figma-plugin/`, built by `pnpm --filter @scnx/system figma-plugin`) applies a plan that `scripts/figma/plan.mjs` computes from the emitted profile and token JSON: one collection `Scnehaux / Color` whose modes are every theme × mode (Light, Dark, Achromatic light, Achromatic dark) and one `Scnehaux / Dimension` with a mode per theme; variables are named by canonical path with `/`. | ADR-UIP-TKN-004 items 3-4; [9] | A frame switches theme and mode with one mode picker; the plugin holds no values of its own. |
 | FG8 | Scopes come from the Tier-2 grammar: surface `FRAME_FILL`, `SHAPE_FILL`; text `TEXT_FILL`; icon `SHAPE_FILL`, `STROKE_COLOR`; border `STROKE_COLOR`; shadow `EFFECT_COLOR`; radius `CORNER_RADIUS`; spacing `GAP`; border width `STROKE_FLOAT`; z-index none. A role or property without a rule stops the plan; `ALL_SCOPES` is never set. Each variable's WEB code syntax is FG5's, and its description is its CSS name. | ADR-UIP-TKN-004 item 4.3; [11] | A picker offers only tokens valid for the field; Dev Mode shows the property a developer writes. |
 | FG9 | A text style per typography composite, shared by every theme (the plan stops if a theme's typography differs): Inter with the composite's weight as a Figma style name (400 Regular, 500 Medium, 600 Semi Bold, 700 Bold), size in pixels, unitless line height and `em` letter spacing as percent. The system mono stack is drawn in Roboto Mono, stated in the style's description. | [11] | Figma has no font stacks or system fonts; the substitution is named instead of hidden. |
-| FG10 | An effect style per theme and shadow token (`Default/shadow/low`): geometry from the token, identical across the theme's modes (the plan stops otherwise), each layer's color bound to its color variable. | [11] | Effect styles do not vary by mode, but a bound color does, so one style serves light and dark. Themes differ in shadow geometry (achromatic), so each has its own styles. |
+| FG10 | An effect style per theme and shadow token, each layer's color bound to its color variable. A token whose layers are equal in every mode of the theme gives one style (`Default/shadow/low`); one whose layers differ (SI4) gives one per mode (`Default/Dark/material/menu`). | [11]; SI4 | Effect styles do not vary by mode, but a bound color does, so equal geometry needs one style; a dark-only layer cannot be expressed by color alone. Themes differ in shadow geometry, so each has its own styles. |
 | FG11 | The plugin finds every collection, variable, and style by name and updates it in place, creates what is missing, never deletes, lists variables it did not plan, and reports modes the file's Figma plan refuses instead of faking them. It has no network access and no token. Tests run the built plugin against a Plugin API double (all modes, a one-mode limit, a stray variable, a second run that creates nothing); `runtime.js` type-checks against `@figma/plugin-typings` 1.110.0. | ADR-UIP-TKN-004 items 4.5-4.6 | Rerunning after a token change is safe, and on a Starter plan the file holds the light mode with the other modes reported as skipped. |
 
 The gate reports against the ratified STD-UIP-TKN-001 revision (`STANDARD` in
 `scripts/tokens/grammar.mjs`, emitted into the token JSON), which was 2.1.0
-(`af6462e`) until 2026-10-20 and is now 2.2.0 (`a93e28f`): the grammar of section
-3 is identical in both. It moves to 2.3.0 only when that revision is ratified.
+(`af6462e`) until 2026-10-20, 2.2.0 (`a93e28f`) until 2026-10-24, and is now 2.4.0
+(`345fa32`, scnehaux-architecture#125), which adds the radius intents `mark` and
+`panel` with a strict order and the `effect.material` family (SI1-SI5).
 
 ## Configuration
 
@@ -340,7 +357,7 @@ multi-format outputs until evidence closes them.
 
 ## Traceability
 
-Architecture authority: SAD-003; ADR-UIP-PLT-001 and ADR-UIP-TKN-001/002/003/004;
+Architecture authority: SAD-003; ADR-UIP-PLT-001, ADR-UIP-TKN-001/002/003/004, and ADR-UIP-VIS-001;
 STD-GLB-FE-005/009 and STD-UIP-TKN-001/002. Lifecycle status in
 `scnehaux-architecture` controls authority. Execution:
 [PLAN](../../PLAN.md) P0 rows 4 and 11. Related designs: packaging, CSS delivery,

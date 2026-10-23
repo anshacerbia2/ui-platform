@@ -152,7 +152,7 @@ $core: (
   // ==========================================
   // 3. BORDER & SHAPE
   // ==========================================
-  radius: (none, xs, sm, md, lg, xl, full),
+  radius: (none, xs, sm, md, lg, xl, 2xl, 3xl, full),
   width: (0, 1, 2, 3, 4),
   // ==========================================
   // 4. EFFECTS & Z-INDEX
@@ -263,7 +263,7 @@ $system: (
       section,
       page,
     ),
-    radius: (element, control, container, pill),
+    radius: (mark, element, control, container, panel, pill),
     border-width: (default, strong),
     z-index: (base, dropdown, sticky, overlay, modal, popover, tooltip, toast),
   ),
@@ -275,6 +275,16 @@ $system: (
       high,
       overlay,
       focus,
+    ),
+    // ADR-UIP-VIS-001 item 1; STD-UIP-TKN-001 2.4.0, "Effect contract".
+    material: (
+      flat,
+      raised,
+      panel,
+      tooltip,
+      menu,
+      modal,
+      sheet,
     ),
   ),
 

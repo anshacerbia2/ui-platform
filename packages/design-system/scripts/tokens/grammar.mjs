@@ -1,10 +1,11 @@
-// Canonical token grammar, transcribed from STD-UIP-TKN-001 section 3, which
-// is unchanged from v2.1.0 (scnehaux-architecture af6462e) to the ratified
-// v2.2.0 (a93e28f). The standard is the single normative definition; change
+// Canonical token grammar, transcribed from STD-UIP-TKN-001 section 3 at the
+// ratified v2.4.0 (scnehaux-architecture 345fa32), which adds the radius
+// intents mark and panel and effect.material to the grammar of v2.1.0
+// (af6462e) and v2.2.0 (a93e28f). The standard is the single normative definition; change
 // this file only to follow a ratified revision of it. STANDARD names the
 // ratified revision the gate is reported against.
 
-export const STANDARD = { id: "STD-UIP-TKN-001", version: "2.2.0", commit: "a93e28f" };
+export const STANDARD = { id: "STD-UIP-TKN-001", version: "2.4.0", commit: "345fa32" };
 
 const SURFACE_STATES = ["default", "hover", "pressed", "selected", "disabled"];
 
@@ -32,6 +33,8 @@ export const COLOR = {
 };
 
 export const EFFECT_SHADOWS = ["low", "medium", "high", "overlay", "focus"];
+// Materials (STD-UIP-TKN-001 2.4.0, "Effect contract"; ADR-UIP-VIS-001 item 1).
+export const EFFECT_MATERIALS = ["flat", "raised", "panel", "tooltip", "menu", "modal", "sheet"];
 
 // Dimension vocabulary. Lists are in the order the standard constrains:
 // spacing relationships ascend compact -> comfortable, z-index strictly ascends.
@@ -42,7 +45,7 @@ export const DIMENSION = {
     "inline-compact", "inline-default", "inline-comfortable",
     "section", "page",
   ],
-  radius: ["element", "control", "container", "pill"],
+  radius: ["mark", "element", "control", "container", "panel", "pill"],
   "border-width": ["default", "strong"],
   "z-index": ["base", "dropdown", "sticky", "overlay", "modal", "popover", "tooltip", "toast"],
 };
@@ -115,7 +118,10 @@ export function parseTokenName(cssName, aliases = {}) {
     if (parts.length === 3 && parts[1] === "shadow" && EFFECT_SHADOWS.includes(parts[2])) {
       return { valid: true, tier: 2, type: "shadow", path: parts.join(".") };
     }
-    return { valid: false, error: `effect names are effect.shadow.{${EFFECT_SHADOWS.join("|")}}` };
+    if (parts.length === 3 && parts[1] === "material" && EFFECT_MATERIALS.includes(parts[2])) {
+      return { valid: true, tier: 2, type: "shadow", path: parts.join(".") };
+    }
+    return { valid: false, error: `effect names are effect.shadow.{${EFFECT_SHADOWS.join("|")}} or effect.material.{${EFFECT_MATERIALS.join("|")}}` };
   }
 
   if (parts[0] === "motion") {

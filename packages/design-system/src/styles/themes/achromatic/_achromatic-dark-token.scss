@@ -15,9 +15,13 @@ $achromatic-dark-token: (
     primary: default.generate-scheme-matrix("neutral", "dark")
   ),
   dimension: (radius: (
+    // Achromatic's tighter ladder, still strictly ascending and concentric at
+    // the system's 4px and 8px paddings (ADR-UIP-VIS-001 item 2).
+    mark: 0.125rem,
     element: 0.25rem,
     control: 0.5rem,
     container: 0.75rem,
+    panel: 1.25rem,
   )),
   // Achromatic elevation, on the public shadow names (STD-UIP-TKN-001).
   effect: (shadow: (

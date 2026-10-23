@@ -64,6 +64,12 @@ describe("Figma plan (FG7-FG10)", () => {
     for (const style of plan.effectStyles) for (const e of style.effects) expect(names.has(e.colorVariable)).toBe(true);
     const focus = plan.effectStyles.find((s) => s.name === "Default/shadow/focus");
     expect(focus.effects[0].type).toBe("INNER_SHADOW");
+    // A token whose layers differ by mode (the dark lit edge, TDD SI4) gets a style per mode.
+    const styleNames = plan.effectStyles.map((s) => s.name);
+    expect(styleNames).toEqual(expect.arrayContaining(["Default/material/raised", "Default/Light/material/menu", "Default/Dark/material/menu"]));
+    expect(styleNames).not.toContain("Default/material/menu");
+    expect(plan.effectStyles.find((s) => s.name === "Default/Dark/material/menu").effects[0]).toMatchObject({ type: "INNER_SHADOW", offset: { x: 0, y: 1 }, colorVariable: "color/neutral/border/default/default" });
+    expect(plan.effectStyles.find((s) => s.name === "Default/Light/material/menu").effects.every((e) => e.type === "DROP_SHADOW")).toBe(true);
     const colors = new Map([["--ds-c", { name: "color/c", values: [{ r: 0, g: 0, b: 0, a: 1 }] }]]);
     expect(shadowLayer("0 4px 6px -1px var(--ds-c)", colors)).toMatchObject({ type: "DROP_SHADOW", offset: { x: 0, y: 4 }, radius: 6, spread: -1, colorVariable: "color/c" });
     expect(() => shadowLayer("0 4px 6px red", colors)).toThrow("unsupported shadow layer");
