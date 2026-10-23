@@ -180,7 +180,8 @@
     "palette": "node scripts/palette/generate.mjs",
     "palette:check": "node scripts/palette/generate.mjs --check",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "figma-plugin": "node figma-plugin/build.mjs"
   },
   "peerDependencies": {
     "@scnx/core-ui": "workspace:^",

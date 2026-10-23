@@ -1,0 +1,31 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>
+  body { margin: 0; padding: 16px; font: 12px/1.5 Inter, system-ui, sans-serif; color: var(--figma-color-text); background: var(--figma-color-bg); }
+  h1 { margin: 0 0 4px; font-size: 13px; font-weight: 600; }
+  p { margin: 0 0 12px; color: var(--figma-color-text-secondary); }
+  dl { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; margin: 0 0 12px; }
+  dd { margin: 0; font-variant-numeric: tabular-nums; text-align: end; }
+  ul { margin: 4px 0 12px; padding-inline-start: 16px; max-height: 96px; overflow: auto; }
+  .warn { color: var(--figma-color-text-warning); }
+  .error { color: var(--figma-color-text-danger); }
+</style>
+<h1>Scnehaux UI tokens</h1>
+<p id="status">Applying the plan…</p>
+<div id="out"></div>
+<script>
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  const list = (title, items, cls) => (items.length ? `<div class="${cls}">${esc(title)} (${items.length})</div><ul>${items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>` : "");
+  onmessage = (event) => {
+    const r = event.data.pluginMessage;
+    const status = document.getElementById("status");
+    if (r.fatal) { status.className = "error"; status.textContent = `Failed: ${r.fatal}`; return; }
+    status.textContent = `Applied ${r.source}.`;
+    const rows = [["Collections created", r.collectionsCreated], ["Variables created", r.variablesCreated], ["Variables updated", r.variablesUpdated], ["Text styles created / updated", `${r.textStylesCreated} / ${r.textStylesUpdated}`], ["Effect styles created / updated", `${r.effectStylesCreated} / ${r.effectStylesUpdated}`]];
+    document.getElementById("out").innerHTML =
+      `<dl>${rows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl>` +
+      list("Modes not created (your Figma plan limits modes)", r.modesSkipped, "warn") +
+      list("Variables in the collections that the plan does not contain (left untouched)", r.unplanned, "warn") +
+      list("Errors", r.errors, "error");
+  };
+</script>

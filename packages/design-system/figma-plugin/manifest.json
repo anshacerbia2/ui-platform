@@ -1,0 +1,10 @@
+{
+  "name": "Scnehaux UI tokens",
+  "id": "scnehaux-ui-tokens",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/ui.html",
+  "editorType": ["figma"],
+  "documentAccess": "dynamic-page",
+  "networkAccess": { "allowedDomains": ["none"], "reasoning": "The plan is built into the plugin; it reads and writes only the open file." }
+}

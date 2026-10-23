@@ -225,7 +225,7 @@ step 9 changed by 0.12-0.14 OKLab between modes, so the brand did too.
 
 #### Decision record: Figma design-tool profile
 
-How Figma receives the tokens (ADR-UIP-TKN-004). Until 2026-10-23 a design file
+How Figma receives the tokens and the library built on them (ADR-UIP-TKN-004). Until 2026-10-23 a design file
 had no path to the tokens but retyping them, which is the drift TKN-008 forbids
 in code. Figma's variable import reads DTCG JSON, creates one mode per imported
 file, keeps only tokens present in every file with one type, and accepts colors
@@ -240,6 +240,11 @@ not shadows or durations.
 | FG4 | Dimensions are the Tier-2 `dimension` domain (spacing, radius, border width, z-index) as unitless pixel numbers (`rem` × 16), one file per theme, `<theme-id>.dimension.tokens.json`; emission stops if a dimension differs between modes. Typography, motion, and shadows are not exported as variables. | [9] | Figma variables are unitless numbers. Text and effect styles are built from the same token JSON by the bridge (ADR-UIP-TKN-004), not by the import. |
 | FG5 | Every token carries `$extensions["com.scnehaux.ui"]` with its `cssName` and the WEB code syntax `var(--ds-…)`. | [9]; STD-UIP-TKN-001 | The import is not documented to set code syntax; the bridge sets it from this field, so Dev Mode shows the property a developer uses. |
 | FG6 | The files are package exports, listed by `scripts/package-entries.mjs`. The token tests assert per theme that each mode file holds every Tier-2 color with identical key sets, that each value is within the PG6 bound of the source, that alpha and code syntax match, and that every dimension is present in pixels. | TDD packaging; Testing Strategy | The packed-consumer check resolves every export, so a missing profile file fails before release. |
+| FG7 | The repository's Figma plugin (`packages/design-system/figma-plugin/`, built by `pnpm --filter @scnx/system figma-plugin`) applies a plan that `scripts/figma/plan.mjs` computes from the emitted profile and token JSON: one collection `Scnehaux / Color` whose modes are every theme × mode (Light, Dark, Achromatic light, Achromatic dark) and one `Scnehaux / Dimension` with a mode per theme; variables are named by canonical path with `/`. | ADR-UIP-TKN-004 items 3-4; [9] | A frame switches theme and mode with one mode picker; the plugin holds no values of its own. |
+| FG8 | Scopes come from the Tier-2 grammar: surface `FRAME_FILL`, `SHAPE_FILL`; text `TEXT_FILL`; icon `SHAPE_FILL`, `STROKE_COLOR`; border `STROKE_COLOR`; shadow `EFFECT_COLOR`; radius `CORNER_RADIUS`; spacing `GAP`; border width `STROKE_FLOAT`; z-index none. A role or property without a rule stops the plan; `ALL_SCOPES` is never set. Each variable's WEB code syntax is FG5's, and its description is its CSS name. | ADR-UIP-TKN-004 item 4.3; [11] | A picker offers only tokens valid for the field; Dev Mode shows the property a developer writes. |
+| FG9 | A text style per typography composite, shared by every theme (the plan stops if a theme's typography differs): Inter with the composite's weight as a Figma style name (400 Regular, 500 Medium, 600 Semi Bold, 700 Bold), size in pixels, unitless line height and `em` letter spacing as percent. The system mono stack is drawn in Roboto Mono, stated in the style's description. | [11] | Figma has no font stacks or system fonts; the substitution is named instead of hidden. |
+| FG10 | An effect style per theme and shadow token (`Default/shadow/low`): geometry from the token, identical across the theme's modes (the plan stops otherwise), each layer's color bound to its color variable. | [11] | Effect styles do not vary by mode, but a bound color does, so one style serves light and dark. Themes differ in shadow geometry (achromatic), so each has its own styles. |
+| FG11 | The plugin finds every collection, variable, and style by name and updates it in place, creates what is missing, never deletes, lists variables it did not plan, and reports modes the file's Figma plan refuses instead of faking them. It has no network access and no token. Tests run the built plugin against a Plugin API double (all modes, a one-mode limit, a stray variable, a second run that creates nothing); `runtime.js` type-checks against `@figma/plugin-typings` 1.110.0. | ADR-UIP-TKN-004 items 4.5-4.6 | Rerunning after a token change is safe, and on a Starter plan the file holds the light mode with the other modes reported as skipped. |
 
 The gate reports against the ratified STD-UIP-TKN-001 revision (`STANDARD` in
 `scripts/tokens/grammar.mjs`, emitted into the token JSON), which was 2.1.0
@@ -396,3 +401,11 @@ References for "Figma design-tool profile" (retrieved 2026-10-23):
     module (28 October 2025): a color `$value` is `{ colorSpace, components,
     alpha?, hex? }`; `srgb` components are `[red, green, blue]` in 0-1; `hex` is
     an optional six-digit fallback.
+11. Figma, Plugin API, `@figma/plugin-typings` 1.110.0 (`plugin-api.d.ts`):
+    `VariableCollection.addMode(name)` and `renameMode(modeId, newName)`,
+    `Variable.setVariableCodeSyntax(platform, value)`, `variables.setBoundVariableForEffect`,
+    `getLocalTextStylesAsync`, `getLocalEffectStylesAsync`; `VariableScope` values
+    `FRAME_FILL`, `SHAPE_FILL`, `TEXT_FILL`, `STROKE_COLOR`, `EFFECT_COLOR`,
+    `CORNER_RADIUS`, `GAP`, `STROKE_FLOAT`, and "`ALL_SCOPES` is a special scope that
+    means that the variable is shown in the picker for all fields"
+    (<https://developers.figma.com/docs/plugins/api/VariableScope>).
