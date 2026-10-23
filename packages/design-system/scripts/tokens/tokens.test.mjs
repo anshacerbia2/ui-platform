@@ -172,6 +172,9 @@ describe("value relationships (STD-UIP-TKN-001 section 3)", () => {
     ["--ds-dimension-spacing-inset-comfortable", "24px"],
     ["--ds-dimension-z-index-base", "0"],
     ["--ds-dimension-z-index-dropdown", "1000"],
+    ["--ds-dimension-radius-element", "0.5rem"],
+    ["--ds-dimension-radius-control", "12px"],
+    ["--ds-dimension-radius-pill", "9999px"],
     ["--ds-typography-heading-xxlarge-font-size", "3rem"],
     ["--ds-typography-heading-xlarge-font-size", "2.5rem"],
     ["--ds-typography-weight-regular", "400"],
@@ -192,6 +195,7 @@ describe("value relationships (STD-UIP-TKN-001 section 3)", () => {
   it.each([
     ["--ds-dimension-spacing-inset-default", "0.5rem", "spacing inset ascends"],
     ["--ds-dimension-z-index-dropdown", "0", "z-index strictly ascends"],
+    ["--ds-dimension-radius-control", "8px", "radius strictly ascends"],
     ["--ds-typography-heading-xlarge-font-size", "4rem", "heading sizes descend"],
     ["--ds-typography-weight-bold", "300", "weights ascend"],
     ["--ds-motion-exit-duration", "400ms", "exceeds motion.enter.duration"],
@@ -311,13 +315,32 @@ describe("normalizer on the token source", () => {
     expect(names.some((name) => /^--ds-shadow-/.test(name))).toBe(false);
   });
 
-  it("serializes every shadow to a valid box-shadow once references resolve", () => {
-    const { records } = themes.default.light;
+  it.each(["light", "dark"])("serializes every shadow and material to a valid box-shadow in %s once references resolve", (mode) => {
+    const { records } = themes.default[mode];
     const css = new Map([...records].map(([name, value]) => [name, toCss(value)]));
-    for (const name of [...css.keys()].filter((n) => n.startsWith("--ds-effect-shadow-"))) {
+    const shadows = [...css.keys()].filter((n) => /^--ds-effect-(shadow|material)-/.test(n));
+    expect(shadows.length).toBe(12);
+    for (const name of shadows) {
       const { value, missing } = substitute(css.get(name), (n) => css.get(n));
       expect(missing).toEqual([]);
       expect(validForProperty("box-shadow", value)).toBeNull();
+    }
+  });
+
+  it("emits the material set in every theme, ringed except tooltip, with a lit edge only on dark floating materials (TDD SI3-SI4)", () => {
+    const materials = ["flat", "raised", "panel", "tooltip", "menu", "modal", "sheet"];
+    const ring = "0 0 0 1px var(--ds-color-neutral-border-subtle-default)";
+    const lit = "inset 0 1px 0 0 var(--ds-color-neutral-border-default-default)";
+    for (const [theme, modes] of Object.entries(themes)) {
+      for (const [mode, { records }] of Object.entries(modes)) {
+        const names = [...records.keys()].filter((n) => n.startsWith("--ds-effect-material-"));
+        expect(names.sort(), `${theme}/${mode}`).toEqual(materials.map((m) => `--ds-effect-material-${m}`).sort());
+        for (const m of materials) {
+          const value = toCss(records.get(`--ds-effect-material-${m}`));
+          expect(value.includes(ring), `${theme}/${mode} ${m} ring`).toBe(m !== "tooltip");
+          expect(value.startsWith(lit), `${theme}/${mode} ${m} lit edge`).toBe(mode === "dark" && ["menu", "modal", "sheet"].includes(m));
+        }
+      }
     }
   });
 });

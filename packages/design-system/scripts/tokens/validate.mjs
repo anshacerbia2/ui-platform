@@ -235,7 +235,7 @@ export function easingDirection(value) {
 /**
  * Value relationships the standard requires of every theme and mode
  * (STD-UIP-TKN-001 section 3): spacing relationships ascend from compact to
- * comfortable, z-index layers strictly ascend, heading sizes descend, weights
+ * comfortable, z-index layers and the radius ladder strictly ascend, heading sizes descend, weights
  * ascend, enter decelerates and exit accelerates, exit is no longer than
  * enter, and feedback is the shortest duration.
  * @param {Map<string, string>} resolved resolved CSS value by name
@@ -261,6 +261,8 @@ export function orderFindings(resolved) {
     sequence(names, "ascend", `spacing ${relationship} ascends compact -> comfortable`);
   }
   sequence(DIMENSION["z-index"].map((i) => `--ds-dimension-z-index-${i}`), "ascend", "z-index strictly ascends");
+  // The concentric ladder (STD-UIP-TKN-001 2.4.0): pill is a 9999px sentinel, not a step.
+  sequence(DIMENSION.radius.filter((i) => i !== "pill").map((i) => `--ds-dimension-radius-${i}`), "ascend", "radius strictly ascends");
   sequence(TYPOGRAPHY.composites.heading.map((v) => `--ds-typography-heading-${v}-font-size`), "descend", "heading sizes descend");
   sequence(TYPOGRAPHY.weight.map((w) => `--ds-typography-weight-${w}`), "ascend", "weights ascend");
 

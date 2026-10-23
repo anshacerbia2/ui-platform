@@ -165,22 +165,26 @@ export function shadowLayer(css, colorByCss) {
 }
 
 /**
- * FG10: an effect style per theme and shadow token. Geometry is shared by the theme's modes
- * (emission stops otherwise); colors are bound to variables, so a style follows the frame's mode.
- * Themes may differ in geometry, so each theme has its own styles.
+ * FG10: an effect style per theme and shadow token, its colors bound to variables so it
+ * follows the frame's mode. A token whose layers differ between modes (dark floating
+ * materials add a lit edge) gets one style per mode, named with the mode. Themes may
+ * differ in geometry, so each theme has its own styles.
  */
 export function effectStyles(recordsByTheme, colorVariables) {
   const colorByCss = new Map(colorVariables.map((v) => [v.cssName, v]));
   const styles = [];
   for (const records of recordsByTheme) {
     for (const t of records.tokens.filter((x) => x.type === "shadow" && x.tier === 2).sort((a, b) => a.name.localeCompare(b.name))) {
-      const [first, ...rest] = records.modes.map((mode) => t.themes[records.theme][mode]);
-      if (rest.some((css) => css !== first)) throw new Error(`${records.theme} ${t.name}: geometry or color token differs between modes`);
-      styles.push({
-        name: `${title(records.theme)}/${t.name.replace(/^effect\./, "").replaceAll(".", "/")}`,
-        description: `${t.name} in theme "${records.theme}" — var(${t.cssName}). Colors are bound to variables, so the style follows the frame's mode.`,
-        effects: splitTop(first).map((layer) => shadowLayer(layer, colorByCss)),
-      });
+      const byMode = records.modes.map((mode) => [mode, t.themes[records.theme][mode]]);
+      const shared = byMode.every(([, css]) => css === byMode[0][1]);
+      const path = t.name.replace(/^effect\./, "").replaceAll(".", "/");
+      for (const [mode, css] of shared ? [byMode[0]] : byMode) {
+        styles.push({
+          name: shared ? `${title(records.theme)}/${path}` : `${title(records.theme)}/${title(mode)}/${path}`,
+          description: `${t.name} in theme "${records.theme}"${shared ? "" : `, ${mode} mode`} — var(${t.cssName}). Colors are bound to variables, so the style follows the frame's mode.`,
+          effects: splitTop(css).map((layer) => shadowLayer(layer, colorByCss)),
+        });
+      }
     }
   }
   return styles;

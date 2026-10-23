@@ -4,6 +4,9 @@
 $dark-token: map.deep-merge(
   light.$default-token,
   (
-    color: light.get-color-tokens("dark")
+    color: light.get-color-tokens("dark"),
+    // Shadows read weakly on dark grounds: floating materials gain a lit top
+    // edge in the default border (ADR-UIP-VIS-001 item 1).
+    effect: (material: light.material-set(inset 0 1px 0 0 var(--ds-color-neutral-border-default-default)))
   )
 );

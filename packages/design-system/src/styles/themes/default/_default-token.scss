@@ -270,6 +270,28 @@ $shadow-level: (subtle: 2, default: 3, strong: 4);
   );
 }
 
+// The material shadows of ADR-UIP-VIS-001 item 1. `$lit` is prepended to the
+// floating materials (menu, modal, sheet): empty in light mode, an inset top
+// highlight in dark mode.
+@function material-set($lit) {
+  $ring: 0 0 0 1px var(--ds-color-neutral-border-subtle-default);
+  $contact: var(--ds-color-neutral-shadow-subtle-default);
+  @return (
+    flat: ($ring),
+    raised: ($ring, 0 1px 2px 0 $contact, 0 4px 8px -2px $contact),
+    panel: ($ring, 0 1px 2px 0 $contact, 0 12px 24px -8px var(--ds-color-neutral-shadow-subtle-default)),
+    tooltip: (0 1px 2px 0 $contact, 0 4px 12px -2px var(--ds-color-neutral-shadow-default-default)),
+    menu: _with-lit($lit, ($ring, 0 2px 4px 0 $contact, 0 12px 28px -6px var(--ds-color-neutral-shadow-default-default))),
+    modal: _with-lit($lit, ($ring, 0 4px 8px 0 $contact, 0 24px 56px -12px var(--ds-color-neutral-shadow-strong-default))),
+    sheet: _with-lit($lit, ($ring, 0 32px 72px -16px var(--ds-color-neutral-shadow-strong-default))),
+  );
+}
+
+@function _with-lit($lit, $layers) {
+  @if $lit == "" { @return $layers; }
+  @return list.join(($lit,), $layers, comma);
+}
+
 $default-token: (
   // Color Semantic Families
   color: get-color-tokens("light"),
@@ -289,10 +311,14 @@ $default-token: (
       section: map.get(core.$spacing, 8),
       page: map.get(core.$spacing, 6),
     ),
+    // The concentric ladder 4 · 8 · 12 · 16 · 24 (ADR-UIP-VIS-001 item 2): a
+    // child's radius is its parent's minus the parent's padding.
     radius: (
-      element: map.get(core.$radius, sm),
-      control: map.get(core.$radius, md),
-      container: map.get(core.$radius, lg),
+      mark: map.get(core.$radius, sm),
+      element: map.get(core.$radius, lg),
+      control: map.get(core.$radius, xl),
+      container: map.get(core.$radius, 2xl),
+      panel: map.get(core.$radius, 3xl),
       pill: map.get(core.$radius, full),
     ),
     border-width: (
@@ -342,7 +368,12 @@ $default-token: (
       #{string.unquote("#{list.nth(map.get(core.$shadow-elevation, inner), 1)}")}
         var(--ds-color-neutral-border-default-focus),
     ),
-  )),
+  ),
+  // Materials (ADR-UIP-VIS-001 item 1): a 1px ring in the subtle neutral
+  // border, a contact layer, and an ambient layer, every color a Tier-2 token.
+  // Dark mode adds a lit top edge to floating materials (default_dark-token).
+  material: material-set(""),
+  ),
 
   // Typography composites: five members each (STD-UIP-TKN-001, Semantic
   // Reading Density). Heading sizes descend; weights ascend.

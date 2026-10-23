@@ -624,6 +624,8 @@
         "--ds-dimension-radius-container",
         "--ds-dimension-radius-control",
         "--ds-dimension-radius-element",
+        "--ds-dimension-radius-mark",
+        "--ds-dimension-radius-panel",
         "--ds-dimension-radius-pill",
         "--ds-dimension-spacing-inline-comfortable",
         "--ds-dimension-spacing-inline-compact",
@@ -644,6 +646,13 @@
         "--ds-dimension-z-index-sticky",
         "--ds-dimension-z-index-toast",
         "--ds-dimension-z-index-tooltip",
+        "--ds-effect-material-flat",
+        "--ds-effect-material-menu",
+        "--ds-effect-material-modal",
+        "--ds-effect-material-panel",
+        "--ds-effect-material-raised",
+        "--ds-effect-material-sheet",
+        "--ds-effect-material-tooltip",
         "--ds-effect-shadow-focus",
         "--ds-effect-shadow-high",
         "--ds-effect-shadow-low",
@@ -1178,6 +1187,8 @@
         "--ds-dimension-radius-container",
         "--ds-dimension-radius-control",
         "--ds-dimension-radius-element",
+        "--ds-dimension-radius-mark",
+        "--ds-dimension-radius-panel",
         "--ds-dimension-radius-pill",
         "--ds-dimension-spacing-inline-comfortable",
         "--ds-dimension-spacing-inline-compact",
@@ -1198,6 +1209,13 @@
         "--ds-dimension-z-index-sticky",
         "--ds-dimension-z-index-toast",
         "--ds-dimension-z-index-tooltip",
+        "--ds-effect-material-flat",
+        "--ds-effect-material-menu",
+        "--ds-effect-material-modal",
+        "--ds-effect-material-panel",
+        "--ds-effect-material-raised",
+        "--ds-effect-material-sheet",
+        "--ds-effect-material-tooltip",
         "--ds-effect-shadow-focus",
         "--ds-effect-shadow-high",
         "--ds-effect-shadow-low",
@@ -3805,6 +3823,18 @@
         "lifecycle": "candidate"
       },
       {
+        "name": "dimension.radius.mark",
+        "cssName": "--ds-dimension-radius-mark",
+        "type": "dimension",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "dimension.radius.panel",
+        "cssName": "--ds-dimension-radius-panel",
+        "type": "dimension",
+        "lifecycle": "candidate"
+      },
+      {
         "name": "dimension.radius.pill",
         "cssName": "--ds-dimension-radius-pill",
         "type": "dimension",
@@ -3922,6 +3952,48 @@
         "name": "dimension.z-index.tooltip",
         "cssName": "--ds-dimension-z-index-tooltip",
         "type": "number",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "effect.material.flat",
+        "cssName": "--ds-effect-material-flat",
+        "type": "shadow",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "effect.material.menu",
+        "cssName": "--ds-effect-material-menu",
+        "type": "shadow",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "effect.material.modal",
+        "cssName": "--ds-effect-material-modal",
+        "type": "shadow",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "effect.material.panel",
+        "cssName": "--ds-effect-material-panel",
+        "type": "shadow",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "effect.material.raised",
+        "cssName": "--ds-effect-material-raised",
+        "type": "shadow",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "effect.material.sheet",
+        "cssName": "--ds-effect-material-sheet",
+        "type": "shadow",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "effect.material.tooltip",
+        "cssName": "--ds-effect-material-tooltip",
+        "type": "shadow",
         "lifecycle": "candidate"
       },
       {
@@ -7023,6 +7095,18 @@
         "lifecycle": "candidate"
       },
       {
+        "name": "dimension.radius.mark",
+        "cssName": "--ds-dimension-radius-mark",
+        "type": "dimension",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "dimension.radius.panel",
+        "cssName": "--ds-dimension-radius-panel",
+        "type": "dimension",
+        "lifecycle": "candidate"
+      },
+      {
         "name": "dimension.radius.pill",
         "cssName": "--ds-dimension-radius-pill",
         "type": "dimension",
@@ -7140,6 +7224,48 @@
         "name": "dimension.z-index.tooltip",
         "cssName": "--ds-dimension-z-index-tooltip",
         "type": "number",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "effect.material.flat",
+        "cssName": "--ds-effect-material-flat",
+        "type": "shadow",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "effect.material.menu",
+        "cssName": "--ds-effect-material-menu",
+        "type": "shadow",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "effect.material.modal",
+        "cssName": "--ds-effect-material-modal",
+        "type": "shadow",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "effect.material.panel",
+        "cssName": "--ds-effect-material-panel",
+        "type": "shadow",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "effect.material.raised",
+        "cssName": "--ds-effect-material-raised",
+        "type": "shadow",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "effect.material.sheet",
+        "cssName": "--ds-effect-material-sheet",
+        "type": "shadow",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "effect.material.tooltip",
+        "cssName": "--ds-effect-material-tooltip",
+        "type": "shadow",
         "lifecycle": "candidate"
       },
       {
@@ -8157,6 +8283,8 @@
       "$dimension-radius-container",
       "$dimension-radius-control",
       "$dimension-radius-element",
+      "$dimension-radius-mark",
+      "$dimension-radius-panel",
       "$dimension-radius-pill",
       "$dimension-spacing-inline-comfortable",
       "$dimension-spacing-inline-compact",
@@ -8177,6 +8305,13 @@
       "$dimension-z-index-sticky",
       "$dimension-z-index-toast",
       "$dimension-z-index-tooltip",
+      "$effect-material-flat",
+      "$effect-material-menu",
+      "$effect-material-modal",
+      "$effect-material-panel",
+      "$effect-material-raised",
+      "$effect-material-sheet",
+      "$effect-material-tooltip",
       "$effect-shadow-focus",
       "$effect-shadow-high",
       "$effect-shadow-low",
