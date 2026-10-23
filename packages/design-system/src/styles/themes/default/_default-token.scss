@@ -103,11 +103,12 @@ $role-states: (
   @return $scheme;
 }
 
-// ─── Solid fills (TDD tokens PG3) ───────────────────────────────────────────
-// Steps 9, 10, and 10B are one ramp, identical in both modes: the fill, its
-// hover, and its pressed state. Hover and pressed step away from the label, and
-// the generator proves the label meets WCAG 2.2 SC 1.4.3 on all three, so the
-// recipe needs no contrast search and the brand fill is the same in both modes.
+// ─── Solid fills (TDD tokens PG3, PG11) ─────────────────────────────────────
+// Steps 9, 10, and 10B are the fill, its hover, and its pressed state. For a
+// chromatic scale they are one ramp, identical in both modes, stepping away
+// from the label; the neutral scale is a contrast ramp, its step 12 of each
+// mode under its step-1 label. The generator proves the label meets WCAG 2.2
+// SC 1.4.3 on all three, so the recipe needs no contrast search.
 
 /// Label polarity of a scheme's solid fill, from the generated palette.
 @function solid-label-polarity($scheme) {
@@ -118,12 +119,18 @@ $role-states: (
   @error "No solid label polarity for hue #{$hue}";
 }
 
-/// Label color of a solid fill: the `contrast` emphasis of text and icon. The
-/// dark label is neutral step 12 of the light axis in both modes, so a label
-/// does not change with the mode while its fill does not either.
-@function solid-label-color($scheme) {
-  @if solid-label-polarity($scheme) == "light" {
+/// Label color of a solid fill: the `contrast` emphasis of text and icon. A
+/// `light` or `dark` label belongs to a ramp shared by both modes, so it does
+/// not change with the mode either: white, or neutral step 12 of the light
+/// axis. A `contrast` scale fills with its own step 12 and labels with neutral
+/// step 1 of the mode (TDD tokens PG11), as Radix Themes' high-contrast solid.
+@function solid-label-color($scheme, $mode) {
+  $polarity: solid-label-polarity($scheme);
+  @if $polarity == "light" {
     @return resolve-core-color("white", null, "light");
+  }
+  @if $polarity == "contrast" {
+    @return resolve-core-color("neutral", 1, $mode);
   }
   @return resolve-core-color("neutral", 12, "light");
 }
@@ -185,7 +192,7 @@ $shadow-level: (subtle: 2, default: 3, strong: 4);
             // step, which drops the scheme's chroma in every scheme.
             $value: resolve-core-color("neutral", get-state-step(12, "disabled", text, $mode), $mode);
           } @else if $recipe-role == "text" or $recipe-role == "icon" {
-            $value: solid-label-color($scheme);
+            $value: solid-label-color($scheme, $mode);
           } @else if $recipe-role == "shadow" {
             $value: -if($mode == "light", resolve-core-color("white", null, $mode), resolve-core-color("black", null, $mode));
           }

@@ -1,5 +1,5 @@
 {
-  "$comment": "Input of the palette generator (TDD tokens, Palette generation PG1-PG10). Every Tier-1 color is generated from this file; edit it, never the generated Sass. Seeds are step 9, the solid fill, shared by both modes; label is the polarity of the text on that fill.",
+  "$comment": "Input of the palette generator (TDD tokens, Palette generation PG1-PG11). Every Tier-1 color is generated from this file; edit it, never the generated Sass. Seeds are step 9, the solid fill, shared by both modes; label is the polarity of the text on that fill: light (white), dark (neutral 12 of the light axis), or contrast, where the fill is the scale's own step 12 and the label its step 1 in each mode (PG11).",
   "schemaVersion": 1,
   "reference": {
     "package": "@radix-ui/colors",
@@ -7,7 +7,7 @@
     "variant": "P3"
   },
   "backgrounds": { "light": "#ffffff", "dark": "#111111" },
-  "neutral": { "seed": "oklch(0.65 0.014 259)", "label": "light" },
+  "neutral": { "seed": "oklch(0.65 0.014 259)", "label": "contrast" },
   "hues": {
     "red": { "seed": "#e5484d", "label": "light" },
     "orange": { "seed": "#f76b15", "label": "light" },

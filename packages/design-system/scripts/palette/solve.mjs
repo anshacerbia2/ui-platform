@@ -9,6 +9,10 @@
 //        both modes: 9 is the seed, moved only as far as the label needs; 10
 //        and 10B step away from the label; the label meets the text minimum
 //        on all three.
+//   PG11 a `contrast` scale (neutral) fills with its own step 12 and labels
+//        with its step 1 in each mode, as Radix Themes' high-contrast solid
+//        does; at that end of the lightness range hover and pressed step
+//        toward the label, and the label still meets the text minimum.
 //   PG4  steps 11 and 12 meet the text minimum on every neutral surface of the
 //        mode and on steps 1-5 of their own scale.
 //   PG5  neutral step 8, the control boundary, meets the non-text minimum on
@@ -76,8 +80,8 @@ export function validateConfig(config) {
     ["neutral", config?.neutral],
     ...Object.entries(config?.hues ?? {}).map(([n, h]) => [`hues.${n}`, h]),
   ]) {
-    if (hue && !["light", "dark"].includes(hue.label))
-      errors.push(`${where}.label: "light" or "dark"`);
+    if (hue && !["light", "dark", "contrast"].includes(hue.label))
+      errors.push(`${where}.label: "light", "dark", or "contrast"`);
     try {
       new Color(hue?.seed);
     } catch {
@@ -217,8 +221,14 @@ export function generate(config, contrast) {
       s === "white" ? WHITE : scales.neutral[mode][s - 1],
     );
   const minOn = (fg, bgs) => Math.min(...bgs.map((bg) => ratio(fg, bg)));
-  const darkLabel = () => scales.neutral.light[11];
-  const labelOf = (hue) => (hue.label === "light" ? WHITE : darkLabel());
+  // The label on a solid fill (PG3, PG11): white, neutral step 12 of the light
+  // axis, or for a contrast scale neutral step 1 of the mode.
+  const labelOf = (hue, mode) =>
+    hue.label === "light"
+      ? WHITE
+      : hue.label === "dark"
+        ? scales.neutral.light[11]
+        : scales.neutral[mode][0];
 
   // Neutral first: every other scale is measured on its surfaces.
   for (const [name, hue] of hues) {
@@ -265,6 +275,28 @@ export function generate(config, contrast) {
       );
     }
 
+    if (hue.label === "contrast") {
+      // PG11: step 12 of each mode is the fill; hover and pressed step toward
+      // the label, because the fill already sits at the end of the range.
+      entry.key = {};
+      for (const mode of MODES) {
+        const label = labelOf(hue, mode);
+        const toward = -AWAY[mode];
+        const fill = scales[name][mode][11];
+        const hover = fit(interactionStep(fill, toward));
+        const pressed = fit(interactionStep(hover, toward));
+        for (const state of [fill, hover, pressed]) {
+          if (ratio(label, state) < text + margin)
+            throw new Error(`${name}/${mode}/solid: the contrast ramp leaves its label below ${text + margin}:1`);
+        }
+        scales[name][mode][8] = fill;
+        scales[name][mode][9] = hover;
+        scales[name][mode][12] = pressed;
+        entry.key[mode] = fill.coords[0];
+      }
+      continue;
+    }
+
     // PG3: the solid ramp. Hover and pressed step away from the label, so the
     // label's contrast never drops below the fill's, and the ramp is the same
     // in both modes.
@@ -303,7 +335,7 @@ export function generate(config, contrast) {
       row.text11 = minOn(scale[10], bgs);
       row.text12 = minOn(scale[11], bgs);
       row.label = Math.min(
-        ...[8, 9, 12].map((i) => ratio(labelOf(hue), scale[i])),
+        ...[8, 9, 12].map((i) => ratio(labelOf(hue, mode), scale[i])),
       );
       row.disabledLabel = ratio(scales.neutral[mode][7], scale[2]);
       if (row.text11 < text || row.text12 < text)
@@ -329,7 +361,8 @@ export function generate(config, contrast) {
           );
       }
     }
-    for (const i of [8, 9, 12]) {
+    // The ramp is shared by both modes, except a contrast scale's (PG11).
+    for (const i of hue.label === "contrast" ? [] : [8, 9, 12]) {
       if (
         scales[name].light[i].coords.some(
           (v, j) => v !== scales[name].dark[i].coords[j],

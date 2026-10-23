@@ -228,8 +228,10 @@ async function verify(browser) {
   // Coexistence: themes and modes resolve in their own roots on one page. The
   // primary Button tells the themes apart; the secondary (tonal) Button, whose
   // neutral surface the token doctrine makes mode-dependent, tells the modes
-  // apart. The solid ramp is shared by both modes (TDD tokens PG3), so the
-  // primary Button must compute the same background in light and dark.
+  // apart. Whether a primary fill changes with the mode is a palette rule
+  // (TDD tokens PG3, PG11), proven by the generator, and the specification
+  // check (CS4) proves each root computes its own token, so it is not
+  // restated here.
   const backgrounds = await tab.evaluate(() =>
     Object.fromEntries([...document.querySelectorAll("[data-fixture-root]")].flatMap((root) => {
       const id = root.getAttribute("data-fixture-root");
@@ -245,9 +247,6 @@ async function verify(browser) {
   }
   for (const theme of themes) {
     if (!differ(`${theme}/light/secondary`, `${theme}/dark/secondary`)) failures.push(`secondary Button computes the same background in light and dark ${theme} roots`);
-    if (backgrounds[`${theme}/light/primary`] !== backgrounds[`${theme}/dark/primary`]) {
-      failures.push(`primary Button differs between light and dark ${theme} roots; the solid ramp is shared by both modes (TDD tokens PG3)`);
-    }
   }
   result.checks.push({ check: "coexistence", backgrounds });
 
