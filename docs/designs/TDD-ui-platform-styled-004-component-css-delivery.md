@@ -9,7 +9,7 @@ doc_meta:
   parent_sad: SAD-003
   review_cycle_days: 30
   created_date: 2026-09-28
-  last_reviewed: 2026-10-23
+  last_reviewed: 2026-10-24
 ---
 
 # TDD-ui-platform-styled-004: Styled Components and CSS Delivery
@@ -344,6 +344,7 @@ migration evidence of a pilot (PLAN P3) lists any such use.
 - Does the dual-engine gate retain both Sass and Panda after the reference slice?
 - Which components, if any, need per-component CSS in a future major version?
 - Is the single-brand `:root` compatibility asset required by a named consumer?
+- Does a white-label brand theme need its primary action in the brand hue? ADR-UIP-VIS-001 item 3 keeps the primary action ink in every theme and reserves the primary scheme for focus, links, checked, progress, and location. If a named consumer requires a brand-filled action, the options are to keep the rule (the brand hue still carries every signal) or to add one theme-level switch (`ink` or `brand`) by a new ADR, at the cost of a second recipe tested in every component. Recorded 2026-10-24; nothing changes until a consumer asks.
 
 ## Traceability
 
