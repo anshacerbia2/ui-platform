@@ -1,10 +1,11 @@
-// Canonical token grammar, transcribed from STD-UIP-TKN-001 section 3, which
-// is unchanged from v2.1.0 (scnehaux-architecture af6462e) to the ratified
-// v2.2.0 (a93e28f). The standard is the single normative definition; change
+// Canonical token grammar, transcribed from STD-UIP-TKN-001 section 3 at the
+// ratified v2.4.0 (scnehaux-architecture 345fa32), which adds the radius
+// intents mark and panel and effect.material to the grammar of v2.1.0
+// (af6462e) and v2.2.0 (a93e28f). The standard is the single normative definition; change
 // this file only to follow a ratified revision of it. STANDARD names the
 // ratified revision the gate is reported against.
 
-export const STANDARD = { id: "STD-UIP-TKN-001", version: "2.2.0", commit: "a93e28f" };
+export const STANDARD = { id: "STD-UIP-TKN-001", version: "2.4.0", commit: "345fa32" };
 
 const SURFACE_STATES = ["default", "hover", "pressed", "selected", "disabled"];
 

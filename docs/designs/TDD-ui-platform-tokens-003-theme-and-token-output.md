@@ -264,8 +264,9 @@ not shadows or durations.
 
 The gate reports against the ratified STD-UIP-TKN-001 revision (`STANDARD` in
 `scripts/tokens/grammar.mjs`, emitted into the token JSON), which was 2.1.0
-(`af6462e`) until 2026-10-20 and is now 2.2.0 (`a93e28f`): the grammar of section
-3 is identical in both. It moves to 2.3.0 only when that revision is ratified.
+(`af6462e`) until 2026-10-20, 2.2.0 (`a93e28f`) until 2026-10-24, and is now 2.4.0
+(`345fa32`, scnehaux-architecture#125), which adds the radius intents `mark` and
+`panel` with a strict order and the `effect.material` family (SI1-SI5).
 
 ## Configuration
 
