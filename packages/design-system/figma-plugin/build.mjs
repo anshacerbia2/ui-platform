@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Builds the Figma plugin from the package's emitted tokens (TDD tokens FG7-FG11):
+// Builds the Figma plugin from the package's emitted tokens (TDD tokens FG7-FG11; usage: TDD tokens, Operational Notes):
 // dist/code.js is the plan (scripts/figma/plan.mjs) followed by runtime.js.
 //
 //   node figma-plugin/build.mjs        (after `pnpm build` of @scnx/system)

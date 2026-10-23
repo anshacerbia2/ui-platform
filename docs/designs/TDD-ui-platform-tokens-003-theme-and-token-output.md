@@ -314,6 +314,14 @@ Generated-output ownership, token migration, contrast triage, missing-asset
 repair, and release rollback have runbooks. A released token set is immutable.
 Supported prior themes remain available for their compatibility window.
 
+The Figma library (FG7-FG11) is refreshed from a build: `pnpm --filter
+@scnx/core-ui build && pnpm --filter @scnx/system build`, then `pnpm --filter
+@scnx/system figma-plugin`, which writes `packages/design-system/figma-plugin/dist/`.
+In the Figma desktop app, Plugins → Development → Import plugin from manifest
+loads `packages/design-system/figma-plugin/manifest.json`; running it in a design
+file applies the plan and shows a report of created and updated assets, skipped
+modes, unplanned variables, and errors. It is rerun after every token change.
+
 ## Rollout and Compatibility
 
 Before v1, generate a complete baseline inventory, replace malformed/legacy
