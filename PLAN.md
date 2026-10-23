@@ -76,6 +76,31 @@ becomes a required check once the `CHROMATIC_PROJECT_TOKEN` secret exists.
 | W1    | Styling Lead | Add Storybook 10 (react-vite) at the workspace root with stories for every supported component; preview the built CSS assets inside ThemeProvider with theme and mode controls; run every story through the Vitest addon and axe-core. | `pnpm test:stories` runs every story in Chromium with zero failures and zero `error`-level axe violations; the static build uploads as a CI artifact; the packed-artifact inspector finds no workshop file in either tarball. |
 | W2    | Release Lead | Run Chromatic on every push against the static Storybook build with `exitZeroOnChanges: false`.                                                                                                                                        | Every story has an approved Chromatic baseline; a pull request with an unreviewed visual change fails the visual-review check.                                                                                                |
 
+## Spatial identity adoption
+
+Implements ADR-UIP-VIS-001 and STD-UIP-TKN-001 2.4.0 (scnehaux-architecture#125). The
+design reference built from that decision (42 component cards) is the visual
+target; the token source stays the only source of values, and the reference is
+regenerated from the package when they differ. These rows do not change the P0
+rows above.
+
+| Order | Owner            | Work | Pass/fail acceptance |
+| ----- | ---------------- | ---- | -------------------- |
+| I1    | Token Lead       | Emit the radius ladder (`mark`, `element`, `control`, `container`, `panel`, `pill`) and `effect.material.*` in every theme (TDD tokens SI1–SI5; #110). | The token gate reports zero findings with `STANDARD` at 2.4.0; radius strictly ascends and the material set is equal in every theme and mode; the CSS contract change is additive. |
+| I2    | Styling Lead     | Move each styled component to the identity through its specification: Button primary to ink and secondary to the `raised` material (revising TDD styled BR1); IconButton, Badge, Code, and Alert radii on the ladder; Dialog, Tabs, Navbar, Sidebar, and the CodeSelect listbox on their materials. | No container declares its own border, radius, and shadow; each `*.spec.json` binds its material and radius tokens; component contrast pairs pass in every theme and mode; each Chromatic change is reviewed and accepted per component. |
+| I3    | Styling Lead     | Add `Surface`, the styled entry for the on-page materials (`flat`, `raised`, `panel`, `well`), born with its specification. | Specification conformance, stories, axe-core, and packed-consumer checks pass; floating materials stay with their overlay components. |
+| I4    | Integration Lead | ui-platform-docs replaces its Sass radius literals (`$radius-card`, `$radius-panel`, `$radius-inner`) with the radius tokens and draws its cards with materials. | No radius or shadow literal remains in the site's styles; the site pins the package release that contains I1. |
+| I5    | Token Lead       | Rebuild the Figma plugin on I1 (27 dimension variables, 30 effect styles) and decide the mode limit: a plan with modes (all four color modes in one collection) or one chosen mode per file on Starter (TDD tokens FG11). Phase 2 adds component sets. | A rerun on the file updates in place with zero errors; the report lists exactly the modes the plan refuses. |
+
+### Component backlog
+
+The design reference defines 21 components that the package does not have
+yet: Avatar, Breadcrumb, Checkbox, Kbd, Link, Menu, Pagination, Popover,
+Progress, Radio, SegmentedControl, Select, Sheet, Skeleton, Spinner, Surface
+(I3), Switch, Table, Textarea, Toast, and Tooltip. ADR-UIP-CMP-001 refers to nine
+P1 components; which nine, and in which order, is not yet recorded. Every one is
+born with its specification (ADR-UIP-CMP-001 item 11).
+
 ## Measurement rules
 
 Measurements inform decisions; they do not become universal policy by being

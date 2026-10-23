@@ -54,6 +54,11 @@ Phase evidence:
   yet; ADR-IAM-012 keeps identity-experience on local components), manual NVDA
   and VoiceOver results for ComboboxBase and Tabs before stable promotion
   (STD-UIP-PRM-001), and migration and rollback evidence.
+  Design-tool path: the package emits a Figma profile and ships a first-party
+  Figma plugin that writes variables, text styles, and effect styles from it
+  (ADR-UIP-TKN-004; TDD tokens FG1–FG11; #109). Spatial identity
+  (ADR-UIP-VIS-001): tokens in #110, then the component, Surface, docs-site, and
+  Figma rows I2–I5 of the plan.
 
 ## Non-negotiable boundaries
 
