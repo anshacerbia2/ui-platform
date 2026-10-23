@@ -18,6 +18,8 @@ Use these documents in order:
   acceptance;
 - [ROADMAP.md](ROADMAP.md) — phase state, target dates, and exit gates;
 - [five TDDs](docs/designs/) — component-level implementation contracts;
+- [design reference](https://github.com/anshacerbia2/scnehaux-design) — the
+  visual target, non-normative (ADR-UIP-VIS-002);
 - [principal review records](docs/reviews/) — non-normative audit records split
   by review round.
 

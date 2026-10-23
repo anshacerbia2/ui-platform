@@ -12,7 +12,7 @@ gates.
 | 0. Architecture and TDD baseline | Complete    | 2026-10-02  | Mature PAD-PLT-003 and SAD-003; five implementation-ready TDDs; one plan; one roadmap; review records separated by round                                                                               | Both repositories pass documentation/governance gates; human authority approves the exact ratification commits; no duplicate UI architecture authority remains |
 | 1. Deterministic bootstrap       | Complete    | 2026-10-09  | Repaired Panda prepare resolution and required clean-install CI job                                                                                                                                    | A clean checkout passes `pnpm install --frozen-lockfile` with scripts enabled, no bypass flag, and no lockfile mutation                                        |
 | 2. P0 repair and evidence        | Complete    | 2026-10-30  | Source tests, packed consumers, corrected tokens/CSS/provider/primitives, security evidence, strict-CSP standalone fixture, conditional federation evaluation, and the component workshop (PLAN W1–W2) | Every applicable P0 PLAN row passes against exact commits and artifacts; failed capabilities remain outside stable exports                                     |
-| 3. Reference slice and beta      | In progress | 2026-11-20  | Four-component reference slice, repeatable release pipeline, named consumer pilots, migration/support evidence                                                                                         | Source, packed, SSR/RSC, CSP, accessibility, visual, localization, performance, provenance, migration, and rollback gates pass for the supported scope         |
+| 3. Reference slice and beta      | In progress | 2026-11-20  | Four-component reference slice, repeatable release pipeline, named consumer pilots, migration/support evidence, spatial identity (PLAN I1–I6), component wave 1                                                                                         | Source, packed, SSR/RSC, CSP, accessibility, visual, localization, performance, provenance, migration, and rollback gates pass for the supported scope         |
 | 4. Stable release                | Not started | 2026-12-04  | Versioned packages and operating model                                                                                                                                                                 | Human release authority accepts exact-version evidence and at least one real consumer completes migration and rollback rehearsal                               |
 
 Phase evidence:
@@ -59,6 +59,13 @@ Phase evidence:
   (ADR-UIP-TKN-004; TDD tokens FG1–FG11; #109). Spatial identity
   (ADR-UIP-VIS-001): tokens in #110, then the component, Surface, docs-site, and
   Figma rows I2–I5 of the plan.
+  Scope added on 2026-10-24: the spatial identity (PLAN I1–I6; I1 merged in
+  #110) and component wave 1 (PLAN "Component waves"; Badge, Alert, and
+  IconButton merged in #108). I2 restyles Button, TextField, Dialog, and Tabs,
+  so the reference slice's visual and contrast evidence is produced again after
+  it. The 2026-11-20 target was set before this scope and has not been
+  re-estimated; the owner decides whether it holds. The visual target is the
+  design reference repository (ADR-UIP-VIS-002).
 
 ## Non-negotiable boundaries
 

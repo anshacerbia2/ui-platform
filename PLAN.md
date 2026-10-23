@@ -78,28 +78,40 @@ becomes a required check once the `CHROMATIC_PROJECT_TOKEN` secret exists.
 
 ## Spatial identity adoption
 
-Implements ADR-UIP-VIS-001 and STD-UIP-TKN-001 2.4.0 (scnehaux-architecture#125). The
-design reference built from that decision (42 component cards) is the visual
-target; the token source stays the only source of values, and the reference is
-regenerated from the package when they differ. These rows do not change the P0
-rows above.
+Implements ADR-UIP-VIS-001 and STD-UIP-TKN-001 2.4.0. The visual target is the
+design reference repository
+[`anshacerbia2/scnehaux-design`](https://github.com/anshacerbia2/scnehaux-design)
+(ADR-UIP-VIS-002; site: <https://anshacerbia2.github.io/scnehaux-design/>):
+`design-system/components/<Name>/README.md` states each component's usage and
+its delta from the current build, and `preview.html` its target markup. The
+reference is non-normative: a component's specification governs, and values
+come only from the token source, from which the reference is regenerated. These
+rows do not change the P0 rows above.
 
 | Order | Owner            | Work | Pass/fail acceptance |
 | ----- | ---------------- | ---- | -------------------- |
-| I1    | Token Lead       | Emit the radius ladder (`mark`, `element`, `control`, `container`, `panel`, `pill`) and `effect.material.*` in every theme (TDD tokens SI1–SI5; #110). | The token gate reports zero findings with `STANDARD` at 2.4.0; radius strictly ascends and the material set is equal in every theme and mode; the CSS contract change is additive. |
-| I2    | Styling Lead     | Move each styled component to the identity through its specification: Button primary to ink and secondary to the `raised` material (revising TDD styled BR1); IconButton, Badge, Code, and Alert radii on the ladder; Dialog, Tabs, Navbar, Sidebar, and the CodeSelect listbox on their materials. | No container declares its own border, radius, and shadow; each `*.spec.json` binds its material and radius tokens; component contrast pairs pass in every theme and mode; each Chromatic change is reviewed and accepted per component. |
-| I3    | Styling Lead     | Add `Surface`, the styled entry for the on-page materials (`flat`, `raised`, `panel`, `well`), born with its specification. | Specification conformance, stories, axe-core, and packed-consumer checks pass; floating materials stay with their overlay components. |
+| I1    | Token Lead       | Emit the radius ladder (`mark`, `element`, `control`, `container`, `panel`, `pill`) and `effect.material.*` in every theme (TDD tokens SI1–SI5). Merged in #110 (`2c80908`). | The token gate reports zero findings with `STANDARD` at 2.4.0; radius strictly ascends and the material set is equal in every theme and mode; the CSS contract change is additive. |
+| I2    | Styling Lead     | Move every existing styled component whose card lists a "Delta from the current build" to the identity through its specification, for example Button primary to ink and secondary to the `raised` material, with `ghost`, `danger`, and `size` (revising TDD styled BR1); IconButton, Badge, Code, Alert, and TextField radii on the ladder; Accordion, Dialog, Tabs, Navbar, Sidebar, CodeShowcase, FloatingLayout, and the CodeSelect listbox on their materials. Control and row heights stay component geometry in each specification, not tokens (ADR-UIP-VIS-001 item 6). | No container declares its own border, radius, and shadow; each `*.spec.json` binds its material and radius tokens; component contrast pairs pass in every theme and mode; each Chromatic change is reviewed and accepted per component. |
+| I3    | Styling Lead     | Add `Surface`, the styled entry for the on-page materials (`flat`, `raised`, `panel`, `well`), born with its specification (card `components/Surface/`). | Specification conformance, stories, axe-core, and packed-consumer checks pass; floating materials stay with their overlay components. |
 | I4    | Integration Lead | ui-platform-docs replaces its Sass radius literals (`$radius-card`, `$radius-panel`, `$radius-inner`) with the radius tokens and draws its cards with materials. | No radius or shadow literal remains in the site's styles; the site pins the package release that contains I1. |
-| I5    | Token Lead       | Rebuild the Figma plugin on I1 (27 dimension variables, 30 effect styles) and decide the mode limit: a plan with modes (all four color modes in one collection) or one chosen mode per file on Starter (TDD tokens FG11). Phase 2 adds component sets. | A rerun on the file updates in place with zero errors; the report lists exactly the modes the plan refuses. |
+| I5    | Token Lead       | Rebuild the Figma plugin on I1 (412 × 4 color and 27 × 2 dimension variables, 16 text styles, 30 effect styles) and decide the mode limit: a plan with modes (all four color modes in one collection) or one chosen mode per file on Starter (TDD tokens FG11). Phase 2 adds component sets. | A rerun on the file updates in place with zero errors; the report lists exactly the modes the plan refuses. |
+| I6    | Token Lead       | Regenerate the design reference's default-theme snapshot (`design-system/themes/default/tokens.json`, `tokens.css`) and `components/bundle.css` from the package after each value change, and re-render the cards with the repository's producer (ADR-UIP-VIS-002 item 4). First run: the material shadows of #110. | The snapshot equals the package's default-theme values; every card's light and dark render is regenerated in the same pull request. |
 
-### Component backlog
+### Component waves
 
-The design reference defines 21 components that the package does not have
-yet: Avatar, Breadcrumb, Checkbox, Kbd, Link, Menu, Pagination, Popover,
-Progress, Radio, SegmentedControl, Select, Sheet, Skeleton, Spinner, Surface
-(I3), Switch, Table, Textarea, Toast, and Tooltip. ADR-UIP-CMP-001 refers to nine
-P1 components; which nine, and in which order, is not yet recorded. Every one is
-born with its specification (ADR-UIP-CMP-001 item 11).
+Every new component is born with its specification (ADR-UIP-CMP-001 item 11)
+and built to its card in the design reference. The reference defines 21
+components the package does not have yet.
+
+- **Wave 1** (nine components): Badge, Alert, and IconButton (merged in #108,
+  `candidate`), then Table, Link, Kbd, SegmentedControl, Tooltip and Popover,
+  and Menu. `Surface` is row I3. This is the set ADR-UIP-CMP-001 and
+  ADR-UIP-VIS-001 call component wave 1; it was the 2026-10-23 work plan and is
+  recorded here on 2026-10-24. The owner may reorder it by pull request.
+- **Wave 2** (not ordered): Avatar, Breadcrumb, Checkbox, Pagination, Progress,
+  Radio, Select, Sheet, Skeleton, Spinner, Switch, Textarea, and Toast.
+
+"P1" in "Later work" below is the release contract, not a component wave.
 
 ## Measurement rules
 
