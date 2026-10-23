@@ -119,6 +119,8 @@ source only when the resolved output is complete and its parent is explicit.
 | `@scnx/system/tokens/css/<theme-id>.css`   | Scoped public CSS variables for one brand across declared modes    |
 | `@scnx/system/tokens/json/<theme-id>.json` | Typed normalized token records for one brand across declared modes |
 | `@scnx/system/tokens/scss`                 | Supported Sass variables/functions generated from the same records |
+| `@scnx/system/tokens/figma/<theme-id>.<mode>.color.tokens.json` | The Figma design-tool profile: one mode's Tier-2 colors as DTCG 2025.10 (FG1-FG6) |
+| `@scnx/system/tokens/figma/<theme-id>.dimension.tokens.json`    | The Figma design-tool profile: one brand's Tier-2 dimensions in pixels (FG4)    |
 
 CSS variables use `--ds-` plus the canonical kebab-case path. Public variables
 are emitted under
@@ -221,6 +223,24 @@ step 9 changed by 0.12-0.14 OKLab between modes, so the brand did too.
 | PG10 | The recipe no longer searches for a solid step by contrast: `solid-plan`, its per-mode design step (light 10, dark 9), and the Sass contrast module are removed, because PG3 and PG11 prove the pairs and the gate re-verifies them. The component fixture tells modes apart by the secondary Button; whether a primary fill changes with the mode is the palette's rule, proven by the generator and by CS4 in each root.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | PG3; TDD styled CS4                                           | One contrast implementation, the gate's, instead of a second one in Sass that clipped instead of mapping.                                                                                                                                                                                                                                                                                                                                                                       |
 | PG11 | The neutral scale is a `contrast` scale: its solid fill (steps 9, 10, 10B) is its own step 12 of each mode under neutral step 1 of that mode as the label, so a neutral solid is near-black under a near-white label in light mode and near-white under a near-black label in dark mode. At that end of the lightness range hover and pressed take Radix's hover step toward the label; the label still meets 4.5:1 plus the margin on all three (9.0:1 at least in light, 13.6:1 in dark). The achromatic theme's primary scheme, the neutral matrix, inherits it. | [8]; WCAG 2.2 SC 1.4.3 | On 2026-10-23 the neutral seed ramp of PG3 gave the docs site's call to action a mid-gray fill (L 0.57) in both modes; Radix Themes' high-contrast solid uses step 12 under gray step 1 and lightens toward the label on hover [8]. Pressed continues in the hover's direction, so the three states stay ordered, where Radix's pressed filter darkens instead. The neutral fill changes with the mode, unlike a brand fill: its identity is contrast with the page, not a hue. |
 
+#### Decision record: Figma design-tool profile
+
+How Figma receives the tokens (ADR-UIP-TKN-004). Until 2026-10-23 a design file
+had no path to the tokens but retyping them, which is the drift TKN-008 forbids
+in code. Figma's variable import reads DTCG JSON, creates one mode per imported
+file, keeps only tokens present in every file with one type, and accepts colors
+in sRGB or HSL only [9]; variables hold colors, numbers, strings, and booleans,
+not shadows or durations.
+
+| ID  | Decision | Source | Rationale |
+| :-- | :------- | :----- | :-------- |
+| FG1 | `scripts/tokens/figma.mjs`, called by `emit.mjs`, writes the profile from the same normalized records as the CSS and JSON outputs, into `tokens/figma/` of the package. Nothing reads it back: a change made in Figma reaches the product only as a change to the token source, reviewed and gated like any other. | ADR-UIP-TKN-004; TKN-008 | One producer. A design file is a consumer of the contract, never a second source. |
+| FG2 | One color file per theme and mode, `<theme-id>.<mode>.color.tokens.json`, each with every Tier-2 color and the same key set; groups follow the canonical path, so Figma names the variable `color/neutral/surface/canvas/default`. | [9]; [10] | Importing the two files of a theme into one collection yields its two modes; a key missing from one file would silently drop the variable. |
+| FG3 | Colors are DTCG 2025.10 color objects in `srgb` with their six-digit `hex` [10]; `alpha` is written only below 1. A color outside sRGB is clipped: that is the srgb-clip display path the contrast gate measures (G1-G2), and PG6 keeps it within 0.02 OKLab of the CSS gamut-mapped rendering, so every imported pair is one the gate checked. | [9]; [10]; PG6 | Figma cannot hold the Display P3 values; clipping, not mapping, keeps the imported value equal to a measured one. |
+| FG4 | Dimensions are the Tier-2 `dimension` domain (spacing, radius, border width, z-index) as unitless pixel numbers (`rem` × 16), one file per theme, `<theme-id>.dimension.tokens.json`; emission stops if a dimension differs between modes. Typography, motion, and shadows are not exported as variables. | [9] | Figma variables are unitless numbers. Text and effect styles are built from the same token JSON by the bridge (ADR-UIP-TKN-004), not by the import. |
+| FG5 | Every token carries `$extensions["com.scnehaux.ui"]` with its `cssName` and the WEB code syntax `var(--ds-…)`. | [9]; STD-UIP-TKN-001 | The import is not documented to set code syntax; the bridge sets it from this field, so Dev Mode shows the property a developer uses. |
+| FG6 | The files are package exports, listed by `scripts/package-entries.mjs`. The token tests assert per theme that each mode file holds every Tier-2 color with identical key sets, that each value is within the PG6 bound of the source, that alpha and code syntax match, and that every dimension is present in pixels. | TDD packaging; Testing Strategy | The packed-consumer check resolves every export, so a missing profile file fails before release. |
+
 The gate reports against the ratified STD-UIP-TKN-001 revision (`STANDARD` in
 `scripts/tokens/grammar.mjs`, emitted into the token JSON), which was 2.1.0
 (`af6462e`) until 2026-10-20 and is now 2.2.0 (`a93e28f`): the grammar of section
@@ -307,7 +327,7 @@ multi-format outputs until evidence closes them.
 
 ## Traceability
 
-Architecture authority: SAD-003; ADR-UIP-PLT-001 and ADR-UIP-TKN-001/002/003;
+Architecture authority: SAD-003; ADR-UIP-PLT-001 and ADR-UIP-TKN-001/002/003/004;
 STD-GLB-FE-005/009 and STD-UIP-TKN-001/002. Lifecycle status in
 `scnehaux-architecture` controls authority. Execution:
 [PLAN](../../PLAN.md) P0 rows 4 and 11. Related designs: packaging, CSS delivery,
@@ -362,3 +382,17 @@ References for "Palette generation" (retrieved 2026-10-23):
    var(--base-button-solid-high-contrast-hover-filter)`, which is
    `contrast(0.88) saturate(1.1) brightness(1.1)`; on press
    `var(--base-button-solid-high-contrast-active-filter)`.
+
+References for "Figma design-tool profile" (retrieved 2026-10-23):
+
+9. Figma Help Center, "Modes for variables" (article 15343816063383): "Design
+   tokens must be in a JSON file and follow the Design Tokens Community Group
+   (DTCG) format"; "A new mode will be created for each file you import";
+   variables are created only for tokens present in all imported files with a
+   supported type and value and the same type across files; supported color
+   spaces are HSL and sRGB; "The number of modes you can create per variable
+   collection depends on your plan."
+10. Design Tokens Community Group, Design Tokens Format Module 2025.10, Color
+    module (28 October 2025): a color `$value` is `{ colorSpace, components,
+    alpha?, hex? }`; `srgb` components are `[red, green, blue]` in 0-1; `hex` is
+    an optional six-digit fallback.

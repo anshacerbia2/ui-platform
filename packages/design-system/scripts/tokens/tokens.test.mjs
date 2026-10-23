@@ -9,6 +9,7 @@ import { loadConfig } from "./check.mjs";
 import { contrastByPath, contrastRatio, parseColor } from "./color.mjs";
 import { consumingProperty, parseTokenName, tokenType } from "./grammar.mjs";
 import { emit, serializeThemes, themeSelector } from "./emit.mjs";
+import { pixelValue, srgbValue } from "./figma.mjs";
 import { normalize } from "./normalize.mjs";
 import { assertDeclarationSafe, formatNumber, toCss } from "./serialize.mjs";
 import { contrastCases, easingDirection, fontFamilies, keySetFindings, measure, orderFindings, stripComments, substitute, validForProperty } from "./validate.mjs";
@@ -394,6 +395,68 @@ describe("emitters", () => {
       const out = sass.compileString(`@use "tokens/scss" as tokens;\n${probe}`, { loadPaths: [dirs[0]] }).css;
       for (const token of json.tokens) expect(out).toContain(`v: var(${token.cssName})`);
       expect(() => sass.compileString('@use "tokens/scss" as tokens; a { v: tokens.token("nope"); }', { loadPaths: [dirs[0]] })).toThrow("Unknown token");
+    });
+
+    describe("Figma profile (TDD tokens FG1-FG6)", () => {
+      const leaves = (node, out = new Map()) => {
+        for (const [key, value] of Object.entries(node)) {
+          if (key.startsWith("$") || !value || typeof value !== "object") continue;
+          if ("$value" in value) out.set(value.$extensions["com.scnehaux.ui"].cssName, value);
+          else leaves(value, out);
+        }
+        return out;
+      };
+
+      it("writes one color file per mode with every Tier-2 color, as the sRGB-clipped value the gates measure", () => {
+        for (const themeId of Object.keys(config.themes)) {
+          const json = JSON.parse(read(`tokens/json/${themeId}.json`));
+          const colors = json.tokens.filter((t) => t.type === "color" && t.tier === 2);
+          const keySets = [];
+          for (const mode of json.modes) {
+            const tokens = leaves(JSON.parse(read(`tokens/figma/${themeId}.${mode}.color.tokens.json`)));
+            keySets.push([...tokens.keys()].sort());
+            expect(tokens.size).toBe(colors.length);
+            for (const record of colors) {
+              const token = tokens.get(record.cssName);
+              expect(token.$type).toBe("color");
+              const { colorSpace, components, alpha = 1, hex } = token.$value;
+              expect(colorSpace).toBe("srgb");
+              expect(hex).toMatch(/^#[0-9a-f]{6}$/);
+              const source = parseColor(record.resolved[themeId][mode]);
+              expect(alpha).toBeCloseTo(Number(source.alpha ?? 1), 4);
+              // The exported value is the srgb-clip display path the contrast gate measures;
+              // PG6 bounds its distance to the CSS gamut-mapped rendering (plus 4-decimal rounding).
+              const opaque = source.clone();
+              opaque.alpha = 1;
+              const exported = parseColor(`color(srgb ${components.join(" ")})`);
+              const mapped = opaque.clone().toGamut({ space: "srgb", method: "css" });
+              expect(mapped.deltaE(exported, "OK")).toBeLessThanOrEqual(0.0201);
+              expect(token.$extensions["com.scnehaux.ui"].codeSyntax.WEB).toBe(`var(${record.cssName})`);
+            }
+          }
+          // FG2: Figma imports only tokens present in every file of a collection.
+          for (const keys of keySets) expect(keys).toEqual(keySets[0]);
+        }
+      });
+
+      it("writes every dimension once per theme, in pixels", () => {
+        for (const themeId of Object.keys(config.themes)) {
+          const json = JSON.parse(read(`tokens/json/${themeId}.json`));
+          const dims = json.tokens.filter((t) => t.tier === 2 && t.name.startsWith("dimension."));
+          const tokens = leaves(JSON.parse(read(`tokens/figma/${themeId}.dimension.tokens.json`)));
+          expect(tokens.size).toBe(dims.length);
+          for (const record of dims) expect(tokens.get(record.cssName).$value).toBe(pixelValue(record.resolved[themeId][json.modes[0]]));
+        }
+      });
+
+      it("converts lengths to pixels and colors to clipped sRGB", () => {
+        expect(pixelValue("0.375rem")).toBe(6);
+        expect(pixelValue("9999px")).toBe(9999);
+        expect(pixelValue("1040")).toBe(1040);
+        expect(() => pixelValue("calc(1px + 1rem)")).toThrow("no pixel value");
+        expect(srgbValue("oklch(0.6 0.3 260)").components.every((c) => c >= 0 && c <= 1)).toBe(true);
+        expect(srgbValue("oklch(0 0 0 / 0.42)")).toEqual({ colorSpace: "srgb", components: [0, 0, 0], hex: "#000000", alpha: 0.42 });
+      });
     });
   });
 });

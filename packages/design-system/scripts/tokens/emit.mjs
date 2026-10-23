@@ -4,6 +4,7 @@
 //   tokens/css/<theme-id>.css   scoped custom properties per declared mode
 //   tokens/json/<theme-id>.json typed records per mode
 //   tokens/scss/_index.scss     Sass variables that reference the properties
+//   tokens/figma/*.tokens.json  the Figma design-tool profile (DTCG 2025.10; figma.mjs)
 //   fonts/*                     declared font faces and licenses
 // Output is sorted and free of timestamps, so the same source emits the same
 // bytes. Emission stops if theme key sets differ or a value cannot be
@@ -17,6 +18,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadConfig } from "./check.mjs";
 import { STANDARD, parseTokenName, tokenType } from "./grammar.mjs";
+import { figmaFiles } from "./figma.mjs";
 import { normalize } from "./normalize.mjs";
 import { assertDeclarationSafe, toCss } from "./serialize.mjs";
 import { fontFamilies, keySetFindings, substitute } from "./validate.mjs";
@@ -166,6 +168,7 @@ export function emit({ packageDir, outDir }) {
     for (const values of Object.values(modes)) for (const name of values.keys()) names.add(name);
     write(`tokens/css/${themeId}.css`, themeCss(themeId, modes, config));
     write(`tokens/json/${themeId}.json`, themeJson(themeId, modes, config));
+    for (const { file, content } of figmaFiles(themeId, modes, config)) write(file, content);
   }
   write("tokens/scss/_index.scss", sassIndex(names));
 
