@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Palette generator (TDD tokens, "Palette generation" PG1-PG10): the only
+// Palette generator (TDD tokens, "Palette generation" PG1-PG11): the only
 // producer of the Tier-1 color scales. Reads palette.config.json and the
 // contrast minimums of tokens.config.json, and writes
 // src/styles/abstracts/_core-palette.generated.scss.
@@ -99,8 +99,9 @@ export function render(config, contrast) {
     ...names.map((name) => scaleBlock(name, scales[name], alphas[name])),
     ");",
     "",
-    "/// Polarity of the label on each scale's solid fill (PG3): `light` is white,",
-    "/// `dark` is neutral step 12 of the light axis, in both modes.",
+    "/// Polarity of the label on each scale's solid fill: `light` is white and",
+    "/// `dark` neutral step 12 of the light axis, in both modes (PG3); `contrast`",
+    "/// is neutral step 1 of the mode, on the scale's own step-12 fill (PG11).",
     `$solid-label: (${names.map((name) => `${name}: ${labels[name]}`).join(", ")});`,
     "",
   ].join("\n");

@@ -133,11 +133,12 @@ describe("palette constraints (PG3-PG6)", () => {
         );
   });
 
+  const labelOf = (name) =>
+    name === "neutral" ? config.neutral.label : config.hues[name].label;
+
   it("shares one solid ramp between the modes, each state stepping away from its label", () => {
-    for (const name of hues) {
-      const label =
-        config[name === "neutral" ? "neutral" : "hues"][name]?.label ??
-        config.neutral.label;
+    for (const name of hues.filter((n) => labelOf(n) !== "contrast")) {
+      const label = labelOf(name);
       const ink =
         label === "light"
           ? new Color("oklch", [1, 0, 0])
@@ -153,6 +154,24 @@ describe("palette constraints (PG3-PG6)", () => {
       expect(ratio(ink, hover)).toBeGreaterThan(ratio(ink, fill));
       expect(ratio(ink, pressed)).toBeGreaterThan(ratio(ink, hover));
     }
+  });
+
+  it("fills a contrast scale with its step 12 under its step-1 label in each mode, hover and pressed stepping toward the label (PG11)", () => {
+    expect(labelOf("neutral")).toBe("contrast");
+    for (const mode of MODES) {
+      const scale = scales.neutral[mode];
+      const label = scale[0];
+      const [fill, hover, pressed] = [8, 9, 12].map((i) => scale[i]);
+      expect(fill.coords).toEqual(scale[11].coords);
+      const toward = mode === "light" ? 1 : -1;
+      expect(Math.sign(hover.coords[0] - fill.coords[0])).toBe(toward);
+      expect(Math.sign(pressed.coords[0] - hover.coords[0])).toBe(toward);
+      for (const state of [fill, hover, pressed])
+        expect(ratio(label, state)).toBeGreaterThanOrEqual(contrast.textMinimum);
+    }
+    // Inverted between the modes: near-black in light, near-white in dark.
+    expect(scales.neutral.light[8].coords[0]).toBeLessThan(0.3);
+    expect(scales.neutral.dark[8].coords[0]).toBeGreaterThan(0.9);
   });
 
   it("keeps the brand seed when its label already passes", () => {
