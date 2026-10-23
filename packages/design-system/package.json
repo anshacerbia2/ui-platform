@@ -121,8 +121,14 @@
     "./styles/components.css": "./dist/styles/components.css",
     "./tokens/css/achromatic.css": "./dist/tokens/css/achromatic.css",
     "./tokens/json/achromatic.json": "./dist/tokens/json/achromatic.json",
+    "./tokens/figma/achromatic.dark.color.tokens.json": "./dist/tokens/figma/achromatic.dark.color.tokens.json",
+    "./tokens/figma/achromatic.light.color.tokens.json": "./dist/tokens/figma/achromatic.light.color.tokens.json",
+    "./tokens/figma/achromatic.dimension.tokens.json": "./dist/tokens/figma/achromatic.dimension.tokens.json",
     "./tokens/css/default.css": "./dist/tokens/css/default.css",
     "./tokens/json/default.json": "./dist/tokens/json/default.json",
+    "./tokens/figma/default.dark.color.tokens.json": "./dist/tokens/figma/default.dark.color.tokens.json",
+    "./tokens/figma/default.light.color.tokens.json": "./dist/tokens/figma/default.light.color.tokens.json",
+    "./tokens/figma/default.dimension.tokens.json": "./dist/tokens/figma/default.dimension.tokens.json",
     "./tokens/scss": "./dist/tokens/scss/_index.scss",
     "./fonts/inter-italic-variable.woff2": "./dist/fonts/inter-italic-variable.woff2",
     "./fonts/inter-ofl.txt": "./dist/fonts/inter-ofl.txt",
@@ -174,7 +180,8 @@
     "palette": "node scripts/palette/generate.mjs",
     "palette:check": "node scripts/palette/generate.mjs --check",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "figma-plugin": "node figma-plugin/build.mjs"
   },
   "peerDependencies": {
     "@scnx/core-ui": "workspace:^",

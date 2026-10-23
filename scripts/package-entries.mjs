@@ -97,6 +97,13 @@ function systemEntries(packageDir) {
     for (const themeId of Object.keys(config.themes).sort()) {
       entries.push({ subpath: `./tokens/css/${themeId}.css`, kind: "asset", source: configFile, out: `dist/tokens/css/${themeId}.css` });
       entries.push({ subpath: `./tokens/json/${themeId}.json`, kind: "asset", source: configFile, out: `dist/tokens/json/${themeId}.json` });
+      // The Figma design-tool profile (TDD tokens FG1-FG6): one color file per mode, one dimension file.
+      for (const mode of Object.keys(config.themes[themeId].modes).sort()) {
+        const file = `tokens/figma/${themeId}.${mode}.color.tokens.json`;
+        entries.push({ subpath: `./${file}`, kind: "asset", source: configFile, out: `dist/${file}` });
+      }
+      const dimension = `tokens/figma/${themeId}.dimension.tokens.json`;
+      entries.push({ subpath: `./${dimension}`, kind: "asset", source: configFile, out: `dist/${dimension}` });
     }
     entries.push({ subpath: "./tokens/scss", kind: "asset", source: configFile, out: "dist/tokens/scss/_index.scss" });
     const fonts = Object.values(config.fonts.assets).flatMap((asset) => [...asset.faces, asset.license]);
