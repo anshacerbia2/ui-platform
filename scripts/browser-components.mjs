@@ -225,17 +225,30 @@ async function verify(browser) {
   failures.push(...layerFindings);
   result.checks.push({ check: "layers", stylesheets: stylesheets.length });
 
-  // Coexistence: the primary button computes differently across themes and modes.
+  // Coexistence: themes and modes resolve in their own roots on one page. The
+  // primary Button tells the themes apart; the secondary (tonal) Button, whose
+  // neutral surface the token doctrine makes mode-dependent, tells the modes
+  // apart. The solid ramp is shared by both modes (TDD tokens PG3), so the
+  // primary Button must compute the same background in light and dark.
   const backgrounds = await tab.evaluate(() =>
-    Object.fromEntries([...document.querySelectorAll("[data-fixture-root]")].map((root) => [
-      root.getAttribute("data-fixture-root"),
-      getComputedStyle(root.querySelector('.scnx-btn[data-variant="primary"]')).backgroundColor,
-    ])));
+    Object.fromEntries([...document.querySelectorAll("[data-fixture-root]")].flatMap((root) => {
+      const id = root.getAttribute("data-fixture-root");
+      const enabled = (variant) => root.querySelector(`.scnx-btn[data-variant="${variant}"]:not([data-disabled]):not(:disabled)`);
+      return [
+        [`${id}/primary`, getComputedStyle(enabled("primary")).backgroundColor],
+        [`${id}/secondary`, getComputedStyle(enabled("secondary")).backgroundColor],
+      ];
+    })));
   const differ = (a, b) => backgrounds[a] && backgrounds[b] && backgrounds[a] !== backgrounds[b];
-  if (themes.length > 1 && !differ(`${themes[0]}/light`, `${themes[1]}/light`)) {
+  if (themes.length > 1 && !differ(`${themes[0]}/light/primary`, `${themes[1]}/light/primary`)) {
     failures.push(`primary Button computes the same background in ${themes[0]} and ${themes[1]} roots on one page`);
   }
-  if (!differ(`${themes[0]}/light`, `${themes[0]}/dark`)) failures.push(`primary Button computes the same background in light and dark ${themes[0]} roots`);
+  for (const theme of themes) {
+    if (!differ(`${theme}/light/secondary`, `${theme}/dark/secondary`)) failures.push(`secondary Button computes the same background in light and dark ${theme} roots`);
+    if (backgrounds[`${theme}/light/primary`] !== backgrounds[`${theme}/dark/primary`]) {
+      failures.push(`primary Button differs between light and dark ${theme} roots; the solid ramp is shared by both modes (TDD tokens PG3)`);
+    }
+  }
   result.checks.push({ check: "coexistence", backgrounds });
 
   // Focus indicators, normally and under forced colors.

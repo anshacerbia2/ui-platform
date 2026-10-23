@@ -4,6 +4,36 @@
 // Defines the foundational raw scales and values that MUST exist
 // before System tokens can map to them.
 @use "sass:map";
+// White and black: photometric constants, steps 1-12 and alpha 1A-12A.
+$constant-scale: (
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  "1A",
+  "2A",
+  "3A",
+  "4A",
+  "5A",
+  "6A",
+  "7A",
+  "8A",
+  "9A",
+  "10A",
+  "11A",
+  "12A"
+);
+
+// Generated scales (scripts/palette): steps 1-12, the pressed solid fill
+// 10B (TDD tokens PG3), and alpha 1A-12A.
 $neutral-scale: (
   1,
   2,
@@ -17,6 +47,7 @@ $neutral-scale: (
   10,
   11,
   12,
+  "10B",
   "1A",
   "2A",
   "3A",
@@ -44,6 +75,7 @@ $chromatic-scale: (
   10,
   11,
   12,
+  "10B",
   "1A",
   "2A",
   "3A",
@@ -64,12 +96,12 @@ $core: (
   // ==========================================
   color: (
       white: (
-        light: $neutral-scale,
-        dark: $neutral-scale,
+        light: $constant-scale,
+        dark: $constant-scale,
       ),
       black: (
-        light: $neutral-scale,
-        dark: $neutral-scale,
+        light: $constant-scale,
+        dark: $constant-scale,
       ),
       neutral: (
         light: $neutral-scale,
