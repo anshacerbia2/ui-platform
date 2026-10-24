@@ -70,26 +70,6 @@
     },
     {
       "rule": "spacing-literal",
-      "selector": ".scnx-btn",
-      "properties": [
-        "padding-inline"
-      ],
-      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); ADR-UIP-VIS-001 item 6",
-      "reason": "A medium Button's inline padding is half its 36px height minus 6px; no spacing step is 12px (small and large take inset compact and inset default)",
-      "removal": "A 12px spacing step in STD-UIP-TKN-001"
-    },
-    {
-      "rule": "spacing-literal",
-      "selector": ".scnx-text-field>[data-part=input]",
-      "properties": [
-        "padding-inline"
-      ],
-      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); ADR-UIP-VIS-001 item 6",
-      "reason": "The input is a medium control: 36px tall with a medium Button's 12px inline padding, so a TextField and a Button align in a row; no spacing step is 12px",
-      "removal": "A 12px spacing step in STD-UIP-TKN-001"
-    },
-    {
-      "rule": "spacing-literal",
       "selector": ".scnx-code",
       "properties": [
         "padding-block",
