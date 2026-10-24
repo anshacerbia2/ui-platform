@@ -24,6 +24,19 @@
       "name": "description",
       "selector": ".scnx-dialog > [data-part=description]",
       "primitivePart": "description"
+    },
+    {
+      "name": "body",
+      "selector": ".scnx-dialog > [data-part=body]"
+    },
+    {
+      "name": "actions",
+      "selector": ".scnx-dialog > [data-part=actions]"
+    },
+    {
+      "name": "close",
+      "selector": ".scnx-dialog > [data-part=close][data-corner]",
+      "primitivePart": "close"
     }
   ],
   "options": {},
@@ -47,6 +60,29 @@
           "children": [
             "The run and its logs are removed."
           ]
+        },
+        {
+          "type": "Dialog.Body",
+          "children": [
+            "Payslips already sent stay with their recipients."
+          ]
+        },
+        {
+          "type": "Dialog.Actions",
+          "children": [
+            {
+              "type": "Dialog.Close",
+              "props": {
+                "variant": "ghost"
+              },
+              "children": [
+                "Cancel"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Dialog.CloseButton"
         }
       ]
     }
@@ -56,17 +92,17 @@
       "part": "root",
       "declarations": {
         "padding": "{dimension.spacing.inset-comfortable}",
-        "border": "{dimension.border-width.default} solid {color.neutral.border.subtle.default}",
-        "border-radius": "{dimension.radius.container}",
+        "border": "{dimension.border-width.default} solid transparent",
+        "border-radius": "{dimension.radius.panel}",
         "background": "{color.neutral.surface.floating.default}",
         "color": "{color.neutral.text.default.default}",
-        "box-shadow": "{effect.shadow.overlay}"
+        "box-shadow": "{effect.material.modal}"
       }
     },
     {
       "part": "backdrop",
       "declarations": {
-        "background": "color-mix(in oklch, {color.neutral.shadow.strong.default} 55%, transparent)"
+        "background": "{color.neutral.shadow.strong.default}"
       }
     },
     {
@@ -77,7 +113,8 @@
         "font-weight": "{typography.heading.small.font-weight}",
         "line-height": "{typography.heading.small.line-height}",
         "letter-spacing": "{typography.heading.small.letter-spacing}",
-        "margin": "0 0 {dimension.spacing.stack-compact}"
+        "margin": "0 0 {dimension.spacing.stack-compact}",
+        "padding-inline-end": "{dimension.spacing.inset-comfortable}"
       }
     },
     {
@@ -90,6 +127,25 @@
         "letter-spacing": "{typography.body.default.letter-spacing}",
         "color": "{color.neutral.text.subtle.default}",
         "margin": "0 0 {dimension.spacing.stack-default}"
+      }
+    },
+    {
+      "part": "body",
+      "declarations": {
+        "margin-block-end": "{dimension.spacing.stack-comfortable}"
+      }
+    },
+    {
+      "part": "actions",
+      "declarations": {
+        "gap": "{dimension.spacing.inline-default}"
+      }
+    },
+    {
+      "part": "close",
+      "declarations": {
+        "inset-block-start": "{dimension.spacing.inset-default}",
+        "inset-inline-end": "{dimension.spacing.inset-default}"
       }
     }
   ]

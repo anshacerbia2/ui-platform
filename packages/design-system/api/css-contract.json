@@ -169,6 +169,7 @@
       "dataAttributes": [
         "data-active",
         "data-color",
+        "data-corner",
         "data-disabled",
         "data-emphasis",
         "data-expanded",

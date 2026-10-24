@@ -4,6 +4,7 @@
 
 ```ts
 
+import { ComponentPropsWithRef } from 'react';
 import { DialogBaseCloseProps } from '@scnx/core-ui/components/dialog-base';
 import { DialogBaseDescriptionProps } from '@scnx/core-ui/components/dialog-base';
 import { DialogBaseProps } from '@scnx/core-ui/components/dialog-base';
@@ -24,10 +25,22 @@ export const Dialog: {
         (props: DialogBaseDescriptionProps): ReactElement;
         displayName: string;
     };
+    Body: {
+        (props: ComponentPropsWithRef<"div">): JSX.Element;
+        displayName: string;
+    };
+    Actions: {
+        (props: ComponentPropsWithRef<"div">): JSX.Element;
+        displayName: string;
+    };
     Close: {
         (input: DialogBaseCloseProps & {
             variant?: "primary" | "secondary" | "ghost" | "danger";
         }): JSX.Element;
+        displayName: string;
+    };
+    CloseButton: {
+        (input: Omit<DialogBaseCloseProps, "children">): JSX.Element;
         displayName: string;
     };
 };

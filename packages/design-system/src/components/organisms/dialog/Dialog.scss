@@ -1,30 +1,53 @@
 @use "styles/abstracts/variables" as *;
 
-// TDD primitives P16. The dialog stays inside the theme root and renders in
-// the top layer; ::backdrop inherits from it in every browser of the support
-// matrix, so the scrim derives from a token.
+// TDD primitives P16; TDD styled DG1-DG3. The dialog stays inside the theme
+// root and renders in the top layer; ::backdrop inherits from it in every
+// browser of the support matrix, so the scrim is a token. The modal material
+// draws the whole edge (ring, contact, and ambient shadow); the transparent
+// border only draws the boundary in forced-colors mode, where shadows are
+// removed (ADR-UIP-VIS-001 item 1; BR2).
 .scnx-dialog {
   width: min(32rem, calc(100% - 2rem));
   max-height: calc(100% - 4rem);
   padding: $dimension-spacing-inset-comfortable;
-  border: $dimension-border-width-default solid $color-border-subtle;
-  border-radius: $dimension-radius-container;
+  border: $dimension-border-width-default solid transparent;
+  border-radius: $dimension-radius-panel;
   background: $color-surface-floating;
   color: $color-text-primary;
-  box-shadow: $effect-shadow-overlay;
+  box-shadow: $effect-material-modal;
 
   &::backdrop {
-    background: color-mix(in oklch, $color-shadow-high 55%, transparent);
+    background: $color-shadow-high;
   }
 
+  // The end padding keeps a long title clear of the corner close button.
   > [data-part="title"] {
     @include typography(heading, small);
     margin: 0 0 $dimension-spacing-stack-compact;
+    padding-inline-end: $dimension-spacing-inset-comfortable;
   }
 
   > [data-part="description"] {
     @include typography(body, default);
     color: $color-text-secondary;
     margin: 0 0 $dimension-spacing-stack-default;
+  }
+
+  > [data-part="body"] {
+    margin-block-end: $dimension-spacing-stack-comfortable;
+  }
+
+  // Dismiss first, the confirming action last, at the end edge.
+  > [data-part="actions"] {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: $dimension-spacing-inline-default;
+  }
+
+  > [data-part="close"][data-corner] {
+    position: absolute;
+    inset-block-start: $dimension-spacing-inset-default;
+    inset-inline-end: $dimension-spacing-inset-default;
   }
 }
