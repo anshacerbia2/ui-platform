@@ -13,7 +13,7 @@
 //   node scripts/security/audit.mjs [--lockfiles <dir>] [--vex security/vex.json] [--out <report dir>]
 //   node scripts/security/audit.mjs --self-test
 
-import { execFileSync } from "node:child_process";
+import { execSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -104,7 +104,8 @@ function runAudit(cwd, isolated) {
   // A fixture lockfile collected inside the repository must not resolve to the workspace.
   const args = ["audit", "--json", ...(isolated ? ["--ignore-workspace"] : [])];
   try {
-    stdout = execFileSync("pnpm", args, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], maxBuffer: 64 * 1024 * 1024 });
+    // A command string runs through the shell, which resolves pnpm.cmd on Windows.
+    stdout = execSync(`pnpm ${args.join(" ")}`, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], maxBuffer: 64 * 1024 * 1024 });
   } catch (error) {
     // pnpm audit exits non-zero when it finds advisories; the JSON is still on stdout.
     stdout = error.stdout ?? "";
