@@ -12,9 +12,11 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** The input is a medium control, 36 px like a medium Button; focus turns its border blue under a flush ring. */
 export const Default: Story = {
   play: async ({ canvasElement }) => {
     const input = within(canvasElement).getByRole("textbox", { name: "Email address" });
+    await expect(input.getBoundingClientRect().height).toBe(36);
     await userEvent.tab();
     await expect(input).toHaveFocus();
     await userEvent.type(input, "ana@example.com");
@@ -31,7 +33,7 @@ export const WithDescription: Story = {
   },
 };
 
-/** The error is text and `aria-invalid`; the border colour is not the only cue. */
+/** The error is text, an icon, and `aria-invalid`; the border colour is not the only cue. */
 export const WithError: Story = {
   args: { type: "email", description: "We send your payslip to this address.", error: "Enter an email address in the correct format, like name@example.com" },
   play: async ({ canvasElement }) => {
