@@ -225,5 +225,13 @@
         "color": "{color.neutral.icon.default.disabled}"
       }
     }
+  ],
+  "geometry": [
+    {
+      "part": "root",
+      "declarations": {
+        "aspect-ratio": "1"
+      }
+    }
   ]
 }

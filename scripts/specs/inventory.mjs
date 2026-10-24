@@ -83,6 +83,17 @@ function selfTest() {
     [styledFindings(nested, context({ css: nestedCss(true) })).length, 1],
     [styledFindings(nested, context({ css: nestedCss().replace("[data-invalid]", "[data-error]") })).length > 0, true],
   );
+  // CS14: recorded geometry matches the stylesheet in both directions.
+  const sized = { ...spec, geometry: [{ part: "root", declarations: { "block-size": "2.25rem" } }, { part: "root", option: { tone: "b" }, declarations: { "block-size": "1.75rem" } }] };
+  const sizedCss = (b = "1.75rem", extra = "") => `${css()}.scnx-x{block-size:2.25rem}.scnx-x[data-tone=b]{block-size:${b}${extra}}`;
+  cases.push(
+    [styledFindings(sized, context({ css: sizedCss() })).length, 0],
+    [styledFindings(sized, context({ css: sizedCss("2rem") })).length, 1],
+    [styledFindings(sized, context({ css: sizedCss("1.75rem", ";inline-size:1.75rem") })).length, 1],
+    [styledFindings(sized, context({ css: css() })).length, 2],
+    [styledFindings({ ...sized, geometry: [{ part: "root", declarations: { "block-size": "{dimension.gap}" } }] }, context({ css: sizedCss() })).length > 0, true],
+    [styledFindings(spec, context({ css: sizedCss() })).length, 0],
+  );
   const failed = cases.map(([actual, want], i) => [i, actual, want]).filter(([, actual, want]) => actual !== want);
   if (failed.length > 0) {
     console.error(`Specification self-test failed: ${failed.map(([i, a, w]) => `case ${i} gave ${a}, expected ${w}`).join("; ")}`);

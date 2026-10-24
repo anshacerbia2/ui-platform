@@ -15,6 +15,12 @@ export const toCss = (template) => template.replace(/\{([a-z0-9.-]+)\}/g, (_, to
 /** Token paths named in a template. */
 export const tokensIn = (template) => [...template.matchAll(/\{([a-z0-9.-]+)\}/g)].map((m) => m[1]);
 const normalizeValue = (value) => csstree.generate(csstree.parse(value, { context: "value" }));
+/**
+ * Properties a specification's `geometry` records (ADR-UIP-VIS-001 item 6,
+ * TDD styled CS14): control and row heights, widths, and icon sizes are
+ * component geometry, not tokens.
+ */
+export const GEOMETRY_PROPERTY = /^(min-|max-)?(block-size|inline-size|height|width)$|^aspect-ratio$/;
 const normalizeSelector = (selector) => csstree.generate(csstree.parse(selector, { context: "selector" }));
 
 /** Identity of a binding: part, option values, state. */
@@ -212,9 +218,14 @@ export function stylesheetBindings(css, spec) {
     }
   }
   const found = new Map();
+  const geometry = new Map();
   const alternatives = new Map();
   const order = new Map();
   for (const [position, { d, declarations }] of rows.entries()) {
+    const sizes = Object.fromEntries(
+      Object.entries(declarations).filter(([p, v]) => GEOMETRY_PROPERTY.test(p) && !v.includes("var(--ds-") && !tokenProperties.get(d.part)?.has(p)),
+    );
+    if (Object.keys(sizes).length > 0) geometry.set(bindingKey(d), { ...geometry.get(bindingKey(d)), ...sizes });
     const kept = Object.fromEntries(Object.entries(declarations).filter(([p, v]) => v.includes("var(--ds-") || tokenProperties.get(d.part)?.has(p)));
     if (Object.keys(kept).length === 0) continue;
     const key = bindingKey(d);
@@ -228,7 +239,7 @@ export function stylesheetBindings(css, spec) {
       if (!seen.has(index)) findings.push(`state ${state.name} (${key}): the stylesheet has no rule for its selector ${selector}`);
     });
   }
-  return { found, findings, order };
+  return { found, geometry, findings, order };
 }
 
 /** Option unions of the public-API report: `name?: "a" | "b";`. */
@@ -277,13 +288,16 @@ export function styledFindings(spec, { css, report, primitive, tokens }) {
     if (!union) findings.push(`option ${option}: the public-API report declares no such prop`);
     else if ([...union].sort().join() !== [...values].sort().join()) findings.push(`option ${option}: values ${values.join(" | ")} differ from the published union ${union.join(" | ")}`);
   }
+  const target = (binding, kind) => {
+    if (!parts.has(binding.part)) findings.push(`${kind} names undeclared part ${binding.part}`);
+    if (binding.state && !states.has(binding.state)) findings.push(`${kind} names undeclared state ${binding.state}`);
+    for (const [option, value] of Object.entries(binding.option ?? {})) {
+      if (!spec.options[option]?.values.includes(value)) findings.push(`${kind} names undeclared option value ${option}=${value}`);
+    }
+  };
   const declared = new Map();
   for (const binding of spec.bindings) {
-    if (!parts.has(binding.part)) findings.push(`binding names undeclared part ${binding.part}`);
-    if (binding.state && !states.has(binding.state)) findings.push(`binding names undeclared state ${binding.state}`);
-    for (const [option, value] of Object.entries(binding.option ?? {})) {
-      if (!spec.options[option]?.values.includes(value)) findings.push(`binding names undeclared option value ${option}=${value}`);
-    }
+    target(binding, "binding");
     for (const template of Object.values(binding.declarations)) {
       // A token is named by its canonical path (STD-UIP-TKN-001), as the token output lists it.
       for (const token of tokensIn(template)) if (!tokens.has(token)) findings.push(`binding names token ${token}, which is not a canonical token name of the token output`);
@@ -292,7 +306,7 @@ export function styledFindings(spec, { css, report, primitive, tokens }) {
     if (declared.has(key)) findings.push(`two bindings for ${key}`);
     declared.set(key, Object.fromEntries(Object.entries(binding.declarations).map(([p, v]) => [p, normalizeValue(toCss(v))])));
   }
-  const { found, findings: sheet, order } = stylesheetBindings(css, spec);
+  const { found, geometry, findings: sheet, order } = stylesheetBindings(css, spec);
   findings.push(...sheet, ...orderFindings(spec, order));
   for (const key of new Set([...declared.keys(), ...found.keys()])) {
     const want = declared.get(key) ?? {};
@@ -301,6 +315,30 @@ export function styledFindings(spec, { css, report, primitive, tokens }) {
       if (!(property in have)) findings.push(`${key}: binds ${property}, which the stylesheet does not declare with a token`);
       else if (!(property in want)) findings.push(`${key}: the stylesheet declares ${property}: ${have[property]}, which no binding names`);
       else if (want[property] !== have[property]) findings.push(`${key}: ${property} is ${have[property]} in the stylesheet, ${want[property]} in the specification`);
+    }
+  }
+  // CS14: a specification that records geometry records all of it, so a size
+  // literal cannot change or appear without its specification changing.
+  if (spec.geometry) {
+    const recorded = new Map();
+    for (const entry of spec.geometry) {
+      target(entry, "geometry");
+      const key = bindingKey(entry);
+      if (recorded.has(key)) findings.push(`two geometry entries for ${key}`);
+      for (const [property, value] of Object.entries(entry.declarations)) {
+        if (!GEOMETRY_PROPERTY.test(property)) findings.push(`geometry ${key}: ${property} is not a size property`);
+        if (tokensIn(value).length > 0) findings.push(`geometry ${key}: ${property} names a token; a token-bound size is a binding`);
+      }
+      recorded.set(key, Object.fromEntries(Object.entries(entry.declarations).map(([p, v]) => [p, tokensIn(v).length > 0 ? v : normalizeValue(v)])));
+    }
+    for (const key of new Set([...recorded.keys(), ...geometry.keys()])) {
+      const want = recorded.get(key) ?? {};
+      const have = geometry.get(key) ?? {};
+      for (const property of new Set([...Object.keys(want), ...Object.keys(have)])) {
+        if (!(property in have)) findings.push(`geometry ${key}: records ${property}, which the stylesheet does not declare as a literal`);
+        else if (!(property in want)) findings.push(`geometry ${key}: the stylesheet declares ${property}: ${have[property]}, which the geometry does not record`);
+        else if (want[property] !== have[property]) findings.push(`geometry ${key}: ${property} is ${have[property]} in the stylesheet, ${want[property]} in the specification`);
+      }
     }
   }
   return findings;
