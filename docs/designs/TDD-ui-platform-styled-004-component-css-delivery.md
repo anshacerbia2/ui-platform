@@ -273,6 +273,17 @@ Badge's new `dot` part is a separate change, because it adds anatomy and API (BD
 | RL2 | Inline code (the `code` recipe) moves from `element` to `mark` (4 px), so the 4 to 8 px change of `element` in #110 does not round inline code in running text. | ADR-UIP-VIS-001 item 2; design reference `components/Code/README.md` | Code in a heading and code in body text keep one radius; its em-based padding still scales with the text (GV4 exception). |
 | RL3 | Alert already binds `dimension.radius.container`, which became 16 px in #110; its card's delta is met without a change, and the specification conformance fixture computes 16 px (12 px achromatic) in every root. | ADR-UIP-VIS-001 item 2; TDD tokens SI1 | None: the token carried the change, which is the point of binding the radius by intent. |
 
+#### Decision record: Dialog material
+
+PLAN I2 moves Dialog onto its material; the visual target is the design
+reference's `components/Dialog/` (ADR-UIP-VIS-002).
+
+| ID  | Decision | Sources | Tradeoff |
+| :-- | :------- | :------ | :------- |
+| DG1 | The dialog is the modal material: `color.neutral.surface.floating.default` with `effect.material.modal` and `dimension.radius.panel` (24 px default, 20 px achromatic). Its subtle border and `effect.shadow.overlay` are removed, because the material's ring is its edge; a transparent border of `dimension.border-width.default` stays, as Button's does (BR2). The scrim is `color.neutral.shadow.strong.default` itself, not a `color-mix()` of it. | ADR-UIP-VIS-001 items 1 and 2; STD-UIP-TKN-001 2.4.0 "Effect contract" | The scrim is darker than the 55 % mix it replaces; a token-valued scrim lets a theme set it without a component change. In forced-colors mode, which removes the ring and shadows, the transparent border draws the dialog's boundary. |
+| DG2 | Two layout parts: `Dialog.Body` (`data-part="body"`, `stack-comfortable` below it) and `Dialog.Actions` (`data-part="actions"`, a wrapping row at the end edge with an `inline-default` gap; dismiss first, the confirming action last). Both are plain `<div>`s; DialogBase is unchanged. | Design reference `components/Dialog/README.md` | A consumer may still place `Dialog.Close` directly in the dialog; it then flows as before instead of joining the actions row. |
+| DG3 | `Dialog.CloseButton` is the corner close: DialogBase's `Close` styled as a small ghost IconButton, with an `aria-hidden` cross, the accessible name "Close" unless `aria-label` overrides it, and `data-corner`, which places it `inset-default` from the top-end corner. The title reserves `inset-comfortable` at its end, so a long title wraps before the button. | Design reference `components/Dialog/README.md`; WCAG 2.2 SC 2.5.8, 4.1.2 | The corner is selected by `data-corner`, not by `data-part="close"` alone, because DialogBase gives every close control that part; selecting the part alone would move a consumer's text Close into the corner. |
+
 ### Portal and scope resolution
 
 Overlay components receive a portal container from the active theme provider,

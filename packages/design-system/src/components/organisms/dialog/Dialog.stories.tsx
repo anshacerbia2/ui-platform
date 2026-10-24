@@ -14,7 +14,13 @@ const DeleteRun = ({ initial = false }: { initial?: boolean }) => {
       <Dialog open={open} onOpenChange={setOpen}>
         <Dialog.Title>Delete the payroll run?</Dialog.Title>
         <Dialog.Description>The run and its payslips are removed. This cannot be undone.</Dialog.Description>
-        <Dialog.Close>Cancel</Dialog.Close>
+        <Dialog.Actions>
+          <Dialog.Close variant="ghost">Cancel</Dialog.Close>
+          <Button variant="danger" onClick={() => setOpen(false)}>
+            Delete
+          </Button>
+        </Dialog.Actions>
+        <Dialog.CloseButton />
       </Dialog>
     </>
   );
@@ -47,6 +53,19 @@ export const OpenAndCloseRequest: Story = {
     await waitFor(() => expect(dialog.contains(dialog.ownerDocument.activeElement)).toBe(true));
     (dialog as HTMLDialogElement & { requestClose: () => void }).requestClose();
     await waitFor(() => expect(dialog).not.toHaveAttribute("open"));
+    await expect(opener).toHaveFocus();
+  },
+};
+
+/** The corner close button closes it the same way; its name defaults to "Close". */
+export const CornerClose: Story = {
+  render: () => <DeleteRun />,
+  play: async ({ canvasElement }) => {
+    const page = within(canvasElement.ownerDocument.body);
+    const opener = page.getByRole("button", { name: "Delete run" });
+    await userEvent.click(opener);
+    await userEvent.click(await page.findByRole("button", { name: "Close" }));
+    await waitFor(() => expect(page.getByRole("dialog", { hidden: true })).not.toHaveAttribute("open"));
     await expect(opener).toHaveFocus();
   },
 };

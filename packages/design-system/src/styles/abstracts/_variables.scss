@@ -87,6 +87,7 @@ $dimension-radius-mark: var(--ds-dimension-radius-mark);
 $dimension-radius-element: var(--ds-dimension-radius-element);
 $dimension-radius-control: var(--ds-dimension-radius-control);
 $dimension-radius-container: var(--ds-dimension-radius-container);
+$dimension-radius-panel: var(--ds-dimension-radius-panel);
 $dimension-radius-pill: var(--ds-dimension-radius-pill);
 
 $dimension-border-width-default: var(--ds-dimension-border-width-default);
@@ -109,6 +110,14 @@ $effect-shadow-low: var(--ds-effect-shadow-low);
 $effect-shadow-medium: var(--ds-effect-shadow-medium);
 $effect-shadow-high: var(--ds-effect-shadow-high);
 $effect-shadow-overlay: var(--ds-effect-shadow-overlay);
+// Materials (ADR-UIP-VIS-001 item 1): one shadow list draws a surface's edge.
+$effect-material-flat: var(--ds-effect-material-flat);
+$effect-material-raised: var(--ds-effect-material-raised);
+$effect-material-panel: var(--ds-effect-material-panel);
+$effect-material-tooltip: var(--ds-effect-material-tooltip);
+$effect-material-menu: var(--ds-effect-material-menu);
+$effect-material-modal: var(--ds-effect-material-modal);
+$effect-material-sheet: var(--ds-effect-material-sheet);
 $effect-shadow-focus: var(--ds-effect-shadow-focus);
 
 
