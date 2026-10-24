@@ -46,6 +46,15 @@
       }
     },
     {
+      "name": "focus",
+      "selectors": [
+        ":focus-visible"
+      ],
+      "enter": {
+        "interaction": "focus"
+      }
+    },
+    {
       "name": "disabled",
       "selectors": [
         ":disabled"
@@ -101,7 +110,8 @@
         "font-weight": "{typography.weight.medium}",
         "line-height": "{typography.body.small.line-height}",
         "letter-spacing": "{typography.body.small.letter-spacing}",
-        "color": "{color.danger.text.default.default}"
+        "color": "{color.danger.text.default.default}",
+        "gap": "{dimension.spacing.inline-compact}"
       }
     },
     {
@@ -116,9 +126,15 @@
         "background": "{color.neutral.surface.raised.default}",
         "border": "{dimension.border-width.default} solid {color.neutral.border.strong.default}",
         "border-radius": "{dimension.radius.control}",
-        "padding": "{dimension.spacing.inset-compact}",
         "transition-duration": "{motion.feedback.duration}",
         "transition-timing-function": "{motion.feedback.easing}"
+      }
+    },
+    {
+      "part": "input",
+      "state": "focus",
+      "declarations": {
+        "border-color": "{color.primary.border.default.focus}"
       }
     },
     {
@@ -135,6 +151,14 @@
       "state": "invalid",
       "declarations": {
         "border-color": "{color.danger.border.strong.default}"
+      }
+    }
+  ],
+  "geometry": [
+    {
+      "part": "input",
+      "declarations": {
+        "min-block-size": "2.25rem"
       }
     }
   ]

@@ -9,7 +9,7 @@ doc_meta:
   parent_sad: SAD-003
   review_cycle_days: 30
   created_date: 2026-09-28
-  last_reviewed: 2026-10-24
+  last_reviewed: 2026-10-25
 ---
 
 # TDD-ui-platform-styled-004: Styled Components and CSS Delivery
@@ -248,6 +248,18 @@ including every variant's pairs in both themes and modes, with zero findings.
 | BI5 | IconButton is a square of Button's heights, 28, 36, and 44 px, with zero padding, so an IconButton and a Button of one size align in a row. Small stays above the 24 px minimum of SC 2.5.8. | ADR-UIP-VIS-001 item 6; WCAG 2.2 SC 2.5.8; GV7 | Squares grow from 24 and 32 px; an icon passed by the consumer is still 16 px, so the icon has more room. |
 | BI6 | A pressed control moves 1 px into the page (`translate: 0 1px`) unless reduced motion is requested. | Design reference `components/Button/README.md`; WCAG 2.2 SC 2.3.3 | The move is a transition on `translate`, which the feedback motion tokens time; under `prefers-reduced-motion: reduce` the control only changes color. |
 
+#### Decision record: TextField identity
+
+PLAN I2 moves TextField to ADR-UIP-VIS-001; the visual target is the design
+reference's `components/TextField/` (ADR-UIP-VIS-002). The label,
+description, error typography, and colors are unchanged.
+
+| ID  | Decision | Sources | Tradeoff |
+| :-- | :------- | :------ | :------- |
+| TF1 | The input is a medium control: at least 36 px tall (`min-block-size`, recorded in the specification's `geometry`, CS14) with no block padding and a medium Button's 12 px inline padding, recorded local geometry in `styles.config.json`. The radius stays `control`. A TextField and a medium Button align in one row. | ADR-UIP-VIS-001 items 2 and 6; BI1; STD-UIP-STY-001 3 (local geometry) | A minimum, not a fixed height, so text zoom still grows the input instead of clipping it. TextField is the second component to use 12 px, which BI1 set as the point to reconsider a spacing step; that question is open below. |
+| TF2 | Focus is a signal, so it is blue: on `:focus-visible` the border takes `color.primary.border.default.focus`, the color of the focus outline, and the outline sits flush (`outline-offset: 0`) instead of 2 px outside. An invalid field keeps its danger border while focused, under the blue outline. | ADR-UIP-VIS-001 item 3; STD-GLB-FE-005 3.9 | The outline still carries focus in forced-colors mode, where the border color is replaced; the border change only adds emphasis. |
+| TF3 | The error line leads with a 16 px icon (a crossed circle in `currentColor`), laid out as a row with an `inline-compact` gap. The styled component adds it to the `error` it passes to TextFieldBase, so the primitive is unchanged. The icon is `aria-hidden` and not focusable, so the accessible description is the message alone. | Design reference `components/TextField/README.md`; WCAG 2.2 SC 1.4.1 | The icon is a second visual cue beside the danger color; a consumer who passes an icon in `error` gets two, so the documented contract is a text message. |
+
 ### Portal and scope resolution
 
 Overlay components receive a portal container from the active theme provider,
@@ -363,6 +375,7 @@ migration evidence of a pilot (PLAN P3) lists any such use.
 - Which components, if any, need per-component CSS in a future major version?
 - Is the single-brand `:root` compatibility asset required by a named consumer?
 - Does a white-label brand theme need its primary action in the brand hue? ADR-UIP-VIS-001 item 3 keeps the primary action ink in every theme and reserves the primary scheme for focus, links, checked, progress, and location. If a named consumer requires a brand-filled action, the options are to keep the rule (the brand hue still carries every signal) or to add one theme-level switch (`ink` or `brand`) by a new ADR, at the cost of a second recipe tested in every component. Recorded 2026-10-24; nothing changes until a consumer asks.
+- Does STD-UIP-TKN-001 add a 12 px spacing step? Button (BI1) and TextField (TF1) both record 12 px inline padding as local geometry, and the design reference's Select uses the same padding. The options are to keep local geometry per component, or to add the step to the standard and the token set and bind both components to it. Recorded 2026-10-25.
 
 ## Traceability
 
