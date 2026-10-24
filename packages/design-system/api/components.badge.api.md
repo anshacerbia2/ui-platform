@@ -21,6 +21,7 @@ export type BadgeProps = {
     scheme?: BadgeScheme;
     emphasis?: BadgeEmphasis;
     size?: BadgeSize;
+    dot?: boolean;
 } & BadgeBaseProps;
 
 // @public

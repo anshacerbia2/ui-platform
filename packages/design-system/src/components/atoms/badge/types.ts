@@ -15,4 +15,6 @@ export type BadgeProps = {
   emphasis?: BadgeEmphasis;
   /** Size. @default "medium" */
   size?: BadgeSize;
+  /** A leading dot in the text color for a live status ("Live", "Failed"); decorative, so the word still names the status. @default false */
+  dot?: boolean;
 } & BadgeBaseProps;
