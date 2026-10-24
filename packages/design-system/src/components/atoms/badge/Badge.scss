@@ -5,7 +5,8 @@
 // its low-contrast text (step 11), `solid` the scheme's solid fill under its
 // contrast label: Radix Themes' soft and solid badges. Both pairs meet 4.5:1
 // by construction (TDD tokens PG3, PG4) and are token-gate cases (CS5). The
-// transparent border draws the badge's boundary in forced-colors mode.
+// transparent border draws the badge's boundary in forced-colors mode. A
+// medium badge takes the `element` radius, a small one `mark` (TDD styled RL1).
 // Each token is spelled out so the token gate can check every reference (TKN-005).
 $badge-schemes: (
   neutral: (
@@ -62,6 +63,7 @@ $badge-schemes: (
   &[data-size="small"] {
     @include typography(label, small);
     padding: 0 $dimension-spacing-inline-compact;
+    border-radius: $dimension-radius-mark;
   }
 
   @each $scheme, $tokens in $badge-schemes {

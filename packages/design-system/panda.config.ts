@@ -146,7 +146,8 @@ const codeRecipe = defineRecipe({
     borderStyle: "solid",
     borderWidth: "var(--ds-dimension-border-width-default)",
     borderColor: "var(--ds-color-neutral-border-subtle-default)",
-    borderRadius: "var(--ds-dimension-radius-element)",
+    // Inline code is a mark (TDD styled RL2): 4px, so it stays crisp in running text.
+    borderRadius: "var(--ds-dimension-radius-mark)",
     px: "0.4em",
     py: "0.1em",
     whiteSpace: "nowrap",
