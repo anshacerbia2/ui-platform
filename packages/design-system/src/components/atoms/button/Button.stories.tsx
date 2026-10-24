@@ -6,7 +6,10 @@ const meta = {
   title: "Atoms/Button",
   component: Button,
   args: { children: "Save changes", onClick: fn() },
-  argTypes: { variant: { control: "inline-radio", options: ["primary", "secondary"] } },
+  argTypes: {
+    variant: { control: "inline-radio", options: ["primary", "secondary", "ghost", "danger"] },
+    size: { control: "inline-radio", options: ["small", "medium", "large"] },
+  },
 } satisfies Meta<typeof Button>;
 
 export default meta;
@@ -24,7 +27,29 @@ export const Primary: Story = {
   },
 };
 
+/** The raised material: its fill, ring, contact, and ambient shadow. */
 export const Secondary: Story = { args: { variant: "secondary" } };
+
+/** No fill at rest; toolbars, dense rows, and dialog dismissals. */
+export const Ghost: Story = { args: { variant: "ghost", children: "Cancel" } };
+
+/** Only the confirming action of something destructive. */
+export const Danger: Story = { args: { variant: "danger", children: "Delete project" } };
+
+/** Small 28 px (radius element), medium 36 px, and large 44 px (radius control). */
+export const Sizes: Story = {
+  render: ({ variant }) => (
+    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+      <Button variant={variant} size="small">Small</Button>
+      <Button variant={variant} size="medium">Medium</Button>
+      <Button variant={variant} size="large">Large</Button>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const heights = within(canvasElement).getAllByRole("button").map((b) => b.getBoundingClientRect().height);
+    await expect(heights).toEqual([28, 36, 44]);
+  },
+};
 
 export const Disabled: Story = {
   args: { disabled: true },
@@ -36,7 +61,7 @@ export const Disabled: Story = {
   },
 };
 
-/** A disabled secondary keeps its tonal fill and takes the disabled label. */
+/** A disabled secondary keeps the flat ring and takes the disabled fill and label. */
 export const SecondaryDisabled: Story = {
   args: { variant: "secondary", disabled: true },
   play: async ({ canvasElement }) => {

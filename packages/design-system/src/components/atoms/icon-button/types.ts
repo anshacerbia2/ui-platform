@@ -8,11 +8,11 @@ export type IconButtonNameProps =
   | { "aria-label": string; "aria-labelledby"?: undefined }
   | { "aria-label"?: undefined; "aria-labelledby": string };
 
-/** `ghost` has no fill at rest and takes the subtle neutral fill on hover. */
-export type IconButtonVariant = "primary" | "secondary" | "ghost";
+/** Button's variants; `ghost` has no fill at rest and takes the subtle neutral fill on hover. */
+export type IconButtonVariant = "primary" | "secondary" | "ghost" | "danger";
 
-/** `small` is 24 px square, the WCAG 2.2 SC 2.5.8 minimum target; `medium` is 32 px. */
-export type IconButtonSize = "small" | "medium";
+/** Button's heights as a square: `small` 28 px, `medium` 36 px, `large` 44 px. */
+export type IconButtonSize = "small" | "medium" | "large";
 
 /** Each member of a props union without its naming attributes, which {@link IconButtonNameProps} supplies. */
 export type WithoutAccessibleName<T> = T extends unknown ? Omit<T, "aria-label" | "aria-labelledby"> : never;

@@ -7,7 +7,7 @@ const DialogRoot = ({ className = "", ...rest }: DialogProps) => <DialogBase {..
 DialogRoot.displayName = "Dialog";
 
 /** Close, styled as a Button (`variant` as in Button; secondary by default). */
-const DialogClose = ({ className = "", variant = "secondary", ...rest }: DialogBaseCloseProps & { variant?: "primary" | "secondary" }) => (
+const DialogClose = ({ className = "", variant = "secondary", ...rest }: DialogBaseCloseProps & { variant?: "primary" | "secondary" | "ghost" | "danger" }) => (
   <DialogBaseClose {...rest} className={cx("scnx-btn", className)} data-variant={variant} />
 );
 DialogClose.displayName = "Dialog.Close";

@@ -1,54 +1,109 @@
 @use "variables" as *;
 
-// Shared by Button and IconButton (TDD styled BR1-BR3, IB1-IB3): the variant
-// is the color axis. `primary` is the solid fill of its scheme under the
-// scheme's contrast label in each state; `secondary` is tonal, a neutral fill
-// with no stroke; disabled is a token pair at full opacity, and hover and
-// pressed exclude both disabled forms, so a disabled control does not react.
+// Shared by Button and IconButton (TDD styled BI1-BI4, ADR-UIP-VIS-001
+// items 1-3): the variant is the color axis. `primary` is ink, the neutral
+// solid under its contrast label; `secondary` is the raised material;
+// `ghost` has no fill at rest; `danger` is the danger solid, for a
+// destructive confirmation. Disabled is a token pair at full opacity, and
+// hover and pressed exclude both disabled forms, so a disabled control does
+// not react.
 @mixin button-variants {
   &[data-variant="primary"] {
-    background: $color-primary-default;
-    color: $color-primary-contrast;
+    background: var(--ds-color-neutral-surface-solid-default);
+    color: var(--ds-color-neutral-text-contrast-default);
 
     &:hover:not(:disabled, [data-disabled]) {
-      background: $color-primary-hover;
-      color: $color-primary-contrast-hover;
-      box-shadow: $effect-shadow-low;
+      background: var(--ds-color-neutral-surface-solid-hover);
+      color: var(--ds-color-neutral-text-contrast-hover);
     }
 
     &:active:not(:disabled, [data-disabled]) {
-      background: $color-primary-pressed;
-      color: $color-primary-contrast;
+      background: var(--ds-color-neutral-surface-solid-pressed);
+      color: var(--ds-color-neutral-text-contrast-default);
     }
 
     &:disabled,
     &[data-disabled] {
-      background: $color-primary-disabled;
-      color: $color-primary-contrast-disabled;
+      background: var(--ds-color-neutral-surface-solid-disabled);
+      color: var(--ds-color-neutral-text-contrast-disabled);
     }
   }
 
+  // The raised material: its fill, and its shadow token, which composes the
+  // ring, the contact, and the ambient shadow. Pressed sinks to the flat
+  // material (the ring alone); disabled keeps the ring.
   &[data-variant="secondary"] {
-    background: $color-surface-default;
-    color: $color-text-primary;
+    background: var(--ds-color-neutral-surface-raised-default);
+    color: var(--ds-color-neutral-text-default-default);
+    box-shadow: var(--ds-effect-material-raised);
 
     &:hover:not(:disabled, [data-disabled]) {
-      background: $color-state-hover;
+      background: var(--ds-color-neutral-surface-subtle-hover);
     }
 
     &:active:not(:disabled, [data-disabled]) {
-      background: $color-state-pressed;
+      background: var(--ds-color-neutral-surface-subtle-pressed);
+      box-shadow: var(--ds-effect-material-flat);
     }
 
     &:disabled,
     &[data-disabled] {
-      background: $color-state-disabled;
-      color: $color-text-disabled;
+      background: var(--ds-color-neutral-surface-default-disabled);
+      color: var(--ds-color-neutral-text-default-disabled);
+      box-shadow: var(--ds-effect-material-flat);
+    }
+  }
+
+  &[data-variant="ghost"] {
+    background: transparent;
+    color: var(--ds-color-neutral-text-default-default);
+
+    &:hover:not(:disabled, [data-disabled]) {
+      background: var(--ds-color-neutral-surface-subtle-hover);
+    }
+
+    &:active:not(:disabled, [data-disabled]) {
+      background: var(--ds-color-neutral-surface-subtle-pressed);
+    }
+
+    &:disabled,
+    &[data-disabled] {
+      background: transparent;
+      color: var(--ds-color-neutral-text-default-disabled);
+    }
+  }
+
+  &[data-variant="danger"] {
+    background: var(--ds-color-danger-surface-solid-default);
+    color: var(--ds-color-danger-text-contrast-default);
+
+    &:hover:not(:disabled, [data-disabled]) {
+      background: var(--ds-color-danger-surface-solid-hover);
+      color: var(--ds-color-danger-text-contrast-hover);
+    }
+
+    &:active:not(:disabled, [data-disabled]) {
+      background: var(--ds-color-danger-surface-solid-pressed);
+      color: var(--ds-color-danger-text-contrast-default);
+    }
+
+    &:disabled,
+    &[data-disabled] {
+      background: var(--ds-color-danger-surface-solid-disabled);
+      color: var(--ds-color-danger-text-contrast-disabled);
     }
   }
 
   &:disabled,
   &[data-disabled] {
     cursor: not-allowed;
+  }
+
+  // A pressed control moves 1px into the page (ADR-UIP-VIS-001 design
+  // reference), unless reduced motion is requested.
+  @media (prefers-reduced-motion: no-preference) {
+    &:active:not(:disabled, [data-disabled]) {
+      translate: 0 1px;
+    }
   }
 }

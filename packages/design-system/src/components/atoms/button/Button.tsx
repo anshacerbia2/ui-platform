@@ -22,12 +22,13 @@ import { cx } from "styled-system/css";
  */
 export const Button = ({
   variant = "primary",
+  size = "medium",
   className = "",
   ...rest
 }: ButtonProps) => {
   // Destructuring a union loses its discriminant; the props are still one
   // ButtonBase mode, which ButtonBase discriminates at runtime.
-  return <ButtonBase {...(rest as ButtonBaseProps)} className={cx("scnx-btn", className)} data-variant={variant} />;
+  return <ButtonBase {...(rest as ButtonBaseProps)} className={cx("scnx-btn", className)} data-variant={variant} data-size={size} />;
 };
 
 Button.displayName = "Button";
