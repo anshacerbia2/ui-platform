@@ -126,6 +126,7 @@
         "background": "{color.neutral.surface.raised.default}",
         "border": "{dimension.border-width.default} solid {color.neutral.border.strong.default}",
         "border-radius": "{dimension.radius.control}",
+        "padding-inline": "{dimension.spacing.control-default}",
         "transition-duration": "{motion.feedback.duration}",
         "transition-timing-function": "{motion.feedback.easing}"
       }

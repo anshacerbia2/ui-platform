@@ -3,8 +3,7 @@
 // TDD primitives P15; TDD styled TF1-TF3. The boundary uses the strong neutral
 // border; the error state adds the strong danger border, but the error text
 // and its icon carry the state, so colour is never its only cue. The input is
-// a medium control: 36px with Button's 12px inline padding (local geometry,
-// styles.config.json).
+// a medium control: 36px with a medium Button's control spacing.
 .scnx-text-field {
   display: flex;
   flex-direction: column;
@@ -38,7 +37,7 @@
     @include typography(body, default);
     min-block-size: 2.25rem;
     padding-block: 0;
-    padding-inline: 0.75rem;
+    padding-inline: $dimension-spacing-control-default;
     color: $color-text-primary;
     background: $color-surface-raised;
     border: $dimension-border-width-default solid $color-border-strong;

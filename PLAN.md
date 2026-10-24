@@ -78,7 +78,7 @@ becomes a required check once the `CHROMATIC_PROJECT_TOKEN` secret exists.
 
 ## Spatial identity adoption
 
-Implements ADR-UIP-VIS-001 and STD-UIP-TKN-001 2.4.0. The visual target is the
+Implements ADR-UIP-VIS-001 and STD-UIP-TKN-001 2.4.0, with 2.5.0's `control` spacing (TDD tokens SI6). The visual target is the
 design reference repository
 [`anshacerbia2/scnehaux-design`](https://github.com/anshacerbia2/scnehaux-design)
 (ADR-UIP-VIS-002; site: <https://anshacerbia2.github.io/scnehaux-design/>):
@@ -94,7 +94,7 @@ rows do not change the P0 rows above.
 | I2    | Styling Lead     | Move every existing styled component whose card lists a "Delta from the current build" to the identity through its specification, for example Button primary to ink and secondary to the `raised` material, with `ghost`, `danger`, and `size` (revising TDD styled BR1); IconButton, Badge, Code, Alert, and TextField radii on the ladder; Accordion, Dialog, Tabs, Navbar, Sidebar, CodeShowcase, FloatingLayout, and the CodeSelect listbox on their materials. Control and row heights stay component geometry in each specification, not tokens (ADR-UIP-VIS-001 item 6). | No container declares its own border, radius, and shadow; each `*.spec.json` binds its material and radius tokens; component contrast pairs pass in every theme and mode; each Chromatic change is reviewed and accepted per component. |
 | I3    | Styling Lead     | Add `Surface`, the styled entry for the on-page materials (`flat`, `raised`, `panel`, `well`), born with its specification (card `components/Surface/`). | Specification conformance, stories, axe-core, and packed-consumer checks pass; floating materials stay with their overlay components. |
 | I4    | Integration Lead | ui-platform-docs replaces its Sass radius literals (`$radius-card`, `$radius-panel`, `$radius-inner`) with the radius tokens and draws its cards with materials. | No radius or shadow literal remains in the site's styles; the site pins the package release that contains I1. |
-| I5    | Token Lead       | Rebuild the Figma plugin on I1 (412 × 4 color and 27 × 2 dimension variables, 16 text styles, 30 effect styles) and decide the mode limit: a plan with modes (all four color modes in one collection) or one chosen mode per file on Starter (TDD tokens FG11). Phase 2 adds component sets. | A rerun on the file updates in place with zero errors; the report lists exactly the modes the plan refuses. |
+| I5    | Token Lead       | Rebuild the Figma plugin on I1 (412 × 4 color and 30 × 2 dimension variables, 16 text styles, 30 effect styles) and decide the mode limit: a plan with modes (all four color modes in one collection) or one chosen mode per file on Starter (TDD tokens FG11). Phase 2 adds component sets. | A rerun on the file updates in place with zero errors; the report lists exactly the modes the plan refuses. |
 | I6    | Token Lead       | Regenerate the design reference's default-theme snapshot (`design-system/themes/default/tokens.json`, `tokens.css`) and `components/bundle.css` from the package after each value change, and re-render the cards with the repository's producer (ADR-UIP-VIS-002 item 4). First run: the material shadows of #110. | The snapshot equals the package's default-theme values; every card's light and dark render is regenerated in the same pull request. |
 
 ### Component waves

@@ -170,6 +170,9 @@ describe("value relationships (STD-UIP-TKN-001 section 3)", () => {
     ["--ds-dimension-spacing-inset-compact", "0.5rem"],
     ["--ds-dimension-spacing-inset-default", "1rem"],
     ["--ds-dimension-spacing-inset-comfortable", "24px"],
+    ["--ds-dimension-spacing-control-compact", "0.5rem"],
+    ["--ds-dimension-spacing-control-default", "0.75rem"],
+    ["--ds-dimension-spacing-control-comfortable", "1rem"],
     ["--ds-dimension-z-index-base", "0"],
     ["--ds-dimension-z-index-dropdown", "1000"],
     ["--ds-dimension-radius-element", "0.5rem"],
@@ -194,6 +197,7 @@ describe("value relationships (STD-UIP-TKN-001 section 3)", () => {
 
   it.each([
     ["--ds-dimension-spacing-inset-default", "0.5rem", "spacing inset ascends"],
+    ["--ds-dimension-spacing-control-default", "1rem", "spacing control ascends"],
     ["--ds-dimension-z-index-dropdown", "0", "z-index strictly ascends"],
     ["--ds-dimension-radius-control", "8px", "radius strictly ascends"],
     ["--ds-typography-heading-xlarge-font-size", "4rem", "heading sizes descend"],

@@ -9,7 +9,7 @@ doc_meta:
   parent_sad: SAD-003
   review_cycle_days: 30
   created_date: 2026-09-28
-  last_reviewed: 2026-10-24
+  last_reviewed: 2026-10-25
 ---
 
 # TDD-ui-platform-tokens-003: Theme and Token Output
@@ -238,6 +238,7 @@ own border.
 | SI3 | Every public theme emits `effect.material.{flat, raised, panel, tooltip, menu, modal, sheet}` as one shadow list each: a 1px ring in `color.neutral.border.subtle.default` (none for `tooltip`), then contact and ambient layers in `color.neutral.shadow.{subtle, default, strong}.default`. Ambient offset, blur, and negative spread grow from `raised` (0 4px 8px −2px) to `sheet` (0 32px 72px −16px). | ADR-UIP-VIS-001 item 1; STD-UIP-TKN-001 2.4.0 | The ring is a shadow, not a border, so it adds no layout size and a component draws its whole edge with one declaration. Negative spread keeps the ambient under the surface instead of haloing it. |
 | SI4 | In dark mode `menu`, `modal`, and `sheet` start with `inset 0 1px 0 0` in `color.neutral.border.default.default`; the light-mode lists are unchanged. The dark theme map deep-merges the material set built with that layer. | STD-UIP-TKN-001 2.4.0 | Shadows of black on a near-black canvas read weakly (PG9); a lit top edge separates a floating surface from the page without a lighter fill, which PG9 rules out. |
 | SI5 | `effect.shadow.*` stays for compatibility; new and changed components use materials. | STD-UIP-TKN-001 2.4.0 | Removing the elevations is a breaking change that waits for every component to adopt a material. |
+| SI6 | Spacing adds the `control` relationship, a control's inline padding: `control-compact`, `control-default`, `control-comfortable` are 8, 12, and 16px in the default theme, from the Tier-1 steps `2`, `3`, and `4`; achromatic inherits them. The gate checks that they ascend, as it does for every spacing relationship. | STD-UIP-TKN-001 2.5.0 | Button (TDD styled BI1) and TextField recorded 12px as local geometry, with no spacing step at 12px; one relationship paired with the small, medium, and large sizes replaces both exceptions and lets a theme move control padding without touching components. |
 
 #### Decision record: Figma design-tool profile
 
@@ -264,9 +265,11 @@ not shadows or durations.
 
 The gate reports against the ratified STD-UIP-TKN-001 revision (`STANDARD` in
 `scripts/tokens/grammar.mjs`, emitted into the token JSON), which was 2.1.0
-(`af6462e`) until 2026-10-20, 2.2.0 (`a93e28f`) until 2026-10-24, and is now 2.4.0
+(`af6462e`) until 2026-10-20, 2.2.0 (`a93e28f`) until 2026-10-24, 2.4.0
 (`345fa32`, scnehaux-architecture#125), which adds the radius intents `mark` and
-`panel` with a strict order and the `effect.material` family (SI1-SI5).
+`panel` with a strict order and the `effect.material` family (SI1-SI5), until
+2026-10-25, and is now 2.5.0 (`969f5e4`, scnehaux-architecture#128), which adds
+the `control` spacing relationship (SI6).
 
 ## Configuration
 
