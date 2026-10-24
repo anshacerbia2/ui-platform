@@ -256,7 +256,7 @@ export function orderFindings(resolved) {
     }
   };
 
-  for (const relationship of ["inset", "stack", "inline"]) {
+  for (const relationship of ["inset", "stack", "inline", "control"]) {
     const names = ["compact", "default", "comfortable"].map((d) => `--ds-dimension-spacing-${relationship}-${d}`);
     sequence(names, "ascend", `spacing ${relationship} ascends compact -> comfortable`);
   }

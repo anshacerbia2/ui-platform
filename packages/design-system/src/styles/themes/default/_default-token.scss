@@ -308,6 +308,11 @@ $default-token: (
       inline-compact: map.get(core.$spacing, 1),
       inline-default: map.get(core.$spacing, 2),
       inline-comfortable: map.get(core.$spacing, 4),
+      // A control's inline padding, paired with its small, medium, and large
+      // size (STD-UIP-TKN-001 2.5.0): 8, 12, and 16px.
+      control-compact: map.get(core.$spacing, 2),
+      control-default: map.get(core.$spacing, 3),
+      control-comfortable: map.get(core.$spacing, 4),
       section: map.get(core.$spacing, 8),
       page: map.get(core.$spacing, 6),
     ),

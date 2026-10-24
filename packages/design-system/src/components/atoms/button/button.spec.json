@@ -75,7 +75,7 @@
       "part": "root",
       "declarations": {
         "gap": "{dimension.spacing.inline-default}",
-        "padding-inline": "0.75rem",
+        "padding-inline": "{dimension.spacing.control-default}",
         "border": "{dimension.border-width.default} solid transparent",
         "border-radius": "{dimension.radius.control}",
         "font-family": "{typography.label.default.font-family}",
@@ -94,7 +94,7 @@
       },
       "declarations": {
         "gap": "{dimension.spacing.inline-compact}",
-        "padding-inline": "{dimension.spacing.inset-compact}",
+        "padding-inline": "{dimension.spacing.control-compact}",
         "border-radius": "{dimension.radius.element}",
         "font-size": "{typography.label.small.font-size}"
       }
@@ -105,7 +105,7 @@
         "size": "large"
       },
       "declarations": {
-        "padding-inline": "{dimension.spacing.inset-default}",
+        "padding-inline": "{dimension.spacing.control-comfortable}",
         "font-size": "{typography.body.default.font-size}"
       }
     },
