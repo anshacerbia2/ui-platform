@@ -15,8 +15,15 @@ export const Button: {
 
 // @public (undocumented)
 export type ButtonProps = {
-    variant?: "primary" | "secondary";
+    variant?: ButtonVariant;
+    size?: ButtonSize;
 } & ButtonBaseProps;
+
+// @public
+export type ButtonSize = "small" | "medium" | "large";
+
+// @public
+export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
 
 // (No @packageDocumentation comment for this package)
 

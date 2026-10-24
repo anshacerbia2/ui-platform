@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import { Button } from "./Button";
 
 describe("Button", () => {
-  it("renders a native button with the styled class and default variant", () => {
+  it("renders a native button with the styled class, default variant, and default size", () => {
     render(<Button>Save</Button>);
     const button = screen.getByRole("button", { name: "Save" });
 
@@ -11,17 +11,19 @@ describe("Button", () => {
     expect(button).toHaveAttribute("type", "button");
     expect(button).toHaveClass("scnx-btn");
     expect(button).toHaveAttribute("data-variant", "primary");
+    expect(button).toHaveAttribute("data-size", "medium");
   });
 
-  it("forwards the variant and merges a consumer class", () => {
+  it("forwards the variant and size and merges a consumer class", () => {
     render(
-      <Button variant="secondary" className="consumer">
-        Cancel
+      <Button variant="danger" size="small" className="consumer">
+        Delete
       </Button>,
     );
-    const button = screen.getByRole("button", { name: "Cancel" });
+    const button = screen.getByRole("button", { name: "Delete" });
 
-    expect(button).toHaveAttribute("data-variant", "secondary");
+    expect(button).toHaveAttribute("data-variant", "danger");
+    expect(button).toHaveAttribute("data-size", "small");
     expect(button).toHaveClass("scnx-btn", "consumer");
   });
 

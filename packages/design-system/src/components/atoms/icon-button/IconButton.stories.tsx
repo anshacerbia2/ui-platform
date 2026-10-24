@@ -13,8 +13,8 @@ const meta = {
   component: IconButton,
   args: { "aria-label": "Close", children: <Close />, onClick: fn() },
   argTypes: {
-    variant: { control: "inline-radio", options: ["primary", "secondary", "ghost"] },
-    size: { control: "inline-radio", options: ["small", "medium"] },
+    variant: { control: "inline-radio", options: ["primary", "secondary", "ghost", "danger"] },
+    size: { control: "inline-radio", options: ["small", "medium", "large"] },
   },
 } satisfies Meta<typeof IconButton>;
 
@@ -33,13 +33,21 @@ export const Primary: Story = { args: { variant: "primary" } };
 
 export const Ghost: Story = { args: { variant: "ghost" } };
 
-/** 24 px square, the WCAG 2.2 SC 2.5.8 minimum target. */
-export const Small: Story = {
-  args: { size: "small", variant: "ghost" },
+export const Danger: Story = { args: { variant: "danger", "aria-label": "Delete" } };
+
+/** Button's heights as squares: 28, 36, and 44 px; small is above the 24 px WCAG 2.2 SC 2.5.8 minimum. */
+export const Sizes: Story = {
+  args: { variant: "ghost" },
+  render: ({ variant }) => (
+    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+      <IconButton aria-label="Close small" variant={variant} size="small"><Close /></IconButton>
+      <IconButton aria-label="Close medium" variant={variant} size="medium"><Close /></IconButton>
+      <IconButton aria-label="Close large" variant={variant} size="large"><Close /></IconButton>
+    </div>
+  ),
   play: async ({ canvasElement }) => {
-    const box = within(canvasElement).getByRole("button", { name: "Close" }).getBoundingClientRect();
-    await expect(box.width).toBeGreaterThanOrEqual(24);
-    await expect(box.height).toBeGreaterThanOrEqual(24);
+    const boxes = within(canvasElement).getAllByRole("button").map((b) => b.getBoundingClientRect());
+    await expect(boxes.map((b) => [b.width, b.height])).toEqual([[28, 28], [36, 36], [44, 44]]);
   },
 };
 

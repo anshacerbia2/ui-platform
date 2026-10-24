@@ -26,7 +26,7 @@ export const Dialog: {
     };
     Close: {
         (input: DialogBaseCloseProps & {
-            variant?: "primary" | "secondary";
+            variant?: "primary" | "secondary" | "ghost" | "danger";
         }): JSX.Element;
         displayName: string;
     };

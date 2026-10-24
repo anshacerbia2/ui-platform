@@ -29,10 +29,10 @@ export type IconButtonProps = IconButtonNameProps & {
 } & WithoutAccessibleName<ButtonBaseProps>;
 
 // @public
-export type IconButtonSize = "small" | "medium";
+export type IconButtonSize = "small" | "medium" | "large";
 
 // @public
-export type IconButtonVariant = "primary" | "secondary" | "ghost";
+export type IconButtonVariant = "primary" | "secondary" | "ghost" | "danger";
 
 // @public
 export type WithoutAccessibleName<T> = T extends unknown ? Omit<T, "aria-label" | "aria-labelledby"> : never;

@@ -1,24 +1,48 @@
 @use "styles/abstracts/variables" as *;
 @use "styles/abstracts/button" as *;
 
-// Variant is the color axis: `primary` is the solid fill of its scheme with
-// the scheme's contrast label; `secondary` is tonal, a neutral fill with no
-// stroke. The transparent border keeps both variants the same size and draws
-// the boundary in forced-colors mode, where backgrounds are removed.
+// TDD styled BI1-BI4. Variant is the color axis (styles/abstracts/_button.scss);
+// size is the geometry axis. Heights are component geometry, not tokens
+// (ADR-UIP-VIS-001 item 6): small 28px with the `element` radius, medium 36px
+// and large 44px with `control`. Inline padding is half the height minus 6px:
+// 8px and 16px are spacing steps; medium's 12px is recorded local geometry
+// (styles.config.json). The transparent border keeps every variant the same
+// size and draws the boundary in forced-colors mode, where backgrounds and
+// shadows are removed.
 .scnx-btn {
   display: inline-flex;
+  flex: none;
   align-items: center;
   justify-content: center;
-  padding: $dimension-spacing-inset-compact $dimension-spacing-inset-default;
-  border-radius: $dimension-radius-control;
+  gap: $dimension-spacing-inline-default;
+  block-size: 2.25rem;
+  padding-block: 0;
+  padding-inline: 0.75rem;
   border: $dimension-border-width-default solid transparent;
-  cursor: pointer;
+  border-radius: $dimension-radius-control;
   @include typography(label, default);
   font-weight: $typography-weight-semibold;
-  transition-property: background-color, border-color, box-shadow, color;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition-property: background-color, border-color, box-shadow, color, translate;
   transition-duration: $motion-feedback-duration;
   transition-timing-function: $motion-feedback-easing;
-  gap: $dimension-spacing-inline-default;
+
+  &[data-size="small"] {
+    gap: $dimension-spacing-inline-compact;
+    block-size: 1.75rem;
+    padding-inline: $dimension-spacing-inset-compact;
+    border-radius: $dimension-radius-element;
+    font-size: var(--ds-typography-label-small-font-size);
+  }
+
+  &[data-size="large"] {
+    block-size: 2.75rem;
+    padding-inline: $dimension-spacing-inset-default;
+    font-size: var(--ds-typography-body-default-font-size);
+  }
 
   @include button-variants;
 }

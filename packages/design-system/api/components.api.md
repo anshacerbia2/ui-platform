@@ -187,8 +187,15 @@ export const Button: {
 
 // @public (undocumented)
 export type ButtonProps = {
-    variant?: "primary" | "secondary";
+    variant?: ButtonVariant;
+    size?: ButtonSize;
 } & ButtonBaseProps;
+
+// @public
+export type ButtonSize = "small" | "medium" | "large";
+
+// @public
+export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
 
 // @public
 export const Code: {
@@ -771,10 +778,10 @@ export type IconButtonProps = IconButtonNameProps & {
 } & WithoutAccessibleName<ButtonBaseProps>;
 
 // @public
-export type IconButtonSize = "small" | "medium";
+export type IconButtonSize = "small" | "medium" | "large";
 
 // @public
-export type IconButtonVariant = "primary" | "secondary" | "ghost";
+export type IconButtonVariant = "primary" | "secondary" | "ghost" | "danger";
 
 // @public
 export const InsideFlyoutProvider: {
