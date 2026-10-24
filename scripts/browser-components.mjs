@@ -235,10 +235,11 @@ async function verify(browser) {
   result.checks.push({ check: "layers", stylesheets: stylesheets.length });
 
   // Coexistence: themes and modes resolve in their own roots on one page. The
-  // primary Button tells the themes apart; the secondary (tonal) Button, whose
-  // neutral surface the token doctrine makes mode-dependent, tells the modes
-  // apart. Whether a primary fill changes with the mode is a palette rule
-  // (TDD tokens PG3, PG11), proven by the generator, and the specification
+  // primary Button's corner radius tells the themes apart: its ink fill is the
+  // same neutral solid in every theme (ADR-UIP-VIS-001 item 3), while the
+  // radius ladder is theme-specific (12px control in default, 8px in
+  // achromatic). The secondary Button's raised surface, which the token
+  // doctrine makes mode-dependent, tells the modes apart. The specification
   // check (CS4) proves each root computes its own token, so it is not
   // restated here.
   const backgrounds = await tab.evaluate(() =>
@@ -246,13 +247,13 @@ async function verify(browser) {
       const id = root.getAttribute("data-fixture-root");
       const enabled = (variant) => root.querySelector(`.scnx-btn[data-variant="${variant}"]:not([data-disabled]):not(:disabled)`);
       return [
-        [`${id}/primary`, getComputedStyle(enabled("primary")).backgroundColor],
+        [`${id}/primary-radius`, getComputedStyle(enabled("primary")).borderTopLeftRadius],
         [`${id}/secondary`, getComputedStyle(enabled("secondary")).backgroundColor],
       ];
     })));
   const differ = (a, b) => backgrounds[a] && backgrounds[b] && backgrounds[a] !== backgrounds[b];
-  if (themes.length > 1 && !differ(`${themes[0]}/light/primary`, `${themes[1]}/light/primary`)) {
-    failures.push(`primary Button computes the same background in ${themes[0]} and ${themes[1]} roots on one page`);
+  if (themes.length > 1 && !differ(`${themes[0]}/light/primary-radius`, `${themes[1]}/light/primary-radius`)) {
+    failures.push(`primary Button computes the same corner radius in ${themes[0]} and ${themes[1]} roots on one page`);
   }
   for (const theme of themes) {
     if (!differ(`${theme}/light/secondary`, `${theme}/dark/secondary`)) failures.push(`secondary Button computes the same background in light and dark ${theme} roots`);
