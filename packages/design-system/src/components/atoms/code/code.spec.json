@@ -36,7 +36,7 @@
       "declarations": {
         "border-width": "{dimension.border-width.default}",
         "border-color": "{color.neutral.border.subtle.default}",
-        "border-radius": "{dimension.radius.element}",
+        "border-radius": "{dimension.radius.mark}",
         "font-family": "{typography.code.default.font-family}",
         "font-weight": "{typography.weight.medium}",
         "background-color": "{color.neutral.surface.subtle.default}",

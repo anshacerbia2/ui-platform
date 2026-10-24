@@ -81,7 +81,8 @@
         "font-weight": "{typography.label.small.font-weight}",
         "line-height": "{typography.label.small.line-height}",
         "letter-spacing": "{typography.label.small.letter-spacing}",
-        "padding": "0 {dimension.spacing.inline-compact}"
+        "padding": "0 {dimension.spacing.inline-compact}",
+        "border-radius": "{dimension.radius.mark}"
       }
     },
     {
