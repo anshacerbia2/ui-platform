@@ -57,6 +57,24 @@ describe("RadioGroupBase (TDD primitives P28)", () => {
     expect(item("Default")).toHaveAttribute("data-disabled");
   });
 
+  it("wraps at both ends itself, in either text direction", async () => {
+    const onValueChange = vi.fn();
+    render(
+      <div dir="rtl">
+        <Theme defaultValue="system" onValueChange={onValueChange} />
+      </div>,
+    );
+    const system = screen.getByRole("radio", { name: "System" });
+    system.focus();
+    // In right-to-left text Left is the next radio, so Left on the last one wraps to the first.
+    await userEvent.keyboard("{ArrowLeft}");
+    expect(screen.getByRole("radio", { name: "Light" })).toHaveFocus();
+    expect(screen.getByRole("radio", { name: "Light" })).toBeChecked();
+    await userEvent.keyboard("{ArrowUp}");
+    expect(screen.getByRole("radio", { name: "System" })).toBeChecked();
+    expect(onValueChange.mock.calls.map(([v]) => v)).toEqual(["light", "system"]);
+  });
+
   it("is controlled by value and onValueChange", async () => {
     const Controlled = () => {
       const [value, setValue] = useState("light");

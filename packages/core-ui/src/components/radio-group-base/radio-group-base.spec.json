@@ -93,7 +93,7 @@
   ],
   "focus": {
     "initial": "Tab enters the group at the checked radio, or at the first when none is checked (native radio group)",
-    "movement": "arrow keys between enabled radios, wrapping and following the text direction (native)",
+    "movement": "arrow keys between enabled radios, following the text direction (native); the primitive wraps at both ends",
     "restoration": "none"
   },
   "accessibleName": "the root's aria-label or aria-labelledby; each radio by its label's text",
