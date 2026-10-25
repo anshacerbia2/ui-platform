@@ -51,7 +51,7 @@ const sizes = (raw, minified) => ({
 
 // Scenario apps. Each exports mount(element), which renders synchronously.
 const PROVIDER = `import { ThemeProvider } from "@scnx/core-ui/providers/theme-provider-base";`;
-const wrap = (body) => `<ThemeProvider themeId="industrial" defaultMode="light" storage={false}>${body}</ThemeProvider>`;
+const wrap = (body) => `<ThemeProvider themeId="scnx-platform" defaultMode="light" storage={false}>${body}</ThemeProvider>`;
 const SCENARIOS = {
   button: {
     title: "Single component: Button",

@@ -19,7 +19,7 @@
       ],
       "floor": null,
       "purpose": "The gap of FloatingLayout.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -35,7 +35,7 @@
       ],
       "floor": null,
       "purpose": "The padding-block of FloatingLayout.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -51,7 +51,7 @@
       ],
       "floor": null,
       "purpose": "The height of FloatingLayout's sidebar part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -67,7 +67,7 @@
       ],
       "floor": null,
       "purpose": "The top of FloatingLayout's sidebar part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]

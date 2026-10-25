@@ -95,7 +95,7 @@
       ],
       "floor": null,
       "purpose": "The background-color of Navbar.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -111,7 +111,7 @@
       ],
       "floor": null,
       "purpose": "The border-bottom of Navbar.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -127,7 +127,7 @@
       ],
       "floor": null,
       "purpose": "The border-bottom of Navbar.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -144,7 +144,7 @@
       ],
       "floor": null,
       "purpose": "The height and max-height of Navbar.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -162,7 +162,7 @@
       ],
       "floor": null,
       "purpose": "The gap of Navbar's center, end and start part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -180,7 +180,7 @@
       ],
       "floor": null,
       "purpose": "The padding of Navbar's center, end and start part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -196,7 +196,7 @@
       ],
       "floor": null,
       "purpose": "The width of Navbar's start part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]

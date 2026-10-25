@@ -1,0 +1,39 @@
+// ============================================
+// SCNX-SAAS THEME: THE SAAS PRODUCTS' LOOK
+// ============================================
+// A theme may map any Tier-2 key (ADR-UIP-VIS-001 item 7, revision 3;
+// STD-UIP-TKN-001 2.7.0). scnx-saas maps its colour and its shape:
+// - colour: the primary scheme on the neutral matrix (ink);
+// - shape: the concentric radius ladder of its boards, mark 0.25rem to
+//   panel 1.5rem, plus pill;
+// - materials: raised and panel keep the ring and add a soft contact and
+//   ambient shadow; floating materials keep theirs.
+// Every other key (spacing, sizes, border width, z-index, typography,
+// motion, the effect shadows) is inherited from scnx-platform.
+//
+// Rule: NO hardcoded color values. All values MUST reference
+//       existing Tier 1 palette CSS custom properties.
+// ============================================
+
+@use "styles/abstracts/core-token" as core;
+@use "styles/themes/scnx-platform/scnx-platform-token" as scnx-platform;
+@use "sass:map";
+
+/// The radius ladder, non-decreasing from mark to panel (TDD tokens SI2).
+$scnx-saas-radius: (
+  mark: map.get(core.$radius, sm),
+  element: map.get(core.$radius, lg),
+  control: map.get(core.$radius, xl),
+  container: map.get(core.$radius, 2xl),
+  panel: map.get(core.$radius, 3xl),
+  pill: map.get(core.$radius, full),
+);
+
+$scnx-saas-light-token: (
+  color: (
+    neutral: map.get(scnx-platform.get-color-tokens("light"), neutral),
+    primary: scnx-platform.generate-scheme-matrix("neutral", "light")
+  ),
+  dimension: (radius: $scnx-saas-radius),
+  effect: (material: scnx-platform.material-set("", $soft: true))
+);

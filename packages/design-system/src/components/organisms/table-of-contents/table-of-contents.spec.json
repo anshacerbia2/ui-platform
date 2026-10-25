@@ -158,7 +158,7 @@
       ],
       "floor": null,
       "purpose": "The font-family of TableOfContents.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -174,7 +174,7 @@
       ],
       "floor": null,
       "purpose": "The margin-bottom of TableOfContents's item part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -190,7 +190,7 @@
       ],
       "floor": null,
       "purpose": "The color of TableOfContents's label part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -206,7 +206,7 @@
       ],
       "floor": null,
       "purpose": "The font-family of TableOfContents's label part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -222,7 +222,7 @@
       ],
       "floor": null,
       "purpose": "The font-size of TableOfContents's label part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -238,7 +238,7 @@
       ],
       "floor": null,
       "purpose": "The font-weight of TableOfContents's label part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -254,7 +254,7 @@
       ],
       "floor": null,
       "purpose": "The letter-spacing of TableOfContents's label part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -270,7 +270,7 @@
       ],
       "floor": null,
       "purpose": "The line-height of TableOfContents's label part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -286,7 +286,7 @@
       ],
       "floor": null,
       "purpose": "The margin-bottom of TableOfContents's label part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -302,7 +302,7 @@
       ],
       "floor": null,
       "purpose": "The color of TableOfContents's link part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -318,7 +318,7 @@
       ],
       "floor": null,
       "purpose": "The color of TableOfContents's link part in the active state.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -334,7 +334,7 @@
       ],
       "floor": null,
       "purpose": "The color of TableOfContents's link part in the hover state.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -350,7 +350,7 @@
       ],
       "floor": null,
       "purpose": "The font-family of TableOfContents's link part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -366,7 +366,7 @@
       ],
       "floor": null,
       "purpose": "The font-size of TableOfContents's link part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -382,7 +382,7 @@
       ],
       "floor": null,
       "purpose": "The font-weight of TableOfContents's link part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -398,7 +398,7 @@
       ],
       "floor": null,
       "purpose": "The letter-spacing of TableOfContents's link part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -414,7 +414,7 @@
       ],
       "floor": null,
       "purpose": "The line-height of TableOfContents's link part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -430,7 +430,7 @@
       ],
       "floor": "24px",
       "purpose": "The min-block-size of TableOfContents's link part.",
-      "coverage": "industrial and achromatic, light and dark; never below the 24px floor.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; never below the 24px floor.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -446,7 +446,7 @@
       ],
       "floor": null,
       "purpose": "The transition of TableOfContents's link part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -462,7 +462,7 @@
       ],
       "floor": null,
       "purpose": "The transition of TableOfContents's link part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -478,7 +478,7 @@
       ],
       "floor": null,
       "purpose": "The margin-left of TableOfContents's nested-list part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -494,7 +494,7 @@
       ],
       "floor": null,
       "purpose": "The margin-top of TableOfContents's list part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]

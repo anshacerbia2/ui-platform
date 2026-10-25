@@ -193,7 +193,7 @@
         "--ancestors-index"
       ]
     },
-    "./tokens/css/achromatic.css": {
+    "./tokens/css/scnx-platform.css": {
       "layers": [
         "base",
         "components",
@@ -762,7 +762,7 @@
         "--ds-typography-weight-semibold"
       ]
     },
-    "./tokens/css/industrial.css": {
+    "./tokens/css/scnx-saas.css": {
       "layers": [
         "base",
         "components",
@@ -1333,7 +1333,7 @@
     }
   },
   "tokens": {
-    "./tokens/json/achromatic.json": [
+    "./tokens/json/scnx-platform.json": [
       {
         "name": "color.danger.border.default.default",
         "cssName": "--ds-color-danger-border-default-default",
@@ -4641,7 +4641,7 @@
         "lifecycle": "candidate"
       }
     ],
-    "./tokens/json/industrial.json": [
+    "./tokens/json/scnx-saas.json": [
       {
         "name": "color.danger.border.default.default",
         "cssName": "--ds-color-danger-border-default-default",

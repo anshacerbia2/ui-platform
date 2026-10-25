@@ -1,5 +1,8 @@
 // Canonical token grammar, transcribed from STD-UIP-TKN-001 section 3 at the
-// ratified v2.7.0 (scnehaux-architecture 8e578d0), which replaces 2.6.0's
+// ratified v2.8.0 (scnehaux-architecture 7aae124), which adds theme naming
+// (the id names the owner; scnx- is reserved for shipped themes; the mode is
+// never part of an id) and leaves the token grammar unchanged; v2.7.0
+// (8e578d0) replaces 2.6.0's
 // theme-invariant structure (ef40297) with guarded floors, lets a theme map any
 // Tier-2 key, and adds the size relationship control; v2.6.0 made the radius
 // order non-decreasing; v2.5.0
@@ -9,7 +12,7 @@
 // definition; change this file only to follow a ratified revision of it.
 // STANDARD names the ratified revision the gate is reported against.
 
-export const STANDARD = { id: "STD-UIP-TKN-001", version: "2.7.0", commit: "8e578d0" };
+export const STANDARD = { id: "STD-UIP-TKN-001", version: "2.8.0", commit: "7aae124" };
 
 const SURFACE_STATES = ["default", "hover", "pressed", "selected", "disabled"];
 

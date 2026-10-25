@@ -19,7 +19,7 @@
       ],
       "floor": null,
       "purpose": "The column-gap of CodeShowcase's actions part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -35,7 +35,7 @@
       ],
       "floor": null,
       "purpose": "The background-color of CodeShowcase.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -52,7 +52,7 @@
       ],
       "floor": null,
       "purpose": "The border and border-top of CodeShowcase.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -69,7 +69,7 @@
       ],
       "floor": null,
       "purpose": "The border and border-top of CodeShowcase.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -86,7 +86,7 @@
       ],
       "floor": null,
       "purpose": "The background-color of CodeShowcase's code-inner and content part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -102,7 +102,7 @@
       ],
       "floor": null,
       "purpose": "The color of CodeShowcase's code-inner part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -118,7 +118,7 @@
       ],
       "floor": null,
       "purpose": "The font-family of CodeShowcase's code-inner part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -134,7 +134,7 @@
       ],
       "floor": null,
       "purpose": "The font-size of CodeShowcase's code-inner part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -150,7 +150,7 @@
       ],
       "floor": null,
       "purpose": "The font-weight of CodeShowcase's code-inner part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -166,7 +166,7 @@
       ],
       "floor": null,
       "purpose": "The letter-spacing of CodeShowcase's code-inner part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -182,7 +182,7 @@
       ],
       "floor": null,
       "purpose": "The line-height of CodeShowcase's code-inner part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -198,7 +198,7 @@
       ],
       "floor": null,
       "purpose": "The padding of CodeShowcase's code-inner part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -214,7 +214,7 @@
       ],
       "floor": null,
       "purpose": "The transition of CodeShowcase's content part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -230,7 +230,7 @@
       ],
       "floor": null,
       "purpose": "The transition of CodeShowcase's content part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -246,7 +246,7 @@
       ],
       "floor": null,
       "purpose": "The background-color of CodeShowcase's icon-button part in the hover state.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -262,7 +262,7 @@
       ],
       "floor": null,
       "purpose": "The color of CodeShowcase's icon-button part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -278,7 +278,7 @@
       ],
       "floor": null,
       "purpose": "The color of CodeShowcase's icon-button part in the hover state.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -294,7 +294,7 @@
       ],
       "floor": null,
       "purpose": "The padding of CodeShowcase's icon-button part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -310,7 +310,7 @@
       ],
       "floor": null,
       "purpose": "The border-radius of CodeShowcase's icon-button part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -326,7 +326,7 @@
       ],
       "floor": null,
       "purpose": "The font-size of CodeShowcase's lang-icon part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -342,7 +342,7 @@
       ],
       "floor": null,
       "purpose": "The margin-block of CodeShowcase.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -358,7 +358,7 @@
       ],
       "floor": null,
       "purpose": "The background-color of CodeShowcase's marker part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -374,7 +374,7 @@
       ],
       "floor": null,
       "purpose": "The border-radius of CodeShowcase's marker part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -390,7 +390,7 @@
       ],
       "floor": null,
       "purpose": "The background-color of CodeShowcase's nav part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -406,7 +406,7 @@
       ],
       "floor": null,
       "purpose": "The color of CodeShowcase's nav part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -422,7 +422,7 @@
       ],
       "floor": null,
       "purpose": "The column-gap of CodeShowcase's nav part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -438,7 +438,7 @@
       ],
       "floor": null,
       "purpose": "The font-family of CodeShowcase's nav part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -454,7 +454,7 @@
       ],
       "floor": null,
       "purpose": "The font-size of CodeShowcase's nav part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -470,7 +470,7 @@
       ],
       "floor": null,
       "purpose": "The font-weight of CodeShowcase's nav part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -486,7 +486,7 @@
       ],
       "floor": null,
       "purpose": "The letter-spacing of CodeShowcase's nav part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -502,7 +502,7 @@
       ],
       "floor": null,
       "purpose": "The line-height of CodeShowcase's nav part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -518,7 +518,7 @@
       ],
       "floor": null,
       "purpose": "The padding of CodeShowcase's nav part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -534,7 +534,7 @@
       ],
       "floor": null,
       "purpose": "The row-gap of CodeShowcase's nav part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -550,7 +550,7 @@
       ],
       "floor": null,
       "purpose": "The background-color of CodeShowcase's preview part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -566,7 +566,7 @@
       ],
       "floor": null,
       "purpose": "The background-image of CodeShowcase's preview part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -582,7 +582,7 @@
       ],
       "floor": null,
       "purpose": "The background-size of CodeShowcase's preview part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -598,7 +598,7 @@
       ],
       "floor": null,
       "purpose": "The min-height of CodeShowcase's preview part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -614,7 +614,7 @@
       ],
       "floor": null,
       "purpose": "The padding of CodeShowcase's preview part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -630,7 +630,7 @@
       ],
       "floor": null,
       "purpose": "The border-radius of CodeShowcase.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -647,7 +647,7 @@
       ],
       "floor": null,
       "purpose": "The height and width of CodeShowcase's code-inner part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -663,7 +663,7 @@
       ],
       "floor": null,
       "purpose": "The background of CodeShowcase's code-inner part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -679,7 +679,7 @@
       ],
       "floor": null,
       "purpose": "The border-radius of CodeShowcase's code-inner part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -695,7 +695,7 @@
       ],
       "floor": null,
       "purpose": "The gap of CodeShowcase's selectors part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -711,7 +711,7 @@
       ],
       "floor": null,
       "purpose": "The box-shadow of CodeShowcase.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -727,7 +727,7 @@
       ],
       "floor": null,
       "purpose": "The box-shadow of CodeShowcase in the hover state.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -743,7 +743,7 @@
       ],
       "floor": null,
       "purpose": "The color of CodeShowcase's tab part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -759,7 +759,7 @@
       ],
       "floor": null,
       "purpose": "The color of CodeShowcase's tab part in the active state.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -775,7 +775,7 @@
       ],
       "floor": null,
       "purpose": "The gap of CodeShowcase's tab part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -791,7 +791,7 @@
       ],
       "floor": null,
       "purpose": "The padding of CodeShowcase's tab part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -807,7 +807,7 @@
       ],
       "floor": null,
       "purpose": "The font-family of CodeShowcase's tabs part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -826,7 +826,7 @@
       ],
       "floor": null,
       "purpose": "The transition of CodeShowcase's icon-button, marker and tab part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -845,7 +845,7 @@
       ],
       "floor": null,
       "purpose": "The transition of CodeShowcase's icon-button, marker and tab part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -861,7 +861,7 @@
       ],
       "floor": "24px",
       "purpose": "The min-block-size of CodeShowcase's trigger part.",
-      "coverage": "industrial and achromatic, light and dark; never below the 24px floor.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; never below the 24px floor.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]

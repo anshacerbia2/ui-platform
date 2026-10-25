@@ -6,7 +6,7 @@ import { SidebarProvider } from "./SidebarContext";
 // TDD primitives P11: the toggle controls its sidebar and has a required
 // name; the collapsed flyout is non-modal and Escape returns focus to its opener.
 const Fixture = ({ defaultIsOpen }: { defaultIsOpen: boolean }) => (
-  <div data-scnx-theme="industrial" data-scnx-resolved-mode="light">
+  <div data-scnx-theme="scnx-platform" data-scnx-resolved-mode="light">
     <SidebarProvider defaultIsOpen={defaultIsOpen}>
       <Sidebar>
         <Sidebar.Toggle label="Collapse sidebar" />

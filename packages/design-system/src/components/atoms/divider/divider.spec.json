@@ -175,7 +175,7 @@
       ],
       "floor": null,
       "purpose": "The background-color of Divider.",
-      "coverage": "industrial and achromatic, light and dark; every orientation, weight and color value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation, weight and color value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -192,7 +192,7 @@
       ],
       "floor": null,
       "purpose": "The margin of Divider.",
-      "coverage": "industrial and achromatic, light and dark; every orientation, weight and color value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation, weight and color value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -211,7 +211,7 @@
       ],
       "floor": null,
       "purpose": "The height and width of Divider.",
-      "coverage": "industrial and achromatic, light and dark; every orientation, weight and color value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation, weight and color value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]

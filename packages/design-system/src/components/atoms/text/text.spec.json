@@ -190,7 +190,7 @@
       ],
       "floor": null,
       "purpose": "The color of Text.",
-      "coverage": "industrial and achromatic, light and dark; every variant, weight, align and dimmed value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant, weight, align and dimmed value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -206,7 +206,7 @@
       ],
       "floor": null,
       "purpose": "The color of Text.",
-      "coverage": "industrial and achromatic, light and dark; every variant, weight, align and dimmed value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant, weight, align and dimmed value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -226,7 +226,7 @@
       ],
       "floor": null,
       "purpose": "The font-family of Text.",
-      "coverage": "industrial and achromatic, light and dark; every variant, weight, align and dimmed value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant, weight, align and dimmed value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -246,7 +246,7 @@
       ],
       "floor": null,
       "purpose": "The font-size of Text.",
-      "coverage": "industrial and achromatic, light and dark; every variant, weight, align and dimmed value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant, weight, align and dimmed value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -270,7 +270,7 @@
       ],
       "floor": null,
       "purpose": "The font-weight of Text.",
-      "coverage": "industrial and achromatic, light and dark; every variant, weight, align and dimmed value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant, weight, align and dimmed value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -290,7 +290,7 @@
       ],
       "floor": null,
       "purpose": "The letter-spacing of Text.",
-      "coverage": "industrial and achromatic, light and dark; every variant, weight, align and dimmed value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant, weight, align and dimmed value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -310,7 +310,7 @@
       ],
       "floor": null,
       "purpose": "The line-height of Text.",
-      "coverage": "industrial and achromatic, light and dark; every variant, weight, align and dimmed value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant, weight, align and dimmed value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]

@@ -80,6 +80,16 @@
       "standard": "WCAG 2.2 SC 4.1.3 (status messages); ADR-UIP-VIS-001 item 6 (guarded floors)",
       "reason": "The status region is visually hidden: its 1px box is the visually-hidden technique that keeps the option count in the accessibility tree, not a design value",
       "removal": "None; this is the visually-hidden technique, not design"
+    },
+    {
+      "rule": "theme-radius",
+      "selector": ".scnx-accordion[data-variant=stacked] .scnx-accordion__item",
+      "properties": [
+        "border-radius"
+      ],
+      "standard": "STD-UIP-TKN-001 2.8.0, Theme naming (the theme's shape); ADR-UIP-VIS-001 item 1",
+      "reason": "A stacked item sits inside the group, which carries the theme's container radius and clips its items (overflow: hidden); a radius on the item would round the joins between items",
+      "removal": "None; the group's radius is the item's outer shape"
     }
   ]
 }

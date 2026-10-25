@@ -54,7 +54,7 @@
       ],
       "floor": null,
       "purpose": "The max-width of Container.",
-      "coverage": "industrial and achromatic, light and dark; every size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -70,7 +70,7 @@
       ],
       "floor": null,
       "purpose": "The padding-inline of Container.",
-      "coverage": "industrial and achromatic, light and dark; every size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]

@@ -313,7 +313,7 @@
       ],
       "floor": null,
       "purpose": "The background of IconButton.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -332,7 +332,7 @@
       ],
       "floor": null,
       "purpose": "The background of IconButton in the disabled state.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -350,7 +350,7 @@
       ],
       "floor": null,
       "purpose": "The background of IconButton in the hover state.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -368,7 +368,7 @@
       ],
       "floor": null,
       "purpose": "The background of IconButton in the pressed state.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -384,7 +384,7 @@
       ],
       "floor": null,
       "purpose": "The border of IconButton.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -403,7 +403,7 @@
       ],
       "floor": null,
       "purpose": "The color of IconButton.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -422,7 +422,7 @@
       ],
       "floor": null,
       "purpose": "The color of IconButton in the disabled state.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -440,7 +440,7 @@
       ],
       "floor": null,
       "purpose": "The color of IconButton in the hover state.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -458,7 +458,7 @@
       ],
       "floor": null,
       "purpose": "The color of IconButton in the pressed state.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -475,7 +475,7 @@
       ],
       "floor": null,
       "purpose": "The border-radius of IconButton's square shape.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value; not shape circular, whose circle is anatomy (50%) and ignores this hook.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value; not shape circular, whose circle is anatomy (50%) and ignores this hook.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -491,7 +491,7 @@
       ],
       "floor": null,
       "purpose": "The box-shadow of IconButton.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -507,7 +507,7 @@
       ],
       "floor": null,
       "purpose": "The box-shadow of IconButton in the disabled state.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -523,7 +523,7 @@
       ],
       "floor": null,
       "purpose": "The box-shadow of IconButton in the pressed state.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -542,7 +542,7 @@
       ],
       "floor": "24px",
       "purpose": "The block-size and inline-size of IconButton.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value; never below the 24px floor.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value; never below the 24px floor.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -558,7 +558,7 @@
       ],
       "floor": null,
       "purpose": "The transition-duration of IconButton.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -574,7 +574,7 @@
       ],
       "floor": null,
       "purpose": "The transition-timing-function of IconButton.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -590,7 +590,7 @@
       ],
       "floor": null,
       "purpose": "The translate of IconButton in the pressed state.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ],

@@ -61,7 +61,7 @@ const ModeToggle = () => {
 };
 
 const App = () => (
-  <ThemeProvider themeId="industrial" defaultMode="light" storage={false}>
+  <ThemeProvider themeId="scnx-platform" defaultMode="light" storage={false}>
     <ModeToggle />
     <div id="accordion">
       <Accordion>
@@ -183,7 +183,7 @@ try {
     platform: "browser", jsx: "automatic", absWorkingDir: dir, logLevel: "error", define: { "process.env.NODE_ENV": '"production"' },
   });
   const manifest = JSON.parse(fs.readFileSync(path.join(dir, "node_modules/@scnx/system/package.json"), "utf8"));
-  const css = ["./styles/components.css", "./tokens/css/industrial.css"].map((s) => `/node_modules/@scnx/system/${manifest.exports[s].replace(/^\.\//, "")}`);
+  const css = ["./styles/components.css", "./tokens/css/scnx-platform.css"].map((s) => `/node_modules/@scnx/system/${manifest.exports[s].replace(/^\.\//, "")}`);
   const page = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Interaction traces</title>${css.map((href) => `<link rel="stylesheet" href="${href}">`).join("")}<script src="/harness.js"></script></head><body><div id="root"></div><script type="module" src="/out/app.js"></script></body></html>`;
   const TYPES = { ".css": "text/css", ".js": "text/javascript", ".woff2": "font/woff2" };
   server = http.createServer((request, response) => {

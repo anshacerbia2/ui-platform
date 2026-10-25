@@ -20,6 +20,17 @@
   @return max(24px, #{$value});
 }
 
+/// The reduced-motion floor (WCAG 2.2 SC 2.3.3; ADR-UIP-VIS-001 item 6): what
+/// moves or resizes the box (transform, translate, rotate, left, width,
+/// height, ...) transitions only when the reader allows motion, because a hook
+/// can lengthen the motion tokens. Colour and opacity fades may run anywhere.
+/// The stylesheet gate fails a movement transition outside this guard.
+@mixin when-motion-allowed {
+  @media (prefers-reduced-motion: no-preference) {
+    @content;
+  }
+}
+
 /// A typography composite with one hook per member:
 /// `--scnx-{component}-{prefix-}font-family` and so on. `$except` leaves out
 /// members the rule declares itself, so a hook has one fallback per rule.

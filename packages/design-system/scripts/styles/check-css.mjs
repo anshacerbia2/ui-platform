@@ -34,7 +34,7 @@ const CONFIG_KEYS = {
   runtimeProperty: ["owner", "purpose"],
   exception: ["rule", "selector", "properties", "standard", "reason", "removal"],
 };
-const EXCEPTION_RULES = ["important", "color-literal", "z-index", "motion-literal", "radius-literal", "spacing-literal", "typography-literal", "design-literal"];
+const EXCEPTION_RULES = ["important", "color-literal", "z-index", "motion-literal", "motion-movement", "theme-radius", "radius-literal", "spacing-literal", "typography-literal", "design-literal"];
 
 /** Load styles.config.json (TDD CSS delivery, Configuration); unknown keys fail. */
 export function loadStyleConfig(file = path.join(packageDir, "styles.config.json")) {
@@ -144,6 +144,27 @@ const NAMED_COLORS = new Set(("aliceblue antiquewhite aqua aquamarine azure beig
  * are not design values.
  */
 const PRESENTATIONAL_PROPERTY = /^(?:color|background(?:-color)?|border(?:-[a-z-]+)?|outline(?:-(?:color|width|offset))?|box-shadow|(?:padding|margin|inset)(?:-[a-z-]+)?|gap|row-gap|column-gap|top|right|bottom|left|(?:min-|max-)?(?:width|height|inline-size|block-size)|font(?:-[a-z-]+)?|line-height|letter-spacing|(?:transition|animation)(?:-(?:duration|delay|timing-function))?|opacity|translate|fill|stroke|text-decoration-color|accent-color|caret-color)$/;
+
+/**
+ * Movement (ADR-UIP-VIS-001 item 6, reduced-motion floor; WCAG 2.2 SC 2.3.3):
+ * a transition of a property that moves or resizes the box runs only inside
+ * `@media (prefers-reduced-motion: no-preference)`, because a hook can
+ * lengthen the motion tokens. Colour and opacity fades may run anywhere.
+ */
+const MOVEMENT_PROPERTY = /^(?:all|transform|translate|rotate|scale|inset(?:-[a-z-]+)?|top|right|bottom|left|(?:min-|max-)?(?:width|height|inline-size|block-size)|grid-template-(?:rows|columns))$/;
+const MOTION_GUARD = /prefers-reduced-motion\s*:\s*no-preference/;
+
+/** The properties a transition or transition-property value moves. */
+function movedProperties(value) {
+  const moved = [];
+  csstree.walk(value, {
+    enter(node) {
+      if (node.type === "Function") return this.skip;
+      if (node.type === "Identifier" && MOVEMENT_PROPERTY.test(node.name)) moved.push(node.name);
+    },
+  });
+  return moved;
+}
 
 /** The component a component-layer selector belongs to: `.scnx-icon-button[...]` is `icon-button`. */
 const componentOf = (selector) => /^\.scnx-([a-z0-9]+(?:-[a-z0-9]+)*?)(?=__|--|[^a-z0-9-]|$)/.exec(selector)?.[1] ?? null;
@@ -263,7 +284,7 @@ export function checkStylesheet(css, { tokenNames, config = STYLE_CONFIG }) {
     findings.push(`stylesheet does not open with "${LAYER_STATEMENT}"`);
   }
 
-  const visitRule = (rule, layer) => {
+  const visitRule = (rule, layer, guarded = false) => {
     const selectors = rule.prelude.type === "SelectorList" ? rule.prelude.children.toArray().map((s) => csstree.generate(s)) : [csstree.generate(rule.prelude)];
     if (!layer) {
       findings.push(`rule "${selectors.join(", ")}" is outside every layer`);
@@ -276,7 +297,7 @@ export function checkStylesheet(css, { tokenNames, config = STYLE_CONFIG }) {
     }
     for (const node of rule.block.children.toArray()) {
       if (node.type === "Rule") {
-        visitRule(node, layer);
+        visitRule(node, layer, guarded);
         continue;
       }
       if (node.type !== "Declaration") continue;
@@ -304,6 +325,23 @@ export function checkStylesheet(css, { tokenNames, config = STYLE_CONFIG }) {
           }
         }
       });
+      if (["components", "recipes"].includes(layer) && !guarded && /^transition(?:-property)?$/.test(property)) {
+        const moved = movedProperties(node.value);
+        if (moved.length > 0) {
+          for (const selector of selectors) {
+            if (!excepted("motion-movement", selector, property)) findings.push(`${selector}: ${property} moves ${moved.join(", ")} outside @media (prefers-reduced-motion: no-preference)`);
+          }
+        }
+      }
+      // A radius follows the theme's shape (STD-UIP-TKN-001, theme naming; proposal
+      // revision 3): it reads a radius token through its hook, or is a circle (50%,
+      // anatomy) or inherited. A fixed radius, zero included, would keep the
+      // component square in a rounded theme.
+      if (["components", "recipes"].includes(layer) && RADIUS_PROPERTY.test(property) && !/var\(--ds-dimension-radius-[\w-]+\)/.test(value) && !/^(?:50%|inherit)$/.test(value)) {
+        for (const selector of selectors) {
+          if (!excepted("theme-radius", selector, property)) findings.push(`${selector}: ${property} ${value} does not follow the theme's radius; read a --ds-dimension-radius-* token through a hook`);
+        }
+      }
       if (["components", "recipes"].includes(layer) && PRESENTATIONAL_PROPERTY.test(property)) {
         for (const selector of selectors) {
           for (const literal of designLiterals(node.value)) {
@@ -371,10 +409,10 @@ export function checkStylesheet(css, { tokenNames, config = STYLE_CONFIG }) {
     }
   };
 
-  const visit = (nodes, layer, depth) => {
+  const visit = (nodes, layer, depth, guarded = false) => {
     for (const node of nodes) {
       if (node.type === "Rule") {
-        visitRule(node, layer);
+        visitRule(node, layer, guarded);
       } else if (node.type === "Atrule") {
         if (node.name === "layer") {
           if (!node.block) {
@@ -384,9 +422,10 @@ export function checkStylesheet(css, { tokenNames, config = STYLE_CONFIG }) {
           const name = csstree.generate(node.prelude);
           if (layer) findings.push(`layer "${name}" is nested inside "${layer}"`);
           else if (!LAYERS.includes(name)) findings.push(`layer "${name}" is not a canonical layer`);
-          visit(node.block.children.toArray(), layer ?? name, depth + 1);
+          visit(node.block.children.toArray(), layer ?? name, depth + 1, guarded);
         } else if (["media", "supports", "container"].includes(node.name)) {
-          visit(node.block?.children.toArray() ?? [], layer, depth + 1);
+          const motion = node.name === "media" && MOTION_GUARD.test(csstree.generate(node.prelude));
+          visit(node.block?.children.toArray() ?? [], layer, depth + 1, guarded || motion);
         } else if (node.name === "font-face" && depth === 0) {
           continue;
         } else {
@@ -409,7 +448,7 @@ export function checkStylesheet(css, { tokenNames, config = STYLE_CONFIG }) {
 
 const STATEMENT = LAYER_STATEMENT;
 const SELF_TESTS = [
-  ["valid", `${STATEMENT}\n@layer components { .scnx-a { color: var(--scnx-a-color, transparent); z-index: var(--ds-dimension-z-index-modal); transition-delay: calc(var(--item-index) * var(--scnx-a-stagger-step, 1ms)); transition: height var(--scnx-a-duration, var(--ds-x)) var(--scnx-a-easing, var(--ds-x)), opacity 0s; border-radius: 50% 0; padding: 0 var(--scnx-a-padding, var(--ds-x)); top: 100%; gap: 0; line-height: inherit; } }\n@layer base { ${THEME_ROOT} :focus-visible { outline: 0; transition-delay: calc(var(--item-index) * 1ms) } }\n@media (forced-colors: active) { @layer base { ${THEME_ROOT} :focus-visible { outline-color: Highlight } } }`, null],
+  ["valid", `${STATEMENT}\n@layer components { .scnx-a { color: var(--scnx-a-color, transparent); z-index: var(--ds-dimension-z-index-modal); transition-delay: calc(var(--item-index) * var(--scnx-a-stagger-step, 1ms)); transition: color var(--scnx-a-duration, var(--ds-x)) var(--scnx-a-easing, var(--ds-x)), opacity 0s; border-radius: 50%; padding: 0 var(--scnx-a-padding, var(--ds-x)); top: 100%; gap: 0; line-height: inherit; } }\n@layer base { ${THEME_ROOT} :focus-visible { outline: 0; transition-delay: calc(var(--item-index) * 1ms) } }\n@media (forced-colors: active) { @layer base { ${THEME_ROOT} :focus-visible { outline-color: Highlight } } }`, null],
   ["no order statement", "@layer components { .scnx-a { color: red } }", "does not open with"],
   ["unlayered rule", `${STATEMENT}\n.scnx-a { color: red }`, "outside every layer"],
   ["undeclared layer", `${STATEMENT}\n@layer theme { .scnx-a { color: red } }`, "not a canonical layer"],
@@ -439,7 +478,7 @@ const SELF_TESTS = [
   ["font size", `${STATEMENT}\n@layer components { .scnx-a { font-size: 0.9em } }`, "typography literal 0.9em"],
   ["unitless line height", `${STATEMENT}\n@layer components { .scnx-a { line-height: 1 } }`, "typography literal 1"],
   // Hooks (STD-UIP-TKN-001 2.7.0, "Hook mechanics"): every component and recipe (TDD styled HK8).
-  ["hooked component", `${STATEMENT}\n@layer components { .scnx-a { border-radius: var(--scnx-a-radius, var(--ds-x)); block-size: max(24px, var(--scnx-a-height, var(--ds-x))); margin-bottom: calc(-1 * var(--scnx-a-border-width, var(--ds-x))); background: var(--scnx-a-background, transparent); padding: 0; inline-size: 100%; display: flex } }`, null],
+  ["hooked component", `${STATEMENT}\n@layer components { .scnx-a { border-radius: var(--scnx-a-radius, var(--ds-dimension-radius-x)); block-size: max(24px, var(--scnx-a-height, var(--ds-x))); margin-bottom: calc(-1 * var(--scnx-a-border-width, var(--ds-x))); background: var(--scnx-a-background, transparent); padding: 0; inline-size: 100%; display: flex } }`, null],
   ["hook without fallback", `${STATEMENT}\n@layer components { .scnx-a { color: var(--scnx-a-color) } }`, "has no fallback"],
   ["declared hook", `${STATEMENT}\n@layer components { .scnx-a { --scnx-a-color: var(--ds-x) } }`, "never declared"],
   ["foreign hook", `${STATEMENT}\n@layer components { .scnx-a { color: var(--scnx-b-color, var(--ds-x)) } }`, "not in the namespace"],
@@ -447,11 +486,20 @@ const SELF_TESTS = [
   ["token outside a hook", `${STATEMENT}\n@layer components { .scnx-a { color: var(--ds-x) } }`, "token --ds-x outside a hook"],
   ["literal outside a hook", `${STATEMENT}\n@layer components { .scnx-a { inline-size: 32rem } }`, "inline-size holds 32rem"],
   ["recipe literal outside a hook", `${STATEMENT}\n@layer recipes { .scnx-flex { gap: var(--ds-x) } }`, "token --ds-x outside a hook"],
-  ["viewport length", `${STATEMENT}\n@layer components { .scnx-a { min-height: 100vh; height: calc(100dvh - var(--scnx-a-top, var(--ds-x))) } }`, null],
+  // The theme's shape: a radius reads a radius token, or is a circle (anatomy).
+  ["square in a rounded theme", `${STATEMENT}\n@layer components { .scnx-a { border-radius: 0 } }`, "does not follow the theme's radius"],
+  ["hook that falls back to zero", `${STATEMENT}\n@layer components { .scnx-a { border-top-left-radius: var(--scnx-a-radius, 0) } }`, "does not follow the theme's radius"],
+  ["circle and inherited radius", `${STATEMENT}\n@layer components { .scnx-a { border-radius: 50% } .scnx-a > .scnx-a__b { border-radius: inherit } }`, null],
+  // Reduced-motion floor: movement transitions only under no-preference; fades anywhere.
+  ["unguarded movement", `${STATEMENT}\n@layer components { .scnx-a { transition: height var(--scnx-a-duration, var(--ds-x)), opacity var(--scnx-a-duration, var(--ds-x)) } }`, "transition moves height outside"],
+  ["unguarded transform property", `${STATEMENT}\n@layer components { .scnx-a { transition-property: color, transform } }`, "transition-property moves transform"],
+  ["unguarded transition of all", `${STATEMENT}\n@layer recipes { .scnx-flex { transition: all var(--scnx-flex-duration, var(--ds-x)) } }`, "moves all"],
+  ["guarded movement and an unguarded fade", `${STATEMENT}\n@layer components { .scnx-a { transition: color var(--scnx-a-duration, var(--ds-x)), opacity 0s } @media (prefers-reduced-motion: no-preference) { .scnx-a { transition-property: color, translate, height } } }`, null],
+  ["viewport length",`${STATEMENT}\n@layer components { .scnx-a { min-height: 100vh; height: calc(100dvh - var(--scnx-a-top, var(--ds-x))) } }`, null],
 ];
 
 function selfTest() {
-  const tokenNames = new Set(["--ds-x", "--ds-dimension-z-index-modal"]);
+  const tokenNames = new Set(["--ds-x", "--ds-dimension-z-index-modal", "--ds-dimension-radius-x"]);
   const failures = [];
   for (const [label, css, expected] of SELF_TESTS) {
     const { findings } = checkStylesheet(css, { tokenNames });

@@ -139,7 +139,7 @@
       ],
       "floor": null,
       "purpose": "The column-gap of Flex.",
-      "coverage": "industrial and achromatic, light and dark; every direction, align, justify, wrap and gap value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every direction, align, justify, wrap and gap value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -155,7 +155,7 @@
       ],
       "floor": null,
       "purpose": "The gap of Flex.",
-      "coverage": "industrial and achromatic, light and dark; every direction, align, justify, wrap and gap value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every direction, align, justify, wrap and gap value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -173,7 +173,7 @@
       ],
       "floor": null,
       "purpose": "The row-gap of Flex.",
-      "coverage": "industrial and achromatic, light and dark; every direction, align, justify, wrap and gap value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every direction, align, justify, wrap and gap value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]

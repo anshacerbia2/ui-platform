@@ -1,0 +1,15 @@
+@use "sass:map";
+@use "styles/abstracts/contract-token" as contract;
+
+// Keys the scnx-saas theme overrides (ADR-UIP-VIS-001 item 7, revision 3):
+// its colour, its radius ladder, and its materials. Every other key is
+// inherited from scnx-platform, so the resolved key set equals the base key
+// set.
+$scnx-saas-contract: (
+  color: (
+    neutral: contract.$neutral-contract,
+    primary: contract.$scheme-contract
+  ),
+  dimension: (radius: map.get(contract.$system, dimension, radius)),
+  effect: (material: map.get(contract.$system, effect, material))
+);

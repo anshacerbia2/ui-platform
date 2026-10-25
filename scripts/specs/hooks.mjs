@@ -21,7 +21,7 @@ const byCss = new Map();
 for (const file of fs.readdirSync(path.join(dist, "tokens/json"))) {
   for (const token of JSON.parse(fs.readFileSync(path.join(dist, "tokens/json", file), "utf8")).tokens) byCss.set(token.cssName, token.name);
 }
-const themes = fs.readdirSync(path.join(dist, "tokens/json")).map((f) => f.replace(/\.json$/, "")).sort((a, b) => (a === "industrial" ? -1 : b === "industrial" ? 1 : a.localeCompare(b)));
+const themes = fs.readdirSync(path.join(dist, "tokens/json")).map((f) => f.replace(/\.json$/, "")).sort((a, b) => (a === "scnx-platform" ? -1 : b === "scnx-platform" ? 1 : a.localeCompare(b)));
 // A fallback as a binding template: var(--ds-x-y) is written {x.y}.
 const template = (value) =>
   value.replace(/var\((--ds-[a-z0-9-]+)\)/g, (match, name) => {

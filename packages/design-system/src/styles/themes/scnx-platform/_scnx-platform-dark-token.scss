@@ -1,8 +1,8 @@
 @use "sass:map";
-@use "./industrial-token" as light;
+@use "./scnx-platform-token" as light;
 
 $dark-token: map.deep-merge(
-  light.$industrial-token,
+  light.$scnx-platform-token,
   (
     color: light.get-color-tokens("dark"),
     // Shadows read weakly on dark grounds: floating materials gain a lit top

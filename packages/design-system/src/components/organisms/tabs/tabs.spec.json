@@ -299,7 +299,7 @@
       ],
       "floor": null,
       "purpose": "The gap of Tabs.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -315,7 +315,7 @@
       ],
       "floor": null,
       "purpose": "The background of Tabs's highlight part in the hover state.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -331,7 +331,7 @@
       ],
       "floor": null,
       "purpose": "The inset-block of Tabs's highlight part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -347,7 +347,7 @@
       ],
       "floor": null,
       "purpose": "The border-radius of Tabs's highlight part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -364,7 +364,7 @@
       ],
       "floor": null,
       "purpose": "The border-block-end and border-inline-end of Tabs's indicator part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -380,7 +380,7 @@
       ],
       "floor": null,
       "purpose": "The inset-block of Tabs's indicator part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -396,7 +396,7 @@
       ],
       "floor": null,
       "purpose": "The border-radius of Tabs's indicator part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -413,7 +413,7 @@
       ],
       "floor": null,
       "purpose": "The border-block-end and border-inline-end of Tabs's indicator part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -430,7 +430,7 @@
       ],
       "floor": null,
       "purpose": "The border-bottom and border-inline-end of Tabs's list part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -450,7 +450,7 @@
       ],
       "floor": null,
       "purpose": "The border-bottom, border-inline-end, margin-bottom and margin-inline-end of Tabs's list and tab part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -466,7 +466,7 @@
       ],
       "floor": null,
       "purpose": "The gap of Tabs's list part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -482,7 +482,7 @@
       ],
       "floor": null,
       "purpose": "The color of Tabs's panel part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -498,7 +498,7 @@
       ],
       "floor": null,
       "purpose": "The font-family of Tabs's panel part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -514,7 +514,7 @@
       ],
       "floor": null,
       "purpose": "The font-size of Tabs's panel part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -530,7 +530,7 @@
       ],
       "floor": null,
       "purpose": "The font-weight of Tabs's panel part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -546,7 +546,7 @@
       ],
       "floor": null,
       "purpose": "The letter-spacing of Tabs's panel part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -562,7 +562,7 @@
       ],
       "floor": null,
       "purpose": "The line-height of Tabs's panel part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -578,7 +578,7 @@
       ],
       "floor": null,
       "purpose": "The color of Tabs's tab part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -594,7 +594,7 @@
       ],
       "floor": null,
       "purpose": "The color of Tabs's tab part in the disabled state.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -610,7 +610,7 @@
       ],
       "floor": null,
       "purpose": "The color of Tabs's tab part in the hover state.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -626,7 +626,7 @@
       ],
       "floor": null,
       "purpose": "The color of Tabs's tab part in the selected state.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -642,7 +642,7 @@
       ],
       "floor": null,
       "purpose": "The font-family of Tabs's tab part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -658,7 +658,7 @@
       ],
       "floor": null,
       "purpose": "The font-size of Tabs's tab part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -674,7 +674,7 @@
       ],
       "floor": null,
       "purpose": "The font-weight of Tabs's tab part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -690,7 +690,7 @@
       ],
       "floor": null,
       "purpose": "The font-weight of Tabs's tab part in the selected state.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -706,7 +706,7 @@
       ],
       "floor": null,
       "purpose": "The gap of Tabs's tab part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -722,7 +722,7 @@
       ],
       "floor": "24px",
       "purpose": "The min-block-size of Tabs's tab part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value; never below the 24px floor.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value; never below the 24px floor.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -738,7 +738,7 @@
       ],
       "floor": null,
       "purpose": "The letter-spacing of Tabs's tab part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -754,7 +754,7 @@
       ],
       "floor": null,
       "purpose": "The line-height of Tabs's tab part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -772,7 +772,7 @@
       ],
       "floor": null,
       "purpose": "The inset-inline and padding of Tabs's indicator and tab part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -789,7 +789,7 @@
       ],
       "floor": null,
       "purpose": "The transition-duration of Tabs's highlight and tab part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -806,7 +806,7 @@
       ],
       "floor": null,
       "purpose": "The transition-timing-function of Tabs's highlight and tab part.",
-      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every orientation value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]

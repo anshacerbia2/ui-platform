@@ -19,7 +19,7 @@
       ],
       "floor": null,
       "purpose": "The background-color of CodeSelect's wrapper part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -35,7 +35,7 @@
       ],
       "floor": null,
       "purpose": "The background-color of CodeSelect's wrapper part in the hover state.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -52,7 +52,7 @@
       ],
       "floor": null,
       "purpose": "The border of CodeSelect's dropdown and wrapper part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -69,7 +69,7 @@
       ],
       "floor": null,
       "purpose": "The border of CodeSelect's dropdown and wrapper part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -85,7 +85,7 @@
       ],
       "floor": null,
       "purpose": "The color of CodeSelect's chevron part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -101,7 +101,7 @@
       ],
       "floor": null,
       "purpose": "The font-size of CodeSelect's chevron part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -117,7 +117,7 @@
       ],
       "floor": null,
       "purpose": "The transition of CodeSelect's chevron part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -133,7 +133,7 @@
       ],
       "floor": null,
       "purpose": "The transition of CodeSelect's chevron part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -149,7 +149,7 @@
       ],
       "floor": null,
       "purpose": "The background-color of CodeSelect's dropdown part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -165,7 +165,7 @@
       ],
       "floor": null,
       "purpose": "The max-height of CodeSelect's dropdown part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -181,7 +181,7 @@
       ],
       "floor": null,
       "purpose": "The margin-top of CodeSelect's dropdown part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -197,7 +197,7 @@
       ],
       "floor": null,
       "purpose": "The box-shadow of CodeSelect's dropdown part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -213,7 +213,7 @@
       ],
       "floor": null,
       "purpose": "The margin-right of CodeSelect's icon part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -229,7 +229,7 @@
       ],
       "floor": null,
       "purpose": "The color of CodeSelect's input part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -245,7 +245,7 @@
       ],
       "floor": null,
       "purpose": "The font-family of CodeSelect's input part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -261,7 +261,7 @@
       ],
       "floor": null,
       "purpose": "The font-size of CodeSelect's input part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -277,7 +277,7 @@
       ],
       "floor": null,
       "purpose": "The font-weight of CodeSelect's input part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -293,7 +293,7 @@
       ],
       "floor": null,
       "purpose": "The letter-spacing of CodeSelect's input part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -309,7 +309,7 @@
       ],
       "floor": null,
       "purpose": "The line-height of CodeSelect's input part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -325,7 +325,7 @@
       ],
       "floor": null,
       "purpose": "The min-width of CodeSelect.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -341,7 +341,7 @@
       ],
       "floor": null,
       "purpose": "The background-color of CodeSelect's option part in the hover state.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -357,7 +357,7 @@
       ],
       "floor": null,
       "purpose": "The color of CodeSelect's option part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -373,7 +373,7 @@
       ],
       "floor": null,
       "purpose": "The color of CodeSelect's option part in the selected state.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -389,7 +389,7 @@
       ],
       "floor": null,
       "purpose": "The font-family of CodeSelect's option part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -405,7 +405,7 @@
       ],
       "floor": null,
       "purpose": "The font-size of CodeSelect's option part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -421,7 +421,7 @@
       ],
       "floor": null,
       "purpose": "The font-weight of CodeSelect's option part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -437,7 +437,7 @@
       ],
       "floor": null,
       "purpose": "The letter-spacing of CodeSelect's option part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -453,7 +453,7 @@
       ],
       "floor": null,
       "purpose": "The line-height of CodeSelect's option part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -469,7 +469,7 @@
       ],
       "floor": null,
       "purpose": "The padding of CodeSelect's option part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -485,7 +485,7 @@
       ],
       "floor": null,
       "purpose": "The padding of CodeSelect's wrapper part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -501,7 +501,7 @@
       ],
       "floor": null,
       "purpose": "The color of CodeSelect's input part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -518,7 +518,7 @@
       ],
       "floor": null,
       "purpose": "The border-radius of CodeSelect's dropdown and wrapper part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -535,7 +535,7 @@
       ],
       "floor": null,
       "purpose": "The transition of CodeSelect's option and wrapper part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -552,7 +552,7 @@
       ],
       "floor": null,
       "purpose": "The transition of CodeSelect's option and wrapper part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]

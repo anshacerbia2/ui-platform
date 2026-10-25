@@ -3,8 +3,8 @@
 @use "styles/abstracts/core-token" as core;
 @use "styles/abstracts/token-validator" as validator;
 @use "styles/abstracts/theme-injector" as injector;
-@use "./industrial-token" as industrial;
-@use "./industrial_dark-token" as dark;
+@use "./scnx-platform-token" as scnx-platform;
+@use "./scnx-platform-dark-token" as dark;
 
 // 1. Validate Tier 1 Internal Scales (SCSS Only)
 @include validator.validate-token(
@@ -114,7 +114,7 @@
 );
 
 // 2. Validate Tier 2 Semantic Mapping
-@include validator.validate-token(industrial.$industrial-token, contract.$system);
+@include validator.validate-token(scnx-platform.$scnx-platform-token, contract.$system);
 @include validator.validate-token(dark.$dark-token, contract.$system);
 
 
@@ -124,12 +124,12 @@
 :root,
 [data-theme="light"] {
   // Inject semantic mappings (Tier-2)
-  @include injector.inject-theme(industrial.$industrial-token, "ds", "light");
+  @include injector.inject-theme(scnx-platform.$scnx-platform-token, "ds", "light");
 }
 
 [data-theme="dark"] {
   // We use dark mode mapping over the BASE token
   // meaning it fetches both the semantic mappings from _dark-token.scss
-  // AND the shifted dual-axis chromatic scales defined in _industrial-token.scss
+  // AND the shifted dual-axis chromatic scales defined in _scnx-platform-token.scss
   @include injector.inject-theme(dark.$dark-token, "ds", "dark");
 }

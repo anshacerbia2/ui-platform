@@ -1,8 +1,8 @@
 // ============================================
 // THEMES ENTRY POINT
 // ============================================
-// Exports the industrial theme, the base theme, as the baseline infrastructure.
+// Exports the scnx-platform theme, the base theme, as the baseline infrastructure.
 // Consumers can override this by importing specific themes
-// (e.g., @use 'styles/themes/achromatic') after this base layer.
+// (e.g., @use 'styles/themes/scnx-saas') after this base layer.
 
-@forward "industrial";
+@forward "scnx-platform";

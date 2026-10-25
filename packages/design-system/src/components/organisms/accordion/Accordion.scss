@@ -85,7 +85,12 @@ $c: accordion;
   &__content {
     color: hook($c, content-color, $color-text-secondary);
     @include hooked-typography($c, body, small, $prefix: content);
-    transition: height hook($c, content-transition-duration, $motion-disclosure-duration) hook($c, content-transition-timing-function, $motion-disclosure-easing), opacity hook($c, content-transition-duration, $motion-disclosure-duration) hook($c, content-transition-timing-function, $motion-disclosure-easing);
+    transition: opacity hook($c, content-transition-duration, $motion-disclosure-duration) hook($c, content-transition-timing-function, $motion-disclosure-easing);
+
+    // The height changes at once unless the reader allows motion.
+    @include when-motion-allowed {
+      transition: height hook($c, content-transition-duration, $motion-disclosure-duration) hook($c, content-transition-timing-function, $motion-disclosure-easing), opacity hook($c, content-transition-duration, $motion-disclosure-duration) hook($c, content-transition-timing-function, $motion-disclosure-easing);
+    }
 
     // Internal wrapper for padding to allow smooth height transitions
     // without padding-box calculations interfering
@@ -96,7 +101,9 @@ $c: accordion;
   }
 
   &__icon {
-    transition: transform hook($c, icon-transition-duration, $motion-disclosure-duration) hook($c, icon-transition-timing-function, $motion-disclosure-easing);
+    @include when-motion-allowed {
+      transition: transform hook($c, icon-transition-duration, $motion-disclosure-duration) hook($c, icon-transition-timing-function, $motion-disclosure-easing);
+    }
     color: hook($c, icon-color, $color-text-secondary);
     display: flex;
     align-items: center;

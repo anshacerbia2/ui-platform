@@ -1,0 +1,21 @@
+// ============================================
+// SCNX-SAAS THEME: DARK MODE
+// ============================================
+// Counterpart to _scnx-saas-light-token.scss for dark mode: the primary
+// scheme on the neutral matrix, on dark grounds; the same radius ladder; the
+// soft on-page materials, and the lit inset top edge on the floating ones, as
+// in scnx-platform's dark mode (ADR-UIP-VIS-001 item 1).
+// ============================================
+
+@use "styles/themes/scnx-platform/scnx-platform-token" as scnx-platform;
+@use "scnx-saas-light-token" as light;
+@use "sass:map";
+
+$scnx-saas-dark-token: (
+  color: (
+    neutral: map.get(scnx-platform.get-color-tokens("dark"), neutral),
+    primary: scnx-platform.generate-scheme-matrix("neutral", "dark")
+  ),
+  dimension: (radius: light.$scnx-saas-radius),
+  effect: (material: scnx-platform.material-set(inset 0 1px 0 0 var(--ds-color-neutral-border-default-default), $soft: true))
+);

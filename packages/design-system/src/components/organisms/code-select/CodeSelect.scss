@@ -61,7 +61,9 @@ $c: code-select;
     color: hook($c, chevron-color, $color-text-secondary);
     margin-left: auto;
     font-size: hook($c, chevron-size, 10px);
-    transition: transform hook($c, chevron-transition-duration, $motion-disclosure-duration) hook($c, chevron-transition-timing-function, $motion-disclosure-easing);
+    @include when-motion-allowed {
+      transition: transform hook($c, chevron-transition-duration, $motion-disclosure-duration) hook($c, chevron-transition-timing-function, $motion-disclosure-easing);
+    }
   }
 
   &[data-state="open"] &__chevron {

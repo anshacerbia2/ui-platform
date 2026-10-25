@@ -23,7 +23,7 @@ $c: icon-button;
   border-radius: hook($c, radius, $dimension-radius-control);
   border: hook($c, border-width, $dimension-border-width-default) solid transparent;
   cursor: pointer;
-  transition-property: background-color, border-color, box-shadow, color, translate;
+  transition-property: background-color, border-color, box-shadow, color;
   transition-duration: hook($c, transition-duration, $motion-feedback-duration);
   transition-timing-function: hook($c, transition-timing-function, $motion-feedback-easing);
 

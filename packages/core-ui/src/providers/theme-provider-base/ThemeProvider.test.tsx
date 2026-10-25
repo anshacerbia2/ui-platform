@@ -62,27 +62,27 @@ afterEach(() => {
 
 describe("createThemeStore", () => {
   it("applies precedence: server hint, persisted, system, default", () => {
-    const hinted = createThemeStore({ themeId: "industrial", serverHint: { mode: "light", resolvedMode: "light" }, storage: memoryStorage("dark"), systemQuery: () => system.query });
+    const hinted = createThemeStore({ themeId: "scnx-platform", serverHint: { mode: "light", resolvedMode: "light" }, storage: memoryStorage("dark"), systemQuery: () => system.query });
     hinted.connect();
     expect(hinted.getSnapshot()).toMatchObject({ mode: "light", source: "server" });
 
-    const persisted = createThemeStore({ themeId: "industrial", storage: memoryStorage("dark"), systemQuery: () => system.query });
+    const persisted = createThemeStore({ themeId: "scnx-platform", storage: memoryStorage("dark"), systemQuery: () => system.query });
     persisted.connect();
     expect(persisted.getSnapshot()).toMatchObject({ mode: "dark", resolvedMode: "dark", source: "persisted" });
 
     system.change(true);
-    const fromSystem = createThemeStore({ themeId: "industrial", storage: memoryStorage(), systemQuery: () => system.query });
+    const fromSystem = createThemeStore({ themeId: "scnx-platform", storage: memoryStorage(), systemQuery: () => system.query });
     fromSystem.connect();
     expect(fromSystem.getSnapshot()).toMatchObject({ mode: "system", resolvedMode: "dark", source: "system" });
 
-    const fallback = createThemeStore({ themeId: "industrial", defaultMode: "light", storage: false, systemQuery: () => null });
+    const fallback = createThemeStore({ themeId: "scnx-platform", defaultMode: "light", storage: false, systemQuery: () => null });
     fallback.connect();
     expect(fallback.getSnapshot()).toMatchObject({ mode: "light", resolvedMode: "light", source: "default" });
   });
 
   it("ignores an invalid persisted value with a diagnostic", () => {
     const onDiagnostic = vi.fn();
-    const store = createThemeStore({ themeId: "industrial", defaultMode: "light", storage: memoryStorage("<script>"), systemQuery: () => null, onDiagnostic });
+    const store = createThemeStore({ themeId: "scnx-platform", defaultMode: "light", storage: memoryStorage("<script>"), systemQuery: () => null, onDiagnostic });
     store.connect();
     expect(store.getSnapshot()).toMatchObject({ mode: "light", source: "default" });
     expect(onDiagnostic).toHaveBeenCalledWith("ThemeProvider: ignored an invalid persisted mode");
@@ -95,7 +95,7 @@ describe("createThemeStore", () => {
     vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
       throw new Error("denied");
     });
-    const store = createThemeStore({ themeId: "industrial", defaultMode: "light", storage: localStoragePreference(), systemQuery: () => null });
+    const store = createThemeStore({ themeId: "scnx-platform", defaultMode: "light", storage: localStoragePreference(), systemQuery: () => null });
     store.connect();
     store.setMode("dark");
     expect(store.getSnapshot()).toMatchObject({ mode: "dark", resolvedMode: "dark" });
@@ -103,15 +103,15 @@ describe("createThemeStore", () => {
 
   it("rejects invalid theme IDs and modes before any state changes", () => {
     expect(() => createThemeStore({ themeId: "Default Brand" })).toThrow("not URL-safe");
-    expect(() => createThemeStore({ themeId: "other", themes: ["industrial"] })).toThrow("not one of industrial");
-    const store = createThemeStore({ themeId: "industrial", storage: false, systemQuery: () => null });
+    expect(() => createThemeStore({ themeId: "other", themes: ["scnx-platform"] })).toThrow("not one of scnx-platform");
+    const store = createThemeStore({ themeId: "scnx-platform", storage: false, systemQuery: () => null });
     const before = store.getSnapshot();
     store.setMode("sepia" as never);
     expect(store.getSnapshot()).toBe(before);
   });
 
   it("commits one revision per change and follows the system while in system mode", () => {
-    const store = createThemeStore({ themeId: "industrial", storage: false, systemQuery: () => system.query });
+    const store = createThemeStore({ themeId: "scnx-platform", storage: false, systemQuery: () => system.query });
     store.connect();
     const listener = vi.fn();
     store.subscribe(listener);
@@ -126,7 +126,7 @@ describe("createThemeStore", () => {
   it("removes its media and storage listeners when the last connection ends", () => {
     const unsubscribe = vi.fn();
     const storage = { ...memoryStorage(), subscribe: vi.fn(() => unsubscribe) };
-    const store = createThemeStore({ themeId: "industrial", storage, systemQuery: () => system.query });
+    const store = createThemeStore({ themeId: "scnx-platform", storage, systemQuery: () => system.query });
     const first = store.connect();
     const second = store.connect();
     expect(system.listeners.size).toBe(1);
@@ -142,12 +142,12 @@ describe("createThemeStore", () => {
 describe("ThemeProvider", () => {
   it("renders a root with exactly the theme identity attributes", () => {
     render(
-      <ThemeProvider themeId="industrial" defaultMode="dark" storage={false}>
+      <ThemeProvider themeId="scnx-platform" defaultMode="dark" storage={false}>
         <Probe />
       </ThemeProvider>,
     );
     const root = rootOf();
-    expect(root.getAttribute("data-scnx-theme")).toBe("industrial");
+    expect(root.getAttribute("data-scnx-theme")).toBe("scnx-platform");
     expect(root.getAttribute("data-scnx-resolved-mode")).toBe("dark");
     expect([...root.attributes].map((a) => a.name).sort()).toEqual(["data-scnx-resolved-mode", "data-scnx-theme"]);
     expect(document.documentElement.hasAttribute("data-theme")).toBe(false);
@@ -155,41 +155,41 @@ describe("ThemeProvider", () => {
   });
 
   it("isolates two providers; a shared store is shared on purpose", () => {
-    const shared = createThemeStore({ themeId: "industrial", defaultMode: "light", storage: false });
+    const shared = createThemeStore({ themeId: "scnx-platform", defaultMode: "light", storage: false });
     render(
       <>
-        <ThemeProvider themeId="industrial" defaultMode="light" storage={false}><Probe label="a" /></ThemeProvider>
-        <ThemeProvider themeId="achromatic" defaultMode="light" storage={false}><Probe label="b" /></ThemeProvider>
-        <ThemeProvider themeId="industrial" store={shared}><Probe label="c" /></ThemeProvider>
-        <ThemeProvider themeId="achromatic" store={shared}><Probe label="d" /></ThemeProvider>
+        <ThemeProvider themeId="scnx-platform" defaultMode="light" storage={false}><Probe label="a" /></ThemeProvider>
+        <ThemeProvider themeId="scnx-saas" defaultMode="light" storage={false}><Probe label="b" /></ThemeProvider>
+        <ThemeProvider themeId="scnx-platform" store={shared}><Probe label="c" /></ThemeProvider>
+        <ThemeProvider themeId="scnx-saas" store={shared}><Probe label="d" /></ThemeProvider>
       </>,
     );
     act(() => screen.getByTestId("a").click());
     expect(rootOf("a").getAttribute("data-scnx-resolved-mode")).toBe("dark");
     expect(rootOf("b").getAttribute("data-scnx-resolved-mode")).toBe("light");
-    expect(rootOf("b").getAttribute("data-scnx-theme")).toBe("achromatic");
+    expect(rootOf("b").getAttribute("data-scnx-theme")).toBe("scnx-saas");
 
     act(() => screen.getByTestId("c").click());
     expect(rootOf("c").getAttribute("data-scnx-resolved-mode")).toBe("dark");
     expect(rootOf("d").getAttribute("data-scnx-resolved-mode")).toBe("dark");
-    expect(rootOf("d").getAttribute("data-scnx-theme")).toBe("achromatic");
+    expect(rootOf("d").getAttribute("data-scnx-theme")).toBe("scnx-saas");
   });
 
   it("reports a controlled mode change without changing state itself", () => {
     const onModeChange = vi.fn();
     const { rerender } = render(
-      <ThemeProvider themeId="industrial" mode="light" onModeChange={onModeChange} storage={false}><Probe /></ThemeProvider>,
+      <ThemeProvider themeId="scnx-platform" mode="light" onModeChange={onModeChange} storage={false}><Probe /></ThemeProvider>,
     );
     act(() => screen.getByTestId("probe").click());
     expect(onModeChange).toHaveBeenCalledWith("dark", expect.objectContaining({ mode: "dark", resolvedMode: "dark" }));
     expect(rootOf().getAttribute("data-scnx-resolved-mode")).toBe("light");
-    rerender(<ThemeProvider themeId="industrial" mode="dark" onModeChange={onModeChange} storage={false}><Probe /></ThemeProvider>);
+    rerender(<ThemeProvider themeId="scnx-platform" mode="dark" onModeChange={onModeChange} storage={false}><Probe /></ThemeProvider>);
     expect(screen.getByTestId("probe")).toHaveAttribute("data-source", "controlled");
     expect(rootOf().getAttribute("data-scnx-resolved-mode")).toBe("dark");
   });
 
   it("follows the system preference in a controlled system mode", () => {
-    render(<ThemeProvider themeId="industrial" mode="system" storage={false}><Probe /></ThemeProvider>);
+    render(<ThemeProvider themeId="scnx-platform" mode="system" storage={false}><Probe /></ThemeProvider>);
     expect(rootOf().getAttribute("data-scnx-resolved-mode")).toBe("light");
     act(() => system.change(true));
     expect(rootOf().getAttribute("data-scnx-resolved-mode")).toBe("dark");
@@ -197,9 +197,9 @@ describe("ThemeProvider", () => {
 
   it("keeps the last valid theme when an update names an unknown one", () => {
     const error = vi.spyOn(console, "error").mockImplementation(() => {});
-    const { rerender } = render(<ThemeProvider themeId="industrial" storage={false}><Probe /></ThemeProvider>);
+    const { rerender } = render(<ThemeProvider themeId="scnx-platform" storage={false}><Probe /></ThemeProvider>);
     rerender(<ThemeProvider themeId={"bad id" as string} storage={false}><Probe /></ThemeProvider>);
-    expect(rootOf().getAttribute("data-scnx-theme")).toBe("industrial");
+    expect(rootOf().getAttribute("data-scnx-theme")).toBe("scnx-platform");
     expect(error).toHaveBeenCalledWith(expect.stringContaining("not URL-safe"));
   });
 
@@ -210,8 +210,8 @@ describe("ThemeProvider", () => {
     };
     render(
       <>
-        <ThemeProvider themeId="industrial" storage={false}><Probe label="a" /><Portaled /></ThemeProvider>
-        <ThemeProvider themeId="achromatic" storage={false}><Probe label="b" /></ThemeProvider>
+        <ThemeProvider themeId="scnx-platform" storage={false}><Probe label="a" /><Portaled /></ThemeProvider>
+        <ThemeProvider themeId="scnx-saas" storage={false}><Probe label="b" /></ThemeProvider>
       </>,
     );
     expect(screen.getByTestId("portaled").closest("[data-scnx-theme]")).toBe(rootOf("a"));
@@ -221,8 +221,8 @@ describe("ThemeProvider", () => {
     const host = document.createElement("section");
     host.setAttribute("data-scnx-theme", "host");
     document.body.append(host);
-    const { unmount } = render(<ThemeProvider themeId="industrial" defaultMode="dark" storage={false} root={host}><Probe /></ThemeProvider>);
-    expect(host.getAttribute("data-scnx-theme")).toBe("industrial");
+    const { unmount } = render(<ThemeProvider themeId="scnx-platform" defaultMode="dark" storage={false} root={host}><Probe /></ThemeProvider>);
+    expect(host.getAttribute("data-scnx-theme")).toBe("scnx-platform");
     expect(host.getAttribute("data-scnx-resolved-mode")).toBe("dark");
     unmount();
     expect(host.getAttribute("data-scnx-theme")).toBe("host");
@@ -232,7 +232,7 @@ describe("ThemeProvider", () => {
 
   it("leaves no listener and no owned node after Strict Mode mount and unmount", () => {
     const { unmount, container } = render(
-      <StrictMode><ThemeProvider themeId="industrial" storage={localStoragePreference()}><Probe /></ThemeProvider></StrictMode>,
+      <StrictMode><ThemeProvider themeId="scnx-platform" storage={localStoragePreference()}><Probe /></ThemeProvider></StrictMode>,
     );
     expect(system.listeners.size).toBe(1);
     unmount();
@@ -250,7 +250,7 @@ describe("ThemeProvider", () => {
 describe("SSR and hydration", () => {
   it("hydrates the server snapshot without a mismatch, then applies the stored preference", async () => {
     const app = (
-      <ThemeProvider themeId="industrial" defaultMode="light">
+      <ThemeProvider themeId="scnx-platform" defaultMode="light">
         <Probe />
       </ThemeProvider>
     );
@@ -277,9 +277,9 @@ describe("SSR and hydration", () => {
 
   it("renders a server hint and keeps it through hydration", async () => {
     window.localStorage.setItem("scnx-theme-mode", "light");
-    const store = createThemeStore({ themeId: "industrial", serverHint: { mode: "dark", resolvedMode: "dark" } });
+    const store = createThemeStore({ themeId: "scnx-platform", serverHint: { mode: "dark", resolvedMode: "dark" } });
     const app = (
-      <ThemeProvider themeId="industrial" store={store}>
+      <ThemeProvider themeId="scnx-platform" store={store}>
         <Probe />
       </ThemeProvider>
     );
