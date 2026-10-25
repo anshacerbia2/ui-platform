@@ -231,7 +231,12 @@ for (const engine of browserEngines()) {
                   }
                 }
                 if (pointer === "press") await tab.mouse.down();
-                if (pointer === "focus") await target.focus();
+                // A script focus matches :focus-visible on a button only after keyboard input, so a
+                // keypress that does nothing (Shift) comes first, as a keyboard user's would.
+                if (pointer === "focus") {
+                  await tab.keyboard.press("Shift");
+                  await target.focus();
+                }
                 if (pointer === "focus-within") await target.evaluate((el) => el.querySelector("a[href], button:not(:disabled), input:not(:disabled), select, textarea, [tabindex]:not([tabindex='-1'])")?.focus());
                 if (attribute) await target.evaluate((el) => el.setAttribute("data-spec-entered", ""));
                 if (entering) await tab.evaluate(() => document.querySelectorAll("[data-spec-target]").forEach((el) => el.removeAttribute("data-spec-target")));

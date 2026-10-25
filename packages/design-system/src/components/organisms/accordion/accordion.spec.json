@@ -43,15 +43,6 @@
   },
   "states": [
     {
-      "name": "first",
-      "selectors": [
-        ":first-child"
-      ],
-      "enter": {
-        "fixture": true
-      }
-    },
-    {
       "name": "last",
       "selectors": [
         ":last-child"
@@ -61,12 +52,12 @@
       }
     },
     {
-      "name": "focus-within",
+      "name": "focus",
       "selectors": [
-        ":focus-within"
+        ":focus-visible"
       ],
       "enter": {
-        "interaction": "focus-within"
+        "interaction": "focus"
       }
     },
     {
@@ -205,7 +196,20 @@
         "variant": "stacked"
       },
       "declarations": {
-        "gap": "0"
+        "gap": "0",
+        "border": "{dimension.border-width.default} solid transparent",
+        "border-radius": "{dimension.radius.container}",
+        "background-color": "{color.neutral.surface.raised.default}",
+        "box-shadow": "{effect.material.flat}"
+      }
+    },
+    {
+      "part": "item",
+      "declarations": {
+        "border": "{dimension.border-width.default} solid transparent",
+        "border-radius": "{dimension.radius.container}",
+        "background-color": "{color.neutral.surface.raised.default}",
+        "box-shadow": "{effect.material.flat}"
       }
     },
     {
@@ -214,19 +218,11 @@
         "variant": "stacked"
       },
       "declarations": {
+        "border": "0",
+        "border-bottom": "{dimension.border-width.default} solid {color.neutral.border.subtle.default}",
         "border-radius": "0",
-        "border-bottom": "0"
-      }
-    },
-    {
-      "part": "item",
-      "option": {
-        "variant": "stacked"
-      },
-      "state": "first",
-      "declarations": {
-        "border-top-left-radius": "{dimension.radius.container}",
-        "border-top-right-radius": "{dimension.radius.container}"
+        "background-color": "transparent",
+        "box-shadow": "none"
       }
     },
     {
@@ -236,33 +232,14 @@
       },
       "state": "last",
       "declarations": {
-        "border-bottom-left-radius": "{dimension.radius.container}",
-        "border-bottom-right-radius": "{dimension.radius.container}",
-        "border-bottom": "{dimension.border-width.default} solid {color.neutral.border.default.default}"
-      }
-    },
-    {
-      "part": "item",
-      "declarations": {
-        "border": "{dimension.border-width.default} solid {color.neutral.border.default.default}",
-        "border-radius": "{dimension.radius.container}",
-        "background-color": "{color.neutral.surface.canvas.default}",
-        "transition": "border-color {motion.feedback.duration} {motion.feedback.easing}, box-shadow {motion.feedback.duration} {motion.feedback.easing}"
-      }
-    },
-    {
-      "part": "item",
-      "state": "focus-within",
-      "declarations": {
-        "border-color": "{color.neutral.border.default.focus}",
-        "box-shadow": "{effect.shadow.focus}"
+        "border-bottom": "0"
       }
     },
     {
       "part": "trigger",
       "declarations": {
         "padding": "{dimension.spacing.inset-default}",
-        "background-color": "{color.neutral.surface.default.default}",
+        "background-color": "transparent",
         "font-family": "{typography.body.default.font-family}",
         "font-size": "{typography.body.default.font-size}",
         "line-height": "{typography.body.default.line-height}",
@@ -276,13 +253,20 @@
       "part": "trigger",
       "state": "hover",
       "declarations": {
-        "background-color": "{color.neutral.surface.default.hover}"
+        "background-color": "{color.neutral.surface.subtle.hover}"
+      }
+    },
+    {
+      "part": "trigger",
+      "state": "focus",
+      "declarations": {
+        "outline-offset": "calc(-1 * {dimension.border-width.strong})",
+        "border-radius": "{dimension.radius.container}"
       }
     },
     {
       "part": "content",
       "declarations": {
-        "background-color": "{color.neutral.surface.canvas.default}",
         "color": "{color.neutral.text.subtle.default}",
         "font-family": "{typography.body.small.font-family}",
         "font-size": "{typography.body.small.font-size}",
@@ -296,7 +280,7 @@
       "part": "content-inner",
       "declarations": {
         "padding": "{dimension.spacing.inset-default}",
-        "border-top": "{dimension.border-width.default} solid {color.neutral.border.default.default}"
+        "border-top": "{dimension.border-width.default} solid {color.neutral.border.subtle.default}"
       }
     },
     {

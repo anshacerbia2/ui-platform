@@ -296,6 +296,17 @@ reference's `components/Tabs/` (ADR-UIP-VIS-002).
 | TB2 | Hover is a pill behind the label: the tab's `::before`, inset `stack-compact` from the top and bottom of the row, `radius.element`, filled with `neutral.surface.subtle.hover`. It is painted behind the label with `z-index: -1` inside the tab's own stacking context (`isolation: isolate`), a recorded exception, because it orders paint within one tab and is not a page layer. | Design reference `components/Tabs/README.md`; STD-UIP-STY-001 3 | The full-height hover fill is gone; the pill reads as one control inside the row. |
 | TB3 | The selection indicator is the tab's `::after`, inset to the label by `control-default`, `radius.pill`, drawn as a `border-width.strong` border in `primary.surface.solid` on the selected tab only (the inline end in a vertical list). A border survives forced-colors mode and only the selected tab has one, so the indicator still marks the selection there; the heavier weight remains a second cue. | ADR-UIP-VIS-001 item 3; STD-GLB-FE-005 3.9; WCAG 2.2 SC 1.4.1 | A background-drawn indicator would vanish in forced-colors mode; a transparent border on every tab would draw an underline under all of them there. |
 
+#### Decision record: Accordion material
+
+PLAN I2 moves Accordion onto its material; the visual target is the design
+reference's `components/Accordion/` (ADR-UIP-VIS-002).
+
+| ID  | Decision | Sources | Tradeoff |
+| :-- | :------- | :------ | :------- |
+| AC1 | A separated item is the flat material: `neutral.surface.raised` fill, `radius.container` (16 px since #110), and `effect.material.flat` (the ring) as its edge. Its default-colored border is removed; a transparent border of `border-width.default` keeps the boundary in forced-colors mode, as Button's does (BR2). In the stacked variant the group carries the material and clips its items, which are divided by a `border.subtle` line, the last item excepted. The content's own canvas fill is removed so the item is one surface, and the line above the content takes `border.subtle` too. | ADR-UIP-VIS-001 items 1 and 2 | The first and last items no longer round their own corners; the group's clip does it. Lines inside a material share the ring's color, so the item reads as one object. |
+| AC2 | The trigger has no fill at rest and takes `neutral.surface.subtle.hover` on hover. | Design reference `components/Accordion/README.md`; ADR-UIP-VIS-001 item 3 | The tonal fill marked every trigger as a control; the label, the chevron, and the hover fill carry that now. |
+| AC3 | Focus is the focus outline on the trigger, drawn inside it (`outline-offset: calc(-1 * border-width.strong)`) and rounded to `radius.container`, because the item clips everything outside its corners. The item's `:focus-within` border recolor and `effect.shadow.focus` are removed. | STD-GLB-FE-005 3.9; WCAG 2.2 SC 2.4.7, 2.4.13 | One focus indicator for the whole system; forced-colors mode keeps an outline, which the removed shadow was not. A script focus matches `:focus-visible` on a button only after keyboard input, so the conformance fixture presses Shift, which does nothing, before it focuses a part. |
+
 ### Portal and scope resolution
 
 Overlay components receive a portal container from the active theme provider,

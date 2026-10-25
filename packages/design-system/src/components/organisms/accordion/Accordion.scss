@@ -1,51 +1,51 @@
 @use "styles/abstracts/variables" as *;
 
+// TDD styled AC1-AC3. Each item, or the stacked group as a whole, is the flat
+// material: the raised fill, the container radius, and the ring of
+// `effect.material.flat` as its edge (ADR-UIP-VIS-001 item 1). The transparent
+// border draws the boundary in forced-colors mode, where shadows are removed
+// (BR2). Focus is the outline, drawn inside the clipped item.
 .scnx-accordion {
-
   display: flex;
   flex-direction: column;
   gap: $dimension-spacing-stack-default;
   width: 100%;
 
-  // Variant: one bordered group (stacked). Selected by the `variant` prop; the
-  // `--stacked` modifier class it replaces was reachable only by hand.
+  // Variant: one group (stacked). The group carries the material; its items
+  // are divided by a line.
   &[data-variant="stacked"] {
     gap: 0;
-    
+    border: $dimension-border-width-default solid transparent;
+    border-radius: $dimension-radius-container;
+    background-color: $color-surface-raised;
+    box-shadow: $effect-material-flat;
+    overflow: hidden;
+
     .scnx-accordion__item {
+      border: 0;
+      border-bottom: $dimension-border-width-default solid $color-border-subtle;
       border-radius: 0;
-      border-bottom: 0;
-      
-      &:first-child {
-        border-top-left-radius: $dimension-radius-container;
-        border-top-right-radius: $dimension-radius-container;
-      }
-      
+      background-color: transparent;
+      box-shadow: none;
+
       &:last-child {
-        border-bottom-left-radius: $dimension-radius-container;
-        border-bottom-right-radius: $dimension-radius-container;
-        border-bottom: $dimension-border-width-default solid $color-border-default;
+        border-bottom: 0;
       }
     }
   }
 
   &__item {
-    border: $dimension-border-width-default solid $color-border-default;
+    border: $dimension-border-width-default solid transparent;
     border-radius: $dimension-radius-container;
-    background-color: $color-surface-canvas;
+    background-color: $color-surface-raised;
+    box-shadow: $effect-material-flat;
     overflow: hidden;
-    transition: border-color $motion-feedback-duration $motion-feedback-easing, box-shadow $motion-feedback-duration $motion-feedback-easing;
-
-    &:focus-within {
-      border-color: $color-ring-focus;
-      box-shadow: var(--ds-effect-shadow-focus);
-    }
   }
 
   &__trigger {
     width: 100%;
     padding: $dimension-spacing-inset-default;
-    background-color: $color-surface-default;
+    background-color: transparent;
     border: none;
     text-align: left;
     @include typography(body, default);
@@ -58,7 +58,14 @@
     transition: background-color $motion-feedback-duration $motion-feedback-easing, color $motion-feedback-duration $motion-feedback-easing;
 
     &:hover {
-      background-color: $color-state-hover;
+      background-color: var(--ds-color-neutral-surface-subtle-hover);
+    }
+
+    // The item clips its content, so the outline is drawn inside the trigger
+    // and follows the item's corners.
+    &:focus-visible {
+      outline-offset: calc(-1 * #{$dimension-border-width-strong});
+      border-radius: $dimension-radius-container;
     }
 
     /* Icon rotation support if an icon is placed inside */
@@ -70,16 +77,15 @@
   }
 
   &__content {
-    background-color: $color-surface-canvas;
     color: $color-text-secondary;
     @include typography(body, small);
     transition: height $motion-disclosure-duration $motion-disclosure-easing, opacity $motion-disclosure-duration $motion-disclosure-easing;
-    
+
     // Internal wrapper for padding to allow smooth height transitions
     // without padding-box calculations interfering
     &-inner {
       padding: $dimension-spacing-inset-default;
-      border-top: $dimension-border-width-default solid $color-border-default;
+      border-top: $dimension-border-width-default solid $color-border-subtle;
     }
   }
 

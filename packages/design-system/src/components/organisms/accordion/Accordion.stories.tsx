@@ -38,5 +38,5 @@ export const Default: Story = {
   },
 };
 
-/** `variant="stacked"` draws the items as one bordered group. */
+/** `variant="stacked"` draws the items as one flat-material group, divided by lines. */
 export const Stacked: Story = { args: { variant: "stacked" } };
