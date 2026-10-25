@@ -110,7 +110,11 @@ components the package does not have yet.
   `candidate`), then Table, Link, Kbd, SegmentedControl, Tooltip and Popover,
   and Menu. `Surface` is row I3. This is the set ADR-UIP-CMP-001 and
   ADR-UIP-VIS-001 call component wave 1; it was the 2026-10-23 work plan and is
-  recorded here on 2026-10-24. The owner may reorder it by pull request.
+  recorded here on 2026-10-24. The owner may reorder it by pull request. Kbd and
+  SegmentedControl, with the RadioGroupBase primitive SegmentedControl stands
+  on, moved ahead of Table and Link on 2026-10-26. They come first in the
+  documentation site's adoption order (scnehaux-design Brand-Book sheet 11), and
+  they shipped in #137 (TDD styled SG1-SG4, KB1-KB2; TDD primitives P28).
 - **Wave 2** (not ordered): Avatar, Breadcrumb, Checkbox, Pagination, Progress,
   Radio, Select, Sheet, Skeleton, Spinner, Switch, Textarea, and Toast.
 

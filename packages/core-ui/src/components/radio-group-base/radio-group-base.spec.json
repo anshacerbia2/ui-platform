@@ -1,0 +1,106 @@
+{
+  "$schema": "../../../../../scripts/specs/schema/primitive.schema.json",
+  "kind": "primitive",
+  "name": "RadioGroupBase",
+  "entry": "@scnx/core-ui/components/radio-group-base",
+  "stability": "candidate",
+  "root": "div",
+  "parts": [
+    {
+      "name": "first",
+      "element": "input",
+      "selector": "[data-inventory='RadioGroupBase'] [data-value='light'] input"
+    },
+    {
+      "name": "first-item",
+      "element": "label",
+      "selector": "[data-inventory='RadioGroupBase'] [data-value='light']"
+    },
+    {
+      "name": "second",
+      "element": "input",
+      "selector": "[data-inventory='RadioGroupBase'] [data-value='dark'] input"
+    },
+    {
+      "name": "second-item",
+      "element": "label",
+      "selector": "[data-inventory='RadioGroupBase'] [data-value='dark']"
+    },
+    {
+      "name": "last",
+      "element": "input",
+      "selector": "[data-inventory='RadioGroupBase'] [data-value='system'] input"
+    },
+    {
+      "name": "last-item",
+      "element": "label",
+      "selector": "[data-inventory='RadioGroupBase'] [data-value='system']"
+    }
+  ],
+  "controlledProps": [
+    "value"
+  ],
+  "states": [
+    "checked",
+    "unchecked",
+    "disabled"
+  ],
+  "keys": [
+    {
+      "key": "ArrowRight",
+      "part": "first",
+      "condition": "focused",
+      "effect": "the next radio is focused and checked",
+      "expect": {
+        "part": "second-item",
+        "attribute": "data-state",
+        "value": "checked"
+      }
+    },
+    {
+      "key": "ArrowDown",
+      "part": "second",
+      "condition": "focused",
+      "effect": "the next radio is focused and checked",
+      "expect": {
+        "part": "last-item",
+        "attribute": "data-state",
+        "value": "checked"
+      }
+    },
+    {
+      "key": "ArrowRight",
+      "part": "last",
+      "condition": "focused on the last radio",
+      "effect": "wraps to the first radio, which is checked",
+      "expect": {
+        "part": "first-item",
+        "attribute": "data-state",
+        "value": "checked"
+      }
+    },
+    {
+      "key": "ArrowLeft",
+      "part": "first",
+      "condition": "focused on the first radio",
+      "effect": "wraps to the last radio, which is checked",
+      "expect": {
+        "part": "last-item",
+        "attribute": "data-state",
+        "value": "checked"
+      }
+    }
+  ],
+  "focus": {
+    "initial": "Tab enters the group at the checked radio, or at the first when none is checked (native radio group)",
+    "movement": "arrow keys between enabled radios, following the text direction (native); the primitive wraps at both ends",
+    "restoration": "none"
+  },
+  "accessibleName": "the root's aria-label or aria-labelledby; each radio by its label's text",
+  "dataHooks": [
+    "data-part",
+    "data-state",
+    "data-value",
+    "data-disabled"
+  ]
+}
