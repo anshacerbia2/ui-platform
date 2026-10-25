@@ -1,14 +1,19 @@
 @use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
 
-// TDD primitives P17; TDD styled TB1-TB3. The selected tab carries a 2px
-// indicator and a heavier weight, so colour is not its only cue. A tab is a
-// medium control (36px, control spacing); hover is a highlight behind the label,
-// inset from the row, and the indicator is inset to the label. Sides are
-// logical, so a vertical list mirrors in right-to-left text.
+$c: tabs;
+
+// TDD primitives P17; TDD styled TB1-TB3, HK1-HK5. The selected tab carries a
+// 2px indicator and a heavier weight, so colour is not its only cue. A tab is a
+// medium control (the control size inside the 24px target floor, control
+// spacing); hover is a highlight behind the label, inset from the row, and the
+// indicator is inset to the label. Sides are logical, so a vertical list
+// mirrors in right-to-left text. Every value reads a `--scnx-tabs-{part}-*`
+// hook that falls back to its token.
 .scnx-tabs {
   display: flex;
   flex-direction: column;
-  gap: $dimension-spacing-stack-default;
+  gap: hook($c, gap, $dimension-spacing-stack-default);
 
   &[data-orientation="vertical"] {
     flex-direction: row;
@@ -16,46 +21,46 @@
 
   [data-part="list"] {
     display: flex;
-    gap: $dimension-spacing-inline-compact;
-    border-bottom: $dimension-border-width-default solid $color-border-subtle;
+    gap: hook($c, list-gap, $dimension-spacing-inline-compact);
+    border-bottom: hook($c, list-border-width, $dimension-border-width-default) solid hook($c, list-border-color, $color-border-subtle);
   }
 
   &[data-orientation="vertical"] [data-part="list"] {
     flex-direction: column;
     border-bottom: 0;
-    border-inline-end: $dimension-border-width-default solid $color-border-subtle;
+    border-inline-end: hook($c, list-border-width, $dimension-border-width-default) solid hook($c, list-border-color, $color-border-subtle);
   }
 
   [data-part="tab"] {
-    @include typography(label, default);
+    @include hooked-typography($c, label, default, $prefix: tab);
     position: relative;
     isolation: isolate;
     display: inline-flex;
     align-items: center;
-    gap: $dimension-spacing-inline-default;
-    min-block-size: 2.25rem;
-    padding: 0 $dimension-spacing-control-default;
+    gap: hook($c, tab-gap, $dimension-spacing-inline-default);
+    min-block-size: target-floor(hook($c, tab-height, $dimension-size-control-default));
+    padding: 0 hook($c, tab-padding-inline, $dimension-spacing-control-default);
     border: 0;
-    margin-bottom: calc(-1 * #{$dimension-border-width-default});
+    margin-bottom: calc(-1 * #{hook($c, list-border-width, $dimension-border-width-default)});
     background: transparent;
-    color: $color-text-secondary;
+    color: hook($c, tab-color, $color-text-secondary);
     cursor: pointer;
     transition-property: color;
-    transition-duration: $motion-feedback-duration;
-    transition-timing-function: $motion-feedback-easing;
+    transition-duration: hook($c, tab-transition-duration, $motion-feedback-duration);
+    transition-timing-function: hook($c, tab-transition-timing-function, $motion-feedback-easing);
 
     // The hover highlight, inset from the top and bottom of the row.
     &::before {
       content: "";
       position: absolute;
-      inset-block: $dimension-spacing-stack-compact;
+      inset-block: hook($c, highlight-inset-block, $dimension-spacing-stack-compact);
       inset-inline: 0;
       z-index: -1;
-      border-radius: $dimension-radius-element;
+      border-radius: hook($c, highlight-radius, $dimension-radius-element);
       background: transparent;
       transition-property: background-color;
-      transition-duration: $motion-feedback-duration;
-      transition-timing-function: $motion-feedback-easing;
+      transition-duration: hook($c, tab-transition-duration, $motion-feedback-duration);
+      transition-timing-function: hook($c, tab-transition-timing-function, $motion-feedback-easing);
     }
 
     // The indicator, inset to the label by the tab's padding. It is a border
@@ -64,30 +69,30 @@
     &::after {
       content: "";
       position: absolute;
-      inset-inline: $dimension-spacing-control-default;
+      inset-inline: hook($c, tab-padding-inline, $dimension-spacing-control-default);
       inset-block-end: 0;
-      border-radius: $dimension-radius-mark;
+      border-radius: hook($c, indicator-radius, $dimension-radius-mark);
     }
 
     &:hover:not(:disabled) {
-      color: $color-text-primary;
+      color: hook($c, tab-color-hover, $color-text-primary);
     }
 
     &:hover:not(:disabled)::before {
-      background: var(--ds-color-neutral-surface-subtle-hover);
+      background: hook($c, highlight-background-hover, var(--ds-color-neutral-surface-subtle-hover));
     }
 
     &[aria-selected="true"] {
-      color: $color-text-primary;
-      font-weight: $typography-weight-semibold;
+      color: hook($c, tab-color-selected, $color-text-primary);
+      font-weight: hook($c, tab-font-weight-selected, $typography-weight-semibold);
     }
 
     &[aria-selected="true"]::after {
-      border-block-end: $dimension-border-width-strong solid $color-primary-default;
+      border-block-end: hook($c, indicator-width, $dimension-border-width-strong) solid hook($c, indicator-color, $color-primary-default);
     }
 
     &:disabled {
-      color: $color-text-disabled;
+      color: hook($c, tab-color-disabled, $color-text-disabled);
       cursor: not-allowed;
     }
   }
@@ -95,22 +100,21 @@
   &[data-orientation="vertical"] [data-part="tab"] {
     text-align: start;
     margin-bottom: 0;
-    margin-inline-end: calc(-1 * #{$dimension-border-width-default});
+    margin-inline-end: calc(-1 * #{hook($c, list-border-width, $dimension-border-width-default)});
 
     &::after {
       inset-inline: 0;
-      inset-block: $dimension-spacing-inset-compact;
+      inset-block: hook($c, indicator-inset-block, $dimension-spacing-inset-compact);
     }
 
     &[aria-selected="true"]::after {
       border-block-end: 0;
-      border-inline-end: $dimension-border-width-strong solid $color-primary-default;
+      border-inline-end: hook($c, indicator-width, $dimension-border-width-strong) solid hook($c, indicator-color, $color-primary-default);
     }
   }
 
   [data-part="panel"] {
-    @include typography(body, default);
-    color: $color-text-primary;
+    @include hooked-typography($c, body, default, $prefix: panel);
+    color: hook($c, panel-color, $color-text-primary);
   }
 }
-

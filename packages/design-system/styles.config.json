@@ -16,11 +16,16 @@
     "list-item"
   ],
   "hookedComponents": [
+    "accordion",
     "alert",
     "badge",
     "button",
+    "dialog",
     "divider",
     "icon-button",
+    "navbar",
+    "table-of-contents",
+    "tabs",
     "text-field"
   ],
   "runtimeProperties": {

@@ -79,5 +79,125 @@
         "padding": "0 {dimension.spacing.page}"
       }
     }
+  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-navbar-background: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-navbar-background",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Navbar.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-border-color",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border-bottom"
+      ],
+      "fallbacks": [
+        "{color.neutral.border.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The border-bottom of Navbar.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-border-width",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border-bottom"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null,
+      "purpose": "The border-bottom of Navbar.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-height",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "height",
+        "max-height"
+      ],
+      "fallbacks": [
+        "4rem"
+      ],
+      "floor": null,
+      "purpose": "The height and max-height of Navbar.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-section-gap",
+      "parts": [
+        "center",
+        "end",
+        "start"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-comfortable}"
+      ],
+      "floor": null,
+      "purpose": "The gap of Navbar's center, end and start part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-section-padding-inline",
+      "parts": [
+        "center",
+        "end",
+        "start"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.page}"
+      ],
+      "floor": null,
+      "purpose": "The padding of Navbar's center, end and start part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-start-width",
+      "parts": [
+        "start"
+      ],
+      "properties": [
+        "width"
+      ],
+      "fallbacks": [
+        "17.5rem"
+      ],
+      "floor": null,
+      "purpose": "The width of Navbar's start part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
   ]
 }

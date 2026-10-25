@@ -329,7 +329,9 @@ and STD-UIP-TKN-001 2.7.0 ("Hook mechanics", "Guarded floors") states how.
 Components move to the pattern one at a time; `styles.config.json`
 `hookedComponents` lists those that have, and the gate holds each listed one to
 it. Button and IconButton were first (ui-platform#130), because they share one
-Sass mixin; Badge, TextField, Divider, and Alert followed.
+Sass mixin; Badge, TextField, Divider, and Alert followed, then Dialog, Tabs,
+Accordion, TableOfContents, and Navbar. An inset focus outline (Accordion's
+trigger) offsets by the outline's own 2px floor, calc(-1 * max(2px, …)).
 
 | ID  | Decision | Sources | Tradeoff |
 | :-- | :------- | :------- | :------- |

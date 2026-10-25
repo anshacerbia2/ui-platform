@@ -142,5 +142,360 @@
         "color": "{color.neutral.text.default.default}"
       }
     }
+  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-table-of-contents-link-color-hover: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-table-of-contents-font-family",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.body.default.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of TableOfContents.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-of-contents-item-margin-bottom",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "margin-bottom"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.stack-default}"
+      ],
+      "floor": null,
+      "purpose": "The margin-bottom of TableOfContents's item part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-of-contents-label-color",
+      "parts": [
+        "label"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of TableOfContents's label part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-of-contents-label-font-family",
+      "parts": [
+        "label"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.label.default.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of TableOfContents's label part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-of-contents-label-font-size",
+      "parts": [
+        "label"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.label.default.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of TableOfContents's label part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-of-contents-label-font-weight",
+      "parts": [
+        "label"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.weight.semibold}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of TableOfContents's label part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-of-contents-label-letter-spacing",
+      "parts": [
+        "label"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.label.small.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of TableOfContents's label part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-of-contents-label-line-height",
+      "parts": [
+        "label"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.label.default.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of TableOfContents's label part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-of-contents-label-margin-bottom",
+      "parts": [
+        "label"
+      ],
+      "properties": [
+        "margin-bottom"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.stack-default}"
+      ],
+      "floor": null,
+      "purpose": "The margin-bottom of TableOfContents's label part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-of-contents-link-color",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of TableOfContents's link part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-of-contents-link-color-active",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of TableOfContents's link part in the active state.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-of-contents-link-color-hover",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of TableOfContents's link part in the hover state.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-of-contents-link-font-family",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.body.small.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of TableOfContents's link part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-of-contents-link-font-size",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.body.small.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of TableOfContents's link part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-of-contents-link-font-weight",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.body.small.font-weight}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of TableOfContents's link part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-of-contents-link-letter-spacing",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.body.small.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of TableOfContents's link part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-of-contents-link-line-height",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.body.small.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of TableOfContents's link part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-of-contents-link-min-block-size",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "min-block-size"
+      ],
+      "fallbacks": [
+        "0px"
+      ],
+      "floor": "24px",
+      "purpose": "The min-block-size of TableOfContents's link part.",
+      "coverage": "industrial and achromatic, light and dark; never below the 24px floor.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-of-contents-link-transition-duration",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.feedback.duration}"
+      ],
+      "floor": null,
+      "purpose": "The transition of TableOfContents's link part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-of-contents-link-transition-timing-function",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.feedback.easing}"
+      ],
+      "floor": null,
+      "purpose": "The transition of TableOfContents's link part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-of-contents-list-indent",
+      "parts": [
+        "nested-list"
+      ],
+      "properties": [
+        "margin-left"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-comfortable}"
+      ],
+      "floor": null,
+      "purpose": "The margin-left of TableOfContents's nested-list part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-of-contents-list-margin-top",
+      "parts": [
+        "list"
+      ],
+      "properties": [
+        "margin-top"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.stack-default}"
+      ],
+      "floor": null,
+      "purpose": "The margin-top of TableOfContents's list part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
   ]
 }

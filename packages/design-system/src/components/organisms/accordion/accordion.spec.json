@@ -260,7 +260,7 @@
       "part": "trigger",
       "state": "focus",
       "declarations": {
-        "outline-offset": "calc(-1 * {dimension.border-width.strong})",
+        "outline-offset": "calc(-1 * max(2px, {dimension.border-width.strong}))",
         "border-radius": "{dimension.radius.container}"
       }
     },
@@ -289,6 +289,498 @@
         "transition": "transform {motion.disclosure.duration} {motion.disclosure.easing}",
         "color": "{color.neutral.text.subtle.default}"
       }
+    }
+  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only. To change one variant only, set the hook on [data-variant] within the scope, for example .promo [data-variant=\"stacked\"] { --scnx-accordion-trigger-background-hover: …; }; without it, the hook applies to every variant in the scope.",
+  "hooks": [
+    {
+      "hook": "--scnx-accordion-background",
+      "parts": [
+        "item",
+        "root"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.raised.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Accordion's item part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-border-width",
+      "parts": [
+        "item",
+        "root"
+      ],
+      "properties": [
+        "border"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null,
+      "purpose": "The border of Accordion's item part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-content-color",
+      "parts": [
+        "content"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Accordion's content part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-content-font-family",
+      "parts": [
+        "content"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.body.small.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Accordion's content part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-content-font-size",
+      "parts": [
+        "content"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.body.small.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Accordion's content part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-content-font-weight",
+      "parts": [
+        "content"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.body.small.font-weight}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Accordion's content part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-content-letter-spacing",
+      "parts": [
+        "content"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.body.small.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Accordion's content part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-content-line-height",
+      "parts": [
+        "content"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.body.small.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Accordion's content part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-content-padding",
+      "parts": [
+        "content-inner"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-default}"
+      ],
+      "floor": null,
+      "purpose": "The padding of Accordion's content-inner part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-content-transition-duration",
+      "parts": [
+        "content"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.disclosure.duration}"
+      ],
+      "floor": null,
+      "purpose": "The transition of Accordion's content part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-content-transition-timing-function",
+      "parts": [
+        "content"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.disclosure.easing}"
+      ],
+      "floor": null,
+      "purpose": "The transition of Accordion's content part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-divider-color",
+      "parts": [
+        "content-inner",
+        "item"
+      ],
+      "properties": [
+        "border-bottom",
+        "border-top"
+      ],
+      "fallbacks": [
+        "{color.neutral.border.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The border-bottom and border-top of Accordion's content-inner and item part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-divider-width",
+      "parts": [
+        "content-inner",
+        "item"
+      ],
+      "properties": [
+        "border-bottom",
+        "border-top"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null,
+      "purpose": "The border-bottom and border-top of Accordion's content-inner and item part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-gap",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.stack-default}"
+      ],
+      "floor": null,
+      "purpose": "The gap of Accordion.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-icon-color",
+      "parts": [
+        "icon"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Accordion's icon part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-icon-transition-duration",
+      "parts": [
+        "icon"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.disclosure.duration}"
+      ],
+      "floor": null,
+      "purpose": "The transition of Accordion's icon part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-icon-transition-timing-function",
+      "parts": [
+        "icon"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.disclosure.easing}"
+      ],
+      "floor": null,
+      "purpose": "The transition of Accordion's icon part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-radius",
+      "parts": [
+        "item",
+        "root",
+        "trigger"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.container}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Accordion's item and trigger part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-shadow",
+      "parts": [
+        "item",
+        "root"
+      ],
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "{effect.material.flat}"
+      ],
+      "floor": null,
+      "purpose": "The box-shadow of Accordion's item part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-trigger-background-hover",
+      "parts": [
+        "trigger"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.subtle.hover}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Accordion's trigger part in the hover state.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-trigger-color",
+      "parts": [
+        "trigger"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Accordion's trigger part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-trigger-font-family",
+      "parts": [
+        "trigger"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.body.default.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Accordion's trigger part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-trigger-font-size",
+      "parts": [
+        "trigger"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.body.default.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Accordion's trigger part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-trigger-font-weight",
+      "parts": [
+        "trigger"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.weight.medium}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Accordion's trigger part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-trigger-letter-spacing",
+      "parts": [
+        "trigger"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.body.default.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Accordion's trigger part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-trigger-line-height",
+      "parts": [
+        "trigger"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.body.default.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Accordion's trigger part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-trigger-outline-width",
+      "parts": [
+        "trigger"
+      ],
+      "properties": [
+        "outline-offset"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.strong}"
+      ],
+      "floor": "2px",
+      "purpose": "The outline-offset of Accordion's trigger part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value; never below the 2px floor.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-trigger-padding",
+      "parts": [
+        "trigger"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-default}"
+      ],
+      "floor": null,
+      "purpose": "The padding of Accordion's trigger part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-trigger-transition-duration",
+      "parts": [
+        "trigger"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.feedback.duration}"
+      ],
+      "floor": null,
+      "purpose": "The transition of Accordion's trigger part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-accordion-trigger-transition-timing-function",
+      "parts": [
+        "trigger"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.feedback.easing}"
+      ],
+      "floor": null,
+      "purpose": "The transition of Accordion's trigger part.",
+      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]
 }

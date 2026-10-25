@@ -1,33 +1,36 @@
 @use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
 @use "styles/abstracts/geometry";
 
-.scnx-navbar {
+$c: navbar;
 
-  background-color: $color-surface-default;
-  
-  border-bottom: $dimension-border-width-default solid $color-border-subtle;
+// TDD styled HK1-HK5: every value reads a `--scnx-navbar-{part?}-*` hook. The
+// navbar height and the start column's width are component geometry
+// (styles/abstracts/_geometry.scss), the recorded fallbacks of their hooks.
+.scnx-navbar {
+  background-color: hook($c, background, $color-surface-default);
+  border-bottom: hook($c, border-width, $dimension-border-width-default) solid hook($c, border-color, $color-border-subtle);
   padding: 0; // Remove block padding, rely on height
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: geometry.$navbar-height;
-  max-height: geometry.$navbar-height;
+  height: hook($c, height, geometry.$navbar-height);
+  max-height: hook($c, height, geometry.$navbar-height);
 
   &__start,
   &__center,
   &__end {
     display: flex;
     align-items: center;
-    gap: $dimension-spacing-inline-comfortable;
+    gap: hook($c, section-gap, $dimension-spacing-inline-comfortable);
     height: 100%;
-    padding: 0 $dimension-spacing-page; // Add padding internally
+    padding: 0 hook($c, section-padding-inline, $dimension-spacing-page); // Add padding internally
   }
 
   &__start {
-    width: geometry.$sidebar-width;
+    width: hook($c, start-width, geometry.$sidebar-width);
     flex-shrink: 0;
-    // border-right: 1px solid rgb(var(--ds-color-border-muted)); // Add optional divider for edge layout
   }
 
   &__center {
