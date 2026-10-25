@@ -6,12 +6,12 @@
 // (ADR-UIP-VIS-001 item 7).
 // ============================================
 
-@use "styles/themes/default/default-token" as default;
+@use "styles/themes/industrial/industrial-token" as industrial;
 @use "sass:map";
 
 $achromatic-dark-token: (
   color: (
-    neutral: map.get(default.get-color-tokens("dark"), neutral),
-    primary: default.generate-scheme-matrix("neutral", "dark")
+    neutral: map.get(industrial.get-color-tokens("dark"), neutral),
+    primary: industrial.generate-scheme-matrix("neutral", "dark")
   )
 );

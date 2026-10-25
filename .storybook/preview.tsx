@@ -2,7 +2,7 @@ import type { Decorator, Preview } from "@storybook/react-vite";
 import { ThemeProvider } from "@scnx/core-ui/providers/theme-provider-base";
 // The published artifacts, exactly as a consumer loads them (TDD styled-004).
 import "../packages/design-system/dist/styles/components.css";
-import "../packages/design-system/dist/tokens/css/default.css";
+import "../packages/design-system/dist/tokens/css/industrial.css";
 import "../packages/design-system/dist/tokens/css/achromatic.css";
 import { MODES, THEMES, allModes } from "./modes";
 

@@ -67,7 +67,7 @@ function collections(profiles) {
   };
   for (const { themeId, modes, dimension } of profiles) {
     for (const [mode, doc] of modes) {
-      colorModes.push(themeId === "default" ? title(mode) : `${title(themeId)} ${mode}`);
+      colorModes.push(themeId === "industrial" ? title(mode) : `${title(themeId)} ${mode}`);
       add(colorValues, dtcgLeaves(doc), colorModes.length - 1);
     }
     dimensionModes.push(title(themeId));
@@ -85,7 +85,7 @@ function collections(profiles) {
   ];
 }
 
-/** FG9: a text style per typography composite of the default theme. */
+/** FG9: a text style per typography composite of the industrial theme. */
 const WEIGHT_STYLE = { 400: "Regular", 500: "Medium", 600: "Semi Bold", 700: "Bold" };
 // Figma has no system font stack; the mono stack is drawn in Roboto Mono (a Figma default font).
 const FAMILY = { Inter: "Inter", "ui-monospace": "Roboto Mono" };
@@ -193,7 +193,7 @@ export function effectStyles(recordsByTheme, colorVariables) {
 /** The whole plan from a package dist directory. */
 export function buildPlan(distDir, { source } = {}) {
   const config = (file) => JSON.parse(fs.readFileSync(path.join(distDir, file), "utf8"));
-  const themeIds = ["default", ...fs.readdirSync(path.join(distDir, "tokens/json")).map((f) => f.replace(/\.json$/, "")).filter((t) => t !== "default").sort()];
+  const themeIds = ["industrial", ...fs.readdirSync(path.join(distDir, "tokens/json")).map((f) => f.replace(/\.json$/, "")).filter((t) => t !== "industrial").sort()];
   const recordsByTheme = themeIds.map((t) => config(`tokens/json/${t}.json`));
   const profiles = recordsByTheme.map((records) => ({
     themeId: records.theme,

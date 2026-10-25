@@ -25,7 +25,7 @@ describe("Figma plan (FG7-FG10)", () => {
     expect(color.name).toBe(COLOR_COLLECTION);
     expect(color.modes).toEqual(["Light", "Dark", "Achromatic light", "Achromatic dark"]);
     expect(dimension.name).toBe(DIMENSION_COLLECTION);
-    expect(dimension.modes).toEqual(["Default", "Achromatic"]);
+    expect(dimension.modes).toEqual(["Industrial", "Achromatic"]);
     for (const c of plan.collections) for (const v of c.variables) expect(v.values).toHaveLength(c.modes.length);
     expect(new Set(color.variables.map((v) => v.name)).size).toBe(color.variables.length);
   });
@@ -60,16 +60,16 @@ describe("Figma plan (FG7-FG10)", () => {
 
   it("makes effect styles per theme whose colors are bound to color variables", () => {
     const names = new Set(plan.collections[0].variables.map((v) => v.name));
-    expect(plan.effectStyles.map((s) => s.name)).toContain("Default/shadow/low");
+    expect(plan.effectStyles.map((s) => s.name)).toContain("Industrial/shadow/low");
     for (const style of plan.effectStyles) for (const e of style.effects) expect(names.has(e.colorVariable)).toBe(true);
-    const focus = plan.effectStyles.find((s) => s.name === "Default/shadow/focus");
+    const focus = plan.effectStyles.find((s) => s.name === "Industrial/shadow/focus");
     expect(focus.effects[0].type).toBe("INNER_SHADOW");
     // A token whose layers differ by mode (the dark lit edge, TDD SI4) gets a style per mode.
     const styleNames = plan.effectStyles.map((s) => s.name);
-    expect(styleNames).toEqual(expect.arrayContaining(["Default/material/raised", "Default/Light/material/menu", "Default/Dark/material/menu"]));
-    expect(styleNames).not.toContain("Default/material/menu");
-    expect(plan.effectStyles.find((s) => s.name === "Default/Dark/material/menu").effects[0]).toMatchObject({ type: "INNER_SHADOW", offset: { x: 0, y: 1 }, colorVariable: "color/neutral/border/default/default" });
-    expect(plan.effectStyles.find((s) => s.name === "Default/Light/material/menu").effects.every((e) => e.type === "DROP_SHADOW")).toBe(true);
+    expect(styleNames).toEqual(expect.arrayContaining(["Industrial/material/raised", "Industrial/Light/material/menu", "Industrial/Dark/material/menu"]));
+    expect(styleNames).not.toContain("Industrial/material/menu");
+    expect(plan.effectStyles.find((s) => s.name === "Industrial/Dark/material/menu").effects[0]).toMatchObject({ type: "INNER_SHADOW", offset: { x: 0, y: 1 }, colorVariable: "color/neutral/border/default/default" });
+    expect(plan.effectStyles.find((s) => s.name === "Industrial/Light/material/menu").effects.every((e) => e.type === "DROP_SHADOW")).toBe(true);
     const colors = new Map([["--ds-c", { name: "color/c", values: [{ r: 0, g: 0, b: 0, a: 1 }] }]]);
     expect(shadowLayer("0 4px 6px -1px var(--ds-c)", colors)).toMatchObject({ type: "DROP_SHADOW", offset: { x: 0, y: 4 }, radius: 6, spread: -1, colorVariable: "color/c" });
     expect(() => shadowLayer("0 4px 6px red", colors)).toThrow("unsupported shadow layer");
@@ -161,7 +161,7 @@ describe("Figma plugin (FG11)", () => {
     const double = pluginDouble({ modeLimit: 1 });
     const report = await runPlugin(code(), double);
     expect(report.modesSkipped).toEqual(["Scnehaux / Color · Dark", "Scnehaux / Color · Achromatic light", "Scnehaux / Color · Achromatic dark", "Scnehaux / Dimension · Achromatic"]);
-    expect(double.collections.map((c) => c.modes.map((m) => m.name))).toEqual([["Light"], ["Default"]]);
+    expect(double.collections.map((c) => c.modes.map((m) => m.name))).toEqual([["Light"], ["Industrial"]]);
     const canvas = double.variables.find((v) => v.name === "color/neutral/surface/canvas/default");
     expect(Object.keys(canvas.valuesByMode)).toHaveLength(1);
   });

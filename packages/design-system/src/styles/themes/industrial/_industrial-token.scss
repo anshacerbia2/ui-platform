@@ -293,7 +293,7 @@ $shadow-level: (subtle: 2, default: 3, strong: 4);
   @return list.join(($lit,), $layers, comma);
 }
 
-$default-token: (
+$industrial-token: (
   // Color Semantic Families
   color: get-color-tokens("light"),
   // Dimension vocabulary (STD-UIP-TKN-001 section 3). Spacing ascends from
@@ -380,7 +380,7 @@ $default-token: (
   // Materials (ADR-UIP-VIS-001 item 1): on the page a 1px ring in the subtle
   // neutral border; floating materials add a contact and an ambient layer,
   // every color a Tier-2 token.
-  // Dark mode adds a lit top edge to floating materials (default_dark-token).
+  // Dark mode adds a lit top edge to floating materials (industrial_dark-token).
   material: material-set(""),
   ),
 
