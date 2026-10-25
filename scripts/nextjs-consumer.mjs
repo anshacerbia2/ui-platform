@@ -152,7 +152,7 @@ export default function Page() {
           <NavigationItem href="#teams" label="Teams" />
         </NavigationGroup>
       </NavigationRoot>
-      <TableOfContents items={[{ id: "overview", title: "Overview", url: "#overview" }]} initialActiveId="overview" />
+      <TableOfContents items={[{ id: "overview", title: "Overview", url: "#overview" }]} defaultActiveId="overview" />
       <Transition open styleFrom={{ opacity: 0 }} styleTo={{ opacity: 1 }}>
         <p>Styled transition</p>
       </Transition>
@@ -187,6 +187,8 @@ import { Dialog } from "@scnx/system/components/dialog";
 import { TabsBase } from "@scnx/core-ui/components/tabs-base";
 import { ComboboxBase } from "@scnx/core-ui/components/combobox-base";
 import { Tabs } from "@scnx/system/components/tabs";
+import { RadioGroupBase } from "@scnx/core-ui/components/radio-group-base";
+import { SegmentedControl } from "@scnx/system/components/segmented-control";
 
 const ItemState = () => <span>{useDisclosureItem().open ? "open" : "closed"}</span>;
 
@@ -292,6 +294,14 @@ export function Island() {
         </Tabs.List>
         <Tabs.Panel value="a">Styled panel</Tabs.Panel>
       </Tabs>
+      <RadioGroupBase aria-label="Base density" defaultValue="compact">
+        <RadioGroupBase.Item value="compact">Compact</RadioGroupBase.Item>
+        <RadioGroupBase.Item value="comfortable">Comfortable</RadioGroupBase.Item>
+      </RadioGroupBase>
+      <SegmentedControl aria-label="Range" defaultValue="7d">
+        <SegmentedControl.Item value="24h">24h</SegmentedControl.Item>
+        <SegmentedControl.Item value="7d">7 days</SegmentedControl.Item>
+      </SegmentedControl>
       <Dialog open={false} onOpenChange={() => {}}>
         <Dialog.Title>Styled dialog</Dialog.Title>
         <Dialog.Close>Close</Dialog.Close>
