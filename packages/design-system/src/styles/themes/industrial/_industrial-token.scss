@@ -317,10 +317,18 @@ $industrial-token: (
       section: map.get(core.$spacing, 8),
       page: map.get(core.$spacing, 6),
     ),
-    // The square structure (ADR-UIP-VIS-001 item 2): mark to panel are 0 in
-    // every theme and mode; pill stays fully rounded, used only where
-    // roundness carries meaning. Structure is this theme's alone
-    // (STD-UIP-TKN-001 2.6.0, "Theme-invariant structure").
+    // Control block sizes (STD-UIP-TKN-001 2.7.0): small, medium, and large
+    // controls, 28, 36, and 44px. A theme may map them; a component keeps its
+    // interactive box at least 24px (the target floor).
+    size: (
+      control-compact: map.get(core.$size, '28'),
+      control-default: map.get(core.$size, '36'),
+      control-comfortable: map.get(core.$size, '44'),
+    ),
+    // Industrial is square (ADR-UIP-VIS-001 item 2, revision 3): mark to panel
+    // are 0 and pill stays fully rounded for shapes whose roundness carries
+    // meaning. These are this theme's values, not a rule: another theme may
+    // map the family, non-decreasing from mark to panel.
     radius: (
       mark: map.get(core.$radius, none),
       element: map.get(core.$radius, none),

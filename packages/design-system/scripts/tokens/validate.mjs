@@ -1,8 +1,7 @@
 // Contract validator (TDD tokens, "Normalize and resolve" steps 3-6 and
 // "CSS and visual validation"). Produces findings in the six categories of the
 // PLAN P0 row 4 gate: grammar, reference, property-value, key-set, font, and
-// contrast (WCAG 2.2 SC 1.4.3 / 1.4.11), and in a seventh, structure
-// (STD-UIP-TKN-001 2.6.0, "Theme-invariant structure"; TDD tokens SI7).
+// contrast (WCAG 2.2 SC 1.4.3 / 1.4.11).
 
 import fs from "node:fs";
 import path from "node:path";
@@ -11,78 +10,7 @@ import { COLOR, DIMENSION, MOTION, TYPOGRAPHY, consumingProperty, parseTokenName
 import { contrastRatio, inSrgbGamut, parseColor } from "./color.mjs";
 import { assertDeclarationSafe, toCss } from "./serialize.mjs";
 
-export const CATEGORIES = ["grammar", "reference", "property-value", "key-set", "font", "contrast", "structure"];
-
-/**
- * Structural families (STD-UIP-TKN-001 2.6.0, "Theme-invariant structure";
- * ADR-UIP-VIS-001 items 6 and 7): identical in every theme and mode. An
- * effect token is structural in its geometry only; its layer colours are
- * colour tokens and may differ.
- */
-export const STRUCTURAL = /^--ds-(dimension|typography|motion|effect)-/;
-
-/**
- * The one structural difference between modes the system itself defines: in
- * dark mode the floating materials menu, modal, and sheet start with a lit
- * top edge (ADR-UIP-VIS-001 item 1).
- */
-export const LIT_EDGE = {
-  mode: "dark",
-  names: new Set(["--ds-effect-material-menu", "--ds-effect-material-modal", "--ds-effect-material-sheet"]),
-  layer: "inset 0 1px 0 0 <color>",
-};
-
-/** A structural value with every colour token replaced, so only its geometry is compared. */
-export const geometry = (css) => css.replace(/var\(--ds-color-[a-z0-9-]+\)/g, "<color>").replace(/\s+/g, " ").trim();
-
-/**
- * Structure findings (TDD tokens SI7): a theme other than the base theme sets
- * a structural key, a structural value differs from the base theme's in the
- * same mode, or the base theme's structural values differ between its modes
- * beyond the lit edge.
- * @param {Record<string, Record<string, { records: Map<string, object>, origin: Map<string, string> }>>} themes
- * @param {{ themes: Record<string, { inherits?: string }> }} config
- */
-export function structureFindings(themes, config) {
-  const findings = [];
-  const base = Object.keys(config.themes).find((id) => !config.themes[id].inherits);
-  const shape = (value) => {
-    if (value === undefined) return null;
-    try {
-      return geometry(toCss(value));
-    } catch {
-      return null;
-    }
-  };
-  const baseModes = themes[base];
-  const [first] = Object.keys(baseModes);
-  for (const [mode, { records }] of Object.entries(baseModes)) {
-    if (mode === first) continue;
-    for (const [name, value] of records) {
-      if (!STRUCTURAL.test(name)) continue;
-      const [here, there] = [shape(value), shape(baseModes[first].records.get(name))];
-      if (here === there) continue;
-      if (mode === LIT_EDGE.mode && LIT_EDGE.names.has(name) && here === `${LIT_EDGE.layer}, ${there}`) continue;
-      findings.push({ category: "structure", theme: base, mode, token: name, message: `structural value differs between modes: ${here} in ${mode}, ${there} in ${first}` });
-    }
-  }
-  for (const [themeId, modes] of Object.entries(themes)) {
-    if (themeId === base) continue;
-    for (const [mode, { records, origin }] of Object.entries(modes)) {
-      for (const [name, value] of records) {
-        if (!STRUCTURAL.test(name)) continue;
-        if (origin.get(name) === themeId) {
-          findings.push({ category: "structure", theme: themeId, mode, token: name, message: "a theme sets a structural key; a theme supplies colour only" });
-        }
-        const [here, want] = [shape(value), shape(baseModes[mode]?.records.get(name))];
-        if (here !== want) {
-          findings.push({ category: "structure", theme: themeId, mode, token: name, message: `structural value ${here} differs from ${base}/${mode} (${want})` });
-        }
-      }
-    }
-  }
-  return findings;
-}
+export const CATEGORIES = ["grammar", "reference", "property-value", "key-set", "font", "contrast"];
 
 const GENERIC_FAMILIES = new Set([
   "serif", "sans-serif", "monospace", "cursive", "fantasy", "system-ui",
@@ -333,6 +261,7 @@ export function orderFindings(resolved) {
     const names = ["compact", "default", "comfortable"].map((d) => `--ds-dimension-spacing-${relationship}-${d}`);
     sequence(names, "ascend", `spacing ${relationship} ascends compact -> comfortable`);
   }
+  sequence(DIMENSION.size.map((i) => `--ds-dimension-size-${i}`), "ascend", "size control ascends compact -> comfortable");
   sequence(DIMENSION["z-index"].map((i) => `--ds-dimension-z-index-${i}`), "ascend", "z-index strictly ascends");
   // The radius order (STD-UIP-TKN-001 2.6.0): non-decreasing from mark to panel;
   // pill is a 9999px sentinel, not a step.
@@ -392,7 +321,6 @@ export function validate({ themes, config, packageDir, rendered = [] }) {
   }
 
   findings.push(...keySetFindings(themes, aliases));
-  findings.push(...structureFindings(themes, config));
 
   for (const [themeId, modes] of Object.entries(themes)) {
     for (const [mode, { records }] of Object.entries(modes)) {

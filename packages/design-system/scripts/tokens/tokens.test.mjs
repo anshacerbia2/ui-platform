@@ -12,7 +12,7 @@ import { emit, serializeThemes, themeSelector } from "./emit.mjs";
 import { pixelValue, srgbValue } from "./figma.mjs";
 import { normalize } from "./normalize.mjs";
 import { assertDeclarationSafe, formatNumber, toCss } from "./serialize.mjs";
-import { contrastCases, easingDirection, fontFamilies, keySetFindings, measure, orderFindings, stripComments, structureFindings, substitute, validForProperty } from "./validate.mjs";
+import { contrastCases, easingDirection, fontFamilies, keySetFindings, measure, orderFindings, stripComments, substitute, validForProperty } from "./validate.mjs";
 
 const packageDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const str = (text) => ({ kind: "string", text, quoted: false });
@@ -173,6 +173,9 @@ describe("value relationships (STD-UIP-TKN-001 section 3)", () => {
     ["--ds-dimension-spacing-control-compact", "0.5rem"],
     ["--ds-dimension-spacing-control-default", "0.75rem"],
     ["--ds-dimension-spacing-control-comfortable", "1rem"],
+    ["--ds-dimension-size-control-compact", "1.75rem"],
+    ["--ds-dimension-size-control-default", "2.25rem"],
+    ["--ds-dimension-size-control-comfortable", "2.75rem"],
     ["--ds-dimension-z-index-base", "0"],
     ["--ds-dimension-z-index-dropdown", "1000"],
     ["--ds-dimension-radius-mark", "0"],
@@ -199,6 +202,7 @@ describe("value relationships (STD-UIP-TKN-001 section 3)", () => {
   it.each([
     ["--ds-dimension-spacing-inset-default", "0.5rem", "spacing inset ascends"],
     ["--ds-dimension-spacing-control-default", "1rem", "spacing control ascends"],
+    ["--ds-dimension-size-control-default", "1.5rem", "size control ascends"],
     ["--ds-dimension-z-index-dropdown", "0", "z-index strictly ascends"],
     ["--ds-dimension-radius-mark", "4px", "radius is non-decreasing"],
     ["--ds-typography-heading-xlarge-font-size", "4rem", "heading sizes descend"],
@@ -332,41 +336,11 @@ describe("normalizer on the token source", () => {
     }
   });
 
-  it("fails a theme that sets a structural key, a mode that changes one, and a lit edge of another shape (TDD SI7)", () => {
-    const copy = () =>
-      Object.fromEntries(
-        Object.entries(themes).map(([id, modes]) => [
-          id,
-          Object.fromEntries(Object.entries(modes).map(([mode, v]) => [mode, { ...v, records: new Map(v.records), origin: new Map(v.origin) }])),
-        ]),
-      );
-    const pill = themes.industrial.light.records.get("--ds-dimension-radius-pill");
-    const control = "--ds-dimension-radius-control";
-
-    const brand = copy();
-    brand.achromatic.light.records.set(control, pill);
-    brand.achromatic.light.origin.set(control, "achromatic");
-    expect(structureFindings(brand, config).map((f) => `${f.theme}/${f.mode} ${f.token}: ${f.message}`)).toEqual([
-      `achromatic/light ${control}: a theme sets a structural key; a theme supplies colour only`,
-      `achromatic/light ${control}: structural value 9999px differs from industrial/light (0)`,
-    ]);
-
-    const mode = copy();
-    mode.industrial.dark.records.set(control, pill);
-    expect(structureFindings(mode, config).some((f) => f.theme === "industrial" && f.mode === "dark" && f.token === control)).toBe(true);
-
-    const lit = copy();
-    lit.industrial.dark.records.set("--ds-effect-material-menu", themes.industrial.light.records.get("--ds-effect-material-modal"));
-    expect(structureFindings(lit, config).some((f) => f.token === "--ds-effect-material-menu")).toBe(true);
-  });
-
-  it("emits identical structure in every theme and mode, and a theme sets colour only (TDD SI7)", () => {
-    expect(structureFindings(themes, config)).toEqual([]);
-    for (const modes of Object.values(themes)) {
-      for (const { records } of Object.values(modes)) {
-        for (const intent of ["mark", "element", "control", "container", "panel"]) expect(toCss(records.get(`--ds-dimension-radius-${intent}`))).toBe("0");
-        expect(toCss(records.get("--ds-dimension-radius-pill"))).toBe("9999px");
-      }
+  it("emits industrial's values: square radii, pill for meaningful shapes, and 28/36/44px controls (TDD SI1, SI8)", () => {
+    for (const { records } of Object.values(themes.industrial)) {
+      for (const intent of ["mark", "element", "control", "container", "panel"]) expect(toCss(records.get(`--ds-dimension-radius-${intent}`))).toBe("0");
+      expect(toCss(records.get("--ds-dimension-radius-pill"))).toBe("9999px");
+      expect(["compact", "default", "comfortable"].map((d) => toCss(records.get(`--ds-dimension-size-control-${d}`)))).toEqual(["1.75rem", "2.25rem", "2.75rem"]);
     }
   });
 

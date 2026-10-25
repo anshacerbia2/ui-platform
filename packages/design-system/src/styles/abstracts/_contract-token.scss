@@ -148,7 +148,7 @@ $core: (
   // 2. SPACING & SIZING
   // ==========================================
   spacing: (0, 0_5, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20),
-  size: ('10', '12', '14', '16', '20', '24', '32', '40', '48', '56', '64', '72'),
+  size: ('10', '12', '14', '16', '20', '24', '28', '32', '36', '40', '44', '48', '56', '64', '72'),
   // ==========================================
   // 3. BORDER & SHAPE
   // ==========================================
@@ -266,6 +266,7 @@ $system: (
       section,
       page,
     ),
+    size: (control-compact, control-default, control-comfortable),
     radius: (mark, element, control, container, panel, pill),
     border-width: (default, strong),
     z-index: (base, dropdown, sticky, overlay, modal, popover, tooltip, toast),

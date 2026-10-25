@@ -628,6 +628,9 @@
         "--ds-dimension-radius-mark",
         "--ds-dimension-radius-panel",
         "--ds-dimension-radius-pill",
+        "--ds-dimension-size-control-comfortable",
+        "--ds-dimension-size-control-compact",
+        "--ds-dimension-size-control-default",
         "--ds-dimension-spacing-control-comfortable",
         "--ds-dimension-spacing-control-compact",
         "--ds-dimension-spacing-control-default",
@@ -1194,6 +1197,9 @@
         "--ds-dimension-radius-mark",
         "--ds-dimension-radius-panel",
         "--ds-dimension-radius-pill",
+        "--ds-dimension-size-control-comfortable",
+        "--ds-dimension-size-control-compact",
+        "--ds-dimension-size-control-default",
         "--ds-dimension-spacing-control-comfortable",
         "--ds-dimension-spacing-control-compact",
         "--ds-dimension-spacing-control-default",
@@ -3844,6 +3850,24 @@
       {
         "name": "dimension.radius.pill",
         "cssName": "--ds-dimension-radius-pill",
+        "type": "dimension",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "dimension.size.control-comfortable",
+        "cssName": "--ds-dimension-size-control-comfortable",
+        "type": "dimension",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "dimension.size.control-compact",
+        "cssName": "--ds-dimension-size-control-compact",
+        "type": "dimension",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "dimension.size.control-default",
+        "cssName": "--ds-dimension-size-control-default",
         "type": "dimension",
         "lifecycle": "candidate"
       },
@@ -7138,6 +7162,24 @@
         "lifecycle": "candidate"
       },
       {
+        "name": "dimension.size.control-comfortable",
+        "cssName": "--ds-dimension-size-control-comfortable",
+        "type": "dimension",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "dimension.size.control-compact",
+        "cssName": "--ds-dimension-size-control-compact",
+        "type": "dimension",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "dimension.size.control-default",
+        "cssName": "--ds-dimension-size-control-default",
+        "type": "dimension",
+        "lifecycle": "candidate"
+      },
+      {
         "name": "dimension.spacing.control-comfortable",
         "cssName": "--ds-dimension-spacing-control-comfortable",
         "type": "dimension",
@@ -8329,6 +8371,9 @@
       "$dimension-radius-mark",
       "$dimension-radius-panel",
       "$dimension-radius-pill",
+      "$dimension-size-control-comfortable",
+      "$dimension-size-control-compact",
+      "$dimension-size-control-default",
       "$dimension-spacing-control-comfortable",
       "$dimension-spacing-control-compact",
       "$dimension-spacing-control-default",
