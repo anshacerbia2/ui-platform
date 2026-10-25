@@ -15,33 +15,6 @@
     "list",
     "list-item"
   ],
-  "hookedComponents": [
-    "accordion",
-    "alert",
-    "badge",
-    "button",
-    "code",
-    "code-select",
-    "code-showcase",
-    "container",
-    "dialog",
-    "divider",
-    "edge-layout",
-    "flex",
-    "floating-layout",
-    "grid",
-    "heading",
-    "icon-button",
-    "list",
-    "list-item",
-    "navbar",
-    "navigation",
-    "sidebar",
-    "table-of-contents",
-    "tabs",
-    "text",
-    "text-field"
-  ],
   "runtimeProperties": {
     "--item-index": {
       "owner": "@scnx/core-ui NavigationBaseGroup",

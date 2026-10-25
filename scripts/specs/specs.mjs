@@ -112,12 +112,10 @@ export function loadSpecs() {
       for (const { file, spec } of styled) {
         for (const finding of styledFindings(spec, styledContext(spec, primitives, tokens))) findings.push(`${file}: ${finding}`);
       }
-      // HK7: an entry specification of a hooked @scnx/system component lists the hooks its rules read.
-      const config = JSON.parse(fs.readFileSync(path.join(root, "packages/design-system/styles.config.json"), "utf8"));
+      // HK7, HK8: an entry specification of an @scnx/system component lists the hooks its rules read.
       const css = fs.readFileSync(path.join(root, "packages/design-system/dist/styles/components.css"), "utf8");
       for (const { file, entry, spec } of expected.filter((row) => row.spec?.kind === "entry" && row.entry.startsWith("@scnx/system/components/"))) {
         const component = entry.split("/").pop();
-        if (!spec.hooks && !(config.hookedComponents ?? []).includes(component)) continue;
         for (const finding of hookFindings(spec, component, componentHooks(css, component), tokens)) findings.push(`${file}: ${finding}`);
       }
     }

@@ -88,7 +88,7 @@ describe("published stylesheets", () => {
 
 describe("stylesheet gate", () => {
   it("accepts a documented runtime property and rejects an undocumented one", () => {
-    const sheet = (name) => `${LAYER_STATEMENT}\n@layer components { .scnx-a { transition-delay: calc(var(${name}) * 1ms); } }`;
+    const sheet = (name) => `${LAYER_STATEMENT}\n@layer components { .scnx-a { transition-delay: calc(var(${name}) * var(--scnx-a-stagger-step, 1ms)); } }`;
     expect(checkStylesheet(sheet("--item-index"), { tokenNames: new Set() }).findings).toEqual([]);
     expect(checkStylesheet(sheet("--item-order"), { tokenNames: new Set() }).findings.join()).toContain("var(--item-order)");
   });
