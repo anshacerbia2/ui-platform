@@ -61,6 +61,7 @@ import { SidebarBaseRoot, SidebarBaseToggle } from "@scnx/core-ui/components/sid
 import { TextFieldBase } from "@scnx/core-ui/components/text-field-base";
 import { DialogBase } from "@scnx/core-ui/components/dialog-base";
 import { TabsBase } from "@scnx/core-ui/components/tabs-base";
+import { RadioGroupBase } from "@scnx/core-ui/components/radio-group-base";
 import { ComboboxBase } from "@scnx/core-ui/components/combobox-base";
 import { BehaviorFixtures } from "./behavior-fixtures.tsx";
 
@@ -89,7 +90,7 @@ export const App = () => (
     <ThemeProvider themeId="scnx-saas" defaultMode="light" storage={false}><Toggle id="second" /></ThemeProvider>
     {/* Server-rendered: its markup carries no style attribute (TDD theme THM-009). */}
     <div data-behavior-matrix="">
-      <BehaviorFixtures components={{ ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase, DialogBase, TabsBase, ComboboxBase }} />
+      <BehaviorFixtures components={{ ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase, DialogBase, TabsBase, ComboboxBase, RadioGroupBase }} />
     </div>
   </main>
 );

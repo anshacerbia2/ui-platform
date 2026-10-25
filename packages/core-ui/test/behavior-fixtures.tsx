@@ -19,10 +19,11 @@ export type FixtureComponents = {
   DialogBase: C;
   TabsBase: C;
   ComboboxBase: C;
+  RadioGroupBase: C;
 };
 
 export function BehaviorFixtures({ components }: { components: FixtureComponents }): ReactElement {
-  const { ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase, DialogBase, TabsBase, ComboboxBase } = components;
+  const { ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase, DialogBase, TabsBase, ComboboxBase, RadioGroupBase } = components;
   const [pressed, setPressed] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -119,6 +120,13 @@ export function BehaviorFixtures({ components }: { components: FixtureComponents
             <TabsBase.Panel value="two">Two panel</TabsBase.Panel>
           </TabsBase>
         </div>
+      </div>
+      <div data-inventory="RadioGroupBase">
+        <RadioGroupBase aria-label="Theme" name="inventory-theme" defaultValue="light">
+          <RadioGroupBase.Item value="light">Light</RadioGroupBase.Item>
+          <RadioGroupBase.Item value="dark">Dark</RadioGroupBase.Item>
+          <RadioGroupBase.Item value="system">System</RadioGroupBase.Item>
+        </RadioGroupBase>
       </div>
     </div>
   );
