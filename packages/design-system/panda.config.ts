@@ -1,17 +1,23 @@
 import { defineConfig, defineRecipe } from "@pandacss/dev";
 
+// Tier-3 component hooks (ADR-UIP-VIS-001 item 8; STD-UIP-TKN-001 2.7.0, "Hook
+// mechanics"; TDD styled HK6): `var(--scnx-{component}-{name}, {fallback})`,
+// referenced with its fallback and never declared, as styles/abstracts/_hook.scss
+// writes them for the Sass components.
+const hook = (component: string, name: string, fallback: string) => `var(--scnx-${component}-${name}, ${fallback})`;
+
 const containerRecipe = defineRecipe({
   className: "scnx-container",
   base: {
     width: "100%",
     mx: "auto",
-    px: "var(--ds-dimension-spacing-page)",
+    px: hook("container", "padding-inline", "var(--ds-dimension-spacing-page)"),
   },
   variants: {
     size: {
-      prose: { maxW: "65ch" },
-      base: { maxW: "1024px" },
-      wide: { maxW: "1440px" },
+      prose: { maxW: hook("container", "max-width", "65ch") },
+      base: { maxW: hook("container", "max-width", "1024px") },
+      wide: { maxW: hook("container", "max-width", "1440px") },
       fluid: { maxW: "100%" },
     },
   },
@@ -56,10 +62,10 @@ const flexRecipe = defineRecipe({
     // stack scale and columns the inline-axis scale.
     gap: {
       none: { gap: "0" },
-      compact: { rowGap: "var(--ds-dimension-spacing-stack-compact)", columnGap: "var(--ds-dimension-spacing-inline-compact)" },
-      default: { rowGap: "var(--ds-dimension-spacing-stack-default)", columnGap: "var(--ds-dimension-spacing-inline-default)" },
-      comfortable: { rowGap: "var(--ds-dimension-spacing-stack-comfortable)", columnGap: "var(--ds-dimension-spacing-inline-comfortable)" },
-      section: { gap: "var(--ds-dimension-spacing-section)" },
+      compact: { rowGap: hook("flex", "row-gap", "var(--ds-dimension-spacing-stack-compact)"), columnGap: hook("flex", "column-gap", "var(--ds-dimension-spacing-inline-compact)") },
+      default: { rowGap: hook("flex", "row-gap", "var(--ds-dimension-spacing-stack-default)"), columnGap: hook("flex", "column-gap", "var(--ds-dimension-spacing-inline-default)") },
+      comfortable: { rowGap: hook("flex", "row-gap", "var(--ds-dimension-spacing-stack-comfortable)"), columnGap: hook("flex", "column-gap", "var(--ds-dimension-spacing-inline-comfortable)") },
+      section: { gap: hook("flex", "gap", "var(--ds-dimension-spacing-section)") },
     },
   },
   defaultVariants: {
@@ -95,10 +101,10 @@ const gridRecipe = defineRecipe({
     // stack scale and columns the inline-axis scale.
     gap: {
       none: { gap: "0" },
-      compact: { rowGap: "var(--ds-dimension-spacing-stack-compact)", columnGap: "var(--ds-dimension-spacing-inline-compact)" },
-      default: { rowGap: "var(--ds-dimension-spacing-stack-default)", columnGap: "var(--ds-dimension-spacing-inline-default)" },
-      comfortable: { rowGap: "var(--ds-dimension-spacing-stack-comfortable)", columnGap: "var(--ds-dimension-spacing-inline-comfortable)" },
-      section: { gap: "var(--ds-dimension-spacing-section)" },
+      compact: { rowGap: hook("grid", "row-gap", "var(--ds-dimension-spacing-stack-compact)"), columnGap: hook("grid", "column-gap", "var(--ds-dimension-spacing-inline-compact)") },
+      default: { rowGap: hook("grid", "row-gap", "var(--ds-dimension-spacing-stack-default)"), columnGap: hook("grid", "column-gap", "var(--ds-dimension-spacing-inline-default)") },
+      comfortable: { rowGap: hook("grid", "row-gap", "var(--ds-dimension-spacing-stack-comfortable)"), columnGap: hook("grid", "column-gap", "var(--ds-dimension-spacing-inline-comfortable)") },
+      section: { gap: hook("grid", "gap", "var(--ds-dimension-spacing-section)") },
     },
   },
   defaultVariants: {
@@ -110,23 +116,23 @@ const gridRecipe = defineRecipe({
 const headingRecipe = defineRecipe({
   className: "scnx-heading",
   base: {
-    color: "var(--ds-color-neutral-text-default-default)",
+    color: hook("heading", "color", "var(--ds-color-neutral-text-default-default)"),
   },
   variants: {
     // typography.heading.*: the size is independent of the heading level.
     size: {
-      xxlarge: { fontFamily: "var(--ds-typography-heading-xxlarge-font-family)", fontSize: "var(--ds-typography-heading-xxlarge-font-size)", lineHeight: "var(--ds-typography-heading-xxlarge-line-height)", letterSpacing: "var(--ds-typography-heading-xxlarge-letter-spacing)" },
-      xlarge: { fontFamily: "var(--ds-typography-heading-xlarge-font-family)", fontSize: "var(--ds-typography-heading-xlarge-font-size)", lineHeight: "var(--ds-typography-heading-xlarge-line-height)", letterSpacing: "var(--ds-typography-heading-xlarge-letter-spacing)" },
-      large: { fontFamily: "var(--ds-typography-heading-large-font-family)", fontSize: "var(--ds-typography-heading-large-font-size)", lineHeight: "var(--ds-typography-heading-large-line-height)", letterSpacing: "var(--ds-typography-heading-large-letter-spacing)" },
-      medium: { fontFamily: "var(--ds-typography-heading-medium-font-family)", fontSize: "var(--ds-typography-heading-medium-font-size)", lineHeight: "var(--ds-typography-heading-medium-line-height)", letterSpacing: "var(--ds-typography-heading-medium-letter-spacing)" },
-      small: { fontFamily: "var(--ds-typography-heading-small-font-family)", fontSize: "var(--ds-typography-heading-small-font-size)", lineHeight: "var(--ds-typography-heading-small-line-height)", letterSpacing: "var(--ds-typography-heading-small-letter-spacing)" },
-      xsmall: { fontFamily: "var(--ds-typography-heading-xsmall-font-family)", fontSize: "var(--ds-typography-heading-xsmall-font-size)", lineHeight: "var(--ds-typography-heading-xsmall-line-height)", letterSpacing: "var(--ds-typography-heading-xsmall-letter-spacing)" },
+      xxlarge: { fontFamily: hook("heading", "font-family", "var(--ds-typography-heading-xxlarge-font-family)"), fontSize: hook("heading", "font-size", "var(--ds-typography-heading-xxlarge-font-size)"), lineHeight: hook("heading", "line-height", "var(--ds-typography-heading-xxlarge-line-height)"), letterSpacing: hook("heading", "letter-spacing", "var(--ds-typography-heading-xxlarge-letter-spacing)") },
+      xlarge: { fontFamily: hook("heading", "font-family", "var(--ds-typography-heading-xlarge-font-family)"), fontSize: hook("heading", "font-size", "var(--ds-typography-heading-xlarge-font-size)"), lineHeight: hook("heading", "line-height", "var(--ds-typography-heading-xlarge-line-height)"), letterSpacing: hook("heading", "letter-spacing", "var(--ds-typography-heading-xlarge-letter-spacing)") },
+      large: { fontFamily: hook("heading", "font-family", "var(--ds-typography-heading-large-font-family)"), fontSize: hook("heading", "font-size", "var(--ds-typography-heading-large-font-size)"), lineHeight: hook("heading", "line-height", "var(--ds-typography-heading-large-line-height)"), letterSpacing: hook("heading", "letter-spacing", "var(--ds-typography-heading-large-letter-spacing)") },
+      medium: { fontFamily: hook("heading", "font-family", "var(--ds-typography-heading-medium-font-family)"), fontSize: hook("heading", "font-size", "var(--ds-typography-heading-medium-font-size)"), lineHeight: hook("heading", "line-height", "var(--ds-typography-heading-medium-line-height)"), letterSpacing: hook("heading", "letter-spacing", "var(--ds-typography-heading-medium-letter-spacing)") },
+      small: { fontFamily: hook("heading", "font-family", "var(--ds-typography-heading-small-font-family)"), fontSize: hook("heading", "font-size", "var(--ds-typography-heading-small-font-size)"), lineHeight: hook("heading", "line-height", "var(--ds-typography-heading-small-line-height)"), letterSpacing: hook("heading", "letter-spacing", "var(--ds-typography-heading-small-letter-spacing)") },
+      xsmall: { fontFamily: hook("heading", "font-family", "var(--ds-typography-heading-xsmall-font-family)"), fontSize: hook("heading", "font-size", "var(--ds-typography-heading-xsmall-font-size)"), lineHeight: hook("heading", "line-height", "var(--ds-typography-heading-xsmall-line-height)"), letterSpacing: hook("heading", "letter-spacing", "var(--ds-typography-heading-xsmall-letter-spacing)") },
     },
     weight: {
-      bold: { fontWeight: "var(--ds-typography-weight-bold)" },
-      semibold: { fontWeight: "var(--ds-typography-weight-semibold)" },
-      medium: { fontWeight: "var(--ds-typography-weight-medium)" },
-      regular: { fontWeight: "var(--ds-typography-weight-regular)" },
+      bold: { fontWeight: hook("heading", "font-weight", "var(--ds-typography-weight-bold)") },
+      semibold: { fontWeight: hook("heading", "font-weight", "var(--ds-typography-weight-semibold)") },
+      medium: { fontWeight: hook("heading", "font-weight", "var(--ds-typography-weight-medium)") },
+      regular: { fontWeight: hook("heading", "font-weight", "var(--ds-typography-weight-regular)") },
     },
   },
   defaultVariants: {
@@ -138,47 +144,47 @@ const headingRecipe = defineRecipe({
 const codeRecipe = defineRecipe({
   className: "scnx-code",
   base: {
-    fontFamily: "var(--ds-typography-code-default-font-family)",
-    fontSize: "0.9em",
-    fontWeight: "var(--ds-typography-weight-medium)",
-    backgroundColor: "var(--ds-color-neutral-surface-subtle-default)",
+    fontFamily: hook("code", "font-family", "var(--ds-typography-code-default-font-family)"),
+    fontSize: hook("code", "font-size", "0.9em"),
+    fontWeight: hook("code", "font-weight", "var(--ds-typography-weight-medium)"),
+    backgroundColor: hook("code", "background", "var(--ds-color-neutral-surface-subtle-default)"),
     // A border needs a style: the reset sets none, so a width and color alone drew nothing.
     borderStyle: "solid",
-    borderWidth: "var(--ds-dimension-border-width-default)",
-    borderColor: "var(--ds-color-neutral-border-subtle-default)",
+    borderWidth: hook("code", "border-width", "var(--ds-dimension-border-width-default)"),
+    borderColor: hook("code", "border-color", "var(--ds-color-neutral-border-subtle-default)"),
     // Inline code is a mark (TDD styled RL2): 4px, so it stays crisp in running text.
-    borderRadius: "var(--ds-dimension-radius-mark)",
-    px: "0.4em",
-    py: "0.1em",
+    borderRadius: hook("code", "radius", "var(--ds-dimension-radius-mark)"),
+    px: hook("code", "padding-inline", "0.4em"),
+    py: hook("code", "padding-block", "0.1em"),
     whiteSpace: "nowrap",
     color: "inherit", 
   },
   variants: {
     intent: {
       primary: {
-        color: "var(--ds-color-primary-text-default-default)",
-        backgroundColor: "var(--ds-color-primary-surface-subtle-default)",
-        borderColor: "var(--ds-color-primary-border-default-default)",
+        color: hook("code", "color", "var(--ds-color-primary-text-default-default)"),
+        backgroundColor: hook("code", "background", "var(--ds-color-primary-surface-subtle-default)"),
+        borderColor: hook("code", "border-color", "var(--ds-color-primary-border-default-default)"),
       },
       info: {
-        color: "var(--ds-color-info-text-default-default)",
-        backgroundColor: "var(--ds-color-info-surface-subtle-default)",
-        borderColor: "var(--ds-color-info-border-default-default)",
+        color: hook("code", "color", "var(--ds-color-info-text-default-default)"),
+        backgroundColor: hook("code", "background", "var(--ds-color-info-surface-subtle-default)"),
+        borderColor: hook("code", "border-color", "var(--ds-color-info-border-default-default)"),
       },
       success: {
-        color: "var(--ds-color-success-text-default-default)",
-        backgroundColor: "var(--ds-color-success-surface-subtle-default)",
-        borderColor: "var(--ds-color-success-border-default-default)",
+        color: hook("code", "color", "var(--ds-color-success-text-default-default)"),
+        backgroundColor: hook("code", "background", "var(--ds-color-success-surface-subtle-default)"),
+        borderColor: hook("code", "border-color", "var(--ds-color-success-border-default-default)"),
       },
       warning: {
-        color: "var(--ds-color-warning-text-default-default)",
-        backgroundColor: "var(--ds-color-warning-surface-subtle-default)",
-        borderColor: "var(--ds-color-warning-border-default-default)",
+        color: hook("code", "color", "var(--ds-color-warning-text-default-default)"),
+        backgroundColor: hook("code", "background", "var(--ds-color-warning-surface-subtle-default)"),
+        borderColor: hook("code", "border-color", "var(--ds-color-warning-border-default-default)"),
       },
       danger: {
-        color: "var(--ds-color-danger-text-default-default)",
-        backgroundColor: "var(--ds-color-danger-surface-subtle-default)",
-        borderColor: "var(--ds-color-danger-border-default-default)",
+        color: hook("code", "color", "var(--ds-color-danger-text-default-default)"),
+        backgroundColor: hook("code", "background", "var(--ds-color-danger-surface-subtle-default)"),
+        borderColor: hook("code", "border-color", "var(--ds-color-danger-border-default-default)"),
       },
     }
   }
@@ -187,22 +193,22 @@ const codeRecipe = defineRecipe({
 const textRecipe = defineRecipe({
   className: "scnx-text",
   base: {
-    color: "var(--ds-color-neutral-text-default-default)",
+    color: hook("text", "color", "var(--ds-color-neutral-text-default-default)"),
   },
   variants: {
     // One typography composite per variant; `weight` varies only the weight.
     variant: {
-      "body-large": { fontFamily: "var(--ds-typography-body-large-font-family)", fontSize: "var(--ds-typography-body-large-font-size)", fontWeight: "var(--ds-typography-body-large-font-weight)", lineHeight: "var(--ds-typography-body-large-line-height)", letterSpacing: "var(--ds-typography-body-large-letter-spacing)" },
-      "body-default": { fontFamily: "var(--ds-typography-body-default-font-family)", fontSize: "var(--ds-typography-body-default-font-size)", fontWeight: "var(--ds-typography-body-default-font-weight)", lineHeight: "var(--ds-typography-body-default-line-height)", letterSpacing: "var(--ds-typography-body-default-letter-spacing)" },
-      "body-small": { fontFamily: "var(--ds-typography-body-small-font-family)", fontSize: "var(--ds-typography-body-small-font-size)", fontWeight: "var(--ds-typography-body-small-font-weight)", lineHeight: "var(--ds-typography-body-small-line-height)", letterSpacing: "var(--ds-typography-body-small-letter-spacing)" },
-      "label-default": { fontFamily: "var(--ds-typography-label-default-font-family)", fontSize: "var(--ds-typography-label-default-font-size)", fontWeight: "var(--ds-typography-label-default-font-weight)", lineHeight: "var(--ds-typography-label-default-line-height)", letterSpacing: "var(--ds-typography-label-default-letter-spacing)" },
-      "label-small": { fontFamily: "var(--ds-typography-label-small-font-family)", fontSize: "var(--ds-typography-label-small-font-size)", fontWeight: "var(--ds-typography-label-small-font-weight)", lineHeight: "var(--ds-typography-label-small-line-height)", letterSpacing: "var(--ds-typography-label-small-letter-spacing)", textTransform: "uppercase" },
+      "body-large": { fontFamily: hook("text", "font-family", "var(--ds-typography-body-large-font-family)"), fontSize: hook("text", "font-size", "var(--ds-typography-body-large-font-size)"), fontWeight: hook("text", "font-weight", "var(--ds-typography-body-large-font-weight)"), lineHeight: hook("text", "line-height", "var(--ds-typography-body-large-line-height)"), letterSpacing: hook("text", "letter-spacing", "var(--ds-typography-body-large-letter-spacing)") },
+      "body-default": { fontFamily: hook("text", "font-family", "var(--ds-typography-body-default-font-family)"), fontSize: hook("text", "font-size", "var(--ds-typography-body-default-font-size)"), fontWeight: hook("text", "font-weight", "var(--ds-typography-body-default-font-weight)"), lineHeight: hook("text", "line-height", "var(--ds-typography-body-default-line-height)"), letterSpacing: hook("text", "letter-spacing", "var(--ds-typography-body-default-letter-spacing)") },
+      "body-small": { fontFamily: hook("text", "font-family", "var(--ds-typography-body-small-font-family)"), fontSize: hook("text", "font-size", "var(--ds-typography-body-small-font-size)"), fontWeight: hook("text", "font-weight", "var(--ds-typography-body-small-font-weight)"), lineHeight: hook("text", "line-height", "var(--ds-typography-body-small-line-height)"), letterSpacing: hook("text", "letter-spacing", "var(--ds-typography-body-small-letter-spacing)") },
+      "label-default": { fontFamily: hook("text", "font-family", "var(--ds-typography-label-default-font-family)"), fontSize: hook("text", "font-size", "var(--ds-typography-label-default-font-size)"), fontWeight: hook("text", "font-weight", "var(--ds-typography-label-default-font-weight)"), lineHeight: hook("text", "line-height", "var(--ds-typography-label-default-line-height)"), letterSpacing: hook("text", "letter-spacing", "var(--ds-typography-label-default-letter-spacing)") },
+      "label-small": { fontFamily: hook("text", "font-family", "var(--ds-typography-label-small-font-family)"), fontSize: hook("text", "font-size", "var(--ds-typography-label-small-font-size)"), fontWeight: hook("text", "font-weight", "var(--ds-typography-label-small-font-weight)"), lineHeight: hook("text", "line-height", "var(--ds-typography-label-small-line-height)"), letterSpacing: hook("text", "letter-spacing", "var(--ds-typography-label-small-letter-spacing)"), textTransform: "uppercase" },
     },
     weight: {
-      bold: { fontWeight: "var(--ds-typography-weight-bold)" },
-      semibold: { fontWeight: "var(--ds-typography-weight-semibold)" },
-      medium: { fontWeight: "var(--ds-typography-weight-medium)" },
-      regular: { fontWeight: "var(--ds-typography-weight-regular)" },
+      bold: { fontWeight: hook("text", "font-weight", "var(--ds-typography-weight-bold)") },
+      semibold: { fontWeight: hook("text", "font-weight", "var(--ds-typography-weight-semibold)") },
+      medium: { fontWeight: hook("text", "font-weight", "var(--ds-typography-weight-medium)") },
+      regular: { fontWeight: hook("text", "font-weight", "var(--ds-typography-weight-regular)") },
     },
     align: {
       left: { textAlign: "left" },
@@ -211,7 +217,7 @@ const textRecipe = defineRecipe({
     },
     dimmed: {
       // The subtle text token carries the dimming; opacity would also fade the text below its measured contrast.
-      true: { color: "var(--ds-color-neutral-text-subtle-default)" },
+      true: { color: hook("text", "color-dimmed", "var(--ds-color-neutral-text-subtle-default)") },
     },
   },
   defaultVariants: {

@@ -299,12 +299,12 @@ export function checkStylesheet(css, { tokenNames, config = STYLE_CONFIG }) {
         if (!fallback) findings.push(`${selectors[0]}: var(${name}) has no fallback; a hook falls back to a Tier-2 token`);
         for (const selector of selectors) {
           const component = componentOf(selector);
-          if (layer !== "components" || !component || !name.startsWith(`--scnx-${component}-`)) {
+          if (!["components", "recipes"].includes(layer) || !component || !name.startsWith(`--scnx-${component}-`)) {
             findings.push(`${selector}: hook ${name} is not in the namespace of the component this rule styles`);
           }
         }
       });
-      if (layer === "components" && PRESENTATIONAL_PROPERTY.test(property)) {
+      if (["components", "recipes"].includes(layer) && PRESENTATIONAL_PROPERTY.test(property)) {
         for (const selector of selectors) {
           if (!(config.hookedComponents ?? []).includes(componentOf(selector))) continue;
           for (const literal of designLiterals(node.value)) {

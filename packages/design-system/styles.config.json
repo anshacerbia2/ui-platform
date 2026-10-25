@@ -20,12 +20,18 @@
     "alert",
     "badge",
     "button",
+    "code",
+    "container",
     "dialog",
     "divider",
+    "flex",
+    "grid",
+    "heading",
     "icon-button",
     "navbar",
     "table-of-contents",
     "tabs",
+    "text",
     "text-field"
   ],
   "runtimeProperties": {
@@ -93,17 +99,6 @@
     },
     {
       "rule": "spacing-literal",
-      "selector": ".scnx-code",
-      "properties": [
-        "padding-block",
-        "padding-inline"
-      ],
-      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
-      "reason": "Inset of inline code relative to the surrounding text (em), so it scales inside headings and body text alike",
-      "removal": "A text-relative inset token"
-    },
-    {
-      "rule": "spacing-literal",
       "selector": ".scnx-list--variant_unordered",
       "properties": [
         "padding-left"
@@ -161,16 +156,6 @@
       "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
       "reason": "line-height 1 collapses the badge box to its label so the pill keeps its height",
       "removal": "None; this is geometry of the badge box"
-    },
-    {
-      "rule": "typography-literal",
-      "selector": ".scnx-code",
-      "properties": [
-        "font-size"
-      ],
-      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
-      "reason": "Inline code is sized relative to the surrounding text (em), so it scales inside headings and body text alike",
-      "removal": "A text-relative inline-code size in the typography roles"
     },
     {
       "rule": "design-literal",
