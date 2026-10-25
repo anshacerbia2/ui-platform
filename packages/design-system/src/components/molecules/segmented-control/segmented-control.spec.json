@@ -1,0 +1,597 @@
+{
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
+  "entry": "@scnx/system/components/segmented-control",
+  "entryKind": "interactive",
+  "stability": "candidate",
+  "primitive": "RadioGroupBase",
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-segmented-control"
+    },
+    {
+      "name": "item",
+      "selector": ".scnx-segmented-control>[data-part=item]"
+    },
+    {
+      "name": "icon",
+      "selector": ".scnx-segmented-control>[data-part=item] svg"
+    },
+    {
+      "name": "input",
+      "selector": ".scnx-segmented-control>[data-part=item]>[data-part=input]"
+    }
+  ],
+  "options": {
+    "size": {
+      "values": [
+        "small",
+        "medium"
+      ],
+      "default": "medium",
+      "selector": "[data-size={value}]"
+    }
+  },
+  "states": [
+    {
+      "name": "hover",
+      "selectors": [
+        ":hover:not([data-state=checked], [data-disabled])"
+      ],
+      "enter": {
+        "interaction": "hover"
+      }
+    },
+    {
+      "name": "checked",
+      "selectors": [
+        "[data-state=checked]"
+      ],
+      "enter": {
+        "fixture": true
+      }
+    },
+    {
+      "name": "focus",
+      "selectors": [
+        ":has(>[data-part=input]:focus-visible)"
+      ],
+      "enter": {
+        "interaction": "focus-within"
+      }
+    },
+    {
+      "name": "disabled",
+      "selectors": [
+        "[data-disabled]"
+      ],
+      "enter": {
+        "fixture": true
+      }
+    }
+  ],
+  "fixture": {
+    "tree": {
+      "type": "SegmentedControl",
+      "props": {
+        "aria-label": "Range",
+        "defaultValue": "7d"
+      },
+      "children": [
+        {
+          "type": "SegmentedControl.Item",
+          "props": {
+            "value": "24h"
+          },
+          "children": [
+            "24h"
+          ]
+        },
+        {
+          "type": "SegmentedControl.Item",
+          "props": {
+            "value": "7d"
+          },
+          "children": [
+            "7 days"
+          ]
+        },
+        {
+          "type": "SegmentedControl.Item",
+          "props": {
+            "value": "30d",
+            "disabled": true
+          },
+          "children": [
+            "30 days"
+          ]
+        }
+      ]
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "padding": "{dimension.spacing.inline-compact}",
+        "border-radius": "{dimension.radius.control}",
+        "background-color": "{color.neutral.surface.default.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "size": "small"
+      },
+      "declarations": {
+        "border-radius": "{dimension.radius.element}"
+      }
+    },
+    {
+      "part": "item",
+      "declarations": {
+        "gap": "{dimension.spacing.inline-compact}",
+        "min-block-size": "max(24px, {dimension.size.control-compact})",
+        "padding": "0 {dimension.spacing.control-default}",
+        "border-radius": "{dimension.radius.element}",
+        "font-family": "{typography.label.default.font-family}",
+        "font-size": "{typography.label.default.font-size}",
+        "font-weight": "{typography.label.default.font-weight}",
+        "line-height": "{typography.label.default.line-height}",
+        "letter-spacing": "{typography.label.default.letter-spacing}",
+        "color": "{color.neutral.text.subtle.default}",
+        "transition-duration": "{motion.feedback.duration}",
+        "transition-timing-function": "{motion.feedback.easing}"
+      }
+    },
+    {
+      "part": "item",
+      "option": {
+        "size": "small"
+      },
+      "declarations": {
+        "min-block-size": "max(24px, 0px)",
+        "padding": "0 {dimension.spacing.control-compact}",
+        "border-radius": "{dimension.radius.mark}",
+        "font-family": "{typography.label.small.font-family}",
+        "font-size": "{typography.label.small.font-size}",
+        "font-weight": "{typography.label.small.font-weight}",
+        "line-height": "{typography.label.small.line-height}",
+        "letter-spacing": "{typography.label.small.letter-spacing}"
+      }
+    },
+    {
+      "part": "item",
+      "state": "hover",
+      "declarations": {
+        "color": "{color.neutral.text.default.default}"
+      }
+    },
+    {
+      "part": "item",
+      "state": "checked",
+      "declarations": {
+        "background-color": "{color.neutral.surface.raised.default}",
+        "color": "{color.neutral.text.default.default}",
+        "box-shadow": "{effect.material.raised}",
+        "outline": "{dimension.border-width.default} solid transparent",
+        "outline-offset": "calc(-1 * {dimension.border-width.default})"
+      }
+    },
+    {
+      "part": "item",
+      "state": "disabled",
+      "declarations": {
+        "color": "{color.neutral.text.default.disabled}"
+      }
+    },
+    {
+      "part": "item",
+      "state": "focus",
+      "declarations": {
+        "outline": "max(2px, {dimension.border-width.strong}) solid {color.primary.border.default.focus}",
+        "outline-offset": "calc(-1 * max(2px, {dimension.border-width.strong}))"
+      }
+    }
+  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only. To change one size only, set the hook on [data-size] within the scope, for example .promo [data-size=\"small\"] { --scnx-segmented-control-item-color-hover: …; }; without it, the hook applies to every size in the scope.",
+  "hooks": [
+    {
+      "hook": "--scnx-segmented-control-background",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of SegmentedControl.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-icon-size",
+      "parts": [
+        "icon"
+      ],
+      "properties": [
+        "block-size",
+        "inline-size"
+      ],
+      "fallbacks": [
+        "1rem"
+      ],
+      "floor": null,
+      "purpose": "The block-size and inline-size of SegmentedControl's icon part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-item-background-checked",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.raised.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of SegmentedControl's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-item-color",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of SegmentedControl's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-item-color-checked",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of SegmentedControl's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-item-color-disabled",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.disabled}"
+      ],
+      "floor": null,
+      "purpose": "The color of SegmentedControl's item part in the disabled state.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-item-color-hover",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of SegmentedControl's item part in the hover state.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-item-font-family",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.label.default.font-family}",
+        "{typography.label.small.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of SegmentedControl's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-item-font-size",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.label.default.font-size}",
+        "{typography.label.small.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of SegmentedControl's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-item-font-weight",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.label.default.font-weight}",
+        "{typography.label.small.font-weight}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of SegmentedControl's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-item-gap",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-compact}"
+      ],
+      "floor": null,
+      "purpose": "The gap of SegmentedControl's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-item-height",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "min-block-size"
+      ],
+      "fallbacks": [
+        "0px",
+        "{dimension.size.control-compact}"
+      ],
+      "floor": "24px",
+      "purpose": "The min-block-size of SegmentedControl's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value; never below the 24px floor.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-item-letter-spacing",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.label.default.letter-spacing}",
+        "{typography.label.small.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of SegmentedControl's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-item-line-height",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.label.default.line-height}",
+        "{typography.label.small.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of SegmentedControl's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-item-outline-color",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "outline"
+      ],
+      "fallbacks": [
+        "{color.primary.border.default.focus}"
+      ],
+      "floor": null,
+      "purpose": "The outline of SegmentedControl's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-item-outline-width",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "outline",
+        "outline-offset"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.strong}"
+      ],
+      "floor": "2px",
+      "purpose": "The outline and outline-offset of SegmentedControl's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value; never below the 2px floor.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-item-outline-width-checked",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "outline",
+        "outline-offset"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null,
+      "purpose": "The outline and outline-offset of SegmentedControl's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-item-padding-inline",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.control-compact}",
+        "{dimension.spacing.control-default}"
+      ],
+      "floor": null,
+      "purpose": "The padding of SegmentedControl's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-item-radius",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.element}",
+        "{dimension.radius.mark}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of SegmentedControl's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-item-shadow-checked",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "{effect.material.raised}"
+      ],
+      "floor": null,
+      "purpose": "The box-shadow of SegmentedControl's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-padding",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-compact}"
+      ],
+      "floor": null,
+      "purpose": "The padding of SegmentedControl.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-radius",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.control}",
+        "{dimension.radius.element}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of SegmentedControl.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-transition-duration",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "transition-duration"
+      ],
+      "fallbacks": [
+        "{motion.feedback.duration}"
+      ],
+      "floor": null,
+      "purpose": "The transition-duration of SegmentedControl's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-segmented-control-transition-timing-function",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "transition-timing-function"
+      ],
+      "fallbacks": [
+        "{motion.feedback.easing}"
+      ],
+      "floor": null,
+      "purpose": "The transition-timing-function of SegmentedControl's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
+  ]
+}

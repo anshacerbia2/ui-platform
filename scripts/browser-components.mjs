@@ -47,6 +47,7 @@ const FOCUSABLE = {
   "TableOfContents link": ".scnx-table-of-contents__link",
   "TextField input": ".scnx-text-field input",
   "Tabs selected tab": ".scnx-tabs [role=tab][aria-selected=true]",
+  "SegmentedControl checked segment": ".scnx-segmented-control [data-part=input]:checked",
 };
 
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), "scnx-browser-components-"));
@@ -79,6 +80,8 @@ import { Navigation } from "@scnx/system/components/navigation";
 import { TableOfContents } from "@scnx/system/components/table-of-contents";
 import { TextField } from "@scnx/system/components/text-field";
 import { Tabs } from "@scnx/system/components/tabs";
+import { SegmentedControl } from "@scnx/system/components/segmented-control";
+import { Kbd } from "@scnx/system/components/kbd";
 
 const modes = ${JSON.stringify(["light", "dark"])};
 const themes = ${JSON.stringify(themes)};
@@ -100,6 +103,8 @@ const set = () => h("div", null,
   h(TableOfContents, { items: [{ id: "intro", title: "Intro", url: "#intro" }] }),
   h(TextField, { label: "Email", description: "Work address", error: "Enter an email address" }),
   h(Tabs, { defaultValue: "a" }, h(Tabs.List, { "aria-label": "Sections" }, h(Tabs.Tab, { value: "a" }, "A"), h(Tabs.Tab, { value: "b" }, "B")), h(Tabs.Panel, { value: "a", tabIndex: -1 }, "Panel A"), h(Tabs.Panel, { value: "b", tabIndex: -1 }, "Panel B")),
+  h(SegmentedControl, { "aria-label": "Range", defaultValue: "7d" }, h(SegmentedControl.Item, { value: "24h" }, "24h"), h(SegmentedControl.Item, { value: "7d" }, "7 days")),
+  h("p", null, h(Kbd, null, "⌘"), h(Kbd, null, "K")),
 );
 const roots = themes.flatMap((theme) => modes.map((mode) =>
   h("div", { "data-scnx-theme": theme, "data-scnx-resolved-mode": mode, "data-fixture-root": theme + "/" + mode }, set())));
@@ -147,7 +152,8 @@ async function focusWalk(tab) {
       const el = document.activeElement;
       if (!el || el === document.body) return null;
       const root = el.closest("[data-fixture-root]");
-      const style = getComputedStyle(el);
+      const ring = el.closest(".scnx-segmented-control > [data-part=item]") ?? el;
+      const style = getComputedStyle(ring);
       return {
         root: root?.getAttribute("data-fixture-root") ?? null,
         part: Object.entries(parts).find(([, selector]) => el.matches(selector))?.[0] ?? `${el.tagName.toLowerCase()}${[...el.classList].map((c) => `.${c}`).join("")}`,
@@ -157,7 +163,7 @@ async function focusWalk(tab) {
         outlineColor: style.outlineColor,
         // The pointer target: the part itself, or the ancestor that receives the pointer.
         ...(() => {
-          const target = el.closest(".scnx-code-select__wrapper") ?? el;
+          const target = el.closest(".scnx-code-select__wrapper") ?? el.closest(".scnx-segmented-control > [data-part=item]") ?? el;
           const box = target.getBoundingClientRect();
           return { width: box.width, height: box.height };
         })(),

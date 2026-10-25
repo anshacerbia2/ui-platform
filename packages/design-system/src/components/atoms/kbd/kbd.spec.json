@@ -1,0 +1,250 @@
+{
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
+  "entry": "@scnx/system/components/kbd",
+  "entryKind": "presentational",
+  "stability": "candidate",
+  "primitive": null,
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-kbd"
+    }
+  ],
+  "options": {},
+  "states": [],
+  "fixture": {
+    "props": {
+      "children": "K"
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "padding": "0 {dimension.spacing.inline-compact}",
+        "border": "{dimension.border-width.default} solid transparent",
+        "border-radius": "{dimension.radius.mark}",
+        "background-color": "{color.neutral.surface.raised.default}",
+        "box-shadow": "0 0 0 {dimension.border-width.default} {color.neutral.border.subtle.default}, 0 {dimension.border-width.default} 0 0 {color.neutral.border.default.default}",
+        "font-family": "{typography.code.small.font-family}",
+        "font-size": "{typography.code.small.font-size}",
+        "line-height": "{typography.code.small.line-height}",
+        "letter-spacing": "{typography.code.small.letter-spacing}",
+        "font-weight": "{typography.weight.medium}",
+        "color": "{color.neutral.text.subtle.default}"
+      }
+    }
+  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-kbd-background: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-kbd-background",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.raised.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Kbd.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-kbd-border-width",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null,
+      "purpose": "The border of Kbd.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-kbd-color",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Kbd.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-kbd-font-family",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.code.small.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Kbd.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-kbd-font-size",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.code.small.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Kbd.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-kbd-font-weight",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.weight.medium}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Kbd.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-kbd-height",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "min-block-size"
+      ],
+      "fallbacks": [
+        "1.25rem"
+      ],
+      "floor": null,
+      "purpose": "The min-block-size of Kbd.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-kbd-letter-spacing",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.code.small.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Kbd.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-kbd-line-height",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.code.small.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Kbd.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-kbd-min-width",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "min-inline-size"
+      ],
+      "fallbacks": [
+        "1.25rem"
+      ],
+      "floor": null,
+      "purpose": "The min-inline-size of Kbd.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-kbd-padding-inline",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-compact}"
+      ],
+      "floor": null,
+      "purpose": "The padding of Kbd.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-kbd-radius",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.mark}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Kbd.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-kbd-shadow",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "0 0 0 {dimension.border-width.default} {color.neutral.border.subtle.default},0 {dimension.border-width.default}0 0 {color.neutral.border.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The box-shadow of Kbd.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
+  ]
+}

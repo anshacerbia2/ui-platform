@@ -24,11 +24,13 @@
   @include meta.load-css("components/atoms/button/Button");
   @include meta.load-css("components/atoms/divider/Divider");
   @include meta.load-css("components/atoms/icon-button/IconButton");
+  @include meta.load-css("components/atoms/kbd/Kbd");
   @include meta.load-css("components/atoms/text-field/TextField");
   @include meta.load-css("components/atoms/transition/Transition");
   @include meta.load-css("components/layouts/edge-layout/EdgeLayout");
   @include meta.load-css("components/layouts/floating-layout/FloatingLayout");
   @include meta.load-css("components/molecules/alert/Alert");
+  @include meta.load-css("components/molecules/segmented-control/SegmentedControl");
   @include meta.load-css("components/organisms/accordion/Accordion");
   @include meta.load-css("components/organisms/code-select/CodeSelect");
   @include meta.load-css("components/organisms/code-showcase/CodeShowcase");

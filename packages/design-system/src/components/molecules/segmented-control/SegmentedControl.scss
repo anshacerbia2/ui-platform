@@ -1,0 +1,94 @@
+@use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
+
+$c: segmented-control;
+
+// TDD styled SG1-SG4 (scnehaux-design card SegmentedControl). A tonal well
+// (`surface.default`, radius `control`, 4px padding) whose checked segment is
+// the raised material: the raised fill under `effect.material.raised`, never
+// the primary color, which marks location and checked state elsewhere. A
+// segment's radius is `element`, a step inside the well's `control`, so the
+// corners stay concentric in a rounded theme. The native radio covers its
+// segment, transparent, so the segment is the hit area and the focus ring is
+// drawn on the segment. In forced-colors mode the checked segment keeps an
+// outline (a transparent outline is drawn there in a system color). Every
+// value reads a `--scnx-segmented-control-{part?}-*` hook.
+.scnx-segmented-control {
+  display: inline-flex;
+  align-items: center;
+  padding: hook($c, padding, $dimension-spacing-inline-compact);
+  border-radius: hook($c, radius, $dimension-radius-control);
+  background-color: hook($c, background, $color-surface-default);
+
+  > [data-part="item"] {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: hook($c, item-gap, $dimension-spacing-inline-compact);
+    min-block-size: target-floor(hook($c, item-height, $dimension-size-control-compact));
+    padding: 0 hook($c, item-padding-inline, $dimension-spacing-control-default);
+    border-radius: hook($c, item-radius, $dimension-radius-element);
+    @include hooked-typography($c, label, default, $prefix: item);
+    color: hook($c, item-color, $color-text-secondary);
+    cursor: pointer;
+    user-select: none;
+    transition-property: background-color, box-shadow, color;
+    transition-duration: hook($c, transition-duration, $motion-feedback-duration);
+    transition-timing-function: hook($c, transition-timing-function, $motion-feedback-easing);
+
+    svg {
+      flex: none;
+      inline-size: hook($c, icon-size, 1rem);
+      block-size: hook($c, icon-size, 1rem);
+    }
+
+    > [data-part="input"] {
+      position: absolute;
+      inset: 0;
+      margin: 0;
+      opacity: 0;
+      cursor: inherit;
+    }
+
+    &:hover:not([data-state="checked"], [data-disabled]) {
+      color: hook($c, item-color-hover, $color-text-primary);
+    }
+
+    &[data-state="checked"] {
+      background-color: hook($c, item-background-checked, $color-surface-raised);
+      color: hook($c, item-color-checked, $color-text-primary);
+      box-shadow: hook($c, item-shadow-checked, $effect-material-raised);
+      outline: hook($c, item-outline-width-checked, $dimension-border-width-default) solid transparent;
+      outline-offset: calc(-1 * #{hook($c, item-outline-width-checked, $dimension-border-width-default)});
+    }
+
+    &[data-disabled] {
+      color: hook($c, item-color-disabled, $color-text-disabled);
+      cursor: not-allowed;
+    }
+
+    // The ring is drawn inside the segment, so it never overlaps a neighbour.
+    &:has(> [data-part="input"]:focus-visible) {
+      outline: max(2px, #{hook($c, item-outline-width, $dimension-border-width-strong)}) solid hook($c, item-outline-color, var(--ds-color-primary-border-default-focus));
+      outline-offset: calc(-1 * max(2px, #{hook($c, item-outline-width, $dimension-border-width-strong)}));
+
+      // The base focus rule gives the focused element the system Highlight; the
+      // segment owns the ring here, so it takes Highlight itself.
+      @media (forced-colors: active) {
+        outline-color: Highlight;
+      }
+    }
+  }
+
+  &[data-size="small"] {
+    border-radius: hook($c, radius, $dimension-radius-element);
+
+    > [data-part="item"] {
+      min-block-size: target-floor(hook($c, item-height, 0px));
+      padding: 0 hook($c, item-padding-inline, $dimension-spacing-control-compact);
+      border-radius: hook($c, item-radius, $dimension-radius-mark);
+      @include hooked-typography($c, label, small, $prefix: item);
+    }
+  }
+}

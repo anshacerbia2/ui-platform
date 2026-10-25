@@ -254,7 +254,12 @@ for (const engine of browserEngines()) {
                     await tab.evaluate(() => document.querySelector("[data-spec-sentinel]")?.remove());
                   }
                 }
-                if (pointer === "focus-within") await target.evaluate((el) => el.querySelector("a[href], button:not(:disabled), input:not(:disabled), select, textarea, [tabindex]:not([tabindex='-1'])")?.focus());
+                // The same keyboard modality as focus, so a descendant's :focus-visible holds too
+                // (a segment's ring is drawn when its radio matches :focus-visible).
+                if (pointer === "focus-within") {
+                  await tab.keyboard.press("Shift");
+                  await target.evaluate((el) => el.querySelector("a[href], button:not(:disabled), input:not(:disabled), select, textarea, [tabindex]:not([tabindex='-1'])")?.focus({ focusVisible: true }));
+                }
                 if (attribute) await target.evaluate((el) => el.setAttribute("data-spec-entered", ""));
                 if (entering) await tab.evaluate(() => document.querySelectorAll("[data-spec-target]").forEach((el) => el.removeAttribute("data-spec-target")));
               }

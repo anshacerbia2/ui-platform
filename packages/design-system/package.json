@@ -78,6 +78,10 @@
       "types": "./dist/components/icon-button/index.d.ts",
       "default": "./dist/components/icon-button/index.js"
     },
+    "./components/kbd": {
+      "types": "./dist/components/kbd/index.d.ts",
+      "default": "./dist/components/kbd/index.js"
+    },
     "./components/list": {
       "types": "./dist/components/list/index.d.ts",
       "default": "./dist/components/list/index.js"
@@ -89,6 +93,10 @@
     "./components/navigation": {
       "types": "./dist/components/navigation/index.d.ts",
       "default": "./dist/components/navigation/index.js"
+    },
+    "./components/segmented-control": {
+      "types": "./dist/components/segmented-control/index.d.ts",
+      "default": "./dist/components/segmented-control/index.js"
     },
     "./components/sidebar": {
       "types": "./dist/components/sidebar/index.d.ts",
@@ -151,9 +159,11 @@
     "./specs/grid.json": "./dist/specs/grid.json",
     "./specs/heading.json": "./dist/specs/heading.json",
     "./specs/icon-button.json": "./dist/specs/icon-button.json",
+    "./specs/kbd.json": "./dist/specs/kbd.json",
     "./specs/list.json": "./dist/specs/list.json",
     "./specs/navbar.json": "./dist/specs/navbar.json",
     "./specs/navigation.json": "./dist/specs/navigation.json",
+    "./specs/segmented-control.json": "./dist/specs/segmented-control.json",
     "./specs/sidebar.json": "./dist/specs/sidebar.json",
     "./specs/stack.json": "./dist/specs/stack.json",
     "./specs/table-of-contents.json": "./dist/specs/table-of-contents.json",

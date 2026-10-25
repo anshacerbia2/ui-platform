@@ -1,0 +1,29 @@
+@use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
+
+$c: kbd;
+
+// TDD styled KB1-KB2 (scnehaux-design card Kbd). A 20px keycap: the mono
+// small composite at medium weight in the subtle text, on the raised fill,
+// with the `mark` radius, a hairline ring, and a 1px bottom edge in the
+// default border, the key's depth. The keycap's height and minimum width are
+// its recorded geometry (1.25rem, so a single glyph is square); the edge is
+// drawn as a shadow, so it adds no layout size. Every value reads a
+// `--scnx-kbd-*` hook that falls back to its token.
+.scnx-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-block-size: hook($c, height, 1.25rem);
+  min-inline-size: hook($c, min-width, 1.25rem);
+  padding: 0 hook($c, padding-inline, $dimension-spacing-inline-compact);
+  border: hook($c, border-width, $dimension-border-width-default) solid transparent;
+  border-radius: hook($c, radius, $dimension-radius-mark);
+  background-color: hook($c, background, $color-surface-raised);
+  box-shadow: hook($c, shadow, (0 0 0 #{$dimension-border-width-default} #{$color-border-subtle}, 0 #{$dimension-border-width-default} 0 0 #{$color-border-default}));
+  @include hooked-typography($c, code, small, $except: (font-weight));
+  font-weight: hook($c, font-weight, $typography-weight-medium);
+  color: hook($c, color, $color-text-secondary);
+  white-space: nowrap;
+}
