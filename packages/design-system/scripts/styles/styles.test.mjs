@@ -59,11 +59,11 @@ describe("published stylesheets", () => {
     expect(css).toMatch(/@media \(forced-colors: active\) \{\s+:where\(\[data-scnx-theme\]\[data-scnx-resolved-mode\]\) :focus-visible \{\s+outline-color: Highlight;/);
   });
 
-  it("ship the frozen Panda recipes in the recipes layer", () => {
+  it("ship the frozen Panda recipes in the recipes layer, reading hooks (TDD styled HK6)", () => {
     const css = read("styles/components.css");
     const recipes = css.slice(css.indexOf("@layer recipes {"));
     for (const name of [".scnx-flex", ".scnx-grid", ".scnx-heading", ".scnx-text", ".scnx-list", ".scnx-code", ".scnx-container"]) expect(recipes).toContain(`${name} {`);
-    expect(recipes).toContain("row-gap: var(--ds-dimension-spacing-stack-comfortable)");
+    expect(recipes).toContain("row-gap: var(--scnx-flex-row-gap, var(--ds-dimension-spacing-stack-comfortable))");
   });
 
   it("are byte-for-byte reproducible", () => {

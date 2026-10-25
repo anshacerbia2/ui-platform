@@ -121,5 +121,60 @@
         "gap": "{dimension.spacing.section}"
       }
     }
+  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-flex-column-gap: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-flex-column-gap",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "column-gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-comfortable}",
+        "{dimension.spacing.inline-compact}",
+        "{dimension.spacing.inline-default}"
+      ],
+      "floor": null,
+      "purpose": "The column-gap of Flex.",
+      "coverage": "industrial and achromatic, light and dark; every direction, align, justify, wrap and gap value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-flex-gap",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.section}"
+      ],
+      "floor": null,
+      "purpose": "The gap of Flex.",
+      "coverage": "industrial and achromatic, light and dark; every direction, align, justify, wrap and gap value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-flex-row-gap",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "row-gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.stack-comfortable}",
+        "{dimension.spacing.stack-compact}",
+        "{dimension.spacing.stack-default}"
+      ],
+      "floor": null,
+      "purpose": "The row-gap of Flex.",
+      "coverage": "industrial and achromatic, light and dark; every direction, align, justify, wrap and gap value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
   ]
 }

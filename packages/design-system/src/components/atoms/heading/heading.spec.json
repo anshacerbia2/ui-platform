@@ -156,5 +156,127 @@
         "font-weight": "{typography.weight.regular}"
       }
     }
+  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-heading-color: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-heading-color",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Heading.",
+      "coverage": "industrial and achromatic, light and dark; every size and weight value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-heading-font-family",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.heading.large.font-family}",
+        "{typography.heading.medium.font-family}",
+        "{typography.heading.small.font-family}",
+        "{typography.heading.xlarge.font-family}",
+        "{typography.heading.xsmall.font-family}",
+        "{typography.heading.xxlarge.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Heading.",
+      "coverage": "industrial and achromatic, light and dark; every size and weight value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-heading-font-size",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.heading.large.font-size}",
+        "{typography.heading.medium.font-size}",
+        "{typography.heading.small.font-size}",
+        "{typography.heading.xlarge.font-size}",
+        "{typography.heading.xsmall.font-size}",
+        "{typography.heading.xxlarge.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Heading.",
+      "coverage": "industrial and achromatic, light and dark; every size and weight value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-heading-font-weight",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.weight.bold}",
+        "{typography.weight.medium}",
+        "{typography.weight.regular}",
+        "{typography.weight.semibold}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Heading.",
+      "coverage": "industrial and achromatic, light and dark; every size and weight value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-heading-letter-spacing",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.heading.large.letter-spacing}",
+        "{typography.heading.medium.letter-spacing}",
+        "{typography.heading.small.letter-spacing}",
+        "{typography.heading.xlarge.letter-spacing}",
+        "{typography.heading.xsmall.letter-spacing}",
+        "{typography.heading.xxlarge.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Heading.",
+      "coverage": "industrial and achromatic, light and dark; every size and weight value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-heading-line-height",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.heading.large.line-height}",
+        "{typography.heading.medium.line-height}",
+        "{typography.heading.small.line-height}",
+        "{typography.heading.xlarge.line-height}",
+        "{typography.heading.xsmall.line-height}",
+        "{typography.heading.xxlarge.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Heading.",
+      "coverage": "industrial and achromatic, light and dark; every size and weight value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
   ]
 }

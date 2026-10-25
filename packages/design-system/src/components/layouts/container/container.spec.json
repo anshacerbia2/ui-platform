@@ -36,5 +36,42 @@
         "padding-inline": "{dimension.spacing.page}"
       }
     }
+  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-container-max-width: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-container-max-width",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "max-width"
+      ],
+      "fallbacks": [
+        "1024px",
+        "1440px",
+        "65ch"
+      ],
+      "floor": null,
+      "purpose": "The max-width of Container.",
+      "coverage": "industrial and achromatic, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-container-padding-inline",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "padding-inline"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.page}"
+      ],
+      "floor": null,
+      "purpose": "The padding-inline of Container.",
+      "coverage": "industrial and achromatic, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
   ]
 }
