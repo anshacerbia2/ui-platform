@@ -1,56 +1,61 @@
 @use "styles/abstracts/variables" as tokens;
+@use "styles/abstracts/hook" as *;
 
+$c: table-of-contents;
+
+// TDD styled HK1-HK5: every value reads a `--scnx-table-of-contents-{part?}-*`
+// hook that falls back to its token. A link keeps the 24px target floor
+// (WCAG 2.2 SC 2.5.8) whatever its hook says.
 .scnx-table-of-contents {
   position: relative;
   display: flex;
   flex-direction: column;
-  font-family: tokens.typography-member(body, default, font-family);
+  font-family: hook($c, font-family, tokens.typography-member(body, default, font-family));
 
   &__label {
-    // text-transform: uppercase;
-    @include tokens.typography(label, default);
-    font-weight: tokens.$typography-weight-semibold;
-    letter-spacing: tokens.typography-member(label, small, letter-spacing);
-    color: tokens.$color-text-primary;
-    margin-bottom: tokens.$dimension-spacing-stack-default;
+    @include hooked-typography($c, label, default, $prefix: label, $except: (font-weight letter-spacing));
+    font-weight: hook($c, label-font-weight, tokens.$typography-weight-semibold);
+    letter-spacing: hook($c, label-letter-spacing, tokens.typography-member(label, small, letter-spacing));
+    color: hook($c, label-color, tokens.$color-text-primary);
+    margin-bottom: hook($c, label-margin-bottom, tokens.$dimension-spacing-stack-default);
   }
 
   &__list {
     list-style: none;
     padding: 0;
     margin: 0;
-    margin-top: tokens.$dimension-spacing-stack-default;
+    margin-top: hook($c, list-margin-top, tokens.$dimension-spacing-stack-default);
     position: relative;
-    
+
     // Nested lists receive automatic indentation margin
     .scnx-table-of-contents__item & {
-      margin-left: tokens.$dimension-spacing-inline-comfortable;
+      margin-left: hook($c, list-indent, tokens.$dimension-spacing-inline-comfortable);
     }
   }
 
   &__item {
     position: relative;
-    margin-bottom: tokens.$dimension-spacing-stack-default;
+    margin-bottom: hook($c, item-margin-bottom, tokens.$dimension-spacing-stack-default);
   }
 
   &__link {
-      text-decoration: none;
-      display: block;
-      // WCAG 2.2 SC 2.5.8: a pointer target is at least 24 by 24 CSS pixels
-      // (STD-UIP-STY-001, "Governed values").
-      min-block-size: 24px;
-      @include tokens.typography(body, small);
-      color: tokens.$color-text-secondary;
-      transition: color tokens.$motion-feedback-duration tokens.$motion-feedback-easing;
-      position: relative;
+    text-decoration: none;
+    display: block;
+    // WCAG 2.2 SC 2.5.8: a pointer target is at least 24 by 24 CSS pixels
+    // (STD-UIP-STY-001, "Governed values"); the floor holds under any hook.
+    min-block-size: target-floor(hook($c, link-min-block-size, 0px));
+    @include hooked-typography($c, body, small, $prefix: link);
+    color: hook($c, link-color, tokens.$color-text-secondary);
+    transition: color hook($c, link-transition-duration, tokens.$motion-feedback-duration) hook($c, link-transition-timing-function, tokens.$motion-feedback-easing);
+    position: relative;
 
-      &:hover {
-        color: tokens.$color-text-primary;
-      }
-
-      // Automatically activated by the Headless RSC Slot Hook Output! 
-      &[data-active="true"] {
-        color: tokens.$color-text-primary;
-      }
+    &:hover {
+      color: hook($c, link-color-hover, tokens.$color-text-primary);
     }
+
+    // Automatically activated by the Headless RSC Slot Hook Output!
+    &[data-active="true"] {
+      color: hook($c, link-color-active, tokens.$color-text-primary);
+    }
+  }
 }

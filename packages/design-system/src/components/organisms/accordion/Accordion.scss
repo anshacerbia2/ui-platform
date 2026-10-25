@@ -1,29 +1,33 @@
 @use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
 
-// TDD styled AC1-AC3. Each item, or the stacked group as a whole, is the flat
-// material: the raised fill, the container radius, and the ring of
+$c: accordion;
+
+// TDD styled AC1-AC3, HK1-HK5. Each item, or the stacked group as a whole, is
+// the flat material: the raised fill, the container radius, and the ring of
 // `effect.material.flat` as its edge (ADR-UIP-VIS-001 item 1). The transparent
 // border draws the boundary in forced-colors mode, where shadows are removed
-// (BR2). Focus is the outline, drawn inside the clipped item.
+// (BR2). Focus is the outline, drawn inside the clipped item. Every value
+// reads a `--scnx-accordion-{part?}-*` hook that falls back to its token.
 .scnx-accordion {
   display: flex;
   flex-direction: column;
-  gap: $dimension-spacing-stack-default;
+  gap: hook($c, gap, $dimension-spacing-stack-default);
   width: 100%;
 
   // Variant: one group (stacked). The group carries the material; its items
   // are divided by a line.
   &[data-variant="stacked"] {
     gap: 0;
-    border: $dimension-border-width-default solid transparent;
-    border-radius: $dimension-radius-container;
-    background-color: $color-surface-raised;
-    box-shadow: $effect-material-flat;
+    border: hook($c, border-width, $dimension-border-width-default) solid transparent;
+    border-radius: hook($c, radius, $dimension-radius-container);
+    background-color: hook($c, background, $color-surface-raised);
+    box-shadow: hook($c, shadow, $effect-material-flat);
     overflow: hidden;
 
     .scnx-accordion__item {
       border: 0;
-      border-bottom: $dimension-border-width-default solid $color-border-subtle;
+      border-bottom: hook($c, divider-width, $dimension-border-width-default) solid hook($c, divider-color, $color-border-subtle);
       border-radius: 0;
       background-color: transparent;
       box-shadow: none;
@@ -35,37 +39,39 @@
   }
 
   &__item {
-    border: $dimension-border-width-default solid transparent;
-    border-radius: $dimension-radius-container;
-    background-color: $color-surface-raised;
-    box-shadow: $effect-material-flat;
+    border: hook($c, border-width, $dimension-border-width-default) solid transparent;
+    border-radius: hook($c, radius, $dimension-radius-container);
+    background-color: hook($c, background, $color-surface-raised);
+    box-shadow: hook($c, shadow, $effect-material-flat);
     overflow: hidden;
   }
 
   &__trigger {
     width: 100%;
-    padding: $dimension-spacing-inset-default;
+    padding: hook($c, trigger-padding, $dimension-spacing-inset-default);
     background-color: transparent;
     border: none;
     text-align: left;
-    @include typography(body, default);
-    font-weight: $typography-weight-medium;
-    color: $color-text-primary;
+    @include hooked-typography($c, body, default, $prefix: trigger, $except: (font-weight));
+    font-weight: hook($c, trigger-font-weight, $typography-weight-medium);
+    color: hook($c, trigger-color, $color-text-primary);
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: background-color $motion-feedback-duration $motion-feedback-easing, color $motion-feedback-duration $motion-feedback-easing;
+    transition: background-color hook($c, trigger-transition-duration, $motion-feedback-duration) hook($c, trigger-transition-timing-function, $motion-feedback-easing), color hook($c, trigger-transition-duration, $motion-feedback-duration) hook($c, trigger-transition-timing-function, $motion-feedback-easing);
 
     &:hover {
-      background-color: var(--ds-color-neutral-surface-subtle-hover);
+      background-color: hook($c, trigger-background-hover, var(--ds-color-neutral-surface-subtle-hover));
     }
 
     // The item clips its content, so the outline is drawn inside the trigger
     // and follows the item's corners.
     &:focus-visible {
-      outline-offset: calc(-1 * #{$dimension-border-width-strong});
-      border-radius: $dimension-radius-container;
+      // The offset follows the outline's own 2px floor (styles/base), so the
+      // outline stays inside the clip whatever a theme maps.
+      outline-offset: calc(-1 * max(2px, #{hook($c, trigger-outline-width, $dimension-border-width-strong)}));
+      border-radius: hook($c, radius, $dimension-radius-container);
     }
 
     /* Icon rotation support if an icon is placed inside */
@@ -77,21 +83,21 @@
   }
 
   &__content {
-    color: $color-text-secondary;
-    @include typography(body, small);
-    transition: height $motion-disclosure-duration $motion-disclosure-easing, opacity $motion-disclosure-duration $motion-disclosure-easing;
+    color: hook($c, content-color, $color-text-secondary);
+    @include hooked-typography($c, body, small, $prefix: content);
+    transition: height hook($c, content-transition-duration, $motion-disclosure-duration) hook($c, content-transition-timing-function, $motion-disclosure-easing), opacity hook($c, content-transition-duration, $motion-disclosure-duration) hook($c, content-transition-timing-function, $motion-disclosure-easing);
 
     // Internal wrapper for padding to allow smooth height transitions
     // without padding-box calculations interfering
     &-inner {
-      padding: $dimension-spacing-inset-default;
-      border-top: $dimension-border-width-default solid $color-border-subtle;
+      padding: hook($c, content-padding, $dimension-spacing-inset-default);
+      border-top: hook($c, divider-width, $dimension-border-width-default) solid hook($c, divider-color, $color-border-subtle);
     }
   }
 
   &__icon {
-    transition: transform $motion-disclosure-duration $motion-disclosure-easing;
-    color: $color-text-secondary;
+    transition: transform hook($c, icon-transition-duration, $motion-disclosure-duration) hook($c, icon-transition-timing-function, $motion-disclosure-easing);
+    color: hook($c, icon-color, $color-text-secondary);
     display: flex;
     align-items: center;
     justify-content: center;

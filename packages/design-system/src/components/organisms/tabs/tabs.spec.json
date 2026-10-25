@@ -184,7 +184,8 @@
         "margin-bottom": "calc(-1 * {dimension.border-width.default})",
         "color": "{color.neutral.text.subtle.default}",
         "transition-duration": "{motion.feedback.duration}",
-        "transition-timing-function": "{motion.feedback.easing}"
+        "transition-timing-function": "{motion.feedback.easing}",
+        "min-block-size": "max(24px, {dimension.size.control-default})"
       }
     },
     {
@@ -283,12 +284,530 @@
       }
     }
   ],
-  "geometry": [
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only. To change one orientation only, set the hook on [data-orientation] within the scope, for example .promo [data-orientation=\"vertical\"] { --scnx-tabs-highlight-background-hover: …; }; without it, the hook applies to every orientation in the scope.",
+  "hooks": [
     {
-      "part": "tab",
-      "declarations": {
-        "min-block-size": "2.25rem"
-      }
+      "hook": "--scnx-tabs-gap",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.stack-default}"
+      ],
+      "floor": null,
+      "purpose": "The gap of Tabs.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-highlight-background-hover",
+      "parts": [
+        "highlight"
+      ],
+      "properties": [
+        "background"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.subtle.hover}"
+      ],
+      "floor": null,
+      "purpose": "The background of Tabs's highlight part in the hover state.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-highlight-inset-block",
+      "parts": [
+        "highlight"
+      ],
+      "properties": [
+        "inset-block"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.stack-compact}"
+      ],
+      "floor": null,
+      "purpose": "The inset-block of Tabs's highlight part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-highlight-radius",
+      "parts": [
+        "highlight"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.element}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Tabs's highlight part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-indicator-color",
+      "parts": [
+        "indicator"
+      ],
+      "properties": [
+        "border-block-end",
+        "border-inline-end"
+      ],
+      "fallbacks": [
+        "{color.primary.surface.solid.default}"
+      ],
+      "floor": null,
+      "purpose": "The border-block-end and border-inline-end of Tabs's indicator part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-indicator-inset-block",
+      "parts": [
+        "indicator"
+      ],
+      "properties": [
+        "inset-block"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-compact}"
+      ],
+      "floor": null,
+      "purpose": "The inset-block of Tabs's indicator part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-indicator-radius",
+      "parts": [
+        "indicator"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.mark}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Tabs's indicator part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-indicator-width",
+      "parts": [
+        "indicator"
+      ],
+      "properties": [
+        "border-block-end",
+        "border-inline-end"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.strong}"
+      ],
+      "floor": null,
+      "purpose": "The border-block-end and border-inline-end of Tabs's indicator part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-list-border-color",
+      "parts": [
+        "list"
+      ],
+      "properties": [
+        "border-bottom",
+        "border-inline-end"
+      ],
+      "fallbacks": [
+        "{color.neutral.border.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The border-bottom and border-inline-end of Tabs's list part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-list-border-width",
+      "parts": [
+        "list",
+        "tab"
+      ],
+      "properties": [
+        "border-bottom",
+        "border-inline-end",
+        "margin-bottom",
+        "margin-inline-end"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null,
+      "purpose": "The border-bottom, border-inline-end, margin-bottom and margin-inline-end of Tabs's list and tab part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-list-gap",
+      "parts": [
+        "list"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-compact}"
+      ],
+      "floor": null,
+      "purpose": "The gap of Tabs's list part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-panel-color",
+      "parts": [
+        "panel"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Tabs's panel part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-panel-font-family",
+      "parts": [
+        "panel"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.body.default.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Tabs's panel part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-panel-font-size",
+      "parts": [
+        "panel"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.body.default.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Tabs's panel part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-panel-font-weight",
+      "parts": [
+        "panel"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.body.default.font-weight}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Tabs's panel part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-panel-letter-spacing",
+      "parts": [
+        "panel"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.body.default.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Tabs's panel part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-panel-line-height",
+      "parts": [
+        "panel"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.body.default.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Tabs's panel part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-tab-color",
+      "parts": [
+        "tab"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Tabs's tab part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-tab-color-disabled",
+      "parts": [
+        "tab"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.disabled}"
+      ],
+      "floor": null,
+      "purpose": "The color of Tabs's tab part in the disabled state.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-tab-color-hover",
+      "parts": [
+        "tab"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Tabs's tab part in the hover state.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-tab-color-selected",
+      "parts": [
+        "tab"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Tabs's tab part in the selected state.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-tab-font-family",
+      "parts": [
+        "tab"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.label.default.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Tabs's tab part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-tab-font-size",
+      "parts": [
+        "tab"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.label.default.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Tabs's tab part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-tab-font-weight",
+      "parts": [
+        "tab"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.label.default.font-weight}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Tabs's tab part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-tab-font-weight-selected",
+      "parts": [
+        "tab"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.weight.semibold}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Tabs's tab part in the selected state.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-tab-gap",
+      "parts": [
+        "tab"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-default}"
+      ],
+      "floor": null,
+      "purpose": "The gap of Tabs's tab part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-tab-height",
+      "parts": [
+        "tab"
+      ],
+      "properties": [
+        "min-block-size"
+      ],
+      "fallbacks": [
+        "{dimension.size.control-default}"
+      ],
+      "floor": "24px",
+      "purpose": "The min-block-size of Tabs's tab part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value; never below the 24px floor.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-tab-letter-spacing",
+      "parts": [
+        "tab"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.label.default.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Tabs's tab part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-tab-line-height",
+      "parts": [
+        "tab"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.label.default.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Tabs's tab part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-tab-padding-inline",
+      "parts": [
+        "indicator",
+        "tab"
+      ],
+      "properties": [
+        "inset-inline",
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.control-default}"
+      ],
+      "floor": null,
+      "purpose": "The inset-inline and padding of Tabs's indicator and tab part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-tab-transition-duration",
+      "parts": [
+        "highlight",
+        "tab"
+      ],
+      "properties": [
+        "transition-duration"
+      ],
+      "fallbacks": [
+        "{motion.feedback.duration}"
+      ],
+      "floor": null,
+      "purpose": "The transition-duration of Tabs's highlight and tab part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tabs-tab-transition-timing-function",
+      "parts": [
+        "highlight",
+        "tab"
+      ],
+      "properties": [
+        "transition-timing-function"
+      ],
+      "fallbacks": [
+        "{motion.feedback.easing}"
+      ],
+      "floor": null,
+      "purpose": "The transition-timing-function of Tabs's highlight and tab part.",
+      "coverage": "industrial and achromatic, light and dark; every orientation value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]
 }
