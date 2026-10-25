@@ -12,17 +12,39 @@ export function useTableOfContentsTracker({
   items, 
   scrollOffsetExtended = 36, 
   navbarOffset: explicitNavbarOffset,
-  initialActiveId 
+  activeId: controlledActiveId,
+  defaultActiveId,
+  onActiveIdChange,
 }: UseTableOfContentsTrackerProps) {
   const isAutomaticScrollRef = useRef(false);
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const releaseRef = useRef<(() => void) | null>(null);
 
-  // Initial state logic: 
+  // Initial state logic:
   // MUST be consistent between Server and Client to avoid hydration mismatch.
-  const [activeId, setActiveId] = useState<string | null>(() => {
-    return initialActiveId ?? (items && items.length > 0 ? items[0].id : null);
+  const [uncontrolledActiveId, setUncontrolledActiveId] = useState<string | null>(() => {
+    return defaultActiveId ?? (items && items.length > 0 ? items[0].id : null);
   });
+
+  // Controlled when `activeId` is passed, `null` included (TDD primitives P27).
+  const controlled = controlledActiveId !== undefined;
+  const activeId = controlled ? controlledActiveId : uncontrolledActiveId;
+
+  // The observer and the scroll callback read the latest values without re-subscribing.
+  const activeIdRef = useRef(activeId);
+  const onChangeRef = useRef(onActiveIdChange);
+  useEffect(() => {
+    activeIdRef.current = activeId;
+    onChangeRef.current = onActiveIdChange;
+  });
+
+  // Report only a change: the observer fires again for a heading already active.
+  const setActiveId = useCallback((id: string) => {
+    if (id === activeIdRef.current) return;
+    activeIdRef.current = id;
+    if (!controlled) setUncontrolledActiveId(id);
+    onChangeRef.current?.(id);
+  }, [controlled]);
 
   const [navHeight, setNavHeight] = useState(explicitNavbarOffset ?? 0);
 
@@ -77,7 +99,7 @@ export function useTableOfContentsTracker({
 
       window.scrollTo({ top: y, behavior: reduce ? "auto" : "smooth" });
     }
-  }, [totalOffset]);
+  }, [totalOffset, setActiveId]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -113,7 +135,7 @@ export function useTableOfContentsTracker({
       observer.disconnect();
       releaseRef.current?.();
     };
-  }, [items, totalOffset]);
+  }, [items, totalOffset, setActiveId]);
 
   // Scroll to hash on mount (if valid hash exists)
   useEffect(() => {
@@ -130,5 +152,5 @@ export function useTableOfContentsTracker({
     activeId,
     setActiveId,
     scrollTo,
-  }), [activeId, scrollTo]);
+  }), [activeId, setActiveId, scrollTo]);
 }

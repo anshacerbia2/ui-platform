@@ -26,9 +26,23 @@ export type TableOfContentsBaseRootProps = {
    * document's computed `scroll-padding-top`, or 0 when that is `auto`.
    */
   navbarOffset?: number;
-  /** Initial active section ID */
-  initialActiveId?: string;
-} & ComponentPropsWithRef<"nav">;
+} & TableOfContentsActive & ComponentPropsWithRef<"nav">;
+
+/**
+ * The active section (TDD primitives P27). Uncontrolled by default: the root
+ * tracks the heading in view and the link last followed, starting at
+ * `defaultActiveId` or the first item. With `activeId` the product owns it:
+ * the root renders that ID as current and reports what it would make active
+ * through `onActiveIdChange`.
+ */
+export type TableOfContentsActive = {
+  /** The active section's ID (controlled); `null` marks no link current. */
+  activeId?: string | null;
+  /** The initially active section's ID (uncontrolled). @default the first item's ID */
+  defaultActiveId?: string;
+  /** Called with the ID the root would make active: the heading scrolled into view or the link followed. */
+  onActiveIdChange?: (id: string) => void;
+};
 
 /** 
  * Props for Base List.
@@ -71,5 +85,4 @@ export type UseTableOfContentsTrackerProps = {
   items: TableOfContentsItemState[];
   scrollOffsetExtended?: number;
   navbarOffset?: number;
-  initialActiveId?: string;
-};
+} & TableOfContentsActive;

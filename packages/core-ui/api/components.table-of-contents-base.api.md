@@ -11,6 +11,13 @@ import { ReactElement } from 'react';
 import { ReactNode } from 'react';
 
 // @public
+export type TableOfContentsActive = {
+    activeId?: string | null;
+    defaultActiveId?: string;
+    onActiveIdChange?: (id: string) => void;
+};
+
+// @public
 export const TableOfContentsBase: {
     (input: TableOfContentsBaseRootProps): JSX.Element;
     displayName: string;
@@ -75,8 +82,7 @@ export type TableOfContentsBaseRootProps = {
     items?: TableOfContentsItemState[];
     scrollOffsetExtended?: number;
     navbarOffset?: number;
-    initialActiveId?: string;
-} & ComponentPropsWithRef<"nav">;
+} & TableOfContentsActive & ComponentPropsWithRef<"nav">;
 
 // @public (undocumented)
 export const TableOfContentsContext: Context<TableOfContentsContextValue | undefined>;
