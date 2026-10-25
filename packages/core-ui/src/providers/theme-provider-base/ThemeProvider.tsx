@@ -19,7 +19,7 @@ const diagnostic = (message: string) => console.error(message);
  *
  * @example
  * ```tsx
- * <ThemeProvider themeId="default" defaultMode="system">
+ * <ThemeProvider themeId="industrial" defaultMode="system">
  *   <App />
  * </ThemeProvider>
  * ```

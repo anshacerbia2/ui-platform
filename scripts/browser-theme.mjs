@@ -77,7 +77,7 @@ const Toggle = ({ id }) => {
 
 export const App = () => (
   <main>
-    <ThemeProvider themeId="default" defaultMode="light">
+    <ThemeProvider themeId="industrial" defaultMode="light">
       <Toggle id="first" />
       <Accordion>
         <Accordion.Item value="a">
@@ -113,7 +113,7 @@ const markup = execSync("node server.cjs", { cwd: dir, encoding: "utf8" });
 
 const systemDist = path.join(dir, "node_modules/@scnx/system");
 const manifest = JSON.parse(fs.readFileSync(path.join(systemDist, "package.json"), "utf8"));
-const assets = ["./styles/components.css", "./tokens/css/default.css", "./tokens/css/achromatic.css"].map((subpath) => manifest.exports[subpath].replace(/^\.\//, ""));
+const assets = ["./styles/components.css", "./tokens/css/industrial.css", "./tokens/css/achromatic.css"].map((subpath) => manifest.exports[subpath].replace(/^\.\//, ""));
 const links = assets.map((file) => `<link rel="stylesheet" href="/pkg/${file}">`).join("");
 const pages = {
   "/": `<!doctype html><html><head><meta charset="utf-8">${links}<script type="module" src="/client.js"></script></head><body><div id="app">${markup}</div></body></html>`,
@@ -176,18 +176,18 @@ async function verify(browser) {
   await page.evaluate(() => localStorage.setItem("scnx-theme-mode", "dark"));
   await page.goto(`${origin}/`);
   const serverAttrs = [...markup.matchAll(/data-scnx-theme="([^"]+)" data-scnx-resolved-mode="([^"]+)"/g)].map((m) => `${m[1]}/${m[2]}`);
-  if (serverAttrs.join() !== "default/light,achromatic/light") failures.push(`server markup roots are ${serverAttrs.join()}`);
+  if (serverAttrs.join() !== "industrial/light,achromatic/light") failures.push(`server markup roots are ${serverAttrs.join()}`);
   await hydrated();
   let now = await attrs();
-  if (now.join() !== "default/dark,achromatic/light") failures.push(`after hydration with a stored preference, roots are ${now.join()}`);
+  if (now.join() !== "industrial/dark,achromatic/light") failures.push(`after hydration with a stored preference, roots are ${now.join()}`);
   checks.push({ check: "hydrate-then-persisted", roots: now });
 
   await page.click("#first");
   now = await attrs();
-  if (now.join() !== "default/light,achromatic/light") failures.push(`after toggling the first root, roots are ${now.join()}`);
+  if (now.join() !== "industrial/light,achromatic/light") failures.push(`after toggling the first root, roots are ${now.join()}`);
   await page.click("#second");
   now = await attrs();
-  if (now.join() !== "default/light,achromatic/dark") failures.push(`toggling the second root changed another root: ${now.join()}`);
+  if (now.join() !== "industrial/light,achromatic/dark") failures.push(`toggling the second root changed another root: ${now.join()}`);
   const stored = await page.evaluate(() => localStorage.getItem("scnx-theme-mode"));
   if (stored !== "light") failures.push(`the first root persisted "${stored}", expected "light"`);
   checks.push({ check: "isolated-mode-change", roots: now, stored });
@@ -195,7 +195,7 @@ async function verify(browser) {
   await page.reload();
   await hydrated();
   now = await attrs();
-  if (now.join() !== "default/light,achromatic/light") failures.push(`after reload, roots are ${now.join()}`);
+  if (now.join() !== "industrial/light,achromatic/light") failures.push(`after reload, roots are ${now.join()}`);
 
   // Transitions in the engine: record every data-state the content passes through.
   const watch = () =>

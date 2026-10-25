@@ -104,7 +104,7 @@ export function loadSpecs() {
   // Styled rules read the built stylesheet and the API reports (TDD styled CS2, CS3).
   const styled = expected.filter((row) => row.spec?.kind === "styled");
   if (findings.length === 0 && styled.length > 0) {
-    const output = path.join(root, "packages/design-system/dist/tokens/json/default.json");
+    const output = path.join(root, "packages/design-system/dist/tokens/json/industrial.json");
     if (!fs.existsSync(output)) findings.push("styled specifications need the built packages; run pnpm build first");
     else {
       const tokens = new Set(JSON.parse(fs.readFileSync(output, "utf8")).tokens.map((t) => t.name));

@@ -321,7 +321,7 @@ describe("normalizer on the token source", () => {
   });
 
   it.each(["light", "dark"])("serializes every shadow and material to a valid box-shadow in %s once references resolve", (mode) => {
-    const { records } = themes.default[mode];
+    const { records } = themes.industrial[mode];
     const css = new Map([...records].map(([name, value]) => [name, toCss(value)]));
     const shadows = [...css.keys()].filter((n) => /^--ds-effect-(shadow|material)-/.test(n));
     expect(shadows.length).toBe(12);
@@ -340,7 +340,7 @@ describe("normalizer on the token source", () => {
           Object.fromEntries(Object.entries(modes).map(([mode, v]) => [mode, { ...v, records: new Map(v.records), origin: new Map(v.origin) }])),
         ]),
       );
-    const pill = themes.default.light.records.get("--ds-dimension-radius-pill");
+    const pill = themes.industrial.light.records.get("--ds-dimension-radius-pill");
     const control = "--ds-dimension-radius-control";
 
     const brand = copy();
@@ -348,15 +348,15 @@ describe("normalizer on the token source", () => {
     brand.achromatic.light.origin.set(control, "achromatic");
     expect(structureFindings(brand, config).map((f) => `${f.theme}/${f.mode} ${f.token}: ${f.message}`)).toEqual([
       `achromatic/light ${control}: a theme sets a structural key; a theme supplies colour only`,
-      `achromatic/light ${control}: structural value 9999px differs from default/light (0)`,
+      `achromatic/light ${control}: structural value 9999px differs from industrial/light (0)`,
     ]);
 
     const mode = copy();
-    mode.default.dark.records.set(control, pill);
-    expect(structureFindings(mode, config).some((f) => f.theme === "default" && f.mode === "dark" && f.token === control)).toBe(true);
+    mode.industrial.dark.records.set(control, pill);
+    expect(structureFindings(mode, config).some((f) => f.theme === "industrial" && f.mode === "dark" && f.token === control)).toBe(true);
 
     const lit = copy();
-    lit.default.dark.records.set("--ds-effect-material-menu", themes.default.light.records.get("--ds-effect-material-modal"));
+    lit.industrial.dark.records.set("--ds-effect-material-menu", themes.industrial.light.records.get("--ds-effect-material-modal"));
     expect(structureFindings(lit, config).some((f) => f.token === "--ds-effect-material-menu")).toBe(true);
   });
 
@@ -451,14 +451,14 @@ describe("emitters", () => {
     });
 
     it("loads declared font faces from files it writes", () => {
-      const css = read("tokens/css/default.css");
+      const css = read("tokens/css/industrial.css");
       const urls = [...css.matchAll(/url\("([^"]+)"\)/g)].map((m) => m[1]);
       expect(urls.length).toBeGreaterThan(0);
       for (const url of urls) expect(fs.existsSync(path.join(dirs[0], "tokens/css", url))).toBe(true);
     });
 
     it("emits a Sass contract that references every custom property", () => {
-      const json = JSON.parse(read("tokens/json/default.json"));
+      const json = JSON.parse(read("tokens/json/industrial.json"));
       const probe = json.tokens.map((t, i) => `.t${i} { v: tokens.$${t.cssName.slice(5)}; }`).join("\n");
       const out = sass.compileString(`@use "tokens/scss" as tokens;\n${probe}`, { loadPaths: [dirs[0]] }).css;
       for (const token of json.tokens) expect(out).toContain(`v: var(${token.cssName})`);

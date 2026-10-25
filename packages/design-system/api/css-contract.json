@@ -758,7 +758,7 @@
         "--ds-typography-weight-semibold"
       ]
     },
-    "./tokens/css/default.css": {
+    "./tokens/css/industrial.css": {
       "layers": [
         "base",
         "components",
@@ -4616,7 +4616,7 @@
         "lifecycle": "candidate"
       }
     ],
-    "./tokens/json/default.json": [
+    "./tokens/json/industrial.json": [
       {
         "name": "color.danger.border.default.default",
         "cssName": "--ds-color-danger-border-default-default",

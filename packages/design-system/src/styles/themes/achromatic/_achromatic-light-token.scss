@@ -11,12 +11,12 @@
 //       existing Tier 1 palette CSS custom properties.
 // ============================================
 
-@use "styles/themes/default/default-token" as default;
+@use "styles/themes/industrial/industrial-token" as industrial;
 @use "sass:map";
 
 $achromatic-light-token: (
   color: (
-    neutral: map.get(default.get-color-tokens("light"), neutral),
-    primary: default.generate-scheme-matrix("neutral", "light")
+    neutral: map.get(industrial.get-color-tokens("light"), neutral),
+    primary: industrial.generate-scheme-matrix("neutral", "light")
   )
 );
