@@ -284,9 +284,13 @@
       }
     }
   ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only. To change one variant only, set the hook on [data-variant] within the scope, for example .promo [data-variant=\"secondary\"] { --scnx-button-background-hover: …; }; without it, the hook applies to every variant in the scope.",
   "hooks": [
     {
       "hook": "--scnx-button-background",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "background"
       ],
@@ -296,10 +300,16 @@
         "{color.neutral.surface.raised.default}",
         "{color.neutral.surface.solid.default}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The background of Button.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-background-disabled",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "background"
       ],
@@ -309,10 +319,16 @@
         "{color.neutral.surface.default.disabled}",
         "{color.neutral.surface.solid.disabled}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The background of Button in the disabled state.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-background-hover",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "background"
       ],
@@ -321,10 +337,16 @@
         "{color.neutral.surface.solid.hover}",
         "{color.neutral.surface.subtle.hover}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The background of Button in the hover state.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-background-pressed",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "background"
       ],
@@ -333,20 +355,32 @@
         "{color.neutral.surface.solid.pressed}",
         "{color.neutral.surface.subtle.pressed}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The background of Button in the pressed state.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-border-width",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "border"
       ],
       "fallbacks": [
         "{dimension.border-width.default}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The border of Button.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-color",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "color"
       ],
@@ -355,10 +389,16 @@
         "{color.neutral.text.contrast.default}",
         "{color.neutral.text.default.default}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The color of Button.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-color-disabled",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "color"
       ],
@@ -367,10 +407,16 @@
         "{color.neutral.text.contrast.disabled}",
         "{color.neutral.text.default.disabled}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The color of Button in the disabled state.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-color-hover",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "color"
       ],
@@ -378,10 +424,16 @@
         "{color.danger.text.contrast.hover}",
         "{color.neutral.text.contrast.hover}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The color of Button in the hover state.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-color-pressed",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "color"
       ],
@@ -389,20 +441,32 @@
         "{color.danger.text.contrast.default}",
         "{color.neutral.text.contrast.default}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The color of Button in the pressed state.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-font-family",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "font-family"
       ],
       "fallbacks": [
         "{typography.label.default.font-family}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The font-family of Button.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-font-size",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "font-size"
       ],
@@ -411,20 +475,32 @@
         "{typography.label.default.font-size}",
         "{typography.label.small.font-size}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The font-size of Button.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-font-weight",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "font-weight"
       ],
       "fallbacks": [
         "{typography.weight.semibold}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The font-weight of Button.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-gap",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "gap"
       ],
@@ -432,10 +508,16 @@
         "{dimension.spacing.inline-compact}",
         "{dimension.spacing.inline-default}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The gap of Button.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-height",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "block-size"
       ],
@@ -444,30 +526,48 @@
         "{dimension.size.control-compact}",
         "{dimension.size.control-default}"
       ],
-      "floor": "24px"
+      "floor": "24px",
+      "purpose": "The block-size of Button.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value; never below the 24px floor.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-letter-spacing",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "letter-spacing"
       ],
       "fallbacks": [
         "{typography.label.default.letter-spacing}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The letter-spacing of Button.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-line-height",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "line-height"
       ],
       "fallbacks": [
         "{typography.label.default.line-height}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The line-height of Button.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-padding-inline",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "padding-inline"
       ],
@@ -476,10 +576,16 @@
         "{dimension.spacing.control-compact}",
         "{dimension.spacing.control-default}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The padding-inline of Button.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-radius",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "border-radius"
       ],
@@ -487,67 +593,106 @@
         "{dimension.radius.control}",
         "{dimension.radius.element}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The border-radius of Button.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-shadow",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "box-shadow"
       ],
       "fallbacks": [
         "{effect.material.raised}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The box-shadow of Button.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-shadow-disabled",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "box-shadow"
       ],
       "fallbacks": [
         "{effect.material.flat}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The box-shadow of Button in the disabled state.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-shadow-pressed",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "box-shadow"
       ],
       "fallbacks": [
         "{effect.material.flat}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The box-shadow of Button in the pressed state.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-transition-duration",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "transition-duration"
       ],
       "fallbacks": [
         "{motion.feedback.duration}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The transition-duration of Button.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-transition-timing-function",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "transition-timing-function"
       ],
       "fallbacks": [
         "{motion.feedback.easing}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The transition-timing-function of Button.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-button-translate-pressed",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "translate"
       ],
       "fallbacks": [
         "0 1px"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The translate of Button in the pressed state.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]
 }

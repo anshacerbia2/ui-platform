@@ -263,6 +263,7 @@ export function stylesheetBindings(css, spec) {
       const described = selectors.map((s) => [s, describe(s, g)]).filter(([, d]) => d !== undefined);
       if (described.length === 0) return;
       const declarations = {};
+      const parts = described.filter(([, d]) => d).map(([, d]) => d.part);
       rule.block.children.forEach((node) => {
         if (node.type !== "Declaration") return;
         const { value, hooks: used } = unwrapHooks(csstree.generate(node.value));
@@ -270,7 +271,8 @@ export function stylesheetBindings(css, spec) {
         // A fallback is kept as css-tree serialized it; normalize so `max(24px,var(--ds-x))` equals a binding's template.
         declarations[node.property] = used.length > 0 ? normalizeValue(value) : value;
         for (const { hook, fallback, floor } of used) {
-          const entry = hooks.get(hook) ?? { properties: new Set(), fallbacks: new Set(), floors: new Set() };
+          const entry = hooks.get(hook) ?? { parts: new Set(), properties: new Set(), fallbacks: new Set(), floors: new Set() };
+          parts.forEach((p) => entry.parts.add(p));
           entry.properties.add(node.property);
           entry.fallbacks.add(normalizeValue(fallback));
           entry.floors.add(floor);
@@ -382,6 +384,7 @@ export function styledFindings(spec, { css, report, primitive, tokens }) {
   findings.push(...sheet, ...orderFindings(spec, order));
   // HK2: the hooks a component reads are listed, with their fallbacks and floors, in both directions.
   const listed = new Map((spec.hooks ?? []).map((h) => [h.hook, h]));
+  if (listed.size > 0 && !spec.hookScope?.trim()) findings.push("hooks are listed without hookScope, the guidance on where a product sets them");
   for (const name of new Set([...listed.keys(), ...hooks.keys()])) {
     const want = listed.get(name);
     const have = hooks.get(name);
@@ -400,6 +403,8 @@ export function styledFindings(spec, { css, report, primitive, tokens }) {
     const fallbacks = new Set(want.fallbacks.map((v) => normalizeValue(toCss(v))));
     if (sorted(fallbacks) !== sorted(have.fallbacks)) findings.push(`hook ${name}: falls back to ${sorted(have.fallbacks)} in the stylesheet, ${sorted(fallbacks)} in the specification`);
     if (sorted(want.properties) !== sorted(have.properties)) findings.push(`hook ${name}: sets ${sorted(have.properties)} in the stylesheet, ${sorted(want.properties)} in the specification`);
+    if (sorted(want.parts ?? []) !== sorted(have.parts)) findings.push(`hook ${name}: styles parts ${sorted(have.parts)} in the stylesheet, ${sorted(want.parts ?? [])} in the specification`);
+    for (const field of ["purpose", "coverage", "migration"]) if (!want[field]?.trim()) findings.push(`hook ${name}: its alias review record has no ${field} (STD-UIP-TKN-001, Component Alias Review)`);
     const floors = [...have.floors];
     if (floors.length > 1) findings.push(`hook ${name}: the stylesheet reads it with and without a floor`);
     else if ((want.floor ?? null) !== floors[0]) findings.push(`hook ${name}: floor ${floors[0] ?? "none"} in the stylesheet, ${want.floor ?? "none"} in the specification`);

@@ -1,5 +1,6 @@
 @use "sass:map";
 @use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
 
 // TDD styled BD1-BD3. `subtle` is the scheme's component fill (step 3) under
 // its low-contrast text (step 11), `solid` the scheme's solid fill under its
@@ -47,23 +48,29 @@ $badge-schemes: (
   ),
 );
 
+$c: badge;
+
+// TDD styled HK1-HK5: every value reads a `--scnx-badge-*` hook that falls
+// back to its token. The status dot is anatomy, not a hook (ADR-UIP-VIS-001
+// item 6): its round shape and size carry meaning, so styles.config.json
+// records them as design literals.
 .scnx-badge {
   display: inline-flex;
   align-items: center;
-  gap: $dimension-spacing-inline-compact;
-  border: $dimension-border-width-default solid transparent;
-  border-radius: $dimension-radius-element;
+  gap: hook($c, gap, $dimension-spacing-inline-compact);
+  border: hook($c, border-width, $dimension-border-width-default) solid transparent;
+  border-radius: hook($c, radius, $dimension-radius-element);
   white-space: nowrap;
 
   &[data-size="medium"] {
-    @include typography(label, default);
-    padding: 0 $dimension-spacing-inline-default;
+    @include hooked-typography($c, label, default);
+    padding: 0 hook($c, padding-inline, $dimension-spacing-inline-default);
   }
 
   &[data-size="small"] {
-    @include typography(label, small);
-    padding: 0 $dimension-spacing-inline-compact;
-    border-radius: $dimension-radius-mark;
+    @include hooked-typography($c, label, small);
+    padding: 0 hook($c, padding-inline, $dimension-spacing-inline-compact);
+    border-radius: hook($c, radius, $dimension-radius-mark);
   }
 
   // TDD styled BD4, IS2: a round 6px status dot in the text color, so it meets the
@@ -78,13 +85,13 @@ $badge-schemes: (
 
   @each $scheme, $tokens in $badge-schemes {
     &[data-scheme="#{$scheme}"][data-emphasis="subtle"] {
-      background-color: map.get($tokens, subtle-fill);
-      color: map.get($tokens, subtle-text);
+      background-color: hook($c, background, map.get($tokens, subtle-fill));
+      color: hook($c, color, map.get($tokens, subtle-text));
     }
 
     &[data-scheme="#{$scheme}"][data-emphasis="solid"] {
-      background-color: map.get($tokens, solid-fill);
-      color: map.get($tokens, solid-text);
+      background-color: hook($c, background, map.get($tokens, solid-fill));
+      color: hook($c, color, map.get($tokens, solid-text));
     }
   }
 }

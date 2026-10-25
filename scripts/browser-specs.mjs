@@ -194,7 +194,10 @@ for (const engine of browserEngines()) {
               if (Object.keys(merged).length === 0) continue;
               const declarations = Object.fromEntries(Object.entries(merged).map(([p, v]) => [p, toCss(v)]));
               // State is carried by tokens: an unbound opacity must compute 1 (TDD styled CS4).
-              const properties = [...Object.keys(merged).flatMap(longhands), ...("opacity" in merged ? [] : ["opacity"])];
+              // A percentage binding (a Divider's 100% length) resolves against the element's
+              // container, which the probe does not share, so it is recorded but not measured.
+              const percentage = (v) => /^\s*-?[\d.]+%\s*$/.test(v);
+              const properties = [...Object.entries(merged).filter(([, v]) => !percentage(v)).map(([p]) => p).flatMap(longhands), ...("opacity" in merged ? [] : ["opacity"])];
               // A bound border width must draw: its side's style may not be none (TDD styled CS9).
               // The last declaration that sets a side's width decides, in cascade order (`border-bottom: 0` after `border`).
               const sideBound = {};

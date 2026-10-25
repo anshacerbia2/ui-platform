@@ -278,17 +278,13 @@
       }
     }
   ],
-  "geometry": [
-    {
-      "part": "root",
-      "declarations": {
-        "aspect-ratio": "1"
-      }
-    }
-  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only. To change one variant only, set the hook on [data-variant] within the scope, for example .promo [data-variant=\"primary\"] { --scnx-icon-button-background-hover: …; }; without it, the hook applies to every variant in the scope.",
   "hooks": [
     {
       "hook": "--scnx-icon-button-background",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "background"
       ],
@@ -298,10 +294,16 @@
         "{color.neutral.surface.raised.default}",
         "{color.neutral.surface.solid.default}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The background of IconButton.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-icon-button-background-disabled",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "background"
       ],
@@ -311,10 +313,16 @@
         "{color.neutral.surface.default.disabled}",
         "{color.neutral.surface.solid.disabled}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The background of IconButton in the disabled state.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-icon-button-background-hover",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "background"
       ],
@@ -323,10 +331,16 @@
         "{color.neutral.surface.solid.hover}",
         "{color.neutral.surface.subtle.hover}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The background of IconButton in the hover state.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-icon-button-background-pressed",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "background"
       ],
@@ -335,20 +349,32 @@
         "{color.neutral.surface.solid.pressed}",
         "{color.neutral.surface.subtle.pressed}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The background of IconButton in the pressed state.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-icon-button-border-width",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "border"
       ],
       "fallbacks": [
         "{dimension.border-width.default}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The border of IconButton.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-icon-button-color",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "color"
       ],
@@ -358,10 +384,16 @@
         "{color.neutral.text.contrast.default}",
         "{color.neutral.text.default.default}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The color of IconButton.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-icon-button-color-disabled",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "color"
       ],
@@ -371,10 +403,16 @@
         "{color.neutral.text.contrast.disabled}",
         "{color.neutral.text.default.disabled}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The color of IconButton in the disabled state.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-icon-button-color-hover",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "color"
       ],
@@ -383,10 +421,16 @@
         "{color.neutral.icon.subtle.hover}",
         "{color.neutral.text.contrast.hover}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The color of IconButton in the hover state.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-icon-button-color-pressed",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "color"
       ],
@@ -395,10 +439,16 @@
         "{color.neutral.icon.subtle.hover}",
         "{color.neutral.text.contrast.default}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The color of IconButton in the pressed state.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-icon-button-radius",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "border-radius"
       ],
@@ -406,40 +456,64 @@
         "{dimension.radius.control}",
         "{dimension.radius.element}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The border-radius of IconButton.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-icon-button-shadow",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "box-shadow"
       ],
       "fallbacks": [
         "{effect.material.raised}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The box-shadow of IconButton.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-icon-button-shadow-disabled",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "box-shadow"
       ],
       "fallbacks": [
         "{effect.material.flat}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The box-shadow of IconButton in the disabled state.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-icon-button-shadow-pressed",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "box-shadow"
       ],
       "fallbacks": [
         "{effect.material.flat}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The box-shadow of IconButton in the pressed state.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-icon-button-size",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "block-size",
         "inline-size"
@@ -449,37 +523,66 @@
         "{dimension.size.control-compact}",
         "{dimension.size.control-default}"
       ],
-      "floor": "24px"
+      "floor": "24px",
+      "purpose": "The block-size and inline-size of IconButton.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value; never below the 24px floor.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-icon-button-transition-duration",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "transition-duration"
       ],
       "fallbacks": [
         "{motion.feedback.duration}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The transition-duration of IconButton.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-icon-button-transition-timing-function",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "transition-timing-function"
       ],
       "fallbacks": [
         "{motion.feedback.easing}"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The transition-timing-function of IconButton.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
       "hook": "--scnx-icon-button-translate-pressed",
+      "parts": [
+        "root"
+      ],
       "properties": [
         "translate"
       ],
       "fallbacks": [
         "0 1px"
       ],
-      "floor": null
+      "floor": null,
+      "purpose": "The translate of IconButton in the pressed state.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
+  ],
+  "geometry": [
+    {
+      "part": "root",
+      "declarations": {
+        "aspect-ratio": "1"
+      }
     }
   ]
 }

@@ -16,8 +16,12 @@
     "list-item"
   ],
   "hookedComponents": [
+    "alert",
+    "badge",
     "button",
-    "icon-button"
+    "divider",
+    "icon-button",
+    "text-field"
   ],
   "runtimeProperties": {
     "--item-index": {
@@ -162,6 +166,18 @@
       "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
       "reason": "Inline code is sized relative to the surrounding text (em), so it scales inside headings and body text alike",
       "removal": "A text-relative inline-code size in the typography roles"
+    },
+    {
+      "rule": "design-literal",
+      "selector": ".scnx-badge>[data-part=dot]",
+      "properties": [
+        "inline-size",
+        "block-size",
+        "border-radius"
+      ],
+      "standard": "ADR-UIP-VIS-001 item 6 (guarded floors: shapes that carry meaning are anatomy, not hooks); STD-UIP-TKN-001 2.7.0",
+      "reason": "The status dot is anatomy: its round shape and 6px size mark a live status, so no hook may change them",
+      "removal": "None; a meaningful shape stays anatomy"
     }
   ]
 }

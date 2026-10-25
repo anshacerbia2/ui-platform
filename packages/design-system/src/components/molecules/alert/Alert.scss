@@ -1,5 +1,6 @@
 @use "sass:map";
 @use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
 
 // TDD styled AL1-AL3. The scheme's subtle fill (step 2) and subtle border
 // (step 6) under its low-contrast text (step 11), the title in its
@@ -44,14 +45,18 @@ $alert-schemes: (
   ),
 );
 
+$c: alert;
+
+// TDD styled HK1-HK5: every value reads a `--scnx-alert-{part?}-*` hook that
+// falls back to its token; a hook names the property, not the scheme.
 .scnx-alert {
   display: flex;
   align-items: flex-start;
-  gap: $dimension-spacing-inline-default;
-  padding: $dimension-spacing-inset-default;
-  border: $dimension-border-width-default solid;
-  border-radius: $dimension-radius-container;
-  @include typography(body, small);
+  gap: hook($c, gap, $dimension-spacing-inline-default);
+  padding: hook($c, padding, $dimension-spacing-inset-default);
+  border: hook($c, border-width, $dimension-border-width-default) solid;
+  border-radius: hook($c, radius, $dimension-radius-container);
+  @include hooked-typography($c, body, small);
 
   > [data-part="icon"] {
     display: inline-flex;
@@ -62,33 +67,33 @@ $alert-schemes: (
     display: flex;
     flex: 1 1 auto;
     flex-direction: column;
-    gap: $dimension-spacing-stack-compact;
+    gap: hook($c, content-gap, $dimension-spacing-stack-compact);
     min-inline-size: 0;
   }
 
   > [data-part="content"] > [data-part="title"] {
-    font-weight: $typography-weight-semibold;
+    font-weight: hook($c, title-font-weight, $typography-weight-semibold);
   }
 
   > [data-part="actions"] {
     display: flex;
     flex: none;
     align-items: center;
-    gap: $dimension-spacing-inline-compact;
+    gap: hook($c, actions-gap, $dimension-spacing-inline-compact);
   }
 
   @each $scheme, $tokens in $alert-schemes {
     &[data-scheme="#{$scheme}"] {
-      background-color: map.get($tokens, fill);
-      border-color: map.get($tokens, border);
-      color: map.get($tokens, text);
+      background-color: hook($c, background, map.get($tokens, fill));
+      border-color: hook($c, border-color, map.get($tokens, border));
+      color: hook($c, color, map.get($tokens, text));
 
       > [data-part="icon"] {
-        color: map.get($tokens, icon);
+        color: hook($c, icon-color, map.get($tokens, icon));
       }
 
       > [data-part="content"] > [data-part="title"] {
-        color: map.get($tokens, title);
+        color: hook($c, title-color, map.get($tokens, title));
       }
     }
   }

@@ -1,42 +1,48 @@
 @use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
 
+$c: divider;
+
+// TDD styled HK1-HK5: every value reads a `--scnx-divider-*` hook. The normal
+// and thick weights fall back to the border widths; the thin weight, a
+// half-pixel hairline with no token, falls back to its recorded literal.
 .scnx-divider {
   border: 0;
-  background-color: #{$color-border-default};
+  background-color: hook($c, color, $color-border-default);
   flex-shrink: 0;
 
   // Horizontal Orientation (Default)
   &[data-orientation="horizontal"] {
     width: 100%;
-    margin: $dimension-spacing-stack-comfortable 0;
-    
-    &[data-weight="thin"]   { height: 0.5px; }
-    &[data-weight="normal"] { height: 1px; }
-    &[data-weight="thick"]  { height: 2px; }
+    margin: hook($c, margin, $dimension-spacing-stack-comfortable 0);
+
+    &[data-weight="thin"]   { height: hook($c, thickness, 0.5px); }
+    &[data-weight="normal"] { height: hook($c, thickness, $dimension-border-width-default); }
+    &[data-weight="thick"]  { height: hook($c, thickness, $dimension-border-width-strong); }
   }
 
   // Vertical Orientation
   &[data-orientation="vertical"] {
     height: 100%;
-    margin: 0 $dimension-spacing-inline-comfortable;
+    margin: hook($c, margin, 0 $dimension-spacing-inline-comfortable);
 
-    &[data-weight="thin"]   { width: 0.5px; }
-    &[data-weight="normal"] { width: 1px; }
-    &[data-weight="thick"]  { width: 2px; }
+    &[data-weight="thin"]   { width: hook($c, thickness, 0.5px); }
+    &[data-weight="normal"] { width: hook($c, thickness, $dimension-border-width-default); }
+    &[data-weight="thick"]  { width: hook($c, thickness, $dimension-border-width-strong); }
   }
 
   // Color Variants
   &[data-color="default"] {
-    background-color: #{$color-border-default};
+    background-color: hook($c, color, $color-border-default);
   }
 
   &[data-color="muted"] {
-    background-color: #{$color-border-subtle};
+    background-color: hook($c, color, $color-border-subtle);
   }
 
   // The public union is default | muted | primary (DividerColor); `primary` had no rule
   // and fell back to the default color, and a `strong` rule no prop could reach is removed.
   &[data-color="primary"] {
-    background-color: #{$color-primary-border};
+    background-color: hook($c, color, $color-primary-border);
   }
 }

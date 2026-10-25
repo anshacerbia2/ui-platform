@@ -56,7 +56,8 @@
         "orientation": "horizontal"
       },
       "declarations": {
-        "margin": "{dimension.spacing.stack-comfortable} 0"
+        "margin": "{dimension.spacing.stack-comfortable} 0",
+        "width": "100%"
       }
     },
     {
@@ -65,7 +66,8 @@
         "orientation": "vertical"
       },
       "declarations": {
-        "margin": "0 {dimension.spacing.inline-comfortable}"
+        "margin": "0 {dimension.spacing.inline-comfortable}",
+        "height": "100%"
       }
     },
     {
@@ -94,6 +96,123 @@
       "declarations": {
         "background-color": "{color.primary.border.default.default}"
       }
+    },
+    {
+      "part": "root",
+      "option": {
+        "orientation": "horizontal",
+        "weight": "thin"
+      },
+      "declarations": {
+        "height": "0.5px"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "orientation": "vertical",
+        "weight": "thin"
+      },
+      "declarations": {
+        "width": "0.5px"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "orientation": "horizontal",
+        "weight": "normal"
+      },
+      "declarations": {
+        "height": "{dimension.border-width.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "orientation": "vertical",
+        "weight": "normal"
+      },
+      "declarations": {
+        "width": "{dimension.border-width.default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "orientation": "horizontal",
+        "weight": "thick"
+      },
+      "declarations": {
+        "height": "{dimension.border-width.strong}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "orientation": "vertical",
+        "weight": "thick"
+      },
+      "declarations": {
+        "width": "{dimension.border-width.strong}"
+      }
+    }
+  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only. To change one orientation only, set the hook on [data-orientation] within the scope, for example .promo [data-orientation=\"vertical\"] { --scnx-divider-color: …; }; without it, the hook applies to every orientation in the scope.",
+  "hooks": [
+    {
+      "hook": "--scnx-divider-color",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.border.default.default}",
+        "{color.neutral.border.subtle.default}",
+        "{color.primary.border.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Divider.",
+      "coverage": "industrial and achromatic, light and dark; every orientation, weight and color value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-divider-margin",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "margin"
+      ],
+      "fallbacks": [
+        "0 {dimension.spacing.inline-comfortable}",
+        "{dimension.spacing.stack-comfortable}0"
+      ],
+      "floor": null,
+      "purpose": "The margin of Divider.",
+      "coverage": "industrial and achromatic, light and dark; every orientation, weight and color value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-divider-thickness",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "height",
+        "width"
+      ],
+      "fallbacks": [
+        "0.5px",
+        "{dimension.border-width.default}",
+        "{dimension.border-width.strong}"
+      ],
+      "floor": null,
+      "purpose": "The height and width of Divider.",
+      "coverage": "industrial and achromatic, light and dark; every orientation, weight and color value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]
 }

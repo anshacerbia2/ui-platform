@@ -301,6 +301,11 @@
         }
       }
     },
+    "hookScope": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Where a product sets the hooks: on a scope it owns, not on :root, and on [data-<option>] within that scope to change one option value (TDD styled HK5). Required when hooks are listed."
+    },
     "hooks": {
       "description": "Tier-3 component hooks (ADR-UIP-VIS-001 item 8; STD-UIP-TKN-001 2.7.0, Hook mechanics; TDD styled HK2): every --scnx-* hook the component's stylesheet reads, the properties it sets, the values it falls back to, and the floor that bounds it. Checked against the stylesheet in both directions; a hook is public API.",
       "type": "array",
@@ -310,14 +315,27 @@
         "additionalProperties": false,
         "required": [
           "hook",
+          "parts",
           "properties",
           "fallbacks",
-          "floor"
+          "floor",
+          "purpose",
+          "coverage",
+          "migration"
         ],
         "properties": {
           "hook": {
             "type": "string",
             "pattern": "^--scnx-[a-z0-9]+(-[a-z0-9]+)*$"
+          },
+          "parts": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "$ref": "common.schema.json#/$defs/name"
+            },
+            "description": "The anatomy parts whose rules read the hook."
           },
           "properties": {
             "type": "array",
@@ -344,6 +362,21 @@
               "null"
             ],
             "description": "The guarded floor the component enforces around the hook, for example 24px (the target size, WCAG 2.2 SC 2.5.8); null when none."
+          },
+          "purpose": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Alias review (STD-UIP-TKN-001, Component Alias Review): what the hook changes."
+          },
+          "coverage": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Alias review: the themes, modes, options, and states it covers."
+          },
+          "migration": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Alias review: when it was added and what a consumer changes."
           }
         }
       }
