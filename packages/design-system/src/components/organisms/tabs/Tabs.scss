@@ -1,8 +1,10 @@
 @use "styles/abstracts/variables" as *;
 
-// TDD primitives P17. The selected tab carries a 2px indicator and a heavier
-// weight, so colour is not its only cue. Sides are logical, so a vertical list
-// mirrors in right-to-left text.
+// TDD primitives P17; TDD styled TB1-TB3. The selected tab carries a 2px
+// indicator and a heavier weight, so colour is not its only cue. A tab is a
+// medium control (36px, control spacing); hover is a pill behind the label,
+// inset from the row, and the indicator is inset to the label. Sides are
+// logical, so a vertical list mirrors in right-to-left text.
 .scnx-tabs {
   display: flex;
   flex-direction: column;
@@ -26,26 +28,62 @@
 
   [data-part="tab"] {
     @include typography(label, default);
-    padding: $dimension-spacing-inset-compact $dimension-spacing-inset-default;
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    gap: $dimension-spacing-inline-default;
+    min-block-size: 2.25rem;
+    padding: 0 $dimension-spacing-control-default;
     border: 0;
-    border-bottom: $dimension-border-width-strong solid transparent;
     margin-bottom: calc(-1 * #{$dimension-border-width-default});
     background: transparent;
     color: $color-text-secondary;
     cursor: pointer;
-    transition-property: color, border-color, background-color;
+    transition-property: color;
     transition-duration: $motion-feedback-duration;
     transition-timing-function: $motion-feedback-easing;
 
+    // The hover pill, inset from the top and bottom of the row.
+    &::before {
+      content: "";
+      position: absolute;
+      inset-block: $dimension-spacing-stack-compact;
+      inset-inline: 0;
+      z-index: -1;
+      border-radius: $dimension-radius-element;
+      background: transparent;
+      transition-property: background-color;
+      transition-duration: $motion-feedback-duration;
+      transition-timing-function: $motion-feedback-easing;
+    }
+
+    // The indicator, inset to the label by the tab's padding. It is a border
+    // only the selected tab draws, so forced-colors mode keeps it and no other
+    // tab shows one.
+    &::after {
+      content: "";
+      position: absolute;
+      inset-inline: $dimension-spacing-control-default;
+      inset-block-end: 0;
+      border-radius: $dimension-radius-pill;
+    }
+
     &:hover:not(:disabled) {
-      background: $color-state-hover;
       color: $color-text-primary;
+    }
+
+    &:hover:not(:disabled)::before {
+      background: var(--ds-color-neutral-surface-subtle-hover);
     }
 
     &[aria-selected="true"] {
       color: $color-text-primary;
       font-weight: $typography-weight-semibold;
-      border-bottom-color: $color-primary-default;
+    }
+
+    &[aria-selected="true"]::after {
+      border-block-end: $dimension-border-width-strong solid $color-primary-default;
     }
 
     &:disabled {
@@ -56,13 +94,17 @@
 
   &[data-orientation="vertical"] [data-part="tab"] {
     text-align: start;
-    border-bottom: 0;
     margin-bottom: 0;
-    border-inline-end: $dimension-border-width-strong solid transparent;
     margin-inline-end: calc(-1 * #{$dimension-border-width-default});
 
-    &[aria-selected="true"] {
-      border-inline-end-color: $color-primary-default;
+    &::after {
+      inset-inline: 0;
+      inset-block: $dimension-spacing-inset-compact;
+    }
+
+    &[aria-selected="true"]::after {
+      border-block-end: 0;
+      border-inline-end: $dimension-border-width-strong solid $color-primary-default;
     }
   }
 
@@ -71,3 +113,4 @@
     color: $color-text-primary;
   }
 }
+

@@ -7,7 +7,7 @@
 
 import fs from "node:fs";
 import { INVENTORY, inventoryFrom, loadSpecs, serialize, specFindings } from "./specs.mjs";
-import { contrastPairs, styledFindings } from "./styled.mjs";
+import { contrastPairs, selectorFor, styledFindings } from "./styled.mjs";
 
 function selfTest() {
   const ok = Object.assign(() => true, { errors: [] });
@@ -93,6 +93,20 @@ function selfTest() {
     [styledFindings(sized, context({ css: css() })).length, 2],
     [styledFindings({ ...sized, geometry: [{ part: "root", declarations: { "block-size": "{dimension.gap}" } }] }, context({ css: sizedCss() })).length > 0, true],
     [styledFindings(spec, context({ css: sizedCss() })).length, 0],
+  );
+  // CS15: a pseudo-element part takes its states before the pseudo-element.
+  const marked = {
+    ...nested,
+    anatomy: [...nested.anatomy, { name: "mark", selector: ".scnx-x > [data-part=item]::after" }],
+    states: [nested.states[1]],
+    bindings: [{ part: "mark", declarations: { "inline-size": "{dimension.gap}" } }, { part: "mark", state: "selected", declarations: { background: "{color.fg}" } }],
+  };
+  const markedCss = (extra = "") => `.scnx-x>[data-part=item]::after{inline-size:var(--ds-dimension-gap)}.scnx-x>[data-part=item][aria-selected=true]::after{background:var(--ds-color-fg)}${extra}`;
+  cases.push(
+    [selectorFor(marked, { part: "mark", state: "selected" }), ".scnx-x>[data-part=item][aria-selected=true]::after"],
+    [styledFindings(marked, context({ css: markedCss() })).length, 0],
+    [styledFindings(marked, context({ css: markedCss(".scnx-x>[data-part=item]:hover::after{background:var(--ds-color-bg)}") })).length, 1],
+    [styledFindings(marked, context({ css: ".scnx-x>[data-part=item]::after{inline-size:var(--ds-dimension-gap)}" })).length, 1],
   );
   const failed = cases.map(([actual, want], i) => [i, actual, want]).filter(([, actual, want]) => actual !== want);
   if (failed.length > 0) {
