@@ -231,11 +231,24 @@ for (const engine of browserEngines()) {
                   }
                 }
                 if (pointer === "press") await tab.mouse.down();
-                // A script focus matches :focus-visible on a button only after keyboard input, so a
-                // keypress that does nothing (Shift) comes first, as a keyboard user's would.
+                // A script focus matches :focus-visible on a button only after keyboard input, and
+                // engines count it differently: Chromium after any keypress (Shift, which does
+                // nothing), Firefox and WebKit through focus({ focusVisible: true }). If neither
+                // holds, focus arrives by Tab from a sentinel placed just before the part.
                 if (pointer === "focus") {
                   await tab.keyboard.press("Shift");
-                  await target.focus();
+                  await target.evaluate((el) => el.focus({ focusVisible: true }));
+                  if (!(await target.evaluate((el) => el.matches(":focus-visible")))) {
+                    await target.evaluate((el) => {
+                      const sentinel = document.createElement("span");
+                      sentinel.tabIndex = 0;
+                      sentinel.setAttribute("data-spec-sentinel", "");
+                      el.before(sentinel);
+                      sentinel.focus();
+                    });
+                    await tab.keyboard.press("Tab");
+                    await tab.evaluate(() => document.querySelector("[data-spec-sentinel]")?.remove());
+                  }
                 }
                 if (pointer === "focus-within") await target.evaluate((el) => el.querySelector("a[href], button:not(:disabled), input:not(:disabled), select, textarea, [tabindex]:not([tabindex='-1'])")?.focus());
                 if (attribute) await target.evaluate((el) => el.setAttribute("data-spec-entered", ""));
