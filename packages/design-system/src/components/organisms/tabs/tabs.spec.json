@@ -240,7 +240,7 @@
       "part": "indicator",
       "declarations": {
         "inset-inline": "{dimension.spacing.control-default}",
-        "border-radius": "{dimension.radius.pill}"
+        "border-radius": "{dimension.radius.mark}"
       }
     },
     {
