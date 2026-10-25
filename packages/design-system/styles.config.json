@@ -15,6 +15,10 @@
     "list",
     "list-item"
   ],
+  "hookedComponents": [
+    "button",
+    "icon-button"
+  ],
   "runtimeProperties": {
     "--item-index": {
       "owner": "@scnx/core-ui NavigationBaseGroup",

@@ -21,9 +21,11 @@
 
 // Every focusable part shows an outline (STD-GLB-FE-005 section 3.9). A
 // shadow may add emphasis but never replaces it, because forced-colors mode
-// computes box-shadow as none.
+// computes box-shadow as none. The visible-focus floor (STD-UIP-TKN-001
+// 2.7.0, "Guarded floors"; WCAG 2.2 SC 2.4.7, 2.4.11): the outline is at
+// least 2px whatever a theme maps `border-width.strong` to.
 #{$theme-root} :focus-visible {
-  outline: $dimension-border-width-strong solid var(--ds-color-primary-border-default-focus);
+  outline: max(2px, #{$dimension-border-width-strong}) solid var(--ds-color-primary-border-default-focus);
   outline-offset: $dimension-border-width-strong;
 }
 

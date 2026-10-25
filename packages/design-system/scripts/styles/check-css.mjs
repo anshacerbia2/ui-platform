@@ -29,12 +29,12 @@ import { LAYERS, LAYER_STATEMENT } from "./layers.mjs";
 const packageDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 
 const CONFIG_KEYS = {
-  root: ["schemaVersion", "aggregate", "themeRoot", "recipes", "runtimeProperties", "exceptions"],
+  root: ["schemaVersion", "aggregate", "themeRoot", "recipes", "runtimeProperties", "hookedComponents", "exceptions"],
   aggregate: ["source", "publish"],
   runtimeProperty: ["owner", "purpose"],
   exception: ["rule", "selector", "properties", "standard", "reason", "removal"],
 };
-const EXCEPTION_RULES = ["important", "color-literal", "z-index", "motion-literal", "radius-literal", "spacing-literal", "typography-literal"];
+const EXCEPTION_RULES = ["important", "color-literal", "z-index", "motion-literal", "radius-literal", "spacing-literal", "typography-literal", "design-literal"];
 
 /** Load styles.config.json (TDD CSS delivery, Configuration); unknown keys fail. */
 export function loadStyleConfig(file = path.join(packageDir, "styles.config.json")) {
@@ -50,6 +50,9 @@ export function loadStyleConfig(file = path.join(packageDir, "styles.config.json
     known(record, CONFIG_KEYS.runtimeProperty, `runtimeProperties.${name}`);
     if (!/^--(?!ds-)[a-z][a-z0-9-]*$/.test(name)) errors.push(`runtimeProperties.${name}: not a non-token custom property name`);
     if (!record.owner || !record.purpose) errors.push(`runtimeProperties.${name}: owner and purpose are required`);
+  }
+  for (const name of config.hookedComponents ?? []) {
+    if (!/^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/.test(name)) errors.push(`hookedComponents: "${name}" is not a component name`);
   }
   (config.exceptions ?? []).forEach((exception, index) => {
     const where = `exceptions[${index}]`;
@@ -137,6 +140,73 @@ function radiusLiteral(value) {
 const COLOR_FUNCTIONS = new Set(["rgb", "rgba", "hsl", "hsla", "hwb", "lab", "lch", "oklab", "oklch", "color"]);
 const NAMED_COLORS = new Set(("aliceblue antiquewhite aqua aquamarine azure beige bisque black blanchedalmond blue blueviolet brown burlywood cadetblue chartreuse chocolate coral cornflowerblue cornsilk crimson cyan darkblue darkcyan darkgoldenrod darkgray darkgreen darkgrey darkkhaki darkmagenta darkolivegreen darkorange darkorchid darkred darksalmon darkseagreen darkslateblue darkslategray darkslategrey darkturquoise darkviolet deeppink deepskyblue dimgray dimgrey dodgerblue firebrick floralwhite forestgreen fuchsia gainsboro ghostwhite gold goldenrod gray green greenyellow grey honeydew hotpink indianred indigo ivory khaki lavender lavenderblush lawngreen lemonchiffon lightblue lightcoral lightcyan lightgoldenrodyellow lightgray lightgreen lightgrey lightpink lightsalmon lightseagreen lightskyblue lightslategray lightslategrey lightsteelblue lightyellow lime limegreen linen magenta maroon mediumaquamarine mediumblue mediumorchid mediumpurple mediumseagreen mediumslateblue mediumspringgreen mediumturquoise mediumvioletred midnightblue mintcream mistyrose moccasin navajowhite navy oldlace olive olivedrab orange orangered orchid palegoldenrod palegreen paleturquoise palevioletred papayawhip peru pink plum powderblue purple rebeccapurple red rosybrown royalblue saddlebrown salmon sandybrown seagreen seashell sienna silver skyblue slateblue slategray slategrey snow springgreen steelblue tan teal thistle tomato turquoise violet wheat white whitesmoke yellow yellowgreen").split(" "));
 
+/**
+ * Presentational properties (ADR-UIP-VIS-001 item 8): in a hooked component
+ * every one reads a Tier-3 hook that falls back to Tier 2. Layout, state
+ * mechanics, and anatomy (display, position, cursor, aspect-ratio, content)
+ * are not design values.
+ */
+const PRESENTATIONAL_PROPERTY = /^(?:color|background(?:-color)?|border(?:-[a-z-]+)?|outline(?:-(?:color|width|offset))?|box-shadow|(?:padding|margin|inset)(?:-[a-z-]+)?|gap|row-gap|column-gap|top|right|bottom|left|(?:min-|max-)?(?:width|height|inline-size|block-size)|font(?:-[a-z-]+)?|line-height|letter-spacing|(?:transition|animation)(?:-(?:duration|delay|timing-function))?|opacity|translate|fill|stroke|text-decoration-color|accent-color|caret-color)$/;
+
+/** The component a component-layer selector belongs to: `.scnx-icon-button[...]` is `icon-button`. */
+const componentOf = (selector) => /^\.scnx-([a-z0-9]+(?:-[a-z0-9]+)*?)(?=__|--|[^a-z0-9-]|$)/.exec(selector)?.[1] ?? null;
+
+/** A var() node: its custom property name and its fallback text, if any. */
+function varParts(node) {
+  const children = node.children.toArray();
+  const name = children[0]?.type === "Identifier" ? children[0].name : null;
+  const comma = children.findIndex((c) => c.type === "Operator" && c.value === ",");
+  const fallback = comma > -1 ? children.slice(comma + 1).map((c) => csstree.generate(c)).join("").trim() : null;
+  return { name, fallback };
+}
+
+/**
+ * Design literals and Tier-2 tokens outside the hook pattern (STD-UIP-TKN-001
+ * 2.7.0, "Hook mechanics"): a token must be a hook's fallback, and a literal
+ * (a non-zero length or number, a colour) may stand only in a hook's
+ * fallback or beside a hook inside a function, as a floor does in
+ * `max(24px, var(--scnx-…))`. Keywords, zero, and percentages are not design
+ * values.
+ */
+export function designLiterals(value) {
+  const found = [];
+  const hasHook = (node) => {
+    let hook = false;
+    csstree.walk(node, (n) => {
+      if (n.type === "Function" && n.name === "var" && varParts(n).name?.startsWith("--scnx-")) hook = true;
+    });
+    return hook;
+  };
+  const visit = (node, beside) => {
+    if (node.type === "Function" && node.name === "var") {
+      const { name } = varParts(node);
+      if (name?.startsWith("--scnx-")) return;
+      if (name?.startsWith("--ds-")) found.push(`token ${name} outside a hook`);
+      return;
+    }
+    if (node.type === "Dimension" && Number(node.value) !== 0 && !beside) found.push(`${node.value}${node.unit}`);
+    else if (node.type === "Number" && Number(node.value) !== 0 && !beside) found.push(node.value);
+    else if (node.type === "Hash") found.push(`#${node.value}`);
+    else if (node.type === "Function" && COLOR_FUNCTIONS.has(node.name.toLowerCase())) found.push(`${node.name}()`);
+    else if (node.type === "Identifier" && NAMED_COLORS.has(node.name.toLowerCase())) found.push(node.name);
+    const inner = node.type === "Function" && hasHook(node);
+    node.children?.forEach?.((child) => visit(child, beside || inner));
+  };
+  visit(value, false);
+  return found;
+}
+
+/** Every custom property a value references, fallbacks included (css-tree keeps a fallback as raw text). */
+function referencedNames(value, into) {
+  csstree.walk(value, (node) => {
+    if (node.type !== "Function" || node.name !== "var") return;
+    const { name, fallback } = varParts(node);
+    if (name) into.push(name);
+    if (fallback) referencedNames(csstree.parse(fallback, { context: "value" }), into);
+  });
+  return into;
+}
+
 const TOKEN_ROOT = /^\[data-scnx-theme="[a-z0-9]+(?:-[a-z0-9]+)*"\]\[data-scnx-resolved-mode="(?:light|dark)"\]$/;
 // Recipe classes share the .scnx- namespace, so they cannot match host class names (TDD styled RN1).
 const RECIPE_CLASS = new RegExp(`^\\.scnx-(?:${RECIPES.join("|")})(?:--[\\w-]+)?(?=$|[\\s.:[>+~])`);
@@ -215,8 +285,31 @@ export function checkStylesheet(css, { tokenNames, config = STYLE_CONFIG }) {
       const value = csstree.generate(node.value);
       if (property.startsWith("--")) {
         declared.add(property);
-        if (layer === "tokens" ? !property.startsWith("--ds-") : !runtime[property]) {
-          findings.push(`${selectors[0]}: ad-hoc custom property ${property}; use a --ds-* token, a Tier-3 alias, or a documented runtime property`);
+        if (property.startsWith("--scnx-")) {
+          findings.push(`${selectors[0]}: declares the hook ${property}; a hook is referenced with a fallback, never declared (STD-UIP-TKN-001 2.7.0)`);
+        } else if (layer === "tokens" ? !property.startsWith("--ds-") : !runtime[property]) {
+          findings.push(`${selectors[0]}: ad-hoc custom property ${property}; use a --ds-* token, a --scnx-* hook, or a documented runtime property`);
+        }
+      }
+      // Hooks: referenced with a fallback, and in the namespace of the component the rule styles.
+      csstree.walk(node.value, (child) => {
+        if (child.type !== "Function" || child.name !== "var") return;
+        const { name, fallback } = varParts(child);
+        if (!name?.startsWith("--scnx-")) return;
+        if (!fallback) findings.push(`${selectors[0]}: var(${name}) has no fallback; a hook falls back to a Tier-2 token`);
+        for (const selector of selectors) {
+          const component = componentOf(selector);
+          if (layer !== "components" || !component || !name.startsWith(`--scnx-${component}-`)) {
+            findings.push(`${selector}: hook ${name} is not in the namespace of the component this rule styles`);
+          }
+        }
+      });
+      if (layer === "components" && PRESENTATIONAL_PROPERTY.test(property)) {
+        for (const selector of selectors) {
+          if (!(config.hookedComponents ?? []).includes(componentOf(selector))) continue;
+          for (const literal of designLiterals(node.value)) {
+            if (!excepted("design-literal", selector, property)) findings.push(`${selector}: ${property} holds ${literal}; read a --scnx-* hook that falls back to a Tier-2 token`);
+          }
         }
       }
       if (layer && layer !== "tokens") {
@@ -273,11 +366,9 @@ export function checkStylesheet(css, { tokenNames, config = STYLE_CONFIG }) {
       if (layer === "components" || layer === "recipes") {
         for (const selector of selectors) owners[layer].add(`${selector} { ${node.property} }`);
       }
-      csstree.walk(node.value, (value) => {
-        if (value.type !== "Function" || value.name !== "var") return;
-        const name = value.children.first?.name;
-        if (name && !referenced.has(name)) referenced.set(name, selectors[0]);
-      });
+      for (const name of referencedNames(node.value, [])) {
+        if (!name.startsWith("--scnx-") && !referenced.has(name)) referenced.set(name, selectors[0]);
+      }
     }
   };
 
@@ -348,13 +439,22 @@ const SELF_TESTS = [
   ["spacing offset", `${STATEMENT}\n@layer components { .scnx-a { top: 4rem } }`, "spacing literal 4rem"],
   ["font size", `${STATEMENT}\n@layer components { .scnx-a { font-size: 0.9em } }`, "typography literal 0.9em"],
   ["unitless line height", `${STATEMENT}\n@layer components { .scnx-a { line-height: 1 } }`, "typography literal 1"],
+  // Hooks (STD-UIP-TKN-001 2.7.0, "Hook mechanics"); the last entry marks `.scnx-a` as hooked.
+  ["hooked component", `${STATEMENT}\n@layer components { .scnx-a { border-radius: var(--scnx-a-radius, var(--ds-x)); block-size: max(24px, var(--scnx-a-height, var(--ds-x))); margin-bottom: calc(-1 * var(--scnx-a-border-width, var(--ds-x))); background: var(--scnx-a-background, transparent); padding: 0; inline-size: 100%; display: flex } }`, null, true],
+  ["hook without fallback", `${STATEMENT}\n@layer components { .scnx-a { color: var(--scnx-a-color) } }`, "has no fallback"],
+  ["declared hook", `${STATEMENT}\n@layer components { .scnx-a { --scnx-a-color: var(--ds-x) } }`, "never declared"],
+  ["foreign hook", `${STATEMENT}\n@layer components { .scnx-a { color: var(--scnx-b-color, var(--ds-x)) } }`, "not in the namespace"],
+  ["hook fallback to a missing token", `${STATEMENT}\n@layer components { .scnx-a { color: var(--scnx-a-color, var(--ds-missing)) } }`, "var(--ds-missing)"],
+  ["token outside a hook", `${STATEMENT}\n@layer components { .scnx-a { color: var(--ds-x) } }`, "token --ds-x outside a hook", true],
+  ["literal outside a hook", `${STATEMENT}\n@layer components { .scnx-a { inline-size: 32rem } }`, "inline-size holds 32rem", true],
 ];
 
 function selfTest() {
   const tokenNames = new Set(["--ds-x", "--ds-dimension-z-index-modal"]);
   const failures = [];
-  for (const [label, css, expected] of SELF_TESTS) {
-    const { findings } = checkStylesheet(css, { tokenNames });
+  for (const [label, css, expected, hooked = false] of SELF_TESTS) {
+    const config = hooked ? { ...STYLE_CONFIG, hookedComponents: ["a"] } : STYLE_CONFIG;
+    const { findings } = checkStylesheet(css, { tokenNames, config });
     if (expected === null && findings.length > 0) failures.push(`${label}: expected no findings, got ${findings.join("; ")}`);
     if (expected !== null && !findings.some((f) => f.includes(expected))) failures.push(`${label}: expected "${expected}", got ${findings.join("; ") || "nothing"}`);
   }

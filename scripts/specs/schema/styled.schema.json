@@ -301,6 +301,53 @@
         }
       }
     },
+    "hooks": {
+      "description": "Tier-3 component hooks (ADR-UIP-VIS-001 item 8; STD-UIP-TKN-001 2.7.0, Hook mechanics; TDD styled HK2): every --scnx-* hook the component's stylesheet reads, the properties it sets, the values it falls back to, and the floor that bounds it. Checked against the stylesheet in both directions; a hook is public API.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "hook",
+          "properties",
+          "fallbacks",
+          "floor"
+        ],
+        "properties": {
+          "hook": {
+            "type": "string",
+            "pattern": "^--scnx-[a-z0-9]+(-[a-z0-9]+)*$"
+          },
+          "properties": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z-]+$"
+            }
+          },
+          "fallbacks": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "Each fallback as a binding template: a token as {path}, or a keyword or recorded literal."
+          },
+          "floor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The guarded floor the component enforces around the hook, for example 24px (the target size, WCAG 2.2 SC 2.5.8); null when none."
+          }
+        }
+      }
+    },
     "geometry": {
       "description": "Component geometry (ADR-UIP-VIS-001 item 6; TDD styled CS14): every literal size declaration of the component's stylesheet (control and row heights, widths, icon sizes, aspect ratio), by part, option value, and state. Optional; a specification that has it records all of them.",
       "type": "array",

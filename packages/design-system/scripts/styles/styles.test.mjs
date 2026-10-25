@@ -53,9 +53,9 @@ describe("published stylesheets", () => {
     expect(css).not.toMatch(/outline:\s*none/);
   });
 
-  it("draw a focus-visible outline below the theme root, with a forced-colors system color", () => {
+  it("draw a focus-visible outline below the theme root, at least 2px, with a forced-colors system color", () => {
     const css = read("styles/components.css");
-    expect(css).toContain(`${THEME_ROOT} :focus-visible {\n    outline: var(--ds-dimension-border-width-strong) solid var(--ds-color-primary-border-default-focus);`);
+    expect(css).toContain(`${THEME_ROOT} :focus-visible {\n    outline: max(2px, var(--ds-dimension-border-width-strong)) solid var(--ds-color-primary-border-default-focus);`);
     expect(css).toMatch(/@media \(forced-colors: active\) \{\s+:where\(\[data-scnx-theme\]\[data-scnx-resolved-mode\]\) :focus-visible \{\s+outline-color: Highlight;/);
   });
 
