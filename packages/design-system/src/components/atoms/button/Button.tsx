@@ -28,7 +28,7 @@ export const Button = ({
 }: ButtonProps) => {
   // Destructuring a union loses its discriminant; the props are still one
   // ButtonBase mode, which ButtonBase discriminates at runtime.
-  return <ButtonBase {...(rest as ButtonBaseProps)} className={cx("scnx-btn", className)} data-variant={variant} data-size={size} />;
+  return <ButtonBase {...(rest as ButtonBaseProps)} className={cx("scnx-button", className)} data-variant={variant} data-size={size} />;
 };
 
 Button.displayName = "Button";

@@ -9,7 +9,7 @@ describe("Button", () => {
 
     expect(button.tagName).toBe("BUTTON");
     expect(button).toHaveAttribute("type", "button");
-    expect(button).toHaveClass("scnx-btn");
+    expect(button).toHaveClass("scnx-button");
     expect(button).toHaveAttribute("data-variant", "primary");
     expect(button).toHaveAttribute("data-size", "medium");
   });
@@ -24,7 +24,7 @@ describe("Button", () => {
 
     expect(button).toHaveAttribute("data-variant", "danger");
     expect(button).toHaveAttribute("data-size", "small");
-    expect(button).toHaveClass("scnx-btn", "consumer");
+    expect(button).toHaveClass("scnx-button", "consumer");
   });
 
   it("does not fire onClick when disabled", () => {
@@ -47,6 +47,6 @@ describe("Button", () => {
 
     expect(link.tagName).toBe("A");
     expect(link).toHaveAttribute("href", "/docs");
-    expect(link).toHaveClass("scnx-btn");
+    expect(link).toHaveClass("scnx-button");
   });
 });

@@ -1,13 +1,15 @@
 // Canonical token grammar, transcribed from STD-UIP-TKN-001 section 3 at the
-// ratified v2.6.0 (scnehaux-architecture ef40297), which makes the structural
-// families theme-invariant and the radius order non-decreasing; v2.5.0
+// ratified v2.7.0 (scnehaux-architecture 8e578d0), which replaces 2.6.0's
+// theme-invariant structure (ef40297) with guarded floors, lets a theme map any
+// Tier-2 key, and adds the size relationship control; v2.6.0 made the radius
+// order non-decreasing; v2.5.0
 // (969f5e4) added the spacing relationship control, v2.4.0 (345fa32) the
 // radius intents mark and panel and effect.material, to the grammar of v2.1.0
 // (af6462e) and v2.2.0 (a93e28f). The standard is the single normative
 // definition; change this file only to follow a ratified revision of it.
 // STANDARD names the ratified revision the gate is reported against.
 
-export const STANDARD = { id: "STD-UIP-TKN-001", version: "2.6.0", commit: "ef40297" };
+export const STANDARD = { id: "STD-UIP-TKN-001", version: "2.7.0", commit: "8e578d0" };
 
 const SURFACE_STATES = ["default", "hover", "pressed", "selected", "disabled"];
 
@@ -48,11 +50,13 @@ export const DIMENSION = {
     "control-compact", "control-default", "control-comfortable",
     "section", "page",
   ],
+  // Control block sizes (STD-UIP-TKN-001 2.7.0), paired with small, medium, and large.
+  size: ["control-compact", "control-default", "control-comfortable"],
   radius: ["mark", "element", "control", "container", "panel", "pill"],
   "border-width": ["default", "strong"],
   "z-index": ["base", "dropdown", "sticky", "overlay", "modal", "popover", "tooltip", "toast"],
 };
-const DIMENSION_TYPES = { spacing: "dimension", radius: "dimension", "border-width": "dimension", "z-index": "number" };
+const DIMENSION_TYPES = { spacing: "dimension", size: "dimension", radius: "dimension", "border-width": "dimension", "z-index": "number" };
 
 // Typography & Motion Semantic Families. Heading variants descend and weights
 // ascend in the listed order.
@@ -174,6 +178,7 @@ export function tokenType(cssName, aliases = {}) {
 // canonical path names, otherwise the property for its type.
 const PROPERTY_BY_PATH = [
   [/^dimension\.spacing\./, "margin"],
+  [/^dimension\.size\./, "block-size"],
   [/^dimension\.radius\./, "border-radius"],
   [/^dimension\.border-width\./, "border-width"],
   [/^dimension\.z-index\./, "z-index"],

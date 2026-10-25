@@ -64,7 +64,7 @@ const splitPseudo = (text) => {
 /**
  * The selector grammar of a specification. Each part is a selector of one or
  * more compounds (`.scnx-accordion__item`, `.scnx-tabs [data-part=tab]`,
- * `.scnx-toc__item .scnx-toc__list`); the first part, the root, is one class
+ * `.scnx-table-of-contents__item .scnx-table-of-contents__list`); the first part, the root, is one class
  * `R`. Options and `on: "root"` states add fragments to the root's compound;
  * an option fragment starting with a period is a class on the root element.
  * Other states add fragments to the measured part's last compound, or, with

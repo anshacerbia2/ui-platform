@@ -23,6 +23,7 @@ const COLOR_SCOPES = {
 };
 const DIMENSION_SCOPES = {
   spacing: ["GAP"],
+  size: ["WIDTH_HEIGHT"],
   radius: ["CORNER_RADIUS"],
   "border-width": ["STROKE_FLOAT"],
   "z-index": [],

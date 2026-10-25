@@ -1,6 +1,6 @@
 @use "styles/abstracts/variables" as tokens;
 
-.scnx-toc {
+.scnx-table-of-contents {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -23,7 +23,7 @@
     position: relative;
     
     // Nested lists receive automatic indentation margin
-    .scnx-toc__item & {
+    .scnx-table-of-contents__item & {
       margin-left: tokens.$dimension-spacing-inline-comfortable;
     }
   }
