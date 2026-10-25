@@ -202,6 +202,49 @@ function describe(selector, g) {
 }
 
 /**
+ * Component hooks in a declaration value (TDD styled HK2; STD-UIP-TKN-001
+ * 2.7.0, "Hook mechanics"): every `var(--scnx-*, fallback)` is replaced by its
+ * fallback, so a binding names the value in force when no product sets the
+ * hook, and each hook is returned with its fallback and the floor of a
+ * surrounding `max(<length>, …)`.
+ * @returns {{ value: string, hooks: { hook: string, fallback: string, floor: string | null }[] }}
+ */
+export function unwrapHooks(text) {
+  const hooks = [];
+  let out = "";
+  let i = 0;
+  while (i < text.length) {
+    const at = text.indexOf("var(--scnx-", i);
+    if (at < 0) {
+      out += text.slice(i);
+      break;
+    }
+    out += text.slice(i, at);
+    let depth = 0;
+    let comma = -1;
+    let end = -1;
+    for (let j = at + 3; j < text.length; j++) {
+      if (text[j] === "(") depth++;
+      else if (text[j] === ")" && --depth === 0) {
+        end = j;
+        break;
+      } else if (text[j] === "," && depth === 1 && comma < 0) comma = j;
+    }
+    if (end < 0) {
+      out += text.slice(at);
+      break;
+    }
+    const hook = text.slice(at + 4, comma < 0 ? end : comma).trim();
+    const fallback = comma < 0 ? "" : text.slice(comma + 1, end).trim();
+    const floor = /max\(\s*(-?[\d.]+[a-z%]*)\s*,\s*$/.exec(out)?.[1] ?? null;
+    hooks.push({ hook, fallback, floor });
+    out += fallback;
+    i = end + 1;
+  }
+  return { value: out, hooks };
+}
+
+/**
  * Declarations of the component the bindings must equal, keyed by binding
  * identity, from the published aggregate stylesheet: every token-bearing
  * declaration, and every literal declaration of a property that is bound to a
@@ -212,6 +255,7 @@ export function stylesheetBindings(css, spec) {
   const g = grammar(spec);
   const findings = [];
   const rows = [];
+  const hooks = new Map();
   csstree.walk(csstree.parse(css), {
     visit: "Rule",
     enter(rule) {
@@ -221,8 +265,17 @@ export function stylesheetBindings(css, spec) {
       const declarations = {};
       rule.block.children.forEach((node) => {
         if (node.type !== "Declaration") return;
+        const { value, hooks: used } = unwrapHooks(csstree.generate(node.value));
         delete declarations[node.property];
-        declarations[node.property] = csstree.generate(node.value);
+        // A fallback is kept as css-tree serialized it; normalize so `max(24px,var(--ds-x))` equals a binding's template.
+        declarations[node.property] = used.length > 0 ? normalizeValue(value) : value;
+        for (const { hook, fallback, floor } of used) {
+          const entry = hooks.get(hook) ?? { properties: new Set(), fallbacks: new Set(), floors: new Set() };
+          entry.properties.add(node.property);
+          entry.fallbacks.add(normalizeValue(fallback));
+          entry.floors.add(floor);
+          hooks.set(hook, entry);
+        }
       });
       for (const [selector, d] of described) {
         if (d === null) findings.push(`stylesheet selector ${selector} is not described by the specification's parts, options, and states`);
@@ -258,7 +311,7 @@ export function stylesheetBindings(css, spec) {
       if (!seen.has(index)) findings.push(`state ${state.name} (${key}): the stylesheet has no rule for its selector ${selector}`);
     });
   }
-  return { found, geometry, findings, order };
+  return { found, geometry, findings, order, hooks };
 }
 
 /** Option unions of the public-API report: `name?: "a" | "b";`. */
@@ -325,8 +378,32 @@ export function styledFindings(spec, { css, report, primitive, tokens }) {
     if (declared.has(key)) findings.push(`two bindings for ${key}`);
     declared.set(key, Object.fromEntries(Object.entries(binding.declarations).map(([p, v]) => [p, normalizeValue(toCss(v))])));
   }
-  const { found, geometry, findings: sheet, order } = stylesheetBindings(css, spec);
+  const { found, geometry, findings: sheet, order, hooks } = stylesheetBindings(css, spec);
   findings.push(...sheet, ...orderFindings(spec, order));
+  // HK2: the hooks a component reads are listed, with their fallbacks and floors, in both directions.
+  const listed = new Map((spec.hooks ?? []).map((h) => [h.hook, h]));
+  for (const name of new Set([...listed.keys(), ...hooks.keys()])) {
+    const want = listed.get(name);
+    const have = hooks.get(name);
+    if (!have) {
+      findings.push(`hook ${name} is listed, but the stylesheet does not read it`);
+      continue;
+    }
+    if (!want) {
+      findings.push(`the stylesheet reads hook ${name}, which the specification's hooks do not list`);
+      continue;
+    }
+    const component = spec.anatomy[0].selector.replace(/^\.scnx-/, "");
+    if (!name.startsWith(`--scnx-${component}-`)) findings.push(`hook ${name} is not in the namespace --scnx-${component}-`);
+    for (const token of want.fallbacks.flatMap(tokensIn)) if (!tokens.has(token)) findings.push(`hook ${name} falls back to ${token}, which is not a canonical token name`);
+    const sorted = (values) => [...values].sort().join(" | ");
+    const fallbacks = new Set(want.fallbacks.map((v) => normalizeValue(toCss(v))));
+    if (sorted(fallbacks) !== sorted(have.fallbacks)) findings.push(`hook ${name}: falls back to ${sorted(have.fallbacks)} in the stylesheet, ${sorted(fallbacks)} in the specification`);
+    if (sorted(want.properties) !== sorted(have.properties)) findings.push(`hook ${name}: sets ${sorted(have.properties)} in the stylesheet, ${sorted(want.properties)} in the specification`);
+    const floors = [...have.floors];
+    if (floors.length > 1) findings.push(`hook ${name}: the stylesheet reads it with and without a floor`);
+    else if ((want.floor ?? null) !== floors[0]) findings.push(`hook ${name}: floor ${floors[0] ?? "none"} in the stylesheet, ${want.floor ?? "none"} in the specification`);
+  }
   for (const key of new Set([...declared.keys(), ...found.keys()])) {
     const want = declared.get(key) ?? {};
     const have = found.get(key) ?? {};

@@ -1,54 +1,59 @@
 @use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
 @use "styles/abstracts/button" as *;
 
-// TDD styled IB1, BI1-BI5. A square of Button's heights (ADR-UIP-VIS-001
-// item 6): small 28px with the `element` radius, medium 36px and large 44px
-// with `control`; small stays above the 24px WCAG 2.2 SC 2.5.8 minimum. The
-// variants are Button's; `ghost` takes the subtle neutral icon color, high
-// contrast on hover.
+$c: icon-button;
+
+// TDD styled IB1, BI1-BI5, HK1-HK4. A square of Button's sizes, the control
+// sizes small, medium, and large, with the `element` radius on small and
+// `control` on medium and large; the square keeps the 24px target floor
+// (WCAG 2.2 SC 2.5.8) whatever its hook or token says. The square is the
+// component's anatomy (`aspect-ratio: 1`). The variants are Button's; `ghost`
+// takes the subtle neutral icon color, high contrast on hover. Every value
+// reads a `--scnx-icon-button-*` hook that falls back to its token.
 .scnx-icon-button {
   display: inline-flex;
   flex: none;
   align-items: center;
   justify-content: center;
   aspect-ratio: 1;
-  inline-size: 2.25rem;
-  block-size: 2.25rem;
+  inline-size: target-floor(hook($c, size, $dimension-size-control-default));
+  block-size: target-floor(hook($c, size, $dimension-size-control-default));
   padding: 0;
-  border-radius: $dimension-radius-control;
-  border: $dimension-border-width-default solid transparent;
+  border-radius: hook($c, radius, $dimension-radius-control);
+  border: hook($c, border-width, $dimension-border-width-default) solid transparent;
   cursor: pointer;
   transition-property: background-color, border-color, box-shadow, color, translate;
-  transition-duration: $motion-feedback-duration;
-  transition-timing-function: $motion-feedback-easing;
+  transition-duration: hook($c, transition-duration, $motion-feedback-duration);
+  transition-timing-function: hook($c, transition-timing-function, $motion-feedback-easing);
 
   &[data-size="small"] {
-    inline-size: 1.75rem;
-    block-size: 1.75rem;
-    border-radius: $dimension-radius-element;
+    inline-size: target-floor(hook($c, size, $dimension-size-control-compact));
+    block-size: target-floor(hook($c, size, $dimension-size-control-compact));
+    border-radius: hook($c, radius, $dimension-radius-element);
   }
 
   &[data-size="large"] {
-    inline-size: 2.75rem;
-    block-size: 2.75rem;
+    inline-size: target-floor(hook($c, size, $dimension-size-control-comfortable));
+    block-size: target-floor(hook($c, size, $dimension-size-control-comfortable));
   }
 
-  @include button-variants;
+  @include button-variants($c);
 
   &[data-variant="ghost"] {
-    color: var(--ds-color-neutral-icon-subtle-default);
+    color: hook($c, color, var(--ds-color-neutral-icon-subtle-default));
 
     &:hover:not(:disabled, [data-disabled]) {
-      color: var(--ds-color-neutral-icon-subtle-hover);
+      color: hook($c, color-hover, var(--ds-color-neutral-icon-subtle-hover));
     }
 
     &:active:not(:disabled, [data-disabled]) {
-      color: var(--ds-color-neutral-icon-subtle-hover);
+      color: hook($c, color-pressed, var(--ds-color-neutral-icon-subtle-hover));
     }
 
     &:disabled,
     &[data-disabled] {
-      color: var(--ds-color-neutral-icon-default-disabled);
+      color: hook($c, color-disabled, var(--ds-color-neutral-icon-default-disabled));
     }
   }
 }

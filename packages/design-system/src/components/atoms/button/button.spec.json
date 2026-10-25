@@ -84,7 +84,8 @@
         "letter-spacing": "{typography.label.default.letter-spacing}",
         "font-weight": "{typography.weight.semibold}",
         "transition-duration": "{motion.feedback.duration}",
-        "transition-timing-function": "{motion.feedback.easing}"
+        "transition-timing-function": "{motion.feedback.easing}",
+        "block-size": "max(24px, {dimension.size.control-default})"
       }
     },
     {
@@ -96,7 +97,8 @@
         "gap": "{dimension.spacing.inline-compact}",
         "padding-inline": "{dimension.spacing.control-compact}",
         "border-radius": "{dimension.radius.element}",
-        "font-size": "{typography.label.small.font-size}"
+        "font-size": "{typography.label.small.font-size}",
+        "block-size": "max(24px, {dimension.size.control-compact})"
       }
     },
     {
@@ -106,7 +108,8 @@
       },
       "declarations": {
         "padding-inline": "{dimension.spacing.control-comfortable}",
-        "font-size": "{typography.body.default.font-size}"
+        "font-size": "{typography.body.default.font-size}",
+        "block-size": "max(24px, {dimension.size.control-comfortable})"
       }
     },
     {
@@ -281,30 +284,270 @@
       }
     }
   ],
-  "geometry": [
+  "hooks": [
     {
-      "part": "root",
-      "declarations": {
-        "block-size": "2.25rem"
-      }
+      "hook": "--scnx-button-background",
+      "properties": [
+        "background"
+      ],
+      "fallbacks": [
+        "transparent",
+        "{color.danger.surface.solid.default}",
+        "{color.neutral.surface.raised.default}",
+        "{color.neutral.surface.solid.default}"
+      ],
+      "floor": null
     },
     {
-      "part": "root",
-      "option": {
-        "size": "small"
-      },
-      "declarations": {
-        "block-size": "1.75rem"
-      }
+      "hook": "--scnx-button-background-disabled",
+      "properties": [
+        "background"
+      ],
+      "fallbacks": [
+        "transparent",
+        "{color.danger.surface.solid.disabled}",
+        "{color.neutral.surface.default.disabled}",
+        "{color.neutral.surface.solid.disabled}"
+      ],
+      "floor": null
     },
     {
-      "part": "root",
-      "option": {
-        "size": "large"
-      },
-      "declarations": {
-        "block-size": "2.75rem"
-      }
+      "hook": "--scnx-button-background-hover",
+      "properties": [
+        "background"
+      ],
+      "fallbacks": [
+        "{color.danger.surface.solid.hover}",
+        "{color.neutral.surface.solid.hover}",
+        "{color.neutral.surface.subtle.hover}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-button-background-pressed",
+      "properties": [
+        "background"
+      ],
+      "fallbacks": [
+        "{color.danger.surface.solid.pressed}",
+        "{color.neutral.surface.solid.pressed}",
+        "{color.neutral.surface.subtle.pressed}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-button-border-width",
+      "properties": [
+        "border"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-button-color",
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.danger.text.contrast.default}",
+        "{color.neutral.text.contrast.default}",
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-button-color-disabled",
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.danger.text.contrast.disabled}",
+        "{color.neutral.text.contrast.disabled}",
+        "{color.neutral.text.default.disabled}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-button-color-hover",
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.danger.text.contrast.hover}",
+        "{color.neutral.text.contrast.hover}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-button-color-pressed",
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.danger.text.contrast.default}",
+        "{color.neutral.text.contrast.default}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-button-font-family",
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.label.default.font-family}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-button-font-size",
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.body.default.font-size}",
+        "{typography.label.default.font-size}",
+        "{typography.label.small.font-size}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-button-font-weight",
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.weight.semibold}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-button-gap",
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-compact}",
+        "{dimension.spacing.inline-default}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-button-height",
+      "properties": [
+        "block-size"
+      ],
+      "fallbacks": [
+        "{dimension.size.control-comfortable}",
+        "{dimension.size.control-compact}",
+        "{dimension.size.control-default}"
+      ],
+      "floor": "24px"
+    },
+    {
+      "hook": "--scnx-button-letter-spacing",
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.label.default.letter-spacing}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-button-line-height",
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.label.default.line-height}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-button-padding-inline",
+      "properties": [
+        "padding-inline"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.control-comfortable}",
+        "{dimension.spacing.control-compact}",
+        "{dimension.spacing.control-default}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-button-radius",
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.control}",
+        "{dimension.radius.element}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-button-shadow",
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "{effect.material.raised}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-button-shadow-disabled",
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "{effect.material.flat}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-button-shadow-pressed",
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "{effect.material.flat}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-button-transition-duration",
+      "properties": [
+        "transition-duration"
+      ],
+      "fallbacks": [
+        "{motion.feedback.duration}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-button-transition-timing-function",
+      "properties": [
+        "transition-timing-function"
+      ],
+      "fallbacks": [
+        "{motion.feedback.easing}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-button-translate-pressed",
+      "properties": [
+        "translate"
+      ],
+      "fallbacks": [
+        "0 1px"
+      ],
+      "floor": null
     }
   ]
 }

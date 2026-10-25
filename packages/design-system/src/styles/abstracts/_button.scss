@@ -1,96 +1,98 @@
 @use "variables" as *;
+@use "hook" as *;
 
-// Shared by Button and IconButton (TDD styled BI1-BI4, ADR-UIP-VIS-001
-// items 1-3): the variant is the color axis. `primary` is ink, the neutral
-// solid under its contrast label; `secondary` is the raised material;
+// Shared by Button and IconButton (TDD styled BI1-BI4, HK1-HK4; ADR-UIP-VIS-001
+// items 1-3 and 8): the variant is the color axis. `primary` is ink, the
+// neutral solid under its contrast label; `secondary` is the raised material;
 // `ghost` has no fill at rest; `danger` is the danger solid, for a
 // destructive confirmation. Disabled is a token pair at full opacity, and
 // hover and pressed exclude both disabled forms, so a disabled control does
-// not react.
-@mixin button-variants {
+// not react. Every value reads a hook of `$c` (the component) that falls back
+// to its token; a hook names the property and the state, not the variant, so
+// a hook set on a scope applies to whichever variant that scope holds.
+@mixin button-variants($c) {
   &[data-variant="primary"] {
-    background: var(--ds-color-neutral-surface-solid-default);
-    color: var(--ds-color-neutral-text-contrast-default);
+    background: hook($c, background, var(--ds-color-neutral-surface-solid-default));
+    color: hook($c, color, var(--ds-color-neutral-text-contrast-default));
 
     &:hover:not(:disabled, [data-disabled]) {
-      background: var(--ds-color-neutral-surface-solid-hover);
-      color: var(--ds-color-neutral-text-contrast-hover);
+      background: hook($c, background-hover, var(--ds-color-neutral-surface-solid-hover));
+      color: hook($c, color-hover, var(--ds-color-neutral-text-contrast-hover));
     }
 
     &:active:not(:disabled, [data-disabled]) {
-      background: var(--ds-color-neutral-surface-solid-pressed);
-      color: var(--ds-color-neutral-text-contrast-default);
+      background: hook($c, background-pressed, var(--ds-color-neutral-surface-solid-pressed));
+      color: hook($c, color-pressed, var(--ds-color-neutral-text-contrast-default));
     }
 
     &:disabled,
     &[data-disabled] {
-      background: var(--ds-color-neutral-surface-solid-disabled);
-      color: var(--ds-color-neutral-text-contrast-disabled);
+      background: hook($c, background-disabled, var(--ds-color-neutral-surface-solid-disabled));
+      color: hook($c, color-disabled, var(--ds-color-neutral-text-contrast-disabled));
     }
   }
 
-  // The raised material: its fill, and its shadow token, which composes the
-  // ring, the contact, and the ambient shadow. Pressed sinks to the flat
-  // material (the ring alone); disabled keeps the ring.
+  // The raised material: its fill, and its shadow token. Pressed sinks to the
+  // flat material; disabled keeps it.
   &[data-variant="secondary"] {
-    background: var(--ds-color-neutral-surface-raised-default);
-    color: var(--ds-color-neutral-text-default-default);
-    box-shadow: var(--ds-effect-material-raised);
+    background: hook($c, background, var(--ds-color-neutral-surface-raised-default));
+    color: hook($c, color, var(--ds-color-neutral-text-default-default));
+    box-shadow: hook($c, shadow, var(--ds-effect-material-raised));
 
     &:hover:not(:disabled, [data-disabled]) {
-      background: var(--ds-color-neutral-surface-subtle-hover);
+      background: hook($c, background-hover, var(--ds-color-neutral-surface-subtle-hover));
     }
 
     &:active:not(:disabled, [data-disabled]) {
-      background: var(--ds-color-neutral-surface-subtle-pressed);
-      box-shadow: var(--ds-effect-material-flat);
+      background: hook($c, background-pressed, var(--ds-color-neutral-surface-subtle-pressed));
+      box-shadow: hook($c, shadow-pressed, var(--ds-effect-material-flat));
     }
 
     &:disabled,
     &[data-disabled] {
-      background: var(--ds-color-neutral-surface-default-disabled);
-      color: var(--ds-color-neutral-text-default-disabled);
-      box-shadow: var(--ds-effect-material-flat);
+      background: hook($c, background-disabled, var(--ds-color-neutral-surface-default-disabled));
+      color: hook($c, color-disabled, var(--ds-color-neutral-text-default-disabled));
+      box-shadow: hook($c, shadow-disabled, var(--ds-effect-material-flat));
     }
   }
 
   &[data-variant="ghost"] {
-    background: transparent;
-    color: var(--ds-color-neutral-text-default-default);
+    background: hook($c, background, transparent);
+    color: hook($c, color, var(--ds-color-neutral-text-default-default));
 
     &:hover:not(:disabled, [data-disabled]) {
-      background: var(--ds-color-neutral-surface-subtle-hover);
+      background: hook($c, background-hover, var(--ds-color-neutral-surface-subtle-hover));
     }
 
     &:active:not(:disabled, [data-disabled]) {
-      background: var(--ds-color-neutral-surface-subtle-pressed);
+      background: hook($c, background-pressed, var(--ds-color-neutral-surface-subtle-pressed));
     }
 
     &:disabled,
     &[data-disabled] {
-      background: transparent;
-      color: var(--ds-color-neutral-text-default-disabled);
+      background: hook($c, background-disabled, transparent);
+      color: hook($c, color-disabled, var(--ds-color-neutral-text-default-disabled));
     }
   }
 
   &[data-variant="danger"] {
-    background: var(--ds-color-danger-surface-solid-default);
-    color: var(--ds-color-danger-text-contrast-default);
+    background: hook($c, background, var(--ds-color-danger-surface-solid-default));
+    color: hook($c, color, var(--ds-color-danger-text-contrast-default));
 
     &:hover:not(:disabled, [data-disabled]) {
-      background: var(--ds-color-danger-surface-solid-hover);
-      color: var(--ds-color-danger-text-contrast-hover);
+      background: hook($c, background-hover, var(--ds-color-danger-surface-solid-hover));
+      color: hook($c, color-hover, var(--ds-color-danger-text-contrast-hover));
     }
 
     &:active:not(:disabled, [data-disabled]) {
-      background: var(--ds-color-danger-surface-solid-pressed);
-      color: var(--ds-color-danger-text-contrast-default);
+      background: hook($c, background-pressed, var(--ds-color-danger-surface-solid-pressed));
+      color: hook($c, color-pressed, var(--ds-color-danger-text-contrast-default));
     }
 
     &:disabled,
     &[data-disabled] {
-      background: var(--ds-color-danger-surface-solid-disabled);
-      color: var(--ds-color-danger-text-contrast-disabled);
+      background: hook($c, background-disabled, var(--ds-color-danger-surface-solid-disabled));
+      color: hook($c, color-disabled, var(--ds-color-danger-text-contrast-disabled));
     }
   }
 
@@ -99,11 +101,12 @@
     cursor: not-allowed;
   }
 
-  // A pressed control moves 1px into the page (ADR-UIP-VIS-001 design
-  // reference), unless reduced motion is requested.
+  // A pressed control sinks 1px into the page (ADR-UIP-VIS-001), and only
+  // when the reader allows motion: the reduced-motion floor holds whatever
+  // the hook says.
   @media (prefers-reduced-motion: no-preference) {
     &:active:not(:disabled, [data-disabled]) {
-      translate: 0 1px;
+      translate: hook($c, translate-pressed, 0 1px);
     }
   }
 }

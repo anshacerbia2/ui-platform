@@ -1,47 +1,52 @@
 @use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
 @use "styles/abstracts/button" as *;
 
-// TDD styled BI1-BI4. Variant is the color axis (styles/abstracts/_button.scss);
-// size is the geometry axis. Heights are component geometry, not tokens
-// (ADR-UIP-VIS-001 item 6): small 28px with the `element` radius, medium 36px
-// and large 44px with `control`. Inline padding is the control spacing of the
-// size (STD-UIP-TKN-001 2.5.0). The transparent border keeps every variant the
-// same size and draws the boundary in forced-colors mode, where backgrounds
-// and shadows are removed.
+$c: button;
+
+// TDD styled BI1-BI4, HK1-HK4. Variant is the color axis
+// (styles/abstracts/_button.scss); size is the geometry axis: the control
+// size and the control spacing of small, medium, and large
+// (STD-UIP-TKN-001 2.7.0), with the `element` radius on small and `control`
+// on medium and large. Every value reads a `--scnx-button-*` hook that falls
+// back to its token; the block size keeps the 24px target floor whatever the
+// hook or token says. The transparent border keeps every variant the same
+// size and draws the boundary in forced-colors mode, where backgrounds and
+// shadows are removed.
 .scnx-button {
   display: inline-flex;
   flex: none;
   align-items: center;
   justify-content: center;
-  gap: $dimension-spacing-inline-default;
-  block-size: 2.25rem;
+  gap: hook($c, gap, $dimension-spacing-inline-default);
+  block-size: target-floor(hook($c, height, $dimension-size-control-default));
   padding-block: 0;
-  padding-inline: $dimension-spacing-control-default;
-  border: $dimension-border-width-default solid transparent;
-  border-radius: $dimension-radius-control;
-  @include typography(label, default);
-  font-weight: $typography-weight-semibold;
+  padding-inline: hook($c, padding-inline, $dimension-spacing-control-default);
+  border: hook($c, border-width, $dimension-border-width-default) solid transparent;
+  border-radius: hook($c, radius, $dimension-radius-control);
+  @include hooked-typography($c, label, default, $except: (font-weight));
+  font-weight: hook($c, font-weight, $typography-weight-semibold);
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
   user-select: none;
   transition-property: background-color, border-color, box-shadow, color, translate;
-  transition-duration: $motion-feedback-duration;
-  transition-timing-function: $motion-feedback-easing;
+  transition-duration: hook($c, transition-duration, $motion-feedback-duration);
+  transition-timing-function: hook($c, transition-timing-function, $motion-feedback-easing);
 
   &[data-size="small"] {
-    gap: $dimension-spacing-inline-compact;
-    block-size: 1.75rem;
-    padding-inline: $dimension-spacing-control-compact;
-    border-radius: $dimension-radius-element;
-    font-size: var(--ds-typography-label-small-font-size);
+    gap: hook($c, gap, $dimension-spacing-inline-compact);
+    block-size: target-floor(hook($c, height, $dimension-size-control-compact));
+    padding-inline: hook($c, padding-inline, $dimension-spacing-control-compact);
+    border-radius: hook($c, radius, $dimension-radius-element);
+    font-size: hook($c, font-size, var(--ds-typography-label-small-font-size));
   }
 
   &[data-size="large"] {
-    block-size: 2.75rem;
-    padding-inline: $dimension-spacing-control-comfortable;
-    font-size: var(--ds-typography-body-default-font-size);
+    block-size: target-floor(hook($c, height, $dimension-size-control-comfortable));
+    padding-inline: hook($c, padding-inline, $dimension-spacing-control-comfortable);
+    font-size: hook($c, font-size, var(--ds-typography-body-default-font-size));
   }
 
-  @include button-variants;
+  @include button-variants($c);
 }

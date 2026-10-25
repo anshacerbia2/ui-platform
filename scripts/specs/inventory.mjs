@@ -7,7 +7,7 @@
 
 import fs from "node:fs";
 import { INVENTORY, inventoryFrom, loadSpecs, serialize, specFindings } from "./specs.mjs";
-import { contrastPairs, selectorFor, styledFindings } from "./styled.mjs";
+import { contrastPairs, selectorFor, styledFindings, unwrapHooks } from "./styled.mjs";
 
 function selfTest() {
   const ok = Object.assign(() => true, { errors: [] });
@@ -107,6 +107,16 @@ function selfTest() {
     [styledFindings(marked, context({ css: markedCss() })).length, 0],
     [styledFindings(marked, context({ css: markedCss(".scnx-x>[data-part=item]:hover::after{background:var(--ds-color-bg)}") })).length, 1],
     [styledFindings(marked, context({ css: ".scnx-x>[data-part=item]::after{inline-size:var(--ds-dimension-gap)}" })).length, 1],
+  );
+  // HK2: a hook unwraps to its fallback for the bindings, and the specification lists it in both directions.
+  const hooked = { ...spec, hooks: [{ hook: "--scnx-x-gap", properties: ["gap"], fallbacks: ["{dimension.gap}"], floor: null }] };
+  const hookedCss = (gap = "var(--scnx-x-gap,var(--ds-dimension-gap))") => css().replace("gap:var(--ds-dimension-gap)", `gap:${gap}`);
+  cases.push(
+    [JSON.stringify(unwrapHooks("max(24px, var(--scnx-x-height, var(--ds-y)))")), JSON.stringify({ value: "max(24px, var(--ds-y))", hooks: [{ hook: "--scnx-x-height", fallback: "var(--ds-y)", floor: "24px" }] })],
+    [styledFindings(hooked, context({ css: hookedCss() })).length, 0],
+    [styledFindings(spec, context({ css: hookedCss() })).length, 1],
+    [styledFindings(hooked, context({ css: css() })).length, 1],
+    [styledFindings(hooked, context({ css: hookedCss("max(24px,var(--scnx-x-gap,var(--ds-dimension-gap)))") })).length > 0, true],
   );
   const failed = cases.map(([actual, want], i) => [i, actual, want]).filter(([, actual, want]) => actual !== want);
   if (failed.length > 0) {

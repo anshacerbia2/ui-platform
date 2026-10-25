@@ -1,0 +1,36 @@
+@use "sass:list";
+@use "sass:map";
+@use "variables" as *;
+
+// Tier-3 component hooks (ADR-UIP-VIS-001 item 8; STD-UIP-TKN-001 2.7.0,
+// "Hook mechanics"). A hook is `--scnx-{component}-{part?}-{property}`,
+// referenced with its Tier-2 fallback and never declared, so it holds no
+// value until a product sets it on a scope; it is never registered with
+// @property, which would stop the fallback from applying. Every hook a
+// component reads is listed in its specification (`hooks`).
+
+/// `var(--scnx-{component}-{name}, {fallback})`.
+@function hook($component, $name, $fallback) {
+  @return var(--scnx-#{$component}-#{$name}, #{$fallback});
+}
+
+/// The target-size floor (WCAG 2.2 SC 2.5.8): an interactive box is at least
+/// 24px, whatever its hook or token says.
+@function target-floor($value) {
+  @return max(24px, #{$value});
+}
+
+/// A typography composite with one hook per member:
+/// `--scnx-{component}-{prefix-}font-family` and so on. `$except` leaves out
+/// members the rule declares itself, so a hook has one fallback per rule.
+@mixin hooked-typography($component, $context, $variant, $prefix: "", $except: ()) {
+  $composite: map.get($typography, "#{$context}-#{$variant}");
+  @if not $composite { @error "Unknown typography composite #{$context}.#{$variant}"; }
+  @each $member, $value in $composite {
+    @if not list.index($except, $member) {
+      $name: $member;
+      @if $prefix != "" { $name: "#{$prefix}-#{$member}"; }
+      #{$member}: hook($component, $name, $value);
+    }
+  }
+}

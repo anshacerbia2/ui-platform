@@ -78,7 +78,9 @@
         "border-radius": "{dimension.radius.control}",
         "border": "{dimension.border-width.default} solid transparent",
         "transition-duration": "{motion.feedback.duration}",
-        "transition-timing-function": "{motion.feedback.easing}"
+        "transition-timing-function": "{motion.feedback.easing}",
+        "inline-size": "max(24px, {dimension.size.control-default})",
+        "block-size": "max(24px, {dimension.size.control-default})"
       }
     },
     {
@@ -87,7 +89,9 @@
         "size": "small"
       },
       "declarations": {
-        "border-radius": "{dimension.radius.element}"
+        "border-radius": "{dimension.radius.element}",
+        "inline-size": "max(24px, {dimension.size.control-compact})",
+        "block-size": "max(24px, {dimension.size.control-compact})"
       }
     },
     {
@@ -262,26 +266,6 @@
         "background": "{color.danger.surface.solid.disabled}",
         "color": "{color.danger.text.contrast.disabled}"
       }
-    }
-  ],
-  "geometry": [
-    {
-      "part": "root",
-      "declarations": {
-        "aspect-ratio": "1",
-        "inline-size": "2.25rem",
-        "block-size": "2.25rem"
-      }
-    },
-    {
-      "part": "root",
-      "option": {
-        "size": "small"
-      },
-      "declarations": {
-        "inline-size": "1.75rem",
-        "block-size": "1.75rem"
-      }
     },
     {
       "part": "root",
@@ -289,9 +273,213 @@
         "size": "large"
       },
       "declarations": {
-        "inline-size": "2.75rem",
-        "block-size": "2.75rem"
+        "inline-size": "max(24px, {dimension.size.control-comfortable})",
+        "block-size": "max(24px, {dimension.size.control-comfortable})"
       }
+    }
+  ],
+  "geometry": [
+    {
+      "part": "root",
+      "declarations": {
+        "aspect-ratio": "1"
+      }
+    }
+  ],
+  "hooks": [
+    {
+      "hook": "--scnx-icon-button-background",
+      "properties": [
+        "background"
+      ],
+      "fallbacks": [
+        "transparent",
+        "{color.danger.surface.solid.default}",
+        "{color.neutral.surface.raised.default}",
+        "{color.neutral.surface.solid.default}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-icon-button-background-disabled",
+      "properties": [
+        "background"
+      ],
+      "fallbacks": [
+        "transparent",
+        "{color.danger.surface.solid.disabled}",
+        "{color.neutral.surface.default.disabled}",
+        "{color.neutral.surface.solid.disabled}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-icon-button-background-hover",
+      "properties": [
+        "background"
+      ],
+      "fallbacks": [
+        "{color.danger.surface.solid.hover}",
+        "{color.neutral.surface.solid.hover}",
+        "{color.neutral.surface.subtle.hover}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-icon-button-background-pressed",
+      "properties": [
+        "background"
+      ],
+      "fallbacks": [
+        "{color.danger.surface.solid.pressed}",
+        "{color.neutral.surface.solid.pressed}",
+        "{color.neutral.surface.subtle.pressed}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-icon-button-border-width",
+      "properties": [
+        "border"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-icon-button-color",
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.danger.text.contrast.default}",
+        "{color.neutral.icon.subtle.default}",
+        "{color.neutral.text.contrast.default}",
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-icon-button-color-disabled",
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.danger.text.contrast.disabled}",
+        "{color.neutral.icon.default.disabled}",
+        "{color.neutral.text.contrast.disabled}",
+        "{color.neutral.text.default.disabled}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-icon-button-color-hover",
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.danger.text.contrast.hover}",
+        "{color.neutral.icon.subtle.hover}",
+        "{color.neutral.text.contrast.hover}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-icon-button-color-pressed",
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.danger.text.contrast.default}",
+        "{color.neutral.icon.subtle.hover}",
+        "{color.neutral.text.contrast.default}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-icon-button-radius",
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.control}",
+        "{dimension.radius.element}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-icon-button-shadow",
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "{effect.material.raised}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-icon-button-shadow-disabled",
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "{effect.material.flat}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-icon-button-shadow-pressed",
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "{effect.material.flat}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-icon-button-size",
+      "properties": [
+        "block-size",
+        "inline-size"
+      ],
+      "fallbacks": [
+        "{dimension.size.control-comfortable}",
+        "{dimension.size.control-compact}",
+        "{dimension.size.control-default}"
+      ],
+      "floor": "24px"
+    },
+    {
+      "hook": "--scnx-icon-button-transition-duration",
+      "properties": [
+        "transition-duration"
+      ],
+      "fallbacks": [
+        "{motion.feedback.duration}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-icon-button-transition-timing-function",
+      "properties": [
+        "transition-timing-function"
+      ],
+      "fallbacks": [
+        "{motion.feedback.easing}"
+      ],
+      "floor": null
+    },
+    {
+      "hook": "--scnx-icon-button-translate-pressed",
+      "properties": [
+        "translate"
+      ],
+      "fallbacks": [
+        "0 1px"
+      ],
+      "floor": null
     }
   ]
 }
