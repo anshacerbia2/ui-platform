@@ -69,6 +69,16 @@
       "removal": "The toggle moves inside the sidebar"
     },
     {
+      "rule": "z-index",
+      "selector": ".scnx-tabs [data-part=tab]::before",
+      "properties": [
+        "z-index"
+      ],
+      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-UIP-TKN-001 section 3, Dimension vocabulary",
+      "reason": "Paint order inside the tab's own stacking context (isolation: isolate): -1 draws the hover pill behind the label; it is not a stacking layer of the page",
+      "removal": "None; this is local paint order, not a layer"
+    },
+    {
       "rule": "spacing-literal",
       "selector": ".scnx-code",
       "properties": [

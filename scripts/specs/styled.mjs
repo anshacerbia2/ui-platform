@@ -52,6 +52,16 @@ export function compounds(selector) {
 const continuesName = (rest) => /^[a-z0-9_-]/i.test(rest);
 
 /**
+ * A compound and its pseudo-element (TDD styled CS15): a state precedes the
+ * pseudo-element, so `[data-part=tab]::before` in the hover state is
+ * `[data-part=tab]:hover::before`.
+ */
+const splitPseudo = (text) => {
+  const at = text.indexOf("::");
+  return at < 0 ? [text, ""] : [text.slice(0, at), text.slice(at)];
+};
+
+/**
  * The selector grammar of a specification. Each part is a selector of one or
  * more compounds (`.scnx-accordion__item`, `.scnx-tabs [data-part=tab]`,
  * `.scnx-toc__item .scnx-toc__list`); the first part, the root, is one class
@@ -126,7 +136,8 @@ export function selectorFor(spec, { part, option = {}, state = "", alternative =
   let prefix = "";
   if (c[0] === g.R) c[0] = `${rootText}${c[0].slice(g.R.length)}`;
   else if (rootFragments.length > 0) prefix = `${rootText} `;
-  c[c.length - 1] += ownText;
+  const [host, pseudo] = splitPseudo(c[c.length - 1]);
+  c[c.length - 1] = `${host}${ownText}${pseudo}`;
   const stateDef = spec.states.find((s) => s.name === state);
   if (stateDef && stateDef.on && stateDef.on !== "root" && stateDef.on !== "part") {
     const anchor = g.parts.find((p) => p.name === stateDef.on);
@@ -155,7 +166,15 @@ function describe(selector, g) {
     let ok = true;
     for (let j = 0; j < m && ok; j++) {
       let text = s.compounds[start + j];
-      const base = target.compounds[j];
+      let base = target.compounds[j];
+      if (j === m - 1) {
+        const [host, pseudo] = splitPseudo(base);
+        if (pseudo && !text.endsWith(pseudo)) {
+          ok = false;
+          break;
+        }
+        [base, text] = [host, pseudo ? text.slice(0, -pseudo.length) : text];
+      }
       if (base === g.R) text = rootCompound(text, g) ?? "";
       if (!text.startsWith(base) || continuesName(text.slice(base.length))) {
         ok = false;

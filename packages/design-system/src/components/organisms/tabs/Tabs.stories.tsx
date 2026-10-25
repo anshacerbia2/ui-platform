@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
+import { Badge } from "../../atoms/badge";
 import { Tabs } from "./Tabs";
 import type { TabsProps } from "./types";
 
@@ -34,6 +35,7 @@ export const Automatic: Story = {
   render: () => <Employee />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    await expect(canvas.getByRole("tab", { name: "Pay" }).getBoundingClientRect().height).toBe(36);
     await userEvent.tab();
     await expect(canvas.getByRole("tab", { name: "Pay" })).toHaveFocus();
     await userEvent.keyboard("{ArrowRight}");
@@ -84,5 +86,26 @@ export const Vertical: Story = {
     await userEvent.tab();
     await userEvent.keyboard("{ArrowDown}");
     await expect(canvas.getByRole("tab", { name: "Leave" })).toHaveFocus();
+  },
+};
+
+/** A count is a small Badge inside the tab; the gap sets it off from the label. */
+export const WithCounts: Story = {
+  render: () => (
+    <Tabs defaultValue="open">
+      <Tabs.List aria-label="Requests">
+        <Tabs.Tab value="open">
+          Open <Badge size="small">12</Badge>
+        </Tabs.Tab>
+        <Tabs.Tab value="approved">
+          Approved <Badge size="small">48</Badge>
+        </Tabs.Tab>
+      </Tabs.List>
+      <Tabs.Panel value="open">12 requests wait for review.</Tabs.Panel>
+      <Tabs.Panel value="approved">48 requests were approved this month.</Tabs.Panel>
+    </Tabs>
+  ),
+  play: async ({ canvasElement }) => {
+    await expect(within(canvasElement).getByRole("tab", { name: "Open 12" })).toHaveAttribute("aria-selected", "true");
   },
 };
