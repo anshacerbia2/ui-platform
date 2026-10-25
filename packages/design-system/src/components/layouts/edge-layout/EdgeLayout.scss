@@ -1,30 +1,36 @@
 @use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
 @use "styles/abstracts/geometry";
 
-.scnx-edge-layout {
+$c: edge-layout;
 
+// TDD styled HK1-HK7: every value reads a `--scnx-edge-layout-*` hook. The
+// header height is component geometry (styles/abstracts/_geometry.scss): the
+// header row, the header, and the sticky sidebar's offset read one hook, so
+// they move together.
+.scnx-edge-layout {
   display: grid;
   grid-template-columns: min-content 1fr;
-  grid-template-rows: geometry.$navbar-height 1fr;
+  grid-template-rows: hook($c, header-height, geometry.$navbar-height) 1fr;
   grid-template-areas:
     "header header"
     "sidebar content";
 
   min-height: 100vh;
   width: 100%;
-  border-left: $dimension-border-width-default solid $color-border-default;
-  border-right: $dimension-border-width-default solid $color-border-default;
+  border-left: hook($c, border-width, $dimension-border-width-default) solid hook($c, border-color, $color-border-default);
+  border-right: hook($c, border-width, $dimension-border-width-default) solid hook($c, border-color, $color-border-default);
 
   &__sidebar {
     grid-area: sidebar;
     position: sticky;
-    top: geometry.$navbar-height;
-    height: calc(100vh - geometry.$navbar-height);
+    top: hook($c, header-height, geometry.$navbar-height);
+    height: calc(100vh - #{hook($c, header-height, geometry.$navbar-height)});
     z-index: $dimension-z-index-sticky;
 
     .scnx-sidebar {
       height: 100%;
-      border-right: $dimension-border-width-default solid $color-border-default;
+      border-right: hook($c, border-width, $dimension-border-width-default) solid hook($c, border-color, $color-border-default);
     }
   }
 
@@ -33,13 +39,13 @@
     top: 0;
     grid-area: header;
     z-index: $dimension-z-index-sticky;
-    height: geometry.$navbar-height;
+    height: hook($c, header-height, geometry.$navbar-height);
 
     .scnx-navbar {
-      border-bottom: $dimension-border-width-default solid $color-border-default;
+      border-bottom: hook($c, border-width, $dimension-border-width-default) solid hook($c, border-color, $color-border-default);
 
       .scnx-navbar__start {
-        border-right: $dimension-border-width-default solid $color-border-default; 
+        border-right: hook($c, border-width, $dimension-border-width-default) solid hook($c, border-color, $color-border-default);
       }
     }
   }

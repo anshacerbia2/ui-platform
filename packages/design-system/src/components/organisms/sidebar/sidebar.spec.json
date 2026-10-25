@@ -3,5 +3,827 @@
   "kind": "entry",
   "entry": "@scnx/system/components/sidebar",
   "entryKind": "interactive",
-  "stability": "candidate"
+  "stability": "candidate",
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-sidebar-item-background-hover: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-sidebar-background",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Sidebar.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-badge-background",
+      "parts": [
+        "badge"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "color-mix(in oklch,{color.neutral.surface.default.default} 10%,transparent)"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Sidebar's badge part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-collapsed-width",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "min-width",
+        "width"
+      ],
+      "fallbacks": [
+        "80px"
+      ],
+      "floor": null,
+      "purpose": "The min-width and width of Sidebar.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-color",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Sidebar.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-feedback-duration",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.feedback.duration}"
+      ],
+      "floor": null,
+      "purpose": "The transition of Sidebar's item part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-feedback-timing-function",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.feedback.easing}"
+      ],
+      "floor": null,
+      "purpose": "The transition of Sidebar's item part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-flyout-background",
+      "parts": [
+        "flyout"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Sidebar's flyout part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-flyout-color",
+      "parts": [
+        "flyout"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Sidebar's flyout part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-flyout-indent",
+      "parts": [
+        "group"
+      ],
+      "properties": [
+        "padding-left"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-compact}"
+      ],
+      "floor": null,
+      "purpose": "The padding-left of Sidebar's group part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-flyout-item-background",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "color-mix(in oklch,{color.neutral.surface.default.default} 10%,transparent)"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Sidebar's item part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-flyout-offset",
+      "parts": [
+        "flyout"
+      ],
+      "properties": [
+        "margin-left"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-compact}"
+      ],
+      "floor": null,
+      "purpose": "The margin-left of Sidebar's flyout part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-flyout-padding-block",
+      "parts": [
+        "flyout"
+      ],
+      "properties": [
+        "padding-block"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-default}"
+      ],
+      "floor": null,
+      "purpose": "The padding-block of Sidebar's flyout part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-flyout-padding-inline",
+      "parts": [
+        "flyout"
+      ],
+      "properties": [
+        "padding-inline"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-default}"
+      ],
+      "floor": null,
+      "purpose": "The padding-inline of Sidebar's flyout part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-flyout-radius",
+      "parts": [
+        "flyout",
+        "group"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.container}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Sidebar's flyout and group part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-flyout-shadow",
+      "parts": [
+        "flyout"
+      ],
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "{effect.shadow.high}"
+      ],
+      "floor": null,
+      "purpose": "The box-shadow of Sidebar's flyout part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-footer-border-color",
+      "parts": [
+        "footer"
+      ],
+      "properties": [
+        "border-top"
+      ],
+      "fallbacks": [
+        "{color.neutral.border.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The border-top of Sidebar's footer part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-footer-border-width",
+      "parts": [
+        "footer"
+      ],
+      "properties": [
+        "border-top"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null,
+      "purpose": "The border-top of Sidebar's footer part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-footer-padding",
+      "parts": [
+        "footer"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-default}"
+      ],
+      "floor": null,
+      "purpose": "The padding of Sidebar's footer part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-header-font-family",
+      "parts": [
+        "header"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.heading.small.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Sidebar's header part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-header-font-size",
+      "parts": [
+        "header"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.heading.small.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Sidebar's header part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-header-font-weight",
+      "parts": [
+        "header"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.weight.semibold}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Sidebar's header part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-header-letter-spacing",
+      "parts": [
+        "header"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.heading.small.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Sidebar's header part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-header-line-height",
+      "parts": [
+        "header"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.heading.small.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Sidebar's header part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-header-padding",
+      "parts": [
+        "header"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-default}"
+      ],
+      "floor": null,
+      "purpose": "The padding of Sidebar's header part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-item-background-active",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.primary.surface.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Sidebar's item part in the active state.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-item-background-hover",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.primary.surface.subtle.hover}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Sidebar's item part in the hover state.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-item-color",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Sidebar's item part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-item-color-active",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.primary.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Sidebar's item part in the active state.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-item-color-hover",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.primary.text.default.hover}"
+      ],
+      "floor": null,
+      "purpose": "The color of Sidebar's item part in the hover state.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-item-font-weight-active",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.weight.semibold}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Sidebar's item part in the active state.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-item-radius",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.control}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Sidebar's item part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-item-slide-offset",
+      "parts": [
+        "item-content"
+      ],
+      "properties": [
+        "translate"
+      ],
+      "fallbacks": [
+        "1.5rem 0"
+      ],
+      "floor": null,
+      "purpose": "The translate of Sidebar's item-content part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-marker-color",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.primary.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Sidebar's item part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-marker-inset",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "bottom",
+        "top"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-compact}"
+      ],
+      "floor": null,
+      "purpose": "The bottom and top of Sidebar's item part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-marker-radius",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.mark}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Sidebar's item part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-marker-width",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "width"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.strong}"
+      ],
+      "floor": null,
+      "purpose": "The width of Sidebar's item part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-navigation-color",
+      "parts": [
+        "navigation"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Sidebar's navigation part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-navigation-margin-block",
+      "parts": [
+        "navigation"
+      ],
+      "properties": [
+        "margin-block"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.stack-comfortable}"
+      ],
+      "floor": null,
+      "purpose": "The margin-block of Sidebar's navigation part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-stagger-step",
+      "parts": [
+        "item-content"
+      ],
+      "properties": [
+        "transition-delay"
+      ],
+      "fallbacks": [
+        "33ms"
+      ],
+      "floor": null,
+      "purpose": "The transition-delay of Sidebar's item-content part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-toggle-background",
+      "parts": [
+        "toggle"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Sidebar's toggle part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-toggle-border-color",
+      "parts": [
+        "toggle"
+      ],
+      "properties": [
+        "border",
+        "border-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.border.default.default}",
+        "{color.neutral.border.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The border and border-color of Sidebar's toggle part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-toggle-border-width",
+      "parts": [
+        "toggle"
+      ],
+      "properties": [
+        "border"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null,
+      "purpose": "The border of Sidebar's toggle part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-toggle-color",
+      "parts": [
+        "toggle"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}",
+        "{color.neutral.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Sidebar's toggle part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-toggle-icon-size",
+      "parts": [
+        "toggle"
+      ],
+      "properties": [
+        "height",
+        "width"
+      ],
+      "fallbacks": [
+        "0.875rem"
+      ],
+      "floor": null,
+      "purpose": "The height and width of Sidebar's toggle part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-toggle-offset",
+      "parts": [
+        "toggle"
+      ],
+      "properties": [
+        "right"
+      ],
+      "fallbacks": [
+        "-12px"
+      ],
+      "floor": null,
+      "purpose": "The right of Sidebar's toggle part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-toggle-size",
+      "parts": [
+        "toggle"
+      ],
+      "properties": [
+        "height",
+        "width"
+      ],
+      "fallbacks": [
+        "24px"
+      ],
+      "floor": "24px",
+      "purpose": "The height and width of Sidebar's toggle part.",
+      "coverage": "industrial and achromatic, light and dark; never below the 24px floor.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-toggle-top",
+      "parts": [
+        "toggle"
+      ],
+      "properties": [
+        "top"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-default}"
+      ],
+      "floor": null,
+      "purpose": "The top of Sidebar's toggle part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-transition-duration",
+      "parts": [
+        "flyout",
+        "item-content",
+        "navigation",
+        "root",
+        "toggle",
+        "trailing-icon"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.disclosure.duration}"
+      ],
+      "floor": null,
+      "purpose": "The transition of Sidebar's flyout, item-content, navigation, toggle and trailing-icon part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-transition-timing-function",
+      "parts": [
+        "flyout",
+        "item-content",
+        "navigation",
+        "root",
+        "toggle",
+        "trailing-icon"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.disclosure.easing}"
+      ],
+      "floor": null,
+      "purpose": "The transition of Sidebar's flyout, item-content, navigation, toggle and trailing-icon part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-width",
+      "parts": [
+        "flyout",
+        "root"
+      ],
+      "properties": [
+        "width"
+      ],
+      "fallbacks": [
+        "17.5rem"
+      ],
+      "floor": null,
+      "purpose": "The width of Sidebar's flyout part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
+  ]
 }

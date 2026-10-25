@@ -12,7 +12,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { stylesheetBindings } from "./styled.mjs";
+import { componentHooks, stylesheetBindings } from "./styled.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const dist = path.join(root, "packages/design-system/dist");
@@ -39,7 +39,7 @@ function review(spec, component, hook, entry) {
   const state = STATES.find((s) => hook.endsWith(`-${s}`));
   const parts = entry.parts.filter((p) => p !== "root");
   const subject = parts.length > 0 ? `${title(component)}'s ${list(parts)} part` : title(component);
-  const options = Object.keys(spec.options);
+  const options = Object.keys(spec.options ?? {});
   return {
     purpose: `The ${list(entry.properties)} of ${subject}${state ? ` in the ${state} state` : ""}.`,
     coverage: `${list(themes)}, light and dark${options.length > 0 ? `; every ${list(options)} value` : ""}${entry.floor ? `; never below the ${entry.floor} floor` : ""}.`,
@@ -50,7 +50,7 @@ function review(spec, component, hook, entry) {
 /** Where a product sets the hooks: a scope, and an option attribute within it (decision A, TDD styled HK5). */
 function hookScope(spec, hooks) {
   const example = (hooks.find((h) => h.hook.endsWith("-hover")) ?? hooks[0]).hook;
-  const option = Object.entries(spec.options).find(([, o]) => /^\[data-[a-z-]+=\{value\}\]$/.test(o.selector) && o.values.length > 1);
+  const option = Object.entries(spec.options ?? {}).find(([, o]) => /^\[data-[a-z-]+=\{value\}\]$/.test(o.selector) && o.values.length > 1);
   const base = "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only";
   if (!option) return `${base}, for example .promo { ${example}: …; }.`;
   const [name, { selector, values, default: fallback }] = option;
@@ -68,7 +68,8 @@ for (const component of process.argv.slice(2)) {
   if (!file) throw new Error(`no specification for ${component}`);
   const spec = JSON.parse(fs.readFileSync(file, "utf8"));
   const before = new Map((spec.hooks ?? []).map((h) => [h.hook, h]));
-  const { hooks } = stylesheetBindings(css, spec);
+  // An entry specification has no anatomy: its hooks are those of the rules in its namespace (TDD styled HK7).
+  const { hooks } = spec.kind === "entry" ? { hooks: componentHooks(css, component) } : stylesheetBindings(css, spec);
   const listed = [...hooks.entries()]
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([hook, h]) => {
@@ -92,6 +93,10 @@ for (const component of process.argv.slice(2)) {
       out.hookScope = spec.hookScope ?? hookScope(spec, listed);
       out.hooks = listed;
     }
+  }
+  if (!("hooks" in out) && listed.length > 0) {
+    out.hookScope = spec.hookScope ?? hookScope(spec, listed);
+    out.hooks = listed;
   }
   fs.writeFileSync(file, `${JSON.stringify(out, null, 2)}\n`);
   console.log(`${path.relative(root, file)}: ${listed.length} hooks`);
