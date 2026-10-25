@@ -309,16 +309,17 @@ reference's `components/Accordion/` (ADR-UIP-VIS-002).
 
 #### Decision record: industrial structure
 
-ADR-UIP-VIS-001 revision 2 (2026-10-25) makes the structure square and the
-same in every theme; TDD tokens SI1, SI3, and SI7 carry it into the tokens.
+ADR-UIP-VIS-001 (revisions 2 and 3, 2026-10-25) makes the default theme,
+`industrial`, square; TDD tokens SI1 and SI3 carry it into the tokens. Since
+revision 3 these are industrial's values, not a rule: a theme may map them.
 The records above keep the values they were decided with and note where IS1
 changed them.
 
 | ID  | Decision | Sources | Tradeoff |
 | :-- | :------- | :------- | :------- |
-| IS1 | Every radius intent from `mark` to `panel` is 0 in every theme, so each component that binds one is square. Components keep binding the intent that names their role (`control` for a Button, `panel` for a Dialog, `container` for an Accordion item), and no specification changes for it, because a binding names a token, not a value; the conformance fixture computes 0 in every root. | ADR-UIP-VIS-001 items 2 and 6 (revision 2); TDD tokens SI1 | A later structure revision changes values, not components. The rounded look of the records above is gone in every theme at once. |
-| IS2 | `pill` stays only where roundness carries meaning: Badge's status dot (BD4) today; a radio, a switch, a spinner, a circle avatar, and a circle skeleton when they ship. A tab's selection indicator (TB3) and the Sidebar's active-item marker move to `mark`, so they are square like every line; Navigation's count badge moves to `element`, as a Badge is. A progress track takes `mark` when it ships. | ADR-UIP-VIS-001 item 2 (revision 2); Radix Themes, Radius ("a Checkbox will never become fully rounded to prevent any confusion between it and a Radio") | A round shape now always means something; a reader can tell a radio from a checkbox and a status from a label by shape alone. |
-| IS3 | The on-page materials are the ring alone (TDD tokens SI3): a secondary Button (`raised`, BI3) and an Accordion item (`flat`, AC1) draw a 1px ring with no contact or ambient shadow; the floating materials of Dialog (`modal`, DG1) keep their layers. Chromatic baselines of every changed story are re-accepted with this delta. | ADR-UIP-VIS-001 item 1 (revision 2) | A raised control is told from a flat one by its fill and ring, not by a shadow; forced-colors mode, which removes shadows, loses nothing it had before. |
+| IS1 | Every radius intent from `mark` to `panel` is 0 in the industrial theme, so each component that binds one is square there. Components keep binding the intent that names their role (`control` for a Button, `panel` for a Dialog, `container` for an Accordion item), and no specification changes for it, because a binding names a token, not a value; the conformance fixture computes 0 in every shipped root. | ADR-UIP-VIS-001 item 2 (revision 3); TDD tokens SI1 | A theme changes values, not components: a product that maps `dimension.radius.control` gets rounded Buttons with no component change. |
+| IS2 | `pill` stays only where roundness carries meaning: Badge's status dot (BD4) today; a radio, a switch, a spinner, a circle avatar, and a circle skeleton when they ship. A tab's selection indicator (TB3) and the Sidebar's active-item marker move to `mark`, so they are square like every line; Navigation's count badge moves to `element`, as a Badge is. A progress track takes `mark` when it ships. | ADR-UIP-VIS-001 items 2 and 6.5 (revision 3); Radix Themes, Radius ("a Checkbox will never become fully rounded to prevent any confusion between it and a Radio") | A round shape now always means something; a reader can tell a radio from a checkbox and a status from a label by shape alone. |
+| IS3 | The on-page materials are the ring alone (TDD tokens SI3): a secondary Button (`raised`, BI3) and an Accordion item (`flat`, AC1) draw a 1px ring with no contact or ambient shadow; the floating materials of Dialog (`modal`, DG1) keep their layers. Chromatic baselines of every changed story are re-accepted with this delta. | ADR-UIP-VIS-001 item 1 (revision 3) | A raised control is told from a flat one by its fill and ring, not by a shadow; forced-colors mode, which removes shadows, loses nothing it had before. |
 
 ### Portal and scope resolution
 
