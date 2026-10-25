@@ -8,10 +8,10 @@ $c: sidebar;
 // TDD styled HK1-HK7: every value reads a `--scnx-sidebar-{part?}-*` hook that
 // falls back to its token. The widths, the toggle's size and offset, the icon
 // size, the stagger step, and the labels' slide offset are the recorded
-// fallbacks of their hooks. Reduced-motion floor (ADR-UIP-VIS-001 item 6):
-// labels slide only when the reader allows motion, and under
-// `prefers-reduced-motion: reduce` widths, heights, and rotations change at
-// once, whatever the motion tokens say; the end states are the same.
+// fallbacks of their hooks. Reduced-motion floor (ADR-UIP-VIS-001 item 6; TDD
+// styled HK10): labels slide, and widths, heights, and rotations transition,
+// only inside `when-motion-allowed`; otherwise they change at once, whatever
+// the motion tokens say, and the end states are the same. Fades run always.
 
 .scnx-sidebar {
   &[data-variant="light"] {
@@ -31,7 +31,10 @@ $c: sidebar;
   height: 100%;
   background-color: hook($c, background, $color-surface-default);
   color: hook($c, color, $color-text-primary);
-  transition: width hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing);
+
+  @include when-motion-allowed {
+    transition: width hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing);
+  }
 
   &__navigation {
     flex-grow: 1;
@@ -90,9 +93,15 @@ $c: sidebar;
 
     .scnx-navigation__item-content {
       transition:
-        translate hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing),
         opacity hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing),
         visibility hook($c, transition-duration, $motion-disclosure-duration);
+
+      @include when-motion-allowed {
+        transition:
+          translate hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing),
+          opacity hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing),
+          visibility hook($c, transition-duration, $motion-disclosure-duration);
+      }
     }
 
     .scnx-navigation__badge {
@@ -100,11 +109,15 @@ $c: sidebar;
     }
 
     .scnx-navigation__trailing-icon {
-      transition: rotate hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing);
+      @include when-motion-allowed {
+        transition: rotate hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing);
+      }
     }
 
     .scnx-transition {
-      transition: height hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing);
+      @include when-motion-allowed {
+        transition: height hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing);
+      }
       overflow: hidden;
     }
 
@@ -222,7 +235,9 @@ $c: sidebar;
     svg {
       width: hook($c, toggle-icon-size, 0.875rem);
       height: hook($c, toggle-icon-size, 0.875rem);
-      transition: transform hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing);
+      @include when-motion-allowed {
+        transition: transform hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing);
+      }
     }
   }
 
@@ -297,9 +312,15 @@ $c: sidebar;
 
     .scnx-navigation__item-content {
       transition:
-        translate hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing),
         opacity hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing),
         visibility hook($c, transition-duration, $motion-disclosure-duration);
+
+      @include when-motion-allowed {
+        transition:
+          translate hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing),
+          opacity hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing),
+          visibility hook($c, transition-duration, $motion-disclosure-duration);
+      }
     }
 
     .scnx-navigation__badge {
@@ -307,11 +328,15 @@ $c: sidebar;
     }
 
     .scnx-navigation__trailing-icon {
-      transition: rotate hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing);
+      @include when-motion-allowed {
+        transition: rotate hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing);
+      }
     }
 
     .scnx-transition {
-      transition: height hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing);
+      @include when-motion-allowed {
+        transition: height hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing);
+      }
       overflow: hidden;
 
       &:not([data-state="entering"]):not([data-state="settled"]) {
@@ -384,20 +409,5 @@ $c: sidebar;
   &[data-state="collapsed"] {
     width: hook($c, collapsed-width, 80px);
     min-width: hook($c, collapsed-width, 80px);
-  }
-
-  // Reduced-motion floor: sizes, heights, and rotations change at once.
-  @media (prefers-reduced-motion: reduce) {
-    & {
-      transition: none;
-    }
-
-    .scnx-sidebar__navigation .scnx-transition,
-    .scnx-sidebar__navigation .scnx-navigation__trailing-icon,
-    .scnx-sidebar__flyout .scnx-transition,
-    .scnx-sidebar__flyout .scnx-navigation__trailing-icon,
-    .scnx-sidebar__toggle svg {
-      transition: none;
-    }
   }
 }

@@ -103,8 +103,11 @@
 
   // A pressed control sinks 1px into the page (ADR-UIP-VIS-001), and only
   // when the reader allows motion: the reduced-motion floor holds whatever
-  // the hook says.
-  @media (prefers-reduced-motion: no-preference) {
+  // the hook says. The sink is the only movement, so `translate` joins the
+  // transitioned properties here.
+  @include when-motion-allowed {
+    transition-property: background-color, border-color, box-shadow, color, translate;
+
     &:active:not(:disabled, [data-disabled]) {
       translate: hook($c, translate-pressed, 0 1px);
     }

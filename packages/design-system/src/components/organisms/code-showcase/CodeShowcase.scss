@@ -74,9 +74,13 @@ $c: code-showcase;
     width: 0;
     border-radius: hook($c, marker-radius, $dimension-radius-element);
     background-color: hook($c, marker-background, $color-state-selected);
-    transition:
-      left hook($c, transition-duration, $motion-feedback-duration) hook($c, transition-timing-function, $motion-feedback-easing),
-      width hook($c, transition-duration, $motion-feedback-duration) hook($c, transition-timing-function, $motion-feedback-easing);
+
+    // The marker jumps to the selected tab unless the reader allows motion.
+    @include when-motion-allowed {
+      transition:
+        left hook($c, transition-duration, $motion-feedback-duration) hook($c, transition-timing-function, $motion-feedback-easing),
+        width hook($c, transition-duration, $motion-feedback-duration) hook($c, transition-timing-function, $motion-feedback-easing);
+    }
   }
 
   &__tab {
@@ -145,9 +149,13 @@ $c: code-showcase;
   &__content {
     background-color: hook($c, code-background, $color-surface-sunken);
     overflow: hidden;
-    transition:
-      height hook($c, disclosure-duration, $motion-disclosure-duration) hook($c, disclosure-timing-function, $motion-disclosure-easing),
-      opacity hook($c, disclosure-duration, $motion-disclosure-duration) hook($c, disclosure-timing-function, $motion-disclosure-easing);
+    transition: opacity hook($c, disclosure-duration, $motion-disclosure-duration) hook($c, disclosure-timing-function, $motion-disclosure-easing);
+
+    @include when-motion-allowed {
+      transition:
+        height hook($c, disclosure-duration, $motion-disclosure-duration) hook($c, disclosure-timing-function, $motion-disclosure-easing),
+        opacity hook($c, disclosure-duration, $motion-disclosure-duration) hook($c, disclosure-timing-function, $motion-disclosure-easing);
+    }
   }
 
   &__code-inner {

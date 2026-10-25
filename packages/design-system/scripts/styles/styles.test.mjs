@@ -75,7 +75,18 @@ describe("published stylesheets", () => {
     const guarded = css.match(/@media \(prefers-reduced-motion: no-preference\) \{\s+[^{}]+\{\s+translate: var\(--scnx-sidebar-item-slide-offset/g) ?? [];
     expect(slides.length).toBeGreaterThan(0);
     expect(guarded.length).toBe(slides.length);
-    expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\) \{\s+\.scnx-sidebar \{\s+transition: none;/);
+    // The width transitions only under no-preference (HK10), so reduce needs no override.
+    expect(css).toMatch(/@media \(prefers-reduced-motion: no-preference\) \{\s+\.scnx-sidebar \{\s+transition: width var\(--scnx-sidebar-transition-duration/);
+    expect(css).not.toContain("prefers-reduced-motion: reduce");
+  });
+
+  it("transition movement only when the reader allows motion (TDD styled HK10)", () => {
+    const css = read("styles/components.css");
+    // Accordion keeps its opacity fade outside the guard and adds the height inside it.
+    expect(css).toMatch(/\.scnx-accordion__content \{[^}]*transition: opacity var\(--scnx-accordion-content-transition-duration/);
+    expect(css).toMatch(/@media \(prefers-reduced-motion: no-preference\) \{\s+\.scnx-accordion__content \{\s+transition: height /);
+    expect(css).toMatch(/@media \(prefers-reduced-motion: no-preference\) \{\s+\.scnx-code-select__chevron \{\s+transition: transform /);
+    expect(css).toMatch(/@media \(prefers-reduced-motion: no-preference\) \{\s+\.scnx-code-showcase__marker \{\s+transition: left /);
   });
 
   it("are byte-for-byte reproducible", () => {

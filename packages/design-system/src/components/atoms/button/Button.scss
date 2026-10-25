@@ -30,7 +30,7 @@ $c: button;
   text-decoration: none;
   cursor: pointer;
   user-select: none;
-  transition-property: background-color, border-color, box-shadow, color, translate;
+  transition-property: background-color, border-color, box-shadow, color;
   transition-duration: hook($c, transition-duration, $motion-feedback-duration);
   transition-timing-function: hook($c, transition-timing-function, $motion-feedback-easing);
 
