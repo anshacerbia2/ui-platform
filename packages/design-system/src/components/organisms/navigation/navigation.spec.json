@@ -3,5 +3,687 @@
   "kind": "entry",
   "entry": "@scnx/system/components/navigation",
   "entryKind": "interactive",
-  "stability": "candidate"
+  "stability": "candidate",
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-navigation-item-background-hover: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-navigation-badge-font-family",
+      "parts": [
+        "badge"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.label.small.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Navigation's badge part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-badge-font-size",
+      "parts": [
+        "badge"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.label.small.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Navigation's badge part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-badge-font-weight",
+      "parts": [
+        "badge"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.weight.semibold}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Navigation's badge part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-badge-letter-spacing",
+      "parts": [
+        "badge"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.label.small.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Navigation's badge part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-badge-line-height",
+      "parts": [
+        "badge"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "1"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Navigation's badge part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-badge-padding",
+      "parts": [
+        "badge"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.stack-compact} {dimension.spacing.inline-default}"
+      ],
+      "floor": null,
+      "purpose": "The padding of Navigation's badge part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-badge-radius",
+      "parts": [
+        "badge"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.element}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Navigation's badge part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-group-gap",
+      "parts": [
+        "group"
+      ],
+      "properties": [
+        "gap",
+        "margin-top"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.stack-compact}"
+      ],
+      "floor": null,
+      "purpose": "The gap and margin-top of Navigation's group part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-group-header-color",
+      "parts": [
+        "group-header"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Navigation's group-header part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-group-header-font-family",
+      "parts": [
+        "group-header"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.label.small.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Navigation's group-header part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-group-header-font-size",
+      "parts": [
+        "group-header"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.label.small.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Navigation's group-header part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-group-header-font-weight",
+      "parts": [
+        "group-header"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.weight.bold}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Navigation's group-header part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-group-header-letter-spacing",
+      "parts": [
+        "group-header"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.label.small.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Navigation's group-header part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-group-header-line-height",
+      "parts": [
+        "group-header"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.label.small.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Navigation's group-header part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-group-header-margin-top",
+      "parts": [
+        "group-header"
+      ],
+      "properties": [
+        "margin-top"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.stack-comfortable}"
+      ],
+      "floor": null,
+      "purpose": "The margin-top of Navigation's group-header part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-group-header-padding-block",
+      "parts": [
+        "group-header"
+      ],
+      "properties": [
+        "padding-block"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-compact}"
+      ],
+      "floor": null,
+      "purpose": "The padding-block of Navigation's group-header part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-group-indent",
+      "parts": [
+        "group"
+      ],
+      "properties": [
+        "margin-left"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-comfortable}"
+      ],
+      "floor": null,
+      "purpose": "The margin-left of Navigation's group part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-group-padding-inline",
+      "parts": [
+        "group"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-default}"
+      ],
+      "floor": null,
+      "purpose": "The padding of Navigation's group part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-icon-line-height",
+      "parts": [
+        "icon"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "1"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Navigation's icon part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-icon-size",
+      "parts": [
+        "icon"
+      ],
+      "properties": [
+        "height",
+        "width"
+      ],
+      "fallbacks": [
+        "1.25rem"
+      ],
+      "floor": null,
+      "purpose": "The height and width of Navigation's icon part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-item-background-active",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.primary.surface.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Navigation's item part in the active state.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-item-background-hover",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.default.hover}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Navigation's item part in the hover state.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-item-color-active",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.primary.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Navigation's item part in the active state.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-item-content-gap",
+      "parts": [
+        "item-content"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-comfortable}"
+      ],
+      "floor": null,
+      "purpose": "The gap of Navigation's item-content part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-item-font-family",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.body.small.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Navigation's item part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-item-font-size",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.body.small.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Navigation's item part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-item-font-weight",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.body.small.font-weight}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Navigation's item part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-item-font-weight-active",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.weight.semibold}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Navigation's item part in the active state.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-item-letter-spacing",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.body.small.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Navigation's item part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-item-line-height",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.body.small.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Navigation's item part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-item-opacity-disabled",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "opacity"
+      ],
+      "fallbacks": [
+        "0.5"
+      ],
+      "floor": null,
+      "purpose": "The opacity of Navigation's item part in the disabled state.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-item-padding-block",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-compact}"
+      ],
+      "floor": null,
+      "purpose": "The padding of Navigation's item part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-item-padding-inline",
+      "parts": [
+        "icon",
+        "item-content"
+      ],
+      "properties": [
+        "padding-inline",
+        "padding-left"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-default}"
+      ],
+      "floor": null,
+      "purpose": "The padding-inline and padding-left of Navigation's icon and item-content part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-item-radius",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.control}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Navigation's item part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-marker-color",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "border-left"
+      ],
+      "fallbacks": [
+        "{color.primary.surface.solid.default}"
+      ],
+      "floor": null,
+      "purpose": "The border-left of Navigation's item part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-marker-height",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "height"
+      ],
+      "fallbacks": [
+        "1rem"
+      ],
+      "floor": null,
+      "purpose": "The height of Navigation's item part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-marker-radius",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.element}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Navigation's item part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-marker-width",
+      "parts": [
+        "icon",
+        "item"
+      ],
+      "properties": [
+        "border-left",
+        "padding-left"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.strong}"
+      ],
+      "floor": null,
+      "purpose": "The border-left and padding-left of Navigation's icon and item part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-padding-block",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "padding-block"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-default}"
+      ],
+      "floor": null,
+      "purpose": "The padding-block of Navigation.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-trailing-icon-size",
+      "parts": [
+        "trailing-icon"
+      ],
+      "properties": [
+        "height",
+        "width"
+      ],
+      "fallbacks": [
+        "0.875rem"
+      ],
+      "floor": null,
+      "purpose": "The height and width of Navigation's trailing-icon part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-transition-duration",
+      "parts": [
+        "group-header"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.disclosure.duration}"
+      ],
+      "floor": null,
+      "purpose": "The transition of Navigation's group-header part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navigation-transition-timing-function",
+      "parts": [
+        "group-header"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.disclosure.easing}"
+      ],
+      "floor": null,
+      "purpose": "The transition of Navigation's group-header part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
+  ]
 }

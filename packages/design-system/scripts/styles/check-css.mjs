@@ -165,8 +165,8 @@ function varParts(node) {
  * 2.7.0, "Hook mechanics"): a token must be a hook's fallback, and a literal
  * (a non-zero length or number, a colour) may stand only in a hook's
  * fallback or beside a hook inside a function, as a floor does in
- * `max(24px, var(--scnx-…))`. Keywords, zero, and percentages are not design
- * values.
+ * `max(24px, var(--scnx-…))`. Keywords, zero, percentages, and viewport
+ * lengths (100vh) are layout geometry, not design values.
  */
 export function designLiterals(value) {
   const found = [];
@@ -184,7 +184,7 @@ export function designLiterals(value) {
       if (name?.startsWith("--ds-")) found.push(`token ${name} outside a hook`);
       return;
     }
-    if (node.type === "Dimension" && Number(node.value) !== 0 && !beside) found.push(`${node.value}${node.unit}`);
+    if (node.type === "Dimension" && Number(node.value) !== 0 && !beside && !VIEWPORT_UNIT.test(node.unit)) found.push(`${node.value}${node.unit}`);
     else if (node.type === "Number" && Number(node.value) !== 0 && !beside) found.push(node.value);
     else if (node.type === "Hash") found.push(`#${node.value}`);
     else if (node.type === "Function" && COLOR_FUNCTIONS.has(node.name.toLowerCase())) found.push(`${node.name}()`);
@@ -195,6 +195,9 @@ export function designLiterals(value) {
   visit(value, false);
   return found;
 }
+
+/** Viewport-relative units: a layout fills the viewport, which is geometry, not design. */
+const VIEWPORT_UNIT = /^(?:[sdl]?v[hwib]|v(?:min|max))$/i;
 
 /** Every custom property a value references, fallbacks included (css-tree keeps a fallback as raw text). */
 function referencedNames(value, into) {
@@ -447,6 +450,7 @@ const SELF_TESTS = [
   ["hook fallback to a missing token", `${STATEMENT}\n@layer components { .scnx-a { color: var(--scnx-a-color, var(--ds-missing)) } }`, "var(--ds-missing)"],
   ["token outside a hook", `${STATEMENT}\n@layer components { .scnx-a { color: var(--ds-x) } }`, "token --ds-x outside a hook", true],
   ["literal outside a hook", `${STATEMENT}\n@layer components { .scnx-a { inline-size: 32rem } }`, "inline-size holds 32rem", true],
+  ["viewport length", `${STATEMENT}\n@layer components { .scnx-a { min-height: 100vh; height: calc(100dvh - var(--scnx-a-top, var(--ds-x))) } }`, null, true],
 ];
 
 function selfTest() {

@@ -1,26 +1,25 @@
 @use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
 
+$c: floating-layout;
+
+// TDD styled HK1-HK7: every value reads a `--scnx-floating-layout-*` hook. The
+// sidebar's height leaves its recorded 1.25rem inset above and below.
 .scnx-floating-layout {
   display: flex;
-  gap: $dimension-spacing-section;
+  gap: hook($c, gap, $dimension-spacing-section);
   min-height: 100vh;
   box-sizing: border-box;
-  padding-block: $dimension-spacing-page;
+  padding-block: hook($c, padding-block, $dimension-spacing-page);
 
   &__sidebar {
     position: sticky;
-    top: $dimension-spacing-page;
+    top: hook($c, sidebar-top, $dimension-spacing-page);
     align-self: flex-start;
-    height: calc(100vh - (1.25rem * 2));
+    height: calc(100vh - (#{hook($c, sidebar-inset, 1.25rem)} * 2));
   }
 
   &__content {
     flex: 1;
-
-    // background-color: $color-bg-surface;
-    // border-radius: $border-radius-xl;
-    // padding: $spacing-5;
-    // border: 1px solid $color-border-default;
-    // box-shadow: $shadow-sm;
   }
 }

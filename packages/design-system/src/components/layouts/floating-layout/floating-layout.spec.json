@@ -3,5 +3,72 @@
   "kind": "entry",
   "entry": "@scnx/system/components/floating-layout",
   "entryKind": "layout",
-  "stability": "candidate"
+  "stability": "candidate",
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-floating-layout-gap: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-floating-layout-gap",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.section}"
+      ],
+      "floor": null,
+      "purpose": "The gap of FloatingLayout.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-floating-layout-padding-block",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "padding-block"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.page}"
+      ],
+      "floor": null,
+      "purpose": "The padding-block of FloatingLayout.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-floating-layout-sidebar-inset",
+      "parts": [
+        "sidebar"
+      ],
+      "properties": [
+        "height"
+      ],
+      "fallbacks": [
+        "1.25rem"
+      ],
+      "floor": null,
+      "purpose": "The height of FloatingLayout's sidebar part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-floating-layout-sidebar-top",
+      "parts": [
+        "sidebar"
+      ],
+      "properties": [
+        "top"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.page}"
+      ],
+      "floor": null,
+      "purpose": "The top of FloatingLayout's sidebar part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
+  ]
 }

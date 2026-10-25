@@ -1,22 +1,23 @@
 @use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
 @use "styles/abstracts/mixins" as *;
 @use "styles/abstracts/geometry";
 
-// Distance item labels slide while the sidebar expands or collapses: a
-// structural motion offset, not a spacing token (STD-UIP-TKN-002 3.1).
-$-item-slide-offset: 1.5rem;
+$c: sidebar;
 
-// ============================================
-// TIER 3: Sidebar Component Tokens (Semantic)
-// ============================================
-// Sidebar inherently acts as an "Inverse" surface (Dark on Light canvas).
-// Passive items use primary-on-color text, active items act as solid surface pills.
+// TDD styled HK1-HK7: every value reads a `--scnx-sidebar-{part?}-*` hook that
+// falls back to its token. The widths, the toggle's size and offset, the icon
+// size, the stagger step, and the labels' slide offset are the recorded
+// fallbacks of their hooks. Reduced-motion floor (ADR-UIP-VIS-001 item 6):
+// labels slide only when the reader allows motion, and under
+// `prefers-reduced-motion: reduce` widths, heights, and rotations change at
+// once, whatever the motion tokens say; the end states are the same.
+
 .scnx-sidebar {
-
   &[data-variant="light"] {
     .scnx-sidebar__toggle {
-      color: $color-text-primary;
-      border-color: $color-border-subtle;
+      color: hook($c, toggle-color, $color-text-primary);
+      border-color: hook($c, toggle-border-color, $color-border-subtle);
     }
   }
 }
@@ -26,21 +27,19 @@ $-item-slide-offset: 1.5rem;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  width: geometry.$sidebar-width;
+  width: hook($c, width, geometry.$sidebar-width);
   height: 100%;
-  // border-radius: $border-radius-xl;
-  // border: 1px solid $color-border-muted;
-  background-color: $color-surface-default;
-  color: $color-text-primary;
-  transition: width $motion-disclosure-duration $motion-disclosure-easing;
+  background-color: hook($c, background, $color-surface-default);
+  color: hook($c, color, $color-text-primary);
+  transition: width hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing);
 
   &__navigation {
     flex-grow: 1;
-    margin-block: $dimension-spacing-stack-comfortable;
+    margin-block: hook($c, navigation-margin-block, $dimension-spacing-stack-comfortable);
     // Overrides the Navigation root padding: Sidebar loads after Navigation
     // in the components layer, so source order decides at equal specificity.
     padding-block: 0;
-    color: $color-text-primary;
+    color: hook($c, navigation-color, $color-text-primary);
     overflow-y: auto;
     overflow-x: hidden;
     user-select: none;
@@ -58,61 +57,61 @@ $-item-slide-offset: 1.5rem;
 
     .scnx-navigation__item {
       position: relative;
-      color: $color-text-secondary;
-      border-radius: $dimension-radius-control;
+      color: hook($c, item-color, $color-text-secondary);
+      border-radius: hook($c, item-radius, $dimension-radius-control);
       transition:
-        background-color $motion-feedback-duration $motion-feedback-easing,
-        color $motion-feedback-duration $motion-feedback-easing;
+        background-color hook($c, feedback-duration, $motion-feedback-duration) hook($c, feedback-timing-function, $motion-feedback-easing),
+        color hook($c, feedback-duration, $motion-feedback-duration) hook($c, feedback-timing-function, $motion-feedback-easing);
 
       &:hover,
       &:focus {
-        background-color: $color-primary-subtle-hover;
-        color: $color-primary-text-hover;
+        background-color: hook($c, item-background-hover, $color-primary-subtle-hover);
+        color: hook($c, item-color-hover, $color-primary-text-hover);
       }
 
       &[data-active="true"] {
-        background-color: $color-primary-subtle;
-        color: $color-primary-text;
-        font-weight: $typography-weight-semibold;
+        background-color: hook($c, item-background-active, $color-primary-subtle);
+        color: hook($c, item-color-active, $color-primary-text);
+        font-weight: hook($c, item-font-weight-active, $typography-weight-semibold);
 
         // Expert Enterprise Standard: Vertical Indicator for cohesive nav language
         &::before {
           content: "";
           position: absolute;
           left: 0;
-          top: $dimension-spacing-inset-compact;
-          bottom: $dimension-spacing-inset-compact;
-          width: 2px;
-          background-color: $color-primary-text;
-          border-radius: $dimension-radius-mark;
+          top: hook($c, marker-inset, $dimension-spacing-inset-compact);
+          bottom: hook($c, marker-inset, $dimension-spacing-inset-compact);
+          width: hook($c, marker-width, $dimension-border-width-strong);
+          background-color: hook($c, marker-color, $color-primary-text);
+          border-radius: hook($c, marker-radius, $dimension-radius-mark);
         }
       }
     }
 
     .scnx-navigation__item-content {
       transition:
-        translate $motion-disclosure-duration $motion-disclosure-easing,
-        opacity $motion-disclosure-duration $motion-disclosure-easing,
-        visibility $motion-disclosure-duration;
+        translate hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing),
+        opacity hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing),
+        visibility hook($c, transition-duration, $motion-disclosure-duration);
     }
 
     .scnx-navigation__badge {
-      background-color: color-mix(in oklch, var(--ds-color-neutral-surface-default-default) 10%, transparent);
+      background-color: hook($c, badge-background, color-mix(in oklch, var(--ds-color-neutral-surface-default-default) 10%, transparent));
     }
 
     .scnx-navigation__trailing-icon {
-      transition: rotate $motion-disclosure-duration $motion-disclosure-easing;
+      transition: rotate hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing);
     }
 
     .scnx-transition {
-      transition: height $motion-disclosure-duration $motion-disclosure-easing;
+      transition: height hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing);
       overflow: hidden;
     }
 
     .scnx-sidebar[data-state="expanded"] & {
       [data-level="0"] {
         > .scnx-navigation__item .scnx-navigation__item-content {
-          transition-delay: calc(var(--item-index) * 33ms);
+          transition-delay: calc(var(--item-index) * #{hook($c, stagger-step, 33ms)});
         }
 
         // [IMPORTANT] This block will only be applied if the data-level 0 direct children transition is settled
@@ -123,15 +122,15 @@ $-item-slide-offset: 1.5rem;
 
           // Align transition timing with the Root Item's index.
           .scnx-navigation__item-content {
-            transition-delay: calc(var(--ancestors-index) * 33ms);
+            transition-delay: calc(var(--ancestors-index) * #{hook($c, stagger-step, 33ms)});
           }
 
-          // Since rapid double click on already settled items will cause a delayed transition because of 
+          // Since rapid double click on already settled items will cause a delayed transition because of
           // the ancestor's transition delay already set we need to unset the transition delay for the settled items
           // First on data contract we put a resettled flag to true on every settled item that being faded out
           // Then on every fadein transition end we reset the resettled flag to false
           [data-state="exiting"],
-          [data-interrupted="true"] { 
+          [data-interrupted="true"] {
             .scnx-navigation__item-content {
               transition-delay: unset;
             }
@@ -149,7 +148,7 @@ $-item-slide-offset: 1.5rem;
           > li
           > .scnx-navigation__item
           .scnx-navigation__item-content {
-          transition-delay: calc(var(--item-index) * 33ms);
+          transition-delay: calc(var(--item-index) * #{hook($c, stagger-step, 33ms)});
         }
 
         // 2. Deep Subtree Synchronization Strategy
@@ -164,7 +163,7 @@ $-item-slide-offset: 1.5rem;
 
           .scnx-navigation__item-content {
             // Descendants wait for the ancestor, moving as one cohesive unit.
-            transition-delay: calc(var(--ancestors-index) * 33ms);
+            transition-delay: calc(var(--ancestors-index) * #{hook($c, stagger-step, 33ms)});
           }
         }
       }
@@ -174,7 +173,10 @@ $-item-slide-offset: 1.5rem;
           .scnx-navigation__item-content {
             visibility: hidden;
             opacity: 0;
-            translate: $-item-slide-offset 0;
+
+            @media (prefers-reduced-motion: no-preference) {
+              translate: hook($c, item-slide-offset, 1.5rem 0);
+            }
           }
         }
       }
@@ -193,78 +195,79 @@ $-item-slide-offset: 1.5rem;
       .scnx-navigation__item-content {
         visibility: hidden;
         opacity: 0;
-        translate: $-item-slide-offset 0;
+
+        @media (prefers-reduced-motion: no-preference) {
+          translate: hook($c, item-slide-offset, 1.5rem 0);
+        }
       }
     }
   }
 
   &__toggle {
     position: absolute;
-    top: $dimension-spacing-inset-default;
-    right: -12px;
+    top: hook($c, toggle-top, $dimension-spacing-inset-default);
+    right: hook($c, toggle-offset, -12px);
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
-    border: $dimension-border-width-default solid $color-border-default;
+    width: target-floor(hook($c, toggle-size, 24px));
+    height: target-floor(hook($c, toggle-size, 24px));
+    border: hook($c, toggle-border-width, $dimension-border-width-default) solid hook($c, toggle-border-color, $color-border-default);
     border-radius: 50%;
-    color: $color-text-secondary;
+    color: hook($c, toggle-color, $color-text-secondary);
     cursor: pointer;
     overflow: hidden;
-    background-color: $color-surface-default;
+    background-color: hook($c, toggle-background, $color-surface-default);
 
     svg {
-      width: 0.875rem;
-      height: 0.875rem;
-      // stroke-width: 2.5; // Boost stroke weight for visual matching
-      transition: transform $motion-disclosure-duration $motion-disclosure-easing;
+      width: hook($c, toggle-icon-size, 0.875rem);
+      height: hook($c, toggle-icon-size, 0.875rem);
+      transition: transform hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing);
     }
-
   }
 
   &__header {
     flex-shrink: 0;
-    padding: $dimension-spacing-inset-default;
+    padding: hook($c, header-padding, $dimension-spacing-inset-default);
     border-bottom: none;
-    @include typography(heading, small);
-    font-weight: $typography-weight-semibold;
+    @include hooked-typography($c, heading, small, $prefix: header, $except: (font-weight));
+    font-weight: hook($c, header-font-weight, $typography-weight-semibold);
     white-space: nowrap;
     overflow: hidden;
   }
 
   &__footer {
-    padding: $dimension-spacing-inset-default;
-    border-top: $dimension-border-width-default solid $color-border-subtle;
+    padding: hook($c, footer-padding, $dimension-spacing-inset-default);
+    border-top: hook($c, footer-border-width, $dimension-border-width-default) solid hook($c, footer-border-color, $color-border-subtle);
     flex-shrink: 0;
   }
 
   &__flyout {
-    width: geometry.$sidebar-width;
-    margin-left: $dimension-spacing-inline-compact;
-    color: $color-text-primary;
+    width: hook($c, width, geometry.$sidebar-width);
+    margin-left: hook($c, flyout-offset, $dimension-spacing-inline-compact);
+    color: hook($c, flyout-color, $color-text-primary);
 
     > .scnx-transition {
-      border-radius: $dimension-radius-container;
-      box-shadow: $effect-shadow-high;
+      border-radius: hook($c, flyout-radius, $dimension-radius-container);
+      box-shadow: hook($c, flyout-shadow, $effect-shadow-high);
 
       > div {
         // Creates non-scrollable padding space at top and bottom
-        padding-block: $dimension-spacing-inset-default;
-        border-radius: $dimension-radius-container;
-        background-color: $color-surface-default;
+        padding-block: hook($c, flyout-padding-block, $dimension-spacing-inset-default);
+        border-radius: hook($c, flyout-radius, $dimension-radius-container);
+        background-color: hook($c, flyout-background, $color-surface-default);
 
         > div {
-          border-radius: $dimension-radius-container;
+          border-radius: hook($c, flyout-radius, $dimension-radius-container);
           overflow: hidden;
           overflow-y: auto;
           @include thin-scrollbar($width: 0);
 
           > .scnx-navigation__group {
-            border-radius: $dimension-radius-container;
+            border-radius: hook($c, flyout-radius, $dimension-radius-container);
 
             .scnx-navigation__group li {
-              padding-left: $dimension-spacing-inset-compact;
+              padding-left: hook($c, flyout-indent, $dimension-spacing-inset-compact);
               padding-right: 0;
             }
           }
@@ -272,7 +275,7 @@ $-item-slide-offset: 1.5rem;
       }
 
       li {
-        padding-inline: $dimension-spacing-inset-default;
+        padding-inline: hook($c, flyout-padding-inline, $dimension-spacing-inset-default);
       }
 
       .scnx-navigation__group {
@@ -284,7 +287,7 @@ $-item-slide-offset: 1.5rem;
       &:hover,
       &:focus,
       &[data-active="true"] {
-        background-color: color-mix(in oklch, var(--ds-color-neutral-surface-default-default) 10%, transparent);
+        background-color: hook($c, flyout-item-background, color-mix(in oklch, var(--ds-color-neutral-surface-default-default) 10%, transparent));
       }
     }
 
@@ -294,28 +297,31 @@ $-item-slide-offset: 1.5rem;
 
     .scnx-navigation__item-content {
       transition:
-        translate $motion-disclosure-duration $motion-disclosure-easing,
-        opacity $motion-disclosure-duration $motion-disclosure-easing,
-        visibility $motion-disclosure-duration;
+        translate hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing),
+        opacity hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing),
+        visibility hook($c, transition-duration, $motion-disclosure-duration);
     }
 
     .scnx-navigation__badge {
-      background-color: color-mix(in oklch, var(--ds-color-neutral-surface-default-default) 10%, transparent);
+      background-color: hook($c, badge-background, color-mix(in oklch, var(--ds-color-neutral-surface-default-default) 10%, transparent));
     }
 
     .scnx-navigation__trailing-icon {
-      transition: rotate $motion-disclosure-duration $motion-disclosure-easing;
+      transition: rotate hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing);
     }
 
     .scnx-transition {
-      transition: height $motion-disclosure-duration $motion-disclosure-easing;
+      transition: height hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing);
       overflow: hidden;
 
       &:not([data-state="entering"]):not([data-state="settled"]) {
         .scnx-navigation__item-content {
           visibility: hidden;
           opacity: 0;
-          translate: $-item-slide-offset 0;
+
+          @media (prefers-reduced-motion: no-preference) {
+            translate: hook($c, item-slide-offset, 1.5rem 0);
+          }
         }
       }
     }
@@ -337,7 +343,7 @@ $-item-slide-offset: 1.5rem;
         > li
         > .scnx-navigation__item
         .scnx-navigation__item-content {
-        transition-delay: calc(var(--item-index) * 33ms);
+        transition-delay: calc(var(--item-index) * #{hook($c, stagger-step, 33ms)});
       }
 
       // 2. Deep Subtree Synchronization Strategy
@@ -359,7 +365,7 @@ $-item-slide-offset: 1.5rem;
 
         .scnx-navigation__item-content {
           // Descendants wait for the ancestor, moving as one cohesive unit.
-          transition-delay: calc(var(--ancestors-index) * 33ms);
+          transition-delay: calc(var(--ancestors-index) * #{hook($c, stagger-step, 33ms)});
         }
       }
     }
@@ -376,7 +382,22 @@ $-item-slide-offset: 1.5rem;
   }
 
   &[data-state="collapsed"] {
-    width: 80px;
-    min-width: 80px;
+    width: hook($c, collapsed-width, 80px);
+    min-width: hook($c, collapsed-width, 80px);
+  }
+
+  // Reduced-motion floor: sizes, heights, and rotations change at once.
+  @media (prefers-reduced-motion: reduce) {
+    & {
+      transition: none;
+    }
+
+    .scnx-sidebar__navigation .scnx-transition,
+    .scnx-sidebar__navigation .scnx-navigation__trailing-icon,
+    .scnx-sidebar__flyout .scnx-transition,
+    .scnx-sidebar__flyout .scnx-navigation__trailing-icon,
+    .scnx-sidebar__toggle svg {
+      transition: none;
+    }
   }
 }

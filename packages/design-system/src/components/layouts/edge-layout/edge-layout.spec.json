@@ -3,5 +3,70 @@
   "kind": "entry",
   "entry": "@scnx/system/components/edge-layout",
   "entryKind": "layout",
-  "stability": "candidate"
+  "stability": "candidate",
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-edge-layout-border-color: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-edge-layout-border-color",
+      "parts": [
+        "header",
+        "root",
+        "sidebar",
+        "start"
+      ],
+      "properties": [
+        "border-bottom",
+        "border-left",
+        "border-right"
+      ],
+      "fallbacks": [
+        "{color.neutral.border.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The border-bottom, border-left and border-right of EdgeLayout's header, sidebar and start part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-edge-layout-border-width",
+      "parts": [
+        "header",
+        "root",
+        "sidebar",
+        "start"
+      ],
+      "properties": [
+        "border-bottom",
+        "border-left",
+        "border-right"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null,
+      "purpose": "The border-bottom, border-left and border-right of EdgeLayout's header, sidebar and start part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-edge-layout-header-height",
+      "parts": [
+        "header",
+        "root",
+        "sidebar"
+      ],
+      "properties": [
+        "grid-template-rows",
+        "height",
+        "top"
+      ],
+      "fallbacks": [
+        "4rem"
+      ],
+      "floor": null,
+      "purpose": "The grid-template-rows, height and top of EdgeLayout's header and sidebar part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
+  ]
 }

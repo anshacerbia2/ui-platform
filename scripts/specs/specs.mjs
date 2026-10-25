@@ -8,7 +8,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import Ajv2020 from "ajv/dist/2020.js";
 import { packageEntries, specSource } from "../package-entries.mjs";
-import { styledContext, styledFindings } from "./styled.mjs";
+import { componentHooks, hookFindings, styledContext, styledFindings } from "./styled.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const schemaDir = path.join(root, "scripts/specs/schema");
@@ -111,6 +111,14 @@ export function loadSpecs() {
       const primitives = expected.filter((row) => row.spec.kind === "primitive").map((row) => row.spec);
       for (const { file, spec } of styled) {
         for (const finding of styledFindings(spec, styledContext(spec, primitives, tokens))) findings.push(`${file}: ${finding}`);
+      }
+      // HK7: an entry specification of a hooked @scnx/system component lists the hooks its rules read.
+      const config = JSON.parse(fs.readFileSync(path.join(root, "packages/design-system/styles.config.json"), "utf8"));
+      const css = fs.readFileSync(path.join(root, "packages/design-system/dist/styles/components.css"), "utf8");
+      for (const { file, entry, spec } of expected.filter((row) => row.spec?.kind === "entry" && row.entry.startsWith("@scnx/system/components/"))) {
+        const component = entry.split("/").pop();
+        if (!spec.hooks && !(config.hookedComponents ?? []).includes(component)) continue;
+        for (const finding of hookFindings(spec, component, componentHooks(css, component), tokens)) findings.push(`${file}: ${finding}`);
       }
     }
   }

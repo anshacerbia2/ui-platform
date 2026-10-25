@@ -3,5 +3,42 @@
   "kind": "entry",
   "entry": "@scnx/system/components/list",
   "entryKind": "presentational",
-  "stability": "candidate"
+  "stability": "candidate",
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-list-gap: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-list-gap",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.stack-comfortable}",
+        "{dimension.spacing.stack-compact}",
+        "{dimension.spacing.stack-default}"
+      ],
+      "floor": null,
+      "purpose": "The gap of List.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-list-marker-gutter",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "padding-left"
+      ],
+      "fallbacks": [
+        "1.25rem"
+      ],
+      "floor": null,
+      "purpose": "The padding-left of List.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
+  ]
 }

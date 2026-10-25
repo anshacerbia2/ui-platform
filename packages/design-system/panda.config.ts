@@ -234,14 +234,14 @@ const listRecipe = defineRecipe({
   },
   variants: {
     variant: {
-      unordered: { listStyleType: "disc", pl: "1.25rem" },
-      ordered: { listStyleType: "decimal", pl: "1.25rem" },
+      unordered: { listStyleType: "disc", pl: hook("list", "marker-gutter", "1.25rem") },
+      ordered: { listStyleType: "decimal", pl: hook("list", "marker-gutter", "1.25rem") },
       unstyled: { listStyleType: "none", pl: "0" },
     },
     spacing: {
-      compact: { gap: "var(--ds-dimension-spacing-stack-compact)" },
-      default: { gap: "var(--ds-dimension-spacing-stack-default)" },
-      comfortable: { gap: "var(--ds-dimension-spacing-stack-comfortable)" },
+      compact: { gap: hook("list", "gap", "var(--ds-dimension-spacing-stack-compact)") },
+      default: { gap: hook("list", "gap", "var(--ds-dimension-spacing-stack-default)") },
+      comfortable: { gap: hook("list", "gap", "var(--ds-dimension-spacing-stack-comfortable)") },
     },
   },
   defaultVariants: {
