@@ -227,5 +227,300 @@
         "color": "{color.danger.text.default.default}"
       }
     }
+  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only. To change one scheme only, set the hook on [data-scheme] within the scope, for example .promo [data-scheme=\"neutral\"] { --scnx-alert-actions-gap: …; }; without it, the hook applies to every scheme in the scope.",
+  "hooks": [
+    {
+      "hook": "--scnx-alert-actions-gap",
+      "parts": [
+        "actions"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-compact}"
+      ],
+      "floor": null,
+      "purpose": "The gap of Alert's actions part.",
+      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-alert-background",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.danger.surface.subtle.default}",
+        "{color.info.surface.subtle.default}",
+        "{color.neutral.surface.subtle.default}",
+        "{color.success.surface.subtle.default}",
+        "{color.warning.surface.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Alert.",
+      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-alert-border-color",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border-color"
+      ],
+      "fallbacks": [
+        "{color.danger.border.subtle.default}",
+        "{color.info.border.subtle.default}",
+        "{color.neutral.border.subtle.default}",
+        "{color.success.border.subtle.default}",
+        "{color.warning.border.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The border-color of Alert.",
+      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-alert-border-width",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null,
+      "purpose": "The border of Alert.",
+      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-alert-color",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.danger.text.subtle.default}",
+        "{color.info.text.subtle.default}",
+        "{color.neutral.text.subtle.default}",
+        "{color.success.text.subtle.default}",
+        "{color.warning.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Alert.",
+      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-alert-content-gap",
+      "parts": [
+        "content"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.stack-compact}"
+      ],
+      "floor": null,
+      "purpose": "The gap of Alert's content part.",
+      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-alert-font-family",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.body.small.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Alert.",
+      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-alert-font-size",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.body.small.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Alert.",
+      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-alert-font-weight",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.body.small.font-weight}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Alert.",
+      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-alert-gap",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-default}"
+      ],
+      "floor": null,
+      "purpose": "The gap of Alert.",
+      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-alert-icon-color",
+      "parts": [
+        "icon"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.danger.icon.subtle.default}",
+        "{color.info.icon.subtle.default}",
+        "{color.neutral.icon.subtle.default}",
+        "{color.success.icon.subtle.default}",
+        "{color.warning.icon.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Alert's icon part.",
+      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-alert-letter-spacing",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.body.small.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Alert.",
+      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-alert-line-height",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.body.small.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Alert.",
+      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-alert-padding",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-default}"
+      ],
+      "floor": null,
+      "purpose": "The padding of Alert.",
+      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-alert-radius",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.container}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Alert.",
+      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-alert-title-color",
+      "parts": [
+        "title"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.danger.text.default.default}",
+        "{color.info.text.default.default}",
+        "{color.neutral.text.default.default}",
+        "{color.success.text.default.default}",
+        "{color.warning.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Alert's title part.",
+      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-alert-title-font-weight",
+      "parts": [
+        "title"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.weight.semibold}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Alert's title part.",
+      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
   ]
 }

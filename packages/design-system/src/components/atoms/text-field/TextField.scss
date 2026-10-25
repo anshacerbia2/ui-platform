@@ -1,67 +1,72 @@
 @use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
 
-// TDD primitives P15; TDD styled TF1-TF3. The boundary uses the strong neutral
-// border; the error state adds the strong danger border, but the error text
-// and its icon carry the state, so colour is never its only cue. The input is
-// a medium control: 36px with a medium Button's control spacing.
+$c: text-field;
+
+// TDD primitives P15; TDD styled TF1-TF3, HK1-HK5. The boundary uses the
+// strong neutral border; the error state adds the strong danger border, but
+// the error text and its icon carry the state, so colour is never its only
+// cue. The input is a medium control: the control size, inside the 24px target
+// floor, with a medium Button's control spacing. Every value reads a
+// `--scnx-text-field-{part}-*` hook that falls back to its token.
 .scnx-text-field {
   display: flex;
   flex-direction: column;
-  gap: $dimension-spacing-stack-compact;
+  gap: hook($c, gap, $dimension-spacing-stack-compact);
 
   > [data-part="label"] {
-    @include typography(label, default);
-    font-weight: $typography-weight-medium;
-    color: $color-text-primary;
+    @include hooked-typography($c, label, default, $prefix: label, $except: (font-weight));
+    font-weight: hook($c, label-font-weight, $typography-weight-medium);
+    color: hook($c, label-color, $color-text-primary);
   }
 
   > [data-part="description"],
   > [data-part="error"] {
-    @include typography(body, small);
+    @include hooked-typography($c, body, small, $prefix: message);
     margin: 0;
   }
 
   > [data-part="description"] {
-    color: $color-text-secondary;
+    color: hook($c, description-color, $color-text-secondary);
   }
 
   > [data-part="error"] {
     display: flex;
     align-items: center;
-    gap: $dimension-spacing-inline-compact;
-    color: $color-danger-text;
-    font-weight: $typography-weight-medium;
+    gap: hook($c, error-gap, $dimension-spacing-inline-compact);
+    color: hook($c, error-color, $color-danger-text);
+    font-weight: hook($c, error-font-weight, $typography-weight-medium);
   }
 
   > [data-part="input"] {
-    @include typography(body, default);
-    min-block-size: 2.25rem;
+    @include hooked-typography($c, body, default, $prefix: input);
+    min-block-size: target-floor(hook($c, input-height, $dimension-size-control-default));
     padding-block: 0;
-    padding-inline: $dimension-spacing-control-default;
-    color: $color-text-primary;
-    background: $color-surface-raised;
-    border: $dimension-border-width-default solid $color-border-strong;
-    border-radius: $dimension-radius-control;
+    padding-inline: hook($c, input-padding-inline, $dimension-spacing-control-default);
+    color: hook($c, input-color, $color-text-primary);
+    background: hook($c, input-background, $color-surface-raised);
+    border: hook($c, input-border-width, $dimension-border-width-default) solid hook($c, input-border-color, $color-border-strong);
+    border-radius: hook($c, input-radius, $dimension-radius-control);
     transition-property: border-color, box-shadow;
-    transition-duration: $motion-feedback-duration;
-    transition-timing-function: $motion-feedback-easing;
+    transition-duration: hook($c, input-transition-duration, $motion-feedback-duration);
+    transition-timing-function: hook($c, input-transition-timing-function, $motion-feedback-easing);
 
     // Focus is a signal, so it is blue: the border turns the focus color and
     // the ring sits flush on it (ADR-UIP-VIS-001 item 3).
     &:focus-visible {
-      border-color: var(--ds-color-primary-border-default-focus);
+      border-color: hook($c, input-border-color-focus, var(--ds-color-primary-border-default-focus));
       outline-offset: 0;
     }
 
     &:disabled {
-      color: $color-text-disabled;
-      border-color: $color-border-disabled;
-      background: $color-state-disabled;
+      color: hook($c, input-color-disabled, $color-text-disabled);
+      border-color: hook($c, input-border-color-disabled, $color-border-disabled);
+      background: hook($c, input-background-disabled, $color-state-disabled);
       cursor: not-allowed;
     }
   }
 
   &[data-invalid] > [data-part="input"] {
-    border-color: $color-danger-border;
+    border-color: hook($c, input-border-color-invalid, $color-danger-border);
   }
 }

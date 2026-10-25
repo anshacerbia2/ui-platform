@@ -109,7 +109,8 @@ function selfTest() {
     [styledFindings(marked, context({ css: ".scnx-x>[data-part=item]::after{inline-size:var(--ds-dimension-gap)}" })).length, 1],
   );
   // HK2: a hook unwraps to its fallback for the bindings, and the specification lists it in both directions.
-  const hooked = { ...spec, hooks: [{ hook: "--scnx-x-gap", properties: ["gap"], fallbacks: ["{dimension.gap}"], floor: null }] };
+  const review = { purpose: "The gap of X", coverage: "Every theme and mode", migration: "Added; additive" };
+  const hooked = { ...spec, hookScope: "Set a hook on a scope.", hooks: [{ hook: "--scnx-x-gap", parts: ["root"], properties: ["gap"], fallbacks: ["{dimension.gap}"], floor: null, ...review }] };
   const hookedCss = (gap = "var(--scnx-x-gap,var(--ds-dimension-gap))") => css().replace("gap:var(--ds-dimension-gap)", `gap:${gap}`);
   cases.push(
     [JSON.stringify(unwrapHooks("max(24px, var(--scnx-x-height, var(--ds-y)))")), JSON.stringify({ value: "max(24px, var(--ds-y))", hooks: [{ hook: "--scnx-x-height", fallback: "var(--ds-y)", floor: "24px" }] })],

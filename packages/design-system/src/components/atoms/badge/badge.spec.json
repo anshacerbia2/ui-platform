@@ -229,6 +229,214 @@
       }
     }
   ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only. To change one scheme only, set the hook on [data-scheme] within the scope, for example .promo [data-scheme=\"primary\"] { --scnx-badge-background: …; }; without it, the hook applies to every scheme in the scope.",
+  "hooks": [
+    {
+      "hook": "--scnx-badge-background",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.danger.surface.default.default}",
+        "{color.danger.surface.solid.default}",
+        "{color.info.surface.default.default}",
+        "{color.info.surface.solid.default}",
+        "{color.neutral.surface.default.default}",
+        "{color.neutral.surface.solid.default}",
+        "{color.primary.surface.default.default}",
+        "{color.primary.surface.solid.default}",
+        "{color.success.surface.default.default}",
+        "{color.success.surface.solid.default}",
+        "{color.warning.surface.default.default}",
+        "{color.warning.surface.solid.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Badge.",
+      "coverage": "industrial and achromatic, light and dark; every scheme, emphasis and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-badge-border-width",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null,
+      "purpose": "The border of Badge.",
+      "coverage": "industrial and achromatic, light and dark; every scheme, emphasis and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-badge-color",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.danger.text.contrast.default}",
+        "{color.danger.text.subtle.default}",
+        "{color.info.text.contrast.default}",
+        "{color.info.text.subtle.default}",
+        "{color.neutral.text.contrast.default}",
+        "{color.neutral.text.subtle.default}",
+        "{color.primary.text.contrast.default}",
+        "{color.primary.text.subtle.default}",
+        "{color.success.text.contrast.default}",
+        "{color.success.text.subtle.default}",
+        "{color.warning.text.contrast.default}",
+        "{color.warning.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Badge.",
+      "coverage": "industrial and achromatic, light and dark; every scheme, emphasis and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-badge-font-family",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.label.default.font-family}",
+        "{typography.label.small.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Badge.",
+      "coverage": "industrial and achromatic, light and dark; every scheme, emphasis and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-badge-font-size",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.label.default.font-size}",
+        "{typography.label.small.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Badge.",
+      "coverage": "industrial and achromatic, light and dark; every scheme, emphasis and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-badge-font-weight",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.label.default.font-weight}",
+        "{typography.label.small.font-weight}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Badge.",
+      "coverage": "industrial and achromatic, light and dark; every scheme, emphasis and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-badge-gap",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-compact}"
+      ],
+      "floor": null,
+      "purpose": "The gap of Badge.",
+      "coverage": "industrial and achromatic, light and dark; every scheme, emphasis and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-badge-letter-spacing",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.label.default.letter-spacing}",
+        "{typography.label.small.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Badge.",
+      "coverage": "industrial and achromatic, light and dark; every scheme, emphasis and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-badge-line-height",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.label.default.line-height}",
+        "{typography.label.small.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Badge.",
+      "coverage": "industrial and achromatic, light and dark; every scheme, emphasis and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-badge-padding-inline",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-compact}",
+        "{dimension.spacing.inline-default}"
+      ],
+      "floor": null,
+      "purpose": "The padding of Badge.",
+      "coverage": "industrial and achromatic, light and dark; every scheme, emphasis and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-badge-radius",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.element}",
+        "{dimension.radius.mark}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Badge.",
+      "coverage": "industrial and achromatic, light and dark; every scheme, emphasis and size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
+  ],
   "geometry": [
     {
       "part": "dot",
