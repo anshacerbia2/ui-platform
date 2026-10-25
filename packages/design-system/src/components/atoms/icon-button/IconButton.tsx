@@ -4,7 +4,7 @@ import type { IconButtonProps } from "./types";
 import { cx } from "styled-system/css";
 
 /**
- * A square button whose content is one icon. Wraps
+ * A square (or, with `shape="circular"`, round) button whose content is one icon. Wraps
  * `@scnx/core-ui/components/button-base` (button, link, or `asChild` mode),
  * and its type requires an accessible name, `aria-label` or
  * `aria-labelledby`. Pass a 16 px icon marked `aria-hidden`.
@@ -18,9 +18,9 @@ import { cx } from "styled-system/css";
  * </IconButton>
  * ```
  */
-export const IconButton = ({ variant = "secondary", size = "medium", className = "", ...rest }: IconButtonProps) => (
+export const IconButton = ({ variant = "secondary", size = "medium", shape = "square", className = "", ...rest }: IconButtonProps) => (
   // The props are one ButtonBase mode, which ButtonBase discriminates at runtime.
-  <ButtonBase {...(rest as ButtonBaseProps)} className={cx("scnx-icon-button", className)} data-variant={variant} data-size={size} />
+  <ButtonBase {...(rest as ButtonBaseProps)} className={cx("scnx-icon-button", className)} data-variant={variant} data-size={size} data-shape={shape} />
 );
 
 IconButton.displayName = "IconButton";

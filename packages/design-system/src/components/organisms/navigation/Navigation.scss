@@ -1,24 +1,25 @@
 @use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
+
+$c: navigation;
 
 // ============================================
 // NAVIGATION ORGANISM (BEM + Atomic Design)
 // ============================================
-
-.scnx-navigation {
-}
+// TDD styled HK1-HK7: every value reads a `--scnx-navigation-{part?}-*` hook
+// that falls back to its token; icon sizes, the marker's height, and the
+// collapsed line height are the recorded fallbacks of their hooks.
 
 .scnx-navigation {
   // Block: Navigation root
-  padding-block: $dimension-spacing-inset-default;
+  padding-block: hook($c, padding-block, $dimension-spacing-inset-default);
   user-select: none;
-
-  // Element: Group Header (Section Title like 'FOUNDATIONS')
 
   // Element: Group (list container)
   &__group {
     display: flex;
     flex-direction: column;
-    gap: $dimension-spacing-stack-compact;
+    gap: hook($c, group-gap, $dimension-spacing-stack-compact);
     list-style: none;
     margin: 0;
     padding: 0;
@@ -28,25 +29,22 @@
     > li {
       list-style: none;
       margin: 0;
-      padding: 0 $dimension-spacing-inset-default;
+      padding: 0 hook($c, group-padding-inline, $dimension-spacing-inset-default);
 
       &.scnx-navigation__group-header {
-        display: block; // Kembali ke block biasa
-        // width: max-content;      // Paksa blok ini segede teksnya walau kontainer ngecil!
-        min-width: max-content; // Tolak kompromi Flexbox
-        @include typography(label, small);
-        font-weight: $typography-weight-bold;
+        display: block;
+        min-width: max-content;
+        @include hooked-typography($c, label, small, $prefix: group-header, $except: (font-weight));
+        font-weight: hook($c, group-header-font-weight, $typography-weight-bold);
         text-transform: uppercase;
-        color: $color-text-primary;
-        padding-block: $dimension-spacing-inset-compact;
-        // white-space: nowrap !important; // Membiarkan teks meluber lurus tanpa wrap
-        // word-break: keep-all !important;
+        color: hook($c, group-header-color, $color-text-primary);
+        padding-block: hook($c, group-header-padding-block, $dimension-spacing-inset-compact);
         transition:
-          opacity $motion-disclosure-duration $motion-disclosure-easing,
-          visibility $motion-disclosure-duration;
+          opacity hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing),
+          visibility hook($c, transition-duration, $motion-disclosure-duration);
 
         &:not(:first-child) {
-          margin-top: $dimension-spacing-stack-comfortable;
+          margin-top: hook($c, group-header-margin-top, $dimension-spacing-stack-comfortable);
         }
       }
 
@@ -57,15 +55,14 @@
       // Nested submenu group (sibling to nav-item within li)
       .scnx-navigation__group {
         height: 0;
-        margin-left: $dimension-spacing-inline-comfortable;
-        // overflow: hidden;
+        margin-left: hook($c, group-indent, $dimension-spacing-inline-comfortable);
       }
 
       li {
         padding: 0;
 
         &:first-child {
-          margin-top: $dimension-spacing-stack-compact;
+          margin-top: hook($c, group-gap, $dimension-spacing-stack-compact);
         }
       }
     }
@@ -75,46 +72,39 @@
   &__item {
     display: flex;
     align-items: center;
-    padding: $dimension-spacing-inset-compact 0;
-    border-radius: $dimension-radius-control;
-    @include typography(body, small);
-    // transition: margin-bottom $transition-base,
-    //   background-color $transition-base;
+    padding: hook($c, item-padding-block, $dimension-spacing-inset-compact) 0;
+    border-radius: hook($c, item-radius, $dimension-radius-control);
+    @include hooked-typography($c, body, small, $prefix: item);
     cursor: pointer;
 
     &::before {
       content: "";
-      height: 1rem;
-      border-left: $dimension-border-width-strong solid transparent;
-      border-radius: $dimension-radius-element;
-      // transition: border-left-color $transition-base;
+      height: hook($c, marker-height, 1rem);
+      border-left: hook($c, marker-width, $dimension-border-width-strong) solid transparent;
+      border-radius: hook($c, marker-radius, $dimension-radius-element);
     }
 
     &:hover,
     &:focus {
-      background-color: $color-state-hover;
+      background-color: hook($c, item-background-hover, $color-state-hover);
     }
 
     // Modifier: Active state
     &[data-active="true"] {
       position: relative;
-      background-color: $color-primary-subtle;
+      background-color: hook($c, item-background-active, $color-primary-subtle);
       // Text color, not the solid surface color: WCAG 2.2 SC 1.4.3.
-      color: $color-primary-text;
-      font-weight: $typography-weight-semibold;
+      color: hook($c, item-color-active, $color-primary-text);
+      font-weight: hook($c, item-font-weight-active, $typography-weight-semibold);
 
       &::before {
-        // ⚡ ACCENT COLOR IMPLEMENTATION
-        // We inject a local variable that grabs a high-contrast color (Electric Blue) from Tier 1,
-        // intentionally separating this 'Focus Indicator' from the brand color (Purple/Black).
-        border-left: $dimension-border-width-strong solid
-          $color-primary-default;
+        border-left: hook($c, marker-width, $dimension-border-width-strong) solid hook($c, marker-color, $color-primary-default);
       }
     }
 
     // Modifier: Disabled state
     &[data-disabled="true"] {
-      opacity: 0.5;
+      opacity: hook($c, item-opacity-disabled, 0.5);
       pointer-events: none;
       cursor: not-allowed;
 
@@ -130,12 +120,12 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding-left: calc($dimension-spacing-inset-default - $dimension-border-width-strong);
-    line-height: 1;
+    padding-left: calc(#{hook($c, item-padding-inline, $dimension-spacing-inset-default)} - #{hook($c, marker-width, $dimension-border-width-strong)});
+    line-height: hook($c, icon-line-height, 1);
 
     svg {
-      width: 1.25rem;
-      height: 1.25rem;
+      width: hook($c, icon-size, 1.25rem);
+      height: hook($c, icon-size, 1.25rem);
       color: inherit;
     }
   }
@@ -145,8 +135,8 @@
     flex: 1;
     display: flex;
     align-items: center;
-    gap: $dimension-spacing-inline-comfortable;
-    padding-inline: $dimension-spacing-inset-default;
+    gap: hook($c, item-content-gap, $dimension-spacing-inline-comfortable);
+    padding-inline: hook($c, item-padding-inline, $dimension-spacing-inset-default);
     overflow: hidden;
   }
 
@@ -164,12 +154,12 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: $dimension-spacing-stack-compact $dimension-spacing-inline-default;
-    border-radius: $dimension-radius-element;
-    @include typography(label, small);
-    font-weight: $typography-weight-semibold;
+    padding: hook($c, badge-padding, $dimension-spacing-stack-compact $dimension-spacing-inline-default);
+    border-radius: hook($c, badge-radius, $dimension-radius-element);
+    @include hooked-typography($c, label, small, $prefix: badge, $except: (font-weight line-height));
+    font-weight: hook($c, badge-font-weight, $typography-weight-semibold);
     color: inherit;
-    line-height: 1;
+    line-height: hook($c, badge-line-height, 1);
   }
 
   // Element: Trailing Icon
@@ -179,11 +169,10 @@
     align-items: center;
     justify-content: center;
     color: inherit;
-    // transition: rotate $transition-fast;
 
     svg {
-      width: 0.875rem;
-      height: 0.875rem;
+      width: hook($c, trailing-icon-size, 0.875rem);
+      height: hook($c, trailing-icon-size, 0.875rem);
     }
 
     // Rotate when parent is active/expanded

@@ -66,6 +66,18 @@ describe("published stylesheets", () => {
     expect(recipes).toContain("row-gap: var(--scnx-flex-row-gap, var(--ds-dimension-spacing-stack-comfortable))");
   });
 
+  it("keep the floors in the entry-specification components (TDD styled HK7)", () => {
+    const css = read("styles/components.css");
+    expect(css).toContain("width: max(24px, var(--scnx-sidebar-toggle-size, 24px));");
+    expect(css).toContain("min-block-size: max(24px, var(--scnx-code-showcase-trigger-min-block-size, 0px));");
+    // The labels slide only when the reader allows motion: every slide is inside no-preference.
+    const slides = css.match(/translate: var\(--scnx-sidebar-item-slide-offset/g) ?? [];
+    const guarded = css.match(/@media \(prefers-reduced-motion: no-preference\) \{\s+[^{}]+\{\s+translate: var\(--scnx-sidebar-item-slide-offset/g) ?? [];
+    expect(slides.length).toBeGreaterThan(0);
+    expect(guarded.length).toBe(slides.length);
+    expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\) \{\s+\.scnx-sidebar \{\s+transition: none;/);
+  });
+
   it("are byte-for-byte reproducible", () => {
     const again = fs.mkdtempSync(path.join(os.tmpdir(), "scnx-styles-"));
     emit({ packageDir, outDir: again });
@@ -76,7 +88,7 @@ describe("published stylesheets", () => {
 
 describe("stylesheet gate", () => {
   it("accepts a documented runtime property and rejects an undocumented one", () => {
-    const sheet = (name) => `${LAYER_STATEMENT}\n@layer components { .scnx-a { transition-delay: calc(var(${name}) * 1ms); } }`;
+    const sheet = (name) => `${LAYER_STATEMENT}\n@layer components { .scnx-a { transition-delay: calc(var(${name}) * var(--scnx-a-stagger-step, 1ms)); } }`;
     expect(checkStylesheet(sheet("--item-index"), { tokenNames: new Set() }).findings).toEqual([]);
     expect(checkStylesheet(sheet("--item-order"), { tokenNames: new Set() }).findings.join()).toContain("var(--item-order)");
   });

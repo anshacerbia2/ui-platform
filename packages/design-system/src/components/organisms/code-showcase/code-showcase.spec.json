@@ -3,5 +3,866 @@
   "kind": "entry",
   "entry": "@scnx/system/components/code-showcase",
   "entryKind": "interactive",
-  "stability": "candidate"
+  "stability": "candidate",
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-code-showcase-icon-button-background-hover: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-code-showcase-actions-gap",
+      "parts": [
+        "actions"
+      ],
+      "properties": [
+        "column-gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-default}"
+      ],
+      "floor": null,
+      "purpose": "The column-gap of CodeShowcase's actions part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-background",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.canvas.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of CodeShowcase.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-border-color",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border",
+        "border-top"
+      ],
+      "fallbacks": [
+        "{color.neutral.border.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The border and border-top of CodeShowcase.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-border-width",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border",
+        "border-top"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null,
+      "purpose": "The border and border-top of CodeShowcase.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-code-background",
+      "parts": [
+        "code-inner",
+        "content"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.sunken.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of CodeShowcase's code-inner and content part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-code-color",
+      "parts": [
+        "code-inner"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of CodeShowcase's code-inner part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-code-font-family",
+      "parts": [
+        "code-inner"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.code.default.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of CodeShowcase's code-inner part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-code-font-size",
+      "parts": [
+        "code-inner"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.code.default.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of CodeShowcase's code-inner part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-code-font-weight",
+      "parts": [
+        "code-inner"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.code.default.font-weight}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of CodeShowcase's code-inner part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-code-letter-spacing",
+      "parts": [
+        "code-inner"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.code.default.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of CodeShowcase's code-inner part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-code-line-height",
+      "parts": [
+        "code-inner"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.code.default.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of CodeShowcase's code-inner part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-code-padding",
+      "parts": [
+        "code-inner"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-default} {dimension.spacing.inset-comfortable}"
+      ],
+      "floor": null,
+      "purpose": "The padding of CodeShowcase's code-inner part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-disclosure-duration",
+      "parts": [
+        "content"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.disclosure.duration}"
+      ],
+      "floor": null,
+      "purpose": "The transition of CodeShowcase's content part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-disclosure-timing-function",
+      "parts": [
+        "content"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.disclosure.easing}"
+      ],
+      "floor": null,
+      "purpose": "The transition of CodeShowcase's content part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-icon-button-background-hover",
+      "parts": [
+        "icon-button"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.default.hover}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of CodeShowcase's icon-button part in the hover state.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-icon-button-color",
+      "parts": [
+        "icon-button"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of CodeShowcase's icon-button part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-icon-button-color-hover",
+      "parts": [
+        "icon-button"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of CodeShowcase's icon-button part in the hover state.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-icon-button-padding",
+      "parts": [
+        "icon-button"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-compact}"
+      ],
+      "floor": null,
+      "purpose": "The padding of CodeShowcase's icon-button part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-icon-button-radius",
+      "parts": [
+        "icon-button"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.element}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of CodeShowcase's icon-button part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-lang-icon-size",
+      "parts": [
+        "lang-icon"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "1.5em"
+      ],
+      "floor": null,
+      "purpose": "The font-size of CodeShowcase's lang-icon part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-margin-block",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "margin-block"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.stack-comfortable}"
+      ],
+      "floor": null,
+      "purpose": "The margin-block of CodeShowcase.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-marker-background",
+      "parts": [
+        "marker"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.default.selected}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of CodeShowcase's marker part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-marker-radius",
+      "parts": [
+        "marker"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.element}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of CodeShowcase's marker part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-nav-background",
+      "parts": [
+        "nav"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of CodeShowcase's nav part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-nav-color",
+      "parts": [
+        "nav"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of CodeShowcase's nav part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-nav-column-gap",
+      "parts": [
+        "nav"
+      ],
+      "properties": [
+        "column-gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-comfortable}"
+      ],
+      "floor": null,
+      "purpose": "The column-gap of CodeShowcase's nav part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-nav-font-family",
+      "parts": [
+        "nav"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.label.default.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of CodeShowcase's nav part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-nav-font-size",
+      "parts": [
+        "nav"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.label.default.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of CodeShowcase's nav part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-nav-font-weight",
+      "parts": [
+        "nav"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.label.default.font-weight}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of CodeShowcase's nav part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-nav-letter-spacing",
+      "parts": [
+        "nav"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.label.default.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of CodeShowcase's nav part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-nav-line-height",
+      "parts": [
+        "nav"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.label.default.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of CodeShowcase's nav part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-nav-padding",
+      "parts": [
+        "nav"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-compact} {dimension.spacing.inset-default}"
+      ],
+      "floor": null,
+      "purpose": "The padding of CodeShowcase's nav part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-nav-row-gap",
+      "parts": [
+        "nav"
+      ],
+      "properties": [
+        "row-gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.stack-default}"
+      ],
+      "floor": null,
+      "purpose": "The row-gap of CodeShowcase's nav part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-preview-background",
+      "parts": [
+        "preview"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of CodeShowcase's preview part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-preview-background-image",
+      "parts": [
+        "preview"
+      ],
+      "properties": [
+        "background-image"
+      ],
+      "fallbacks": [
+        "conic-gradient({color.neutral.surface.raised.default} 25%,{color.neutral.surface.canvas.default}0 50%,{color.neutral.surface.raised.default}0 75%,{color.neutral.surface.canvas.default}0)"
+      ],
+      "floor": null,
+      "purpose": "The background-image of CodeShowcase's preview part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-preview-background-size",
+      "parts": [
+        "preview"
+      ],
+      "properties": [
+        "background-size"
+      ],
+      "fallbacks": [
+        "30px 30px"
+      ],
+      "floor": null,
+      "purpose": "The background-size of CodeShowcase's preview part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-preview-min-block-size",
+      "parts": [
+        "preview"
+      ],
+      "properties": [
+        "min-height"
+      ],
+      "fallbacks": [
+        "120px"
+      ],
+      "floor": null,
+      "purpose": "The min-height of CodeShowcase's preview part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-preview-padding",
+      "parts": [
+        "preview"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-comfortable}"
+      ],
+      "floor": null,
+      "purpose": "The padding of CodeShowcase's preview part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-radius",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.container}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of CodeShowcase.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-scrollbar-size",
+      "parts": [
+        "code-inner"
+      ],
+      "properties": [
+        "height",
+        "width"
+      ],
+      "fallbacks": [
+        "3px"
+      ],
+      "floor": null,
+      "purpose": "The height and width of CodeShowcase's code-inner part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-scrollbar-thumb-color",
+      "parts": [
+        "code-inner"
+      ],
+      "properties": [
+        "background"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The background of CodeShowcase's code-inner part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-scrollbar-thumb-radius",
+      "parts": [
+        "code-inner"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.element}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of CodeShowcase's code-inner part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-selectors-gap",
+      "parts": [
+        "selectors"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-default}"
+      ],
+      "floor": null,
+      "purpose": "The gap of CodeShowcase's selectors part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-shadow",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "{effect.shadow.low}"
+      ],
+      "floor": null,
+      "purpose": "The box-shadow of CodeShowcase.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-shadow-hover",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "{effect.shadow.medium}"
+      ],
+      "floor": null,
+      "purpose": "The box-shadow of CodeShowcase in the hover state.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-tab-color",
+      "parts": [
+        "tab"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of CodeShowcase's tab part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-tab-color-active",
+      "parts": [
+        "tab"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of CodeShowcase's tab part in the active state.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-tab-gap",
+      "parts": [
+        "tab"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-default}"
+      ],
+      "floor": null,
+      "purpose": "The gap of CodeShowcase's tab part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-tab-padding",
+      "parts": [
+        "tab"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-compact}"
+      ],
+      "floor": null,
+      "purpose": "The padding of CodeShowcase's tab part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-tabs-font-family",
+      "parts": [
+        "tabs"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.body.default.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of CodeShowcase's tabs part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-transition-duration",
+      "parts": [
+        "icon-button",
+        "marker",
+        "root",
+        "tab"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.feedback.duration}"
+      ],
+      "floor": null,
+      "purpose": "The transition of CodeShowcase's icon-button, marker and tab part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-transition-timing-function",
+      "parts": [
+        "icon-button",
+        "marker",
+        "root",
+        "tab"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.feedback.easing}"
+      ],
+      "floor": null,
+      "purpose": "The transition of CodeShowcase's icon-button, marker and tab part.",
+      "coverage": "industrial and achromatic, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-showcase-trigger-min-block-size",
+      "parts": [
+        "trigger"
+      ],
+      "properties": [
+        "min-block-size"
+      ],
+      "fallbacks": [
+        "0px"
+      ],
+      "floor": "24px",
+      "purpose": "The min-block-size of CodeShowcase's trigger part.",
+      "coverage": "industrial and achromatic, light and dark; never below the 24px floor.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
+  ]
 }

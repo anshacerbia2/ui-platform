@@ -536,7 +536,7 @@
         }
       ],
       "controlledProps": [
-        "initialActiveId"
+        "activeId"
       ],
       "states": [
         "inactive",

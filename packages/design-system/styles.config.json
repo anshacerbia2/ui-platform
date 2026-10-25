@@ -15,25 +15,6 @@
     "list",
     "list-item"
   ],
-  "hookedComponents": [
-    "accordion",
-    "alert",
-    "badge",
-    "button",
-    "code",
-    "container",
-    "dialog",
-    "divider",
-    "flex",
-    "grid",
-    "heading",
-    "icon-button",
-    "navbar",
-    "table-of-contents",
-    "tabs",
-    "text",
-    "text-field"
-  ],
   "runtimeProperties": {
     "--item-index": {
       "owner": "@scnx/core-ui NavigationBaseGroup",
@@ -68,26 +49,6 @@
       "removal": "CodeShowcase renders highlighted code itself with token-bound colors"
     },
     {
-      "rule": "spacing-literal",
-      "selector": ".scnx-edge-layout__sidebar",
-      "properties": [
-        "top"
-      ],
-      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
-      "reason": "Sticky offset equal to the EdgeLayout navbar height, so the sidebar starts below the navbar",
-      "removal": "A navbar-height token or a layout that derives the offset"
-    },
-    {
-      "rule": "spacing-literal",
-      "selector": ".scnx-sidebar__toggle",
-      "properties": [
-        "right"
-      ],
-      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
-      "reason": "Negative overhang of half the toggle's width, so it straddles the sidebar edge",
-      "removal": "The toggle moves inside the sidebar"
-    },
-    {
       "rule": "z-index",
       "selector": ".scnx-tabs [data-part=tab]::before",
       "properties": [
@@ -96,66 +57,6 @@
       "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-UIP-TKN-001 section 3, Dimension vocabulary",
       "reason": "Paint order inside the tab's own stacking context (isolation: isolate): -1 draws the hover pill behind the label; it is not a stacking layer of the page",
       "removal": "None; this is local paint order, not a layer"
-    },
-    {
-      "rule": "spacing-literal",
-      "selector": ".scnx-list--variant_unordered",
-      "properties": [
-        "padding-left"
-      ],
-      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
-      "reason": "List-marker gutter: room for the disc marker",
-      "removal": "A list-marker gutter token"
-    },
-    {
-      "rule": "spacing-literal",
-      "selector": ".scnx-list--variant_ordered",
-      "properties": [
-        "padding-left"
-      ],
-      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
-      "reason": "List-marker gutter: room for the number marker",
-      "removal": "A list-marker gutter token"
-    },
-    {
-      "rule": "typography-literal",
-      "selector": ".scnx-code-select__chevron",
-      "properties": [
-        "font-size"
-      ],
-      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
-      "reason": "Glyph size of the chevron icon, not text",
-      "removal": "An icon-size token"
-    },
-    {
-      "rule": "typography-literal",
-      "selector": ".scnx-code-showcase__lang-icon svg",
-      "properties": [
-        "font-size"
-      ],
-      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
-      "reason": "Glyph size of the language icon, relative to the tab text",
-      "removal": "An icon-size token"
-    },
-    {
-      "rule": "typography-literal",
-      "selector": ".scnx-navigation__icon",
-      "properties": [
-        "line-height"
-      ],
-      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
-      "reason": "line-height 1 collapses the icon box to the glyph so it centers in the item",
-      "removal": "None; this is geometry of the icon box"
-    },
-    {
-      "rule": "typography-literal",
-      "selector": ".scnx-navigation__badge",
-      "properties": [
-        "line-height"
-      ],
-      "standard": "STD-UIP-STY-001 section 3, Governed values (local geometry); STD-GLB-FE-005 section 3.2",
-      "reason": "line-height 1 collapses the badge box to its label so the pill keeps its height",
-      "removal": "None; this is geometry of the badge box"
     },
     {
       "rule": "design-literal",
@@ -168,6 +69,17 @@
       "standard": "ADR-UIP-VIS-001 item 6 (guarded floors: shapes that carry meaning are anatomy, not hooks); STD-UIP-TKN-001 2.7.0",
       "reason": "The status dot is anatomy: its round shape and 6px size mark a live status, so no hook may change them",
       "removal": "None; a meaningful shape stays anatomy"
+    },
+    {
+      "rule": "design-literal",
+      "selector": ".scnx-code-select__status",
+      "properties": [
+        "inline-size",
+        "block-size"
+      ],
+      "standard": "WCAG 2.2 SC 4.1.3 (status messages); ADR-UIP-VIS-001 item 6 (guarded floors)",
+      "reason": "The status region is visually hidden: its 1px box is the visually-hidden technique that keeps the option count in the accessibility tree, not a design value",
+      "removal": "None; this is the visually-hidden technique, not design"
     }
   ]
 }

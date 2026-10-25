@@ -31,6 +31,14 @@
       ],
       "default": "medium",
       "selector": "[data-size={value}]"
+    },
+    "shape": {
+      "values": [
+        "square",
+        "circular"
+      ],
+      "default": "square",
+      "selector": "[data-shape={value}]"
     }
   },
   "states": [
@@ -92,6 +100,15 @@
         "border-radius": "{dimension.radius.element}",
         "inline-size": "max(24px, {dimension.size.control-compact})",
         "block-size": "max(24px, {dimension.size.control-compact})"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "shape": "circular"
+      },
+      "declarations": {
+        "border-radius": "50%"
       }
     },
     {
@@ -457,8 +474,8 @@
         "{dimension.radius.element}"
       ],
       "floor": null,
-      "purpose": "The border-radius of IconButton.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "purpose": "The border-radius of IconButton's square shape.",
+      "coverage": "industrial and achromatic, light and dark; every variant and size value; not shape circular, whose circle is anatomy (50%) and ignores this hook.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {

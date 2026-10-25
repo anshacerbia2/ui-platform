@@ -335,7 +335,74 @@ export function apiUnion(report, option) {
 }
 
 /**
- * Static findings for one styled specification (CS2, CS3).
+ * HK2: the hooks a component's rules read are listed in its specification,
+ * with their parts, properties, fallbacks, floor, and alias review record, in
+ * both directions; `hooks` is what the stylesheet reads (stylesheetBindings or
+ * componentHooks).
+ */
+export function hookFindings(spec, component, hooks, tokens) {
+  const findings = [];
+  const listed = new Map((spec.hooks ?? []).map((h) => [h.hook, h]));
+  if (listed.size > 0 && !spec.hookScope?.trim()) findings.push("hooks are listed without hookScope, the guidance on where a product sets them");
+  for (const name of new Set([...listed.keys(), ...hooks.keys()])) {
+    const want = listed.get(name);
+    const have = hooks.get(name);
+    if (!have) {
+      findings.push(`hook ${name} is listed, but the stylesheet does not read it`);
+      continue;
+    }
+    if (!want) {
+      findings.push(`the stylesheet reads hook ${name}, which the specification's hooks do not list`);
+      continue;
+    }
+    if (!name.startsWith(`--scnx-${component}-`)) findings.push(`hook ${name} is not in the namespace --scnx-${component}-`);
+    for (const token of want.fallbacks.flatMap(tokensIn)) if (!tokens.has(token)) findings.push(`hook ${name} falls back to ${token}, which is not a canonical token name`);
+    const sorted = (values) => [...values].sort().join(" | ");
+    const fallbacks = new Set(want.fallbacks.map((v) => normalizeValue(toCss(v))));
+    if (sorted(fallbacks) !== sorted(have.fallbacks)) findings.push(`hook ${name}: falls back to ${sorted(have.fallbacks)} in the stylesheet, ${sorted(fallbacks)} in the specification`);
+    if (sorted(want.properties) !== sorted(have.properties)) findings.push(`hook ${name}: sets ${sorted(have.properties)} in the stylesheet, ${sorted(want.properties)} in the specification`);
+    if (sorted(want.parts ?? []) !== sorted(have.parts)) findings.push(`hook ${name}: styles parts ${sorted(have.parts)} in the stylesheet, ${sorted(want.parts ?? [])} in the specification`);
+    for (const field of ["purpose", "coverage", "migration"]) if (!want[field]?.trim()) findings.push(`hook ${name}: its alias review record has no ${field} (STD-UIP-TKN-001, Component Alias Review)`);
+    const floors = [...have.floors];
+    if (floors.length > 1) findings.push(`hook ${name}: the stylesheet reads it with and without a floor`);
+    else if ((want.floor ?? null) !== floors[0]) findings.push(`hook ${name}: floor ${floors[0] ?? "none"} in the stylesheet, ${want.floor ?? "none"} in the specification`);
+  }
+  return findings;
+}
+
+/**
+ * The hooks one component's rules read, for an entry specification, which has
+ * no anatomy (TDD styled HK7): a rule is the component's when its selector
+ * starts at `.scnx-{component}`, and a hook's part is the BEM element its
+ * selector ends at (`.scnx-navigation__item` is `item`), or `root`.
+ */
+export function componentHooks(css, component) {
+  const hooks = new Map();
+  const own = new RegExp(`^\\.scnx-${component}(?=__|--|[^a-z0-9-]|$)`);
+  csstree.walk(csstree.parse(css), {
+    visit: "Rule",
+    enter(rule) {
+      if (rule.prelude.type !== "SelectorList") return;
+      const selectors = rule.prelude.children.toArray().map((s) => csstree.generate(s)).filter((s) => own.test(s));
+      if (selectors.length === 0) return;
+      const parts = selectors.map((s) => [...s.matchAll(/__([a-z0-9-]+)/g)].at(-1)?.[1] ?? "root");
+      rule.block.children.forEach((node) => {
+        if (node.type !== "Declaration") return;
+        for (const { hook, fallback, floor } of unwrapHooks(csstree.generate(node.value)).hooks) {
+          const entry = hooks.get(hook) ?? { parts: new Set(), properties: new Set(), fallbacks: new Set(), floors: new Set() };
+          parts.forEach((p) => entry.parts.add(p));
+          entry.properties.add(node.property);
+          entry.fallbacks.add(normalizeValue(fallback));
+          entry.floors.add(floor);
+          hooks.set(hook, entry);
+        }
+      });
+    },
+  });
+  return hooks;
+}
+
+/** * Static findings for one styled specification (CS2, CS3).
  * @param {object} spec
  * @param {{ css: string, report: string, primitive?: object, tokens: Set<string> }} context
  */
@@ -382,33 +449,7 @@ export function styledFindings(spec, { css, report, primitive, tokens }) {
   }
   const { found, geometry, findings: sheet, order, hooks } = stylesheetBindings(css, spec);
   findings.push(...sheet, ...orderFindings(spec, order));
-  // HK2: the hooks a component reads are listed, with their fallbacks and floors, in both directions.
-  const listed = new Map((spec.hooks ?? []).map((h) => [h.hook, h]));
-  if (listed.size > 0 && !spec.hookScope?.trim()) findings.push("hooks are listed without hookScope, the guidance on where a product sets them");
-  for (const name of new Set([...listed.keys(), ...hooks.keys()])) {
-    const want = listed.get(name);
-    const have = hooks.get(name);
-    if (!have) {
-      findings.push(`hook ${name} is listed, but the stylesheet does not read it`);
-      continue;
-    }
-    if (!want) {
-      findings.push(`the stylesheet reads hook ${name}, which the specification's hooks do not list`);
-      continue;
-    }
-    const component = spec.anatomy[0].selector.replace(/^\.scnx-/, "");
-    if (!name.startsWith(`--scnx-${component}-`)) findings.push(`hook ${name} is not in the namespace --scnx-${component}-`);
-    for (const token of want.fallbacks.flatMap(tokensIn)) if (!tokens.has(token)) findings.push(`hook ${name} falls back to ${token}, which is not a canonical token name`);
-    const sorted = (values) => [...values].sort().join(" | ");
-    const fallbacks = new Set(want.fallbacks.map((v) => normalizeValue(toCss(v))));
-    if (sorted(fallbacks) !== sorted(have.fallbacks)) findings.push(`hook ${name}: falls back to ${sorted(have.fallbacks)} in the stylesheet, ${sorted(fallbacks)} in the specification`);
-    if (sorted(want.properties) !== sorted(have.properties)) findings.push(`hook ${name}: sets ${sorted(have.properties)} in the stylesheet, ${sorted(want.properties)} in the specification`);
-    if (sorted(want.parts ?? []) !== sorted(have.parts)) findings.push(`hook ${name}: styles parts ${sorted(have.parts)} in the stylesheet, ${sorted(want.parts ?? [])} in the specification`);
-    for (const field of ["purpose", "coverage", "migration"]) if (!want[field]?.trim()) findings.push(`hook ${name}: its alias review record has no ${field} (STD-UIP-TKN-001, Component Alias Review)`);
-    const floors = [...have.floors];
-    if (floors.length > 1) findings.push(`hook ${name}: the stylesheet reads it with and without a floor`);
-    else if ((want.floor ?? null) !== floors[0]) findings.push(`hook ${name}: floor ${floors[0] ?? "none"} in the stylesheet, ${want.floor ?? "none"} in the specification`);
-  }
+  findings.push(...hookFindings(spec, spec.anatomy[0].selector.replace(/^\.scnx-/, ""), hooks, tokens));
   for (const key of new Set([...declared.keys(), ...found.keys()])) {
     const want = declared.get(key) ?? {};
     const have = found.get(key) ?? {};

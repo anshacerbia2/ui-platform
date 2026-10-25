@@ -38,6 +38,14 @@ $c: icon-button;
     block-size: target-floor(hook($c, size, $dimension-size-control-comfortable));
   }
 
+  // System variant for a shape that carries meaning (TDD styled HK9): the
+  // circle is anatomy, not a hook, so neither `--scnx-icon-button-radius` nor
+  // a theme's radius can square it. It follows the size rules, which set the
+  // radius at the same specificity.
+  &[data-shape="circular"] {
+    border-radius: 50%;
+  }
+
   @include button-variants($c);
 
   &[data-variant="ghost"] {

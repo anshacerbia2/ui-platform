@@ -10,8 +10,10 @@ import type {
 
 /**
  * TableOfContentsBaseRoot - Pure headless logic for Table of Contents.
- * Manages active section state and item registration.
- * 
+ * Manages active section state and item registration. The active section is
+ * uncontrolled (`defaultActiveId`) or controlled (`activeId` with
+ * `onActiveIdChange`); neither prop reaches the `nav` element.
+ *
  * @example
  * <TableOfContentsBaseRoot items={[...]}>
  *   <TableOfContentsBaseList>...</TableOfContentsBaseList>
@@ -22,6 +24,9 @@ export const TableOfContentsBaseRoot = ({
   items: initialItems = [],
   scrollOffsetExtended = 36,
   navbarOffset,
+  activeId: controlledActiveId,
+  defaultActiveId,
+  onActiveIdChange,
   ...rest
 }: TableOfContentsBaseRootProps): ReactElement => {
   const [items, setItems] = useState<TableOfContentsItemState[]>(initialItems);
@@ -38,6 +43,9 @@ export const TableOfContentsBaseRoot = ({
     items,
     scrollOffsetExtended,
     navbarOffset,
+    activeId: controlledActiveId,
+    defaultActiveId,
+    onActiveIdChange,
   });
 
   const registerItem = useCallback((item: TableOfContentsItemState) => {

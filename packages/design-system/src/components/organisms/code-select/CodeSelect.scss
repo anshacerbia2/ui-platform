@@ -1,39 +1,45 @@
 @use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
 
+$c: code-select;
+
+// TDD styled HK1-HK7: every value reads a `--scnx-code-select-{part?}-*` hook
+// that falls back to its token; the minimum width, the chevron's glyph size,
+// and the list's maximum height are the recorded fallbacks of their hooks.
+// The status region's 1px box is the visually-hidden technique, not design,
+// and is a recorded exception.
 .scnx-code-select {
-
   position: relative;
   display: inline-flex;
-  min-width: 140px;
+  min-width: hook($c, min-width, 140px);
 
   &__wrapper {
     display: flex;
     align-items: center;
-    background-color: $color-surface-default;
-    border: $dimension-border-width-default solid $color-border-default;
-    border-radius: $dimension-radius-control;
-    padding: $dimension-spacing-inset-compact;
+    background-color: hook($c, background, $color-surface-default);
+    border: hook($c, border-width, $dimension-border-width-default) solid hook($c, border-color, $color-border-default);
+    border-radius: hook($c, radius, $dimension-radius-control);
+    padding: hook($c, padding, $dimension-spacing-inset-compact);
     width: 100%;
     cursor: pointer;
-    transition: background-color $motion-feedback-duration $motion-feedback-easing;
+    transition: background-color hook($c, transition-duration, $motion-feedback-duration) hook($c, transition-timing-function, $motion-feedback-easing);
 
     &:hover {
-      background-color: $color-state-hover;
+      background-color: hook($c, background-hover, $color-state-hover);
     }
   }
 
   &__input {
     background: transparent;
     border: none;
-    @include typography(label, small);
-    color: $color-text-primary;
+    @include hooked-typography($c, label, small, $prefix: input);
+    color: hook($c, input-color, $color-text-primary);
     width: 100%;
-    
+
     &::placeholder {
-      color: $color-text-secondary;
+      color: hook($c, placeholder-color, $color-text-secondary);
     }
   }
-
 
   // Announces the option count to screen readers only.
   &__status {
@@ -46,17 +52,16 @@
   }
 
   &__icon {
-    margin-right: $dimension-spacing-inline-default;
+    margin-right: hook($c, icon-margin-inline-end, $dimension-spacing-inline-default);
     display: flex;
     align-items: center;
   }
 
   &__chevron {
-    color: $color-text-secondary;
+    color: hook($c, chevron-color, $color-text-secondary);
     margin-left: auto;
-    font-size: 10px;
-    transition: transform $motion-disclosure-duration $motion-disclosure-easing;
-
+    font-size: hook($c, chevron-size, 10px);
+    transition: transform hook($c, chevron-transition-duration, $motion-disclosure-duration) hook($c, chevron-transition-timing-function, $motion-disclosure-easing);
   }
 
   &[data-state="open"] &__chevron {
@@ -71,32 +76,32 @@
     top: 100%;
     left: 0;
     right: 0;
-    margin-top: $dimension-spacing-stack-default;
-    background-color: $color-surface-floating;
-    border: $dimension-border-width-default solid $color-border-default;
-    border-radius: $dimension-radius-control;
-    box-shadow: var(--ds-effect-shadow-overlay);
+    margin-top: hook($c, dropdown-offset, $dimension-spacing-stack-default);
+    background-color: hook($c, dropdown-background, $color-surface-floating);
+    border: hook($c, border-width, $dimension-border-width-default) solid hook($c, border-color, $color-border-default);
+    border-radius: hook($c, radius, $dimension-radius-control);
+    box-shadow: hook($c, dropdown-shadow, var(--ds-effect-shadow-overlay));
     z-index: $dimension-z-index-dropdown;
-    max-height: 200px;
+    max-height: hook($c, dropdown-max-height, 200px);
     overflow-y: auto;
   }
 
   &__option {
-    padding: $dimension-spacing-inset-compact $dimension-spacing-inset-default;
-    @include typography(label, small);
-    color: $color-text-primary;
+    padding: hook($c, option-padding, $dimension-spacing-inset-compact $dimension-spacing-inset-default);
+    @include hooked-typography($c, label, small, $prefix: option);
+    color: hook($c, option-color, $color-text-primary);
     cursor: pointer;
-    transition: background-color $motion-feedback-duration $motion-feedback-easing;
+    transition: background-color hook($c, transition-duration, $motion-feedback-duration) hook($c, transition-timing-function, $motion-feedback-easing);
 
     // The active option (aria-activedescendant) is shown like a hovered one,
     // so keyboard focus in the list is visible (WCAG 2.4.7).
     &:hover,
     &[data-active] {
-      background-color: $color-state-hover;
+      background-color: hook($c, option-background-hover, $color-state-hover);
     }
 
     &[data-selected="true"] {
-      color: $color-primary-default; // Use primary color for selected
+      color: hook($c, option-color-selected, $color-primary-default); // Use primary color for selected
     }
   }
 }

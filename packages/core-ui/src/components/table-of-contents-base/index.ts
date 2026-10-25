@@ -1,6 +1,7 @@
 "use client";
 
 export type {
+  TableOfContentsActive,
   TableOfContentsBaseRootProps,
   TableOfContentsBaseListProps,
   TableOfContentsBaseItemProps,
