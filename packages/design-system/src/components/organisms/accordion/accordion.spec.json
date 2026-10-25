@@ -307,7 +307,7 @@
       ],
       "floor": null,
       "purpose": "The background-color of Accordion's item part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -324,7 +324,7 @@
       ],
       "floor": null,
       "purpose": "The border of Accordion's item part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -340,7 +340,7 @@
       ],
       "floor": null,
       "purpose": "The color of Accordion's content part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -356,7 +356,7 @@
       ],
       "floor": null,
       "purpose": "The font-family of Accordion's content part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -372,7 +372,7 @@
       ],
       "floor": null,
       "purpose": "The font-size of Accordion's content part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -388,7 +388,7 @@
       ],
       "floor": null,
       "purpose": "The font-weight of Accordion's content part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -404,7 +404,7 @@
       ],
       "floor": null,
       "purpose": "The letter-spacing of Accordion's content part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -420,7 +420,7 @@
       ],
       "floor": null,
       "purpose": "The line-height of Accordion's content part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -436,7 +436,7 @@
       ],
       "floor": null,
       "purpose": "The padding of Accordion's content-inner part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -452,7 +452,7 @@
       ],
       "floor": null,
       "purpose": "The transition of Accordion's content part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -468,7 +468,7 @@
       ],
       "floor": null,
       "purpose": "The transition of Accordion's content part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -486,7 +486,7 @@
       ],
       "floor": null,
       "purpose": "The border-bottom and border-top of Accordion's content-inner and item part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -504,7 +504,7 @@
       ],
       "floor": null,
       "purpose": "The border-bottom and border-top of Accordion's content-inner and item part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -520,7 +520,7 @@
       ],
       "floor": null,
       "purpose": "The gap of Accordion.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -536,7 +536,7 @@
       ],
       "floor": null,
       "purpose": "The color of Accordion's icon part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -552,7 +552,7 @@
       ],
       "floor": null,
       "purpose": "The transition of Accordion's icon part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -568,7 +568,7 @@
       ],
       "floor": null,
       "purpose": "The transition of Accordion's icon part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -586,7 +586,7 @@
       ],
       "floor": null,
       "purpose": "The border-radius of Accordion's item and trigger part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -603,7 +603,7 @@
       ],
       "floor": null,
       "purpose": "The box-shadow of Accordion's item part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -619,7 +619,7 @@
       ],
       "floor": null,
       "purpose": "The background-color of Accordion's trigger part in the hover state.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -635,7 +635,7 @@
       ],
       "floor": null,
       "purpose": "The color of Accordion's trigger part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -651,7 +651,7 @@
       ],
       "floor": null,
       "purpose": "The font-family of Accordion's trigger part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -667,7 +667,7 @@
       ],
       "floor": null,
       "purpose": "The font-size of Accordion's trigger part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -683,7 +683,7 @@
       ],
       "floor": null,
       "purpose": "The font-weight of Accordion's trigger part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -699,7 +699,7 @@
       ],
       "floor": null,
       "purpose": "The letter-spacing of Accordion's trigger part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -715,7 +715,7 @@
       ],
       "floor": null,
       "purpose": "The line-height of Accordion's trigger part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -731,7 +731,7 @@
       ],
       "floor": "2px",
       "purpose": "The outline-offset of Accordion's trigger part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value; never below the 2px floor.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value; never below the 2px floor.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -747,7 +747,7 @@
       ],
       "floor": null,
       "purpose": "The padding of Accordion's trigger part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -763,7 +763,7 @@
       ],
       "floor": null,
       "purpose": "The transition of Accordion's trigger part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -779,7 +779,7 @@
       ],
       "floor": null,
       "purpose": "The transition of Accordion's trigger part.",
-      "coverage": "industrial and achromatic, light and dark; every variant value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]

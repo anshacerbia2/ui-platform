@@ -10,7 +10,7 @@ import { COLOR, DIMENSION, MOTION, TYPOGRAPHY, consumingProperty, parseTokenName
 import { contrastRatio, inSrgbGamut, parseColor } from "./color.mjs";
 import { assertDeclarationSafe, toCss } from "./serialize.mjs";
 
-export const CATEGORIES = ["grammar", "reference", "property-value", "key-set", "font", "contrast"];
+export const CATEGORIES = ["grammar", "reference", "property-value", "key-set", "font", "contrast", "theme-id"];
 
 const GENERIC_FAMILIES = new Set([
   "serif", "sans-serif", "monospace", "cursive", "fantasy", "system-ui",
@@ -199,6 +199,42 @@ export function callsiteFindings(files, emitted, packageDir) {
           message: `source callsite references an undefined token`,
           callsite: `${path.relative(packageDir, file).replaceAll("\\", "/")}:${index + 1}`,
         });
+      }
+    });
+  }
+  return findings;
+}
+
+// A theme ID where code names one: the root attribute, a provider prop or option, or a
+// published token file. Component classes (`scnx-button`) are not theme IDs.
+const THEME_REFERENCE = [
+  /data-scnx-theme=["']?(scnx-[a-z0-9-]+)/g,
+  /themeId[=:]\s*\{?\s*["'](scnx-[a-z0-9-]+)["']/g,
+  /tokens\/(?:css|json|figma)\/(scnx-[a-z0-9-]+?)\.(?:css|json|light|dark|dimension)/g,
+  /styles\/themes\/(scnx-[a-z0-9-]+)/g,
+];
+
+/**
+ * Theme naming (STD-UIP-TKN-001, theme naming): the `scnx-` prefix is reserved
+ * for the themes this package ships, so a reference to a `scnx-` theme it does
+ * not ship (a typo, or a product theme that took the prefix) fails.
+ * @param {string[]} files absolute paths
+ * @param {Set<string>} shipped the theme IDs of tokens.config.json
+ */
+export function themeIdFindings(files, shipped, root) {
+  const findings = [];
+  for (const file of files) {
+    fs.readFileSync(file, "utf8").split(/\r?\n/).forEach((line, index) => {
+      for (const pattern of THEME_REFERENCE) {
+        for (const [, id] of line.matchAll(pattern)) {
+          if (shipped.has(id)) continue;
+          findings.push({
+            category: "theme-id",
+            token: id,
+            message: `names a scnx- theme the package does not ship (${[...shipped].join(", ")}); scnx- is reserved for shipped themes`,
+            callsite: `${path.relative(root, file).replaceAll("\\", "/")}:${index + 1}`,
+          });
+        }
       }
     });
   }

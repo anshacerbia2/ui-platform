@@ -24,7 +24,7 @@
       ],
       "floor": null,
       "purpose": "The border-bottom, border-left and border-right of EdgeLayout's header, sidebar and start part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -45,7 +45,7 @@
       ],
       "floor": null,
       "purpose": "The border-bottom, border-left and border-right of EdgeLayout's header, sidebar and start part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -65,7 +65,7 @@
       ],
       "floor": null,
       "purpose": "The grid-template-rows, height and top of EdgeLayout's header and sidebar part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]

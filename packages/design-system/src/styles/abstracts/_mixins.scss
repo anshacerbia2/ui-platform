@@ -21,14 +21,15 @@
     height: $width;
   }
 
+  // A zero-width (hidden) scrollbar has no shape to round.
   &::-webkit-scrollbar-track {
     background: $track-color;
-    border-radius: $width;
+    @if $width != 0 { border-radius: $width; }
   }
 
   &::-webkit-scrollbar-thumb {
     background: $thumb-color;
-    border-radius: $width;
+    @if $width != 0 { border-radius: $width; }
 
     &:hover {
       background: $hover-color;

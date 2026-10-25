@@ -8,6 +8,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { loadConfig } from "./check.mjs";
 import { contrastByPath, contrastRatio, parseColor } from "./color.mjs";
 import { consumingProperty, parseTokenName, tokenType } from "./grammar.mjs";
+import { themeIdFindings } from "./validate.mjs";
 import { emit, serializeThemes, themeSelector } from "./emit.mjs";
 import { pixelValue, srgbValue } from "./figma.mjs";
 import { normalize } from "./normalize.mjs";
@@ -317,7 +318,7 @@ describe("normalizer on the token source", () => {
   });
 
   it("emits the public shadow set and no Tier-1 shadow sizes", () => {
-    const names = [...themes.achromatic.light.records.keys()];
+    const names = [...themes["scnx-saas"].light.records.keys()];
     expect(names.filter((name) => name.startsWith("--ds-effect-shadow-")).sort()).toEqual(
       ["high", "low", "medium", "overlay", "focus"].map((s) => `--ds-effect-shadow-${s}`).sort(),
     );
@@ -325,7 +326,7 @@ describe("normalizer on the token source", () => {
   });
 
   it.each(["light", "dark"])("serializes every shadow and material to a valid box-shadow in %s once references resolve", (mode) => {
-    const { records } = themes.industrial[mode];
+    const { records } = themes["scnx-platform"][mode];
     const css = new Map([...records].map(([name, value]) => [name, toCss(value)]));
     const shadows = [...css.keys()].filter((n) => /^--ds-effect-(shadow|material)-/.test(n));
     expect(shadows.length).toBe(12);
@@ -336,8 +337,8 @@ describe("normalizer on the token source", () => {
     }
   });
 
-  it("emits industrial's values: square radii, pill for meaningful shapes, and 28/36/44px controls (TDD SI1, SI8)", () => {
-    for (const { records } of Object.values(themes.industrial)) {
+  it("emits scnx-platform's values: square radii, pill for meaningful shapes, and 28/36/44px controls (TDD SI1, SI8)", () => {
+    for (const { records } of Object.values(themes["scnx-platform"])) {
       for (const intent of ["mark", "element", "control", "container", "panel"]) expect(toCss(records.get(`--ds-dimension-radius-${intent}`))).toBe("0");
       expect(toCss(records.get("--ds-dimension-radius-pill"))).toBe("9999px");
       expect(["compact", "default", "comfortable"].map((d) => toCss(records.get(`--ds-dimension-size-control-${d}`)))).toEqual(["1.75rem", "2.25rem", "2.75rem"]);
@@ -356,10 +357,22 @@ describe("normalizer on the token source", () => {
           const value = toCss(records.get(`--ds-effect-material-${m}`));
           expect(value.includes(ring), `${theme}/${mode} ${m} ring`).toBe(m !== "tooltip");
           expect(value.startsWith(lit), `${theme}/${mode} ${m} lit edge`).toBe(mode === "dark" && ["menu", "modal", "sheet"].includes(m));
-          // On the page a material is the ring alone (ADR-UIP-VIS-001 item 1).
-          if (["flat", "raised", "panel"].includes(m)) expect(value, `${theme}/${mode} ${m}`).toBe(ring);
+          // On the page, flat is the ring alone; raised and panel are the ring alone in
+          // scnx-platform and add soft shadows in scnx-saas (proposal revision 3).
+          if (m === "flat" || (theme === "scnx-platform" && ["raised", "panel"].includes(m))) expect(value, `${theme}/${mode} ${m}`).toBe(ring);
+          if (theme === "scnx-saas" && ["raised", "panel"].includes(m)) {
+            expect(value.startsWith(`${ring}, 0 1px 2px 0 var(--ds-color-neutral-shadow-subtle-default)`), `${theme}/${mode} ${m}`).toBe(true);
+          }
         }
       }
+    }
+  });
+
+  it("maps scnx-saas's concentric radius ladder from Tier 1 (proposal revision 3)", () => {
+    for (const mode of ["light", "dark"]) {
+      const { records } = themes["scnx-saas"][mode];
+      const radius = Object.fromEntries(["mark", "element", "control", "container", "panel", "pill"].map((r) => [r, toCss(records.get(`--ds-dimension-radius-${r}`))]));
+      expect(radius, mode).toEqual({ mark: "0.25rem", element: "0.5rem", control: "0.75rem", container: "1rem", panel: "1.5rem", pill: "9999px" });
     }
   });
 });
@@ -384,6 +397,31 @@ describe("configuration", () => {
     inter.license.publish = "../escape.txt";
     fs.writeFileSync(file, JSON.stringify(config));
     expect(() => loadConfig(file)).toThrow(/used twice[\s\S]*|publish path must be fonts/);
+  });
+
+  it("names a shipped theme scnx-<owner>, never by its mode (STD-UIP-TKN-001, theme naming)", () => {
+    const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "tokens-config-")), "tokens.config.json");
+    const config = JSON.parse(fs.readFileSync(path.join(packageDir, "tokens.config.json"), "utf8"));
+    const platform = config.themes["scnx-platform"];
+    fs.writeFileSync(file, JSON.stringify({ ...config, themes: { ...config.themes, northwind: platform, "scnx-saas-dark": platform } }));
+    expect(() => loadConfig(file)).toThrow(/themes\.northwind: a theme the package ships is named scnx-<owner>[\s\S]*themes\.scnx-saas-dark: the mode is never part of a theme ID/);
+  });
+});
+
+describe("theme references (STD-UIP-TKN-001, theme naming)", () => {
+  it("fail a scnx- theme the package does not ship, and ignore component classes and product themes", () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "theme-ids-"));
+    const file = path.join(dir, "page.tsx");
+    // Built at run time, so this file does not itself name an unshipped theme to the gate.
+    const [typo, legacy] = ["platfrom", "legacy"].map((owner) => `scnx-${owner}`);
+    fs.writeFileSync(file, [
+      `<div data-scnx-theme="scnx-saas" className="scnx-button" />`,
+      `<ThemeProvider themeId="${typo}" />`,
+      `<div data-scnx-theme="northwind" />`,
+      `import "@scnx/system/tokens/css/${legacy}.css";`,
+    ].join("\n"));
+    const findings = themeIdFindings([file], new Set(["scnx-platform", "scnx-saas"]), dir);
+    expect(findings.map((f) => [f.token, f.callsite])).toEqual([["scnx-platfrom", "page.tsx:2"], ["scnx-legacy", "page.tsx:4"]]);
   });
 });
 
@@ -425,14 +463,14 @@ describe("emitters", () => {
     });
 
     it("loads declared font faces from files it writes", () => {
-      const css = read("tokens/css/industrial.css");
+      const css = read("tokens/css/scnx-platform.css");
       const urls = [...css.matchAll(/url\("([^"]+)"\)/g)].map((m) => m[1]);
       expect(urls.length).toBeGreaterThan(0);
       for (const url of urls) expect(fs.existsSync(path.join(dirs[0], "tokens/css", url))).toBe(true);
     });
 
     it("emits a Sass contract that references every custom property", () => {
-      const json = JSON.parse(read("tokens/json/industrial.json"));
+      const json = JSON.parse(read("tokens/json/scnx-platform.json"));
       const probe = json.tokens.map((t, i) => `.t${i} { v: tokens.$${t.cssName.slice(5)}; }`).join("\n");
       const out = sass.compileString(`@use "tokens/scss" as tokens;\n${probe}`, { loadPaths: [dirs[0]] }).css;
       for (const token of json.tokens) expect(out).toContain(`v: var(${token.cssName})`);

@@ -238,7 +238,7 @@ async function verify(browser) {
   // primary Button's corner radius tells the themes apart: its ink fill is the
   // same neutral solid in every theme (ADR-UIP-VIS-001 item 3), while the
   // radius ladder is theme-specific (12px control in default, 8px in
-  // achromatic). The secondary Button's raised surface, which the token
+  // scnx-saas). The secondary Button's raised surface, which the token
   // doctrine makes mode-dependent, tells the modes apart. The specification
   // check (CS4) proves each root computes its own token, so it is not
   // restated here.
@@ -248,7 +248,7 @@ async function verify(browser) {
       const enabled = (variant) => root.querySelector(`.scnx-button[data-variant="${variant}"]:not([data-disabled]):not(:disabled)`);
       return [
         // Themes differ only in colour (ADR-UIP-VIS-001 item 7): the selected tab's indicator is the
-        // primary scheme's solid, Scnx Blue in one theme and ink in achromatic.
+        // primary scheme's solid, Scnx Blue in one theme and ink in scnx-saas.
         [`${id}/primary-signal`, getComputedStyle(root.querySelector(".scnx-tabs [role=tab][aria-selected=true]"), "::after").borderBottomColor],
         [`${id}/secondary`, getComputedStyle(enabled("secondary")).backgroundColor],
       ];

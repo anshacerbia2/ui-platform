@@ -172,7 +172,7 @@
       ],
       "floor": null,
       "purpose": "The color of Heading.",
-      "coverage": "industrial and achromatic, light and dark; every size and weight value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and weight value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -193,7 +193,7 @@
       ],
       "floor": null,
       "purpose": "The font-family of Heading.",
-      "coverage": "industrial and achromatic, light and dark; every size and weight value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and weight value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -214,7 +214,7 @@
       ],
       "floor": null,
       "purpose": "The font-size of Heading.",
-      "coverage": "industrial and achromatic, light and dark; every size and weight value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and weight value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -233,7 +233,7 @@
       ],
       "floor": null,
       "purpose": "The font-weight of Heading.",
-      "coverage": "industrial and achromatic, light and dark; every size and weight value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and weight value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -254,7 +254,7 @@
       ],
       "floor": null,
       "purpose": "The letter-spacing of Heading.",
-      "coverage": "industrial and achromatic, light and dark; every size and weight value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and weight value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -275,7 +275,7 @@
       ],
       "floor": null,
       "purpose": "The line-height of Heading.",
-      "coverage": "industrial and achromatic, light and dark; every size and weight value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and weight value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]

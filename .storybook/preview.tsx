@@ -2,8 +2,8 @@ import type { Decorator, Preview } from "@storybook/react-vite";
 import { ThemeProvider } from "@scnx/core-ui/providers/theme-provider-base";
 // The published artifacts, exactly as a consumer loads them (TDD styled-004).
 import "../packages/design-system/dist/styles/components.css";
-import "../packages/design-system/dist/tokens/css/industrial.css";
-import "../packages/design-system/dist/tokens/css/achromatic.css";
+import "../packages/design-system/dist/tokens/css/scnx-platform.css";
+import "../packages/design-system/dist/tokens/css/scnx-saas.css";
 import { MODES, THEMES, allModes } from "./modes";
 
 const withTheme: Decorator = (Story, context) => (

@@ -50,6 +50,9 @@ export function dtcgLeaves(node, prefix = []) {
 const figmaName = (tokenPath) => tokenPath.replaceAll(".", "/");
 const rgba = ({ components, alpha = 1 }) => ({ r: components[0], g: components[1], b: components[2], a: alpha });
 const title = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+// The default theme's color modes are named by mode alone. Every theme is named by its
+// id, as in code (STD-UIP-TKN-001, theme naming: the id names the owner of the look).
+const DEFAULT_THEME = "scnx-platform";
 
 /** FG7: one Color collection whose modes are every theme × mode; one Dimension collection with a mode per theme. */
 function collections(profiles) {
@@ -68,10 +71,10 @@ function collections(profiles) {
   };
   for (const { themeId, modes, dimension } of profiles) {
     for (const [mode, doc] of modes) {
-      colorModes.push(themeId === "industrial" ? title(mode) : `${title(themeId)} ${mode}`);
+      colorModes.push(themeId === DEFAULT_THEME ? title(mode) : `${themeId} ${mode}`);
       add(colorValues, dtcgLeaves(doc), colorModes.length - 1);
     }
-    dimensionModes.push(title(themeId));
+    dimensionModes.push(themeId);
     add(dimensionValues, dtcgLeaves(dimension), dimensionModes.length - 1);
   }
   const variables = (values, count) =>
@@ -86,7 +89,7 @@ function collections(profiles) {
   ];
 }
 
-/** FG9: a text style per typography composite of the industrial theme. */
+/** FG9: a text style per typography composite of the scnx-platform theme. */
 const WEIGHT_STYLE = { 400: "Regular", 500: "Medium", 600: "Semi Bold", 700: "Bold" };
 // Figma has no system font stack; the mono stack is drawn in Roboto Mono (a Figma default font).
 const FAMILY = { Inter: "Inter", "ui-monospace": "Roboto Mono" };
@@ -181,7 +184,7 @@ export function effectStyles(recordsByTheme, colorVariables) {
       const path = t.name.replace(/^effect\./, "").replaceAll(".", "/");
       for (const [mode, css] of shared ? [byMode[0]] : byMode) {
         styles.push({
-          name: shared ? `${title(records.theme)}/${path}` : `${title(records.theme)}/${title(mode)}/${path}`,
+          name: shared ? `${records.theme}/${path}` : `${records.theme}/${title(mode)}/${path}`,
           description: `${t.name} in theme "${records.theme}"${shared ? "" : `, ${mode} mode`} — var(${t.cssName}). Colors are bound to variables, so the style follows the frame's mode.`,
           effects: splitTop(css).map((layer) => shadowLayer(layer, colorByCss)),
         });
@@ -194,7 +197,7 @@ export function effectStyles(recordsByTheme, colorVariables) {
 /** The whole plan from a package dist directory. */
 export function buildPlan(distDir, { source } = {}) {
   const config = (file) => JSON.parse(fs.readFileSync(path.join(distDir, file), "utf8"));
-  const themeIds = ["industrial", ...fs.readdirSync(path.join(distDir, "tokens/json")).map((f) => f.replace(/\.json$/, "")).filter((t) => t !== "industrial").sort()];
+  const themeIds = [DEFAULT_THEME, ...fs.readdirSync(path.join(distDir, "tokens/json")).map((f) => f.replace(/\.json$/, "")).filter((t) => t !== DEFAULT_THEME).sort()];
   const recordsByTheme = themeIds.map((t) => config(`tokens/json/${t}.json`));
   const profiles = recordsByTheme.map((records) => ({
     themeId: records.theme,

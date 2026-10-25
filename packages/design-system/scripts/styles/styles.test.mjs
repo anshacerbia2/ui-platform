@@ -42,7 +42,7 @@ describe("published stylesheets", () => {
   const read = (file) => fs.readFileSync(path.join(dist, file), "utf8");
 
   it("open with the canonical layer order", () => {
-    for (const file of ["styles/components.css", "tokens/css/industrial.css", "tokens/css/achromatic.css"]) {
+    for (const file of ["styles/components.css", "tokens/css/scnx-platform.css", "tokens/css/scnx-saas.css"]) {
       expect(read(file)).toContain(LAYER_STATEMENT);
     }
   });

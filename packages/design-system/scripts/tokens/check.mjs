@@ -16,7 +16,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { STANDARD, parseTokenName, tokenType } from "./grammar.mjs";
 import { normalize } from "./normalize.mjs";
-import { CATEGORIES, callsiteFindings, validate } from "./validate.mjs";
+import { CATEGORIES, callsiteFindings, themeIdFindings, validate } from "./validate.mjs";
 import { contrastPairs } from "../../../../scripts/specs/styled.mjs";
 
 /** Contrast pairs every styled specification renders (TDD styled CS5). */
@@ -62,6 +62,10 @@ export function loadConfig(file) {
   if (config.schemaVersion !== 1) errors.push("config: schemaVersion must be 1");
   for (const [id, theme] of Object.entries(config.themes ?? {})) {
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id)) errors.push(`themes.${id}: theme ID must be URL-safe`);
+    // Theme naming (STD-UIP-TKN-001): a shipped theme takes the reserved scnx- prefix,
+    // and the mode is its own axis, never part of the ID.
+    if (!id.startsWith("scnx-")) errors.push(`themes.${id}: a theme the package ships is named scnx-<owner>`);
+    if (/(?:^|-)(?:light|dark)(?:-|$)/.test(id)) errors.push(`themes.${id}: the mode is never part of a theme ID`);
     known(theme, CONFIG_KEYS.theme, `themes.${id}`);
     if (theme.inherits && !config.themes[theme.inherits]) errors.push(`themes.${id}: unknown parent "${theme.inherits}"`);
     for (const [mode, source] of Object.entries(theme.modes ?? {})) {
@@ -131,6 +135,14 @@ function callsiteFiles() {
   return files;
 }
 
+const repoRoot = path.resolve(packageDir, "../..");
+
+/** Every tracked text file of the repository that can name a theme. */
+function themeReferenceFiles() {
+  const tracked = execFileSync("git", ["ls-files", "-z"], { cwd: repoRoot, encoding: "utf8" }).split("\0").filter(Boolean);
+  return tracked.filter((f) => /\.(?:s?css|tsx?|m?js|json|md|html|ya?ml)$/.test(f) && !/(?:^|\/)api\//.test(f)).map((f) => path.join(repoRoot, f));
+}
+
 function sourceSha() {
   try {
     return execFileSync("git", ["rev-parse", "HEAD"], { cwd: packageDir, encoding: "utf8" }).trim();
@@ -160,6 +172,7 @@ function main() {
   const names = new Set(Object.values(themes).flatMap((modes) => Object.values(modes).flatMap(({ records }) => [...records.keys()])));
   const callsites = callsiteFindings(callsiteFiles(), names, packageDir);
   findings.push(...callsites);
+  findings.push(...themeIdFindings(themeReferenceFiles(), new Set(Object.keys(config.themes)), repoRoot));
   const byTier = {};
   const byType = {};
   for (const name of names) {

@@ -164,7 +164,7 @@
       ],
       "floor": null,
       "purpose": "The gap of Dialog's actions part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -180,7 +180,7 @@
       ],
       "floor": null,
       "purpose": "The background of Dialog's backdrop part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -196,7 +196,7 @@
       ],
       "floor": null,
       "purpose": "The background of Dialog.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -212,7 +212,7 @@
       ],
       "floor": null,
       "purpose": "The margin-block-end of Dialog's body part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -228,7 +228,7 @@
       ],
       "floor": null,
       "purpose": "The border of Dialog.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -245,7 +245,7 @@
       ],
       "floor": null,
       "purpose": "The inset-block-start and inset-inline-end of Dialog's close part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -261,7 +261,7 @@
       ],
       "floor": null,
       "purpose": "The color of Dialog.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -277,7 +277,7 @@
       ],
       "floor": null,
       "purpose": "The color of Dialog's description part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -293,7 +293,7 @@
       ],
       "floor": null,
       "purpose": "The font-family of Dialog's description part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -309,7 +309,7 @@
       ],
       "floor": null,
       "purpose": "The font-size of Dialog's description part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -325,7 +325,7 @@
       ],
       "floor": null,
       "purpose": "The font-weight of Dialog's description part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -341,7 +341,7 @@
       ],
       "floor": null,
       "purpose": "The letter-spacing of Dialog's description part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -357,7 +357,7 @@
       ],
       "floor": null,
       "purpose": "The line-height of Dialog's description part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -373,7 +373,7 @@
       ],
       "floor": null,
       "purpose": "The margin of Dialog's description part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -389,7 +389,7 @@
       ],
       "floor": null,
       "purpose": "The max-height of Dialog.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -405,7 +405,7 @@
       ],
       "floor": null,
       "purpose": "The padding of Dialog.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -421,7 +421,7 @@
       ],
       "floor": null,
       "purpose": "The border-radius of Dialog.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -437,7 +437,7 @@
       ],
       "floor": null,
       "purpose": "The box-shadow of Dialog.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -453,7 +453,7 @@
       ],
       "floor": null,
       "purpose": "The font-family of Dialog's title part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -469,7 +469,7 @@
       ],
       "floor": null,
       "purpose": "The font-size of Dialog's title part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -485,7 +485,7 @@
       ],
       "floor": null,
       "purpose": "The font-weight of Dialog's title part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -501,7 +501,7 @@
       ],
       "floor": null,
       "purpose": "The letter-spacing of Dialog's title part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -517,7 +517,7 @@
       ],
       "floor": null,
       "purpose": "The line-height of Dialog's title part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -533,7 +533,7 @@
       ],
       "floor": null,
       "purpose": "The margin of Dialog's title part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -549,7 +549,7 @@
       ],
       "floor": null,
       "purpose": "The padding-inline-end of Dialog's title part.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -565,7 +565,7 @@
       ],
       "floor": null,
       "purpose": "The width of Dialog.",
-      "coverage": "industrial and achromatic, light and dark.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]

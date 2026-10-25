@@ -1,0 +1,33 @@
+@use "styles/abstracts/token-validator" as validator;
+@use "styles/abstracts/theme-injector" as injector;
+@use "scnx-saas-contract" as contract;
+@use "scnx-saas-light-token" as scnx-saas;
+@use "scnx-saas-dark-token" as scnx-saas-dark;
+
+// ============================================
+// VALIDATE before injecting
+// Ensures $scnx-saas-token satisfies all keys
+// declared in $scnx-saas-contract.
+// Fails the build if a required key is missing.
+// ============================================
+@include validator.validate-token(
+  $token: scnx-saas.$scnx-saas-light-token,
+  $contract: contract.$scnx-saas-contract
+);
+@include validator.validate-token(
+  $token: scnx-saas-dark.$scnx-saas-dark-token,
+  $contract: contract.$scnx-saas-contract
+);
+
+// ============================================
+// INJECT scnx-saas theme overrides into :root
+// ============================================
+:root,
+[data-theme="light"] {
+  @include injector.inject-theme(scnx-saas.$scnx-saas-light-token, "ds");
+}
+
+[data-theme="dark"],
+.dark {
+  @include injector.inject-theme(scnx-saas-dark.$scnx-saas-dark-token, "ds");
+}

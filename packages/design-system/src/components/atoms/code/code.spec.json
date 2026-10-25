@@ -119,7 +119,7 @@
       ],
       "floor": null,
       "purpose": "The background-color of Code.",
-      "coverage": "industrial and achromatic, light and dark; every intent value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every intent value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -140,7 +140,7 @@
       ],
       "floor": null,
       "purpose": "The border-color of Code.",
-      "coverage": "industrial and achromatic, light and dark; every intent value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every intent value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -156,7 +156,7 @@
       ],
       "floor": null,
       "purpose": "The border-width of Code.",
-      "coverage": "industrial and achromatic, light and dark; every intent value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every intent value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -176,7 +176,7 @@
       ],
       "floor": null,
       "purpose": "The color of Code.",
-      "coverage": "industrial and achromatic, light and dark; every intent value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every intent value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -192,7 +192,7 @@
       ],
       "floor": null,
       "purpose": "The font-family of Code.",
-      "coverage": "industrial and achromatic, light and dark; every intent value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every intent value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -208,7 +208,7 @@
       ],
       "floor": null,
       "purpose": "The font-size of Code.",
-      "coverage": "industrial and achromatic, light and dark; every intent value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every intent value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -224,7 +224,7 @@
       ],
       "floor": null,
       "purpose": "The font-weight of Code.",
-      "coverage": "industrial and achromatic, light and dark; every intent value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every intent value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -240,7 +240,7 @@
       ],
       "floor": null,
       "purpose": "The padding-block of Code.",
-      "coverage": "industrial and achromatic, light and dark; every intent value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every intent value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -256,7 +256,7 @@
       ],
       "floor": null,
       "purpose": "The padding-inline of Code.",
-      "coverage": "industrial and achromatic, light and dark; every intent value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every intent value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -272,7 +272,7 @@
       ],
       "floor": null,
       "purpose": "The border-radius of Code.",
-      "coverage": "industrial and achromatic, light and dark; every intent value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every intent value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]

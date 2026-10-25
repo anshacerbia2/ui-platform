@@ -302,7 +302,7 @@
       ],
       "floor": null,
       "purpose": "The background of Button.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -321,7 +321,7 @@
       ],
       "floor": null,
       "purpose": "The background of Button in the disabled state.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -339,7 +339,7 @@
       ],
       "floor": null,
       "purpose": "The background of Button in the hover state.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -357,7 +357,7 @@
       ],
       "floor": null,
       "purpose": "The background of Button in the pressed state.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -373,7 +373,7 @@
       ],
       "floor": null,
       "purpose": "The border of Button.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -391,7 +391,7 @@
       ],
       "floor": null,
       "purpose": "The color of Button.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -409,7 +409,7 @@
       ],
       "floor": null,
       "purpose": "The color of Button in the disabled state.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -426,7 +426,7 @@
       ],
       "floor": null,
       "purpose": "The color of Button in the hover state.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -443,7 +443,7 @@
       ],
       "floor": null,
       "purpose": "The color of Button in the pressed state.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -459,7 +459,7 @@
       ],
       "floor": null,
       "purpose": "The font-family of Button.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -477,7 +477,7 @@
       ],
       "floor": null,
       "purpose": "The font-size of Button.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -493,7 +493,7 @@
       ],
       "floor": null,
       "purpose": "The font-weight of Button.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -510,7 +510,7 @@
       ],
       "floor": null,
       "purpose": "The gap of Button.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -528,7 +528,7 @@
       ],
       "floor": "24px",
       "purpose": "The block-size of Button.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value; never below the 24px floor.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value; never below the 24px floor.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -544,7 +544,7 @@
       ],
       "floor": null,
       "purpose": "The letter-spacing of Button.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -560,7 +560,7 @@
       ],
       "floor": null,
       "purpose": "The line-height of Button.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -578,7 +578,7 @@
       ],
       "floor": null,
       "purpose": "The padding-inline of Button.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -595,7 +595,7 @@
       ],
       "floor": null,
       "purpose": "The border-radius of Button.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -611,7 +611,7 @@
       ],
       "floor": null,
       "purpose": "The box-shadow of Button.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -627,7 +627,7 @@
       ],
       "floor": null,
       "purpose": "The box-shadow of Button in the disabled state.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -643,7 +643,7 @@
       ],
       "floor": null,
       "purpose": "The box-shadow of Button in the pressed state.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -659,7 +659,7 @@
       ],
       "floor": null,
       "purpose": "The transition-duration of Button.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -675,7 +675,7 @@
       ],
       "floor": null,
       "purpose": "The transition-timing-function of Button.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -691,7 +691,7 @@
       ],
       "floor": null,
       "purpose": "The translate of Button in the pressed state.",
-      "coverage": "industrial and achromatic, light and dark; every variant and size value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant and size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]

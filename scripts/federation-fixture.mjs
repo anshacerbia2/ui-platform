@@ -188,7 +188,7 @@ write(
     .join("\n")}\n};\n`,
 );
 write("host/src/bootstrap.jsx", `import "@scnx/system/styles/components.css";
-import "@scnx/system/tokens/css/industrial.css";
+import "@scnx/system/tokens/css/scnx-platform.css";
 import * as React from "react";
 import { createRoot } from "react-dom/client";
 import * as ThemeModule from "@scnx/core-ui/providers/theme-provider-base";
@@ -222,7 +222,7 @@ function App() {
   const [routes, setRoutes] = React.useState([]);
   const [clicks, setClicks] = React.useState(0);
   return (
-    <ThemeModule.ThemeProvider themeId="industrial" defaultMode="light" storage={false}>
+    <ThemeModule.ThemeProvider themeId="scnx-platform" defaultMode="light" storage={false}>
       <main data-host="ready">
         <button type="button" data-host-counter={clicks} onClick={() => setClicks((n) => n + 1)}>Host clicks {clicks}</button>
         {Object.keys(remotes).map((name) => (
@@ -414,7 +414,7 @@ rspack(compilers).run((error, stats) => {
         const { page, log } = await visit();
         for (const name of order) {
           await open(page, name);
-          await page.waitForSelector(`[data-remote='${name}'][data-theme-id='industrial']`);
+          await page.waitForSelector(`[data-remote='${name}'][data-theme-id='scnx-platform']`);
         }
         const identity = await page.evaluate((names) => {
           const all = globalThis.__SCNX_IDENTITY__;
@@ -477,7 +477,7 @@ rspack(compilers).run((error, stats) => {
         await page.click("[data-host-counter]");
         await page.waitForSelector("[data-host-counter='1']");
         await open(page, "remote_a");
-        await page.waitForSelector("[data-remote='remote_a'][data-theme-id='industrial']");
+        await page.waitForSelector("[data-remote='remote_a'][data-theme-id='scnx-platform']");
         await open(page, "remote_x");
         await page.waitForSelector("[data-fallback='remote_x']");
         await page.click("[data-remote-trigger='remote_a']");

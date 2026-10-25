@@ -243,7 +243,7 @@
       ],
       "floor": null,
       "purpose": "The gap of Alert's actions part.",
-      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -263,7 +263,7 @@
       ],
       "floor": null,
       "purpose": "The background-color of Alert.",
-      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -283,7 +283,7 @@
       ],
       "floor": null,
       "purpose": "The border-color of Alert.",
-      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -299,7 +299,7 @@
       ],
       "floor": null,
       "purpose": "The border of Alert.",
-      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -319,7 +319,7 @@
       ],
       "floor": null,
       "purpose": "The color of Alert.",
-      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -335,7 +335,7 @@
       ],
       "floor": null,
       "purpose": "The gap of Alert's content part.",
-      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -351,7 +351,7 @@
       ],
       "floor": null,
       "purpose": "The font-family of Alert.",
-      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -367,7 +367,7 @@
       ],
       "floor": null,
       "purpose": "The font-size of Alert.",
-      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -383,7 +383,7 @@
       ],
       "floor": null,
       "purpose": "The font-weight of Alert.",
-      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -399,7 +399,7 @@
       ],
       "floor": null,
       "purpose": "The gap of Alert.",
-      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -419,7 +419,7 @@
       ],
       "floor": null,
       "purpose": "The color of Alert's icon part.",
-      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -435,7 +435,7 @@
       ],
       "floor": null,
       "purpose": "The letter-spacing of Alert.",
-      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -451,7 +451,7 @@
       ],
       "floor": null,
       "purpose": "The line-height of Alert.",
-      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -467,7 +467,7 @@
       ],
       "floor": null,
       "purpose": "The padding of Alert.",
-      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -483,7 +483,7 @@
       ],
       "floor": null,
       "purpose": "The border-radius of Alert.",
-      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -503,7 +503,7 @@
       ],
       "floor": null,
       "purpose": "The color of Alert's title part.",
-      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -519,7 +519,7 @@
       ],
       "floor": null,
       "purpose": "The font-weight of Alert's title part.",
-      "coverage": "industrial and achromatic, light and dark; every scheme value.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]

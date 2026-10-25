@@ -86,7 +86,7 @@ export const config = {
 write("app/icon.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><rect width="1" height="1"/></svg>\n');
 
 write("app/layout.jsx", `import "@scnx/system/styles/components.css";
-import "@scnx/system/tokens/css/industrial.css";
+import "@scnx/system/tokens/css/scnx-platform.css";
 import { ThemeProvider } from "@scnx/core-ui/providers/theme-provider-base";
 import { connection } from "next/server";
 
@@ -95,7 +95,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <ThemeProvider themeId="industrial" defaultMode="light">{children}</ThemeProvider>
+        <ThemeProvider themeId="scnx-platform" defaultMode="light">{children}</ThemeProvider>
       </body>
     </html>
   );
