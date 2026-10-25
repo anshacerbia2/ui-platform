@@ -247,13 +247,15 @@ async function verify(browser) {
       const id = root.getAttribute("data-fixture-root");
       const enabled = (variant) => root.querySelector(`.scnx-btn[data-variant="${variant}"]:not([data-disabled]):not(:disabled)`);
       return [
-        [`${id}/primary-radius`, getComputedStyle(enabled("primary")).borderTopLeftRadius],
+        // Themes differ only in colour (ADR-UIP-VIS-001 item 7): the selected tab's indicator is the
+        // primary scheme's solid, Scnx Blue in one theme and ink in achromatic.
+        [`${id}/primary-signal`, getComputedStyle(root.querySelector(".scnx-tabs [role=tab][aria-selected=true]"), "::after").borderBottomColor],
         [`${id}/secondary`, getComputedStyle(enabled("secondary")).backgroundColor],
       ];
     })));
   const differ = (a, b) => backgrounds[a] && backgrounds[b] && backgrounds[a] !== backgrounds[b];
-  if (themes.length > 1 && !differ(`${themes[0]}/light/primary-radius`, `${themes[1]}/light/primary-radius`)) {
-    failures.push(`primary Button computes the same corner radius in ${themes[0]} and ${themes[1]} roots on one page`);
+  if (themes.length > 1 && !differ(`${themes[0]}/light/primary-signal`, `${themes[1]}/light/primary-signal`)) {
+    failures.push(`the selected tab's indicator computes the same colour in ${themes[0]} and ${themes[1]} roots on one page`);
   }
   for (const theme of themes) {
     if (!differ(`${theme}/light/secondary`, `${theme}/dark/secondary`)) failures.push(`secondary Button computes the same background in light and dark ${theme} roots`);

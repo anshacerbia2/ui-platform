@@ -1,18 +1,11 @@
 // ============================================
-// ACHROMATIC THEME — TIER 2 + TIER 3 OVERRIDES
+// ACHROMATIC THEME: COLOUR ONLY
 // ============================================
-// Design System Architecture: 3-Tier Token Model
-//
-// Tier 1 (Palette)  → 100% owned by design-system. NOT touched here.
-//                     All palette vars (--palette-neutral-*)
-//                     are already injected by design-system's baseline.
-//
-// Tier 2 (Semantic) → We REMAP semantic tokens to different palette slots.
-//                     primary-base now points to neutral-900 instead of purple-600.
-//                     This is the ONLY responsibility of this file for Tier 2.
-//
-// Tier 3 (Component)→ Component-specific structural overrides (border-radius, shadow)
-//                     that define the achromatic aesthetic personality.
+// A theme supplies colour only (ADR-UIP-VIS-001 item 7; STD-UIP-TKN-001
+// 2.6.0, "Theme-invariant structure"). Achromatic remaps the primary scheme
+// onto the neutral matrix and inherits every structural key (radius,
+// spacing, border width, z-index, typography, motion, and effect geometry)
+// from the base theme.
 //
 // Rule: NO hardcoded color values. All values MUST reference
 //       existing Tier 1 palette CSS custom properties.
@@ -25,21 +18,5 @@ $achromatic-light-token: (
   color: (
     neutral: map.get(default.get-color-tokens("light"), neutral),
     primary: default.generate-scheme-matrix("neutral", "light")
-  ),
-  dimension: (radius: (
-    // Achromatic's tighter ladder, still strictly ascending and concentric at
-    // the system's 4px and 8px paddings (ADR-UIP-VIS-001 item 2).
-    mark: 0.125rem,
-    element: 0.25rem,
-    control: 0.5rem,
-    container: 0.75rem,
-    panel: 1.25rem,
-  )),
-  // Achromatic elevation, on the public shadow names (STD-UIP-TKN-001).
-  effect: (shadow: (
-    low: (0 1px 3px var(--ds-color-neutral-shadow-subtle-default)),
-    medium: (0 4px 12px var(--ds-color-neutral-shadow-subtle-default)),
-    high: (0 8px 24px var(--ds-color-neutral-shadow-subtle-default)),
-    overlay: (0 16px 48px var(--ds-color-neutral-shadow-subtle-default))
-  ))
+  )
 );

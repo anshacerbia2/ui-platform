@@ -1,12 +1,13 @@
 // Canonical token grammar, transcribed from STD-UIP-TKN-001 section 3 at the
-// ratified v2.5.0 (scnehaux-architecture 969f5e4), which adds the spacing
-// relationship control to v2.4.0 (345fa32), which added the radius intents
-// mark and panel and effect.material to the grammar of v2.1.0 (af6462e) and
-// v2.2.0 (a93e28f). The standard is the single normative definition; change
-// this file only to follow a ratified revision of it. STANDARD names the
-// ratified revision the gate is reported against.
+// ratified v2.6.0 (scnehaux-architecture ef40297), which makes the structural
+// families theme-invariant and the radius order non-decreasing; v2.5.0
+// (969f5e4) added the spacing relationship control, v2.4.0 (345fa32) the
+// radius intents mark and panel and effect.material, to the grammar of v2.1.0
+// (af6462e) and v2.2.0 (a93e28f). The standard is the single normative
+// definition; change this file only to follow a ratified revision of it.
+// STANDARD names the ratified revision the gate is reported against.
 
-export const STANDARD = { id: "STD-UIP-TKN-001", version: "2.5.0", commit: "969f5e4" };
+export const STANDARD = { id: "STD-UIP-TKN-001", version: "2.6.0", commit: "ef40297" };
 
 const SURFACE_STATES = ["default", "hover", "pressed", "selected", "disabled"];
 
