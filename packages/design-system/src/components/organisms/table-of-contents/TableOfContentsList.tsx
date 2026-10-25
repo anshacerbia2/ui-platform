@@ -13,7 +13,7 @@ export const TableOfContentsList = ({
 }: TableOfContentsListProps) => {
   return (
     <TableOfContentsBaseList 
-      className={cx("scnx-toc__list", className)} 
+      className={cx("scnx-table-of-contents__list", className)} 
       {...rest}
     />
   );

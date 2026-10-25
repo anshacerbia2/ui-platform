@@ -8,7 +8,7 @@
   "anatomy": [
     {
       "name": "root",
-      "selector": ".scnx-btn",
+      "selector": ".scnx-button",
       "primitivePart": "button"
     }
   ],

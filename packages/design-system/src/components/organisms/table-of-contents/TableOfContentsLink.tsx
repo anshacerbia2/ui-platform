@@ -13,7 +13,7 @@ export const TableOfContentsLink = ({
 }: TableOfContentsLinkProps) => {
   return (
     <TableOfContentsBaseLink
-      className={cx("scnx-toc__link", className)}
+      className={cx("scnx-table-of-contents__link", className)}
       {...rest}
     />
   );

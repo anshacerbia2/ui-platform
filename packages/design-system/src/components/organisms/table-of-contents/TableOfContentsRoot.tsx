@@ -51,12 +51,12 @@ export const TableOfContentsRoot = ({
 
   return (
     <TableOfContentsBaseRoot
-      className={cx("scnx-toc", className)}
+      className={cx("scnx-table-of-contents", className)}
       items={items}
       aria-labelledby={hasItems ? labelId : undefined}
       {...rest}
     >
-      {hasItems && <div id={labelId} className="scnx-toc__label">{label}</div>}
+      {hasItems && <div id={labelId} className="scnx-table-of-contents__label">{label}</div>}
       {children || (hasItems && renderTocItems(items))}
     </TableOfContentsBaseRoot>
   );

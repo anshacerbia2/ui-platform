@@ -12,7 +12,7 @@ describe("IconButton", () => {
     );
     const button = screen.getByRole("button", { name: "Close" });
     expect(button).toHaveAttribute("type", "button");
-    expect(button).toHaveClass("scnx-icon-btn");
+    expect(button).toHaveClass("scnx-icon-button");
     expect(button).toHaveAttribute("data-variant", "secondary");
     expect(button).toHaveAttribute("data-size", "medium");
     fireEvent.click(button);

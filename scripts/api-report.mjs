@@ -58,11 +58,11 @@ export function sassContract(texts) {
 }
 
 function selfTest() {
-  const css = `/* x */ @layer reset, tokens;\n@layer tokens { :where([data-scnx-theme="a"]) { --ds-a: 1; --ds-b: var(--ds-a); } }\n.scnx-btn[data-variant] { color: red; }`;
+  const css = `/* x */ @layer reset, tokens;\n@layer tokens { :where([data-scnx-theme="a"]) { --ds-a: 1; --ds-b: var(--ds-a); } }\n.scnx-button[data-variant] { color: red; }`;
   const contract = stylesheetContract(css);
   const failures = [];
   if (contract.layers.join() !== "reset,tokens") failures.push(`layers ${contract.layers}`);
-  if (contract.classes.join() !== "scnx-btn") failures.push(`classes ${contract.classes}`);
+  if (contract.classes.join() !== "scnx-button") failures.push(`classes ${contract.classes}`);
   if (contract.dataAttributes.join() !== "data-scnx-theme,data-variant") failures.push(`data attributes ${contract.dataAttributes}`);
   if (contract.customProperties.join() !== "--ds-a,--ds-b") failures.push(`custom properties ${contract.customProperties}`);
   const sass = sassContract(["$ds-a: 1;\n$_private: 2;\n@mixin theme($x) {}\n@function -hidden() {}\n@function scale($n) {}"]);

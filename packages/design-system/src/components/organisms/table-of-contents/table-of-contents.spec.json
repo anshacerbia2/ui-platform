@@ -8,28 +8,28 @@
   "anatomy": [
     {
       "name": "root",
-      "selector": ".scnx-toc"
+      "selector": ".scnx-table-of-contents"
     },
     {
       "name": "label",
-      "selector": ".scnx-toc__label"
+      "selector": ".scnx-table-of-contents__label"
     },
     {
       "name": "list",
-      "selector": ".scnx-toc__list"
+      "selector": ".scnx-table-of-contents__list"
     },
     {
       "name": "nested-list",
-      "selector": ".scnx-toc__item .scnx-toc__list",
+      "selector": ".scnx-table-of-contents__item .scnx-table-of-contents__list",
       "extends": "list"
     },
     {
       "name": "item",
-      "selector": ".scnx-toc__item"
+      "selector": ".scnx-table-of-contents__item"
     },
     {
       "name": "link",
-      "selector": ".scnx-toc__link"
+      "selector": ".scnx-table-of-contents__link"
     }
   ],
   "options": {},

@@ -13,7 +13,7 @@ describe("Dialog", () => {
     const dialog = screen.getByRole("dialog", { name: "Delete the payroll run?" });
     expect(dialog).toHaveClass("scnx-dialog", "consumer");
     const close = screen.getByRole("button", { name: "Cancel" });
-    expect(close).toHaveClass("scnx-btn");
+    expect(close).toHaveClass("scnx-button");
     expect(close).toHaveAttribute("data-variant", "secondary");
   });
 
@@ -31,7 +31,7 @@ describe("Dialog", () => {
     expect(screen.getByText("Sent payslips stay.")).toHaveAttribute("data-part", "body");
     expect(screen.getByRole("button", { name: "Cancel" }).parentElement).toHaveAttribute("data-part", "actions");
     const corner = screen.getByRole("button", { name: "Close" });
-    expect(corner).toHaveClass("scnx-icon-btn");
+    expect(corner).toHaveClass("scnx-icon-button");
     expect(corner).toHaveAttribute("data-variant", "ghost");
     expect(corner).toHaveAttribute("data-size", "small");
     expect(corner).toHaveAttribute("data-corner", "");

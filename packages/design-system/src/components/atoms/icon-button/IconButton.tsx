@@ -20,7 +20,7 @@ import { cx } from "styled-system/css";
  */
 export const IconButton = ({ variant = "secondary", size = "medium", className = "", ...rest }: IconButtonProps) => (
   // The props are one ButtonBase mode, which ButtonBase discriminates at runtime.
-  <ButtonBase {...(rest as ButtonBaseProps)} className={cx("scnx-icon-btn", className)} data-variant={variant} data-size={size} />
+  <ButtonBase {...(rest as ButtonBaseProps)} className={cx("scnx-icon-button", className)} data-variant={variant} data-size={size} />
 );
 
 IconButton.displayName = "IconButton";

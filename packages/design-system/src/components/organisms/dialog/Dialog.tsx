@@ -9,7 +9,7 @@ DialogRoot.displayName = "Dialog";
 
 /** Close, styled as a Button (`variant` as in Button; secondary by default). */
 const DialogClose = ({ className = "", variant = "secondary", ...rest }: DialogBaseCloseProps & { variant?: "primary" | "secondary" | "ghost" | "danger" }) => (
-  <DialogBaseClose {...rest} className={cx("scnx-btn", className)} data-variant={variant} />
+  <DialogBaseClose {...rest} className={cx("scnx-button", className)} data-variant={variant} />
 );
 DialogClose.displayName = "Dialog.Close";
 
@@ -26,7 +26,7 @@ DialogActions.displayName = "Dialog.Actions";
  * styled DG3). Its accessible name defaults to "Close".
  */
 const DialogCloseButton = ({ className = "", "aria-label": ariaLabel = "Close", ...rest }: Omit<DialogBaseCloseProps, "children">) => (
-  <DialogBaseClose {...rest} aria-label={ariaLabel} className={cx("scnx-icon-btn", className)} data-variant="ghost" data-size="small" data-corner="">
+  <DialogBaseClose {...rest} aria-label={ariaLabel} className={cx("scnx-icon-button", className)} data-variant="ghost" data-size="small" data-corner="">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
       <path d="M6 6l12 12M18 6L6 18" />
     </svg>

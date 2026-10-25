@@ -123,7 +123,7 @@ for (const specifier of ${JSON.stringify(entries.assets)}) {
 }
 const { Button } = await import("@scnx/system/components/button");
 const html = renderToString(createElement(Button, null, "Save"));
-if (!html.includes("scnx-btn")) throw new Error("SSR render of Button lost its class: " + html);
+if (!html.includes("scnx-button")) throw new Error("SSR render of Button lost its class: " + html);
 console.log(JSON.stringify(results));
 `;
 }

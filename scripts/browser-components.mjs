@@ -39,12 +39,12 @@ const system = packReport.packages.find((pkg) => pkg.name === "@scnx/system");
 
 // Focusable parts the fixture must reach by keyboard, by a selector of the part.
 const FOCUSABLE = {
-  Button: ".scnx-btn",
+  Button: ".scnx-button",
   "Accordion trigger": ".scnx-accordion__trigger",
   "CodeShowcase trigger": ".scnx-code-showcase button",
   "CodeSelect input": ".scnx-code-select__input",
   "Navigation item": ".scnx-navigation__item",
-  "TableOfContents link": ".scnx-toc__link",
+  "TableOfContents link": ".scnx-table-of-contents__link",
   "TextField input": ".scnx-text-field input",
   "Tabs selected tab": ".scnx-tabs [role=tab][aria-selected=true]",
 };
@@ -245,7 +245,7 @@ async function verify(browser) {
   const backgrounds = await tab.evaluate(() =>
     Object.fromEntries([...document.querySelectorAll("[data-fixture-root]")].flatMap((root) => {
       const id = root.getAttribute("data-fixture-root");
-      const enabled = (variant) => root.querySelector(`.scnx-btn[data-variant="${variant}"]:not([data-disabled]):not(:disabled)`);
+      const enabled = (variant) => root.querySelector(`.scnx-button[data-variant="${variant}"]:not([data-disabled]):not(:disabled)`);
       return [
         // Themes differ only in colour (ADR-UIP-VIS-001 item 7): the selected tab's indicator is the
         // primary scheme's solid, Scnx Blue in one theme and ink in achromatic.
