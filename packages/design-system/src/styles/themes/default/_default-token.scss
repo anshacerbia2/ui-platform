@@ -270,16 +270,17 @@ $shadow-level: (subtle: 2, default: 3, strong: 4);
   );
 }
 
-// The material shadows of ADR-UIP-VIS-001 item 1. `$lit` is prepended to the
-// floating materials (menu, modal, sheet): empty in light mode, an inset top
-// highlight in dark mode.
+// The material shadows of ADR-UIP-VIS-001 item 1. On the page, flat, raised,
+// and panel are the 1px ring alone. The floating materials add contact and
+// ambient layers; `$lit` is prepended to menu, modal, and sheet: empty in
+// light mode, an inset top highlight in dark mode.
 @function material-set($lit) {
   $ring: 0 0 0 1px var(--ds-color-neutral-border-subtle-default);
   $contact: var(--ds-color-neutral-shadow-subtle-default);
   @return (
     flat: ($ring),
-    raised: ($ring, 0 1px 2px 0 $contact, 0 4px 8px -2px $contact),
-    panel: ($ring, 0 1px 2px 0 $contact, 0 12px 24px -8px var(--ds-color-neutral-shadow-subtle-default)),
+    raised: ($ring),
+    panel: ($ring),
     tooltip: (0 1px 2px 0 $contact, 0 4px 12px -2px var(--ds-color-neutral-shadow-default-default)),
     menu: _with-lit($lit, ($ring, 0 2px 4px 0 $contact, 0 12px 28px -6px var(--ds-color-neutral-shadow-default-default))),
     modal: _with-lit($lit, ($ring, 0 4px 8px 0 $contact, 0 24px 56px -12px var(--ds-color-neutral-shadow-strong-default))),
@@ -316,14 +317,16 @@ $default-token: (
       section: map.get(core.$spacing, 8),
       page: map.get(core.$spacing, 6),
     ),
-    // The concentric ladder 4 · 8 · 12 · 16 · 24 (ADR-UIP-VIS-001 item 2): a
-    // child's radius is its parent's minus the parent's padding.
+    // The square structure (ADR-UIP-VIS-001 item 2): mark to panel are 0 in
+    // every theme and mode; pill stays fully rounded, used only where
+    // roundness carries meaning. Structure is this theme's alone
+    // (STD-UIP-TKN-001 2.6.0, "Theme-invariant structure").
     radius: (
-      mark: map.get(core.$radius, sm),
-      element: map.get(core.$radius, lg),
-      control: map.get(core.$radius, xl),
-      container: map.get(core.$radius, 2xl),
-      panel: map.get(core.$radius, 3xl),
+      mark: map.get(core.$radius, none),
+      element: map.get(core.$radius, none),
+      control: map.get(core.$radius, none),
+      container: map.get(core.$radius, none),
+      panel: map.get(core.$radius, none),
       pill: map.get(core.$radius, full),
     ),
     border-width: (
@@ -374,8 +377,9 @@ $default-token: (
         var(--ds-color-neutral-border-default-focus),
     ),
   ),
-  // Materials (ADR-UIP-VIS-001 item 1): a 1px ring in the subtle neutral
-  // border, a contact layer, and an ambient layer, every color a Tier-2 token.
+  // Materials (ADR-UIP-VIS-001 item 1): on the page a 1px ring in the subtle
+  // neutral border; floating materials add a contact and an ambient layer,
+  // every color a Tier-2 token.
   // Dark mode adds a lit top edge to floating materials (default_dark-token).
   material: material-set(""),
   ),

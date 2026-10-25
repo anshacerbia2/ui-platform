@@ -1,9 +1,9 @@
 // ============================================
-// ACHROMATIC THEME — DARK MODE OVERRIDES
+// ACHROMATIC THEME: DARK MODE, COLOUR ONLY
 // ============================================
-// Counterpart to _achromatic-token.scss for Dark Mode.
-// Re-maps semantic tokens so that the Achromatic aesthetic
-// (high contrast, neutral actions) works on dark backgrounds.
+// Counterpart to _achromatic-light-token.scss for dark mode: the primary
+// scheme on the neutral matrix, on dark grounds. Structure is inherited
+// (ADR-UIP-VIS-001 item 7).
 // ============================================
 
 @use "styles/themes/default/default-token" as default;
@@ -13,21 +13,5 @@ $achromatic-dark-token: (
   color: (
     neutral: map.get(default.get-color-tokens("dark"), neutral),
     primary: default.generate-scheme-matrix("neutral", "dark")
-  ),
-  dimension: (radius: (
-    // Achromatic's tighter ladder, still strictly ascending and concentric at
-    // the system's 4px and 8px paddings (ADR-UIP-VIS-001 item 2).
-    mark: 0.125rem,
-    element: 0.25rem,
-    control: 0.5rem,
-    container: 0.75rem,
-    panel: 1.25rem,
-  )),
-  // Achromatic elevation, on the public shadow names (STD-UIP-TKN-001).
-  effect: (shadow: (
-    low: (0 1px 3px var(--ds-color-neutral-shadow-subtle-default)),
-    medium: (0 4px 12px var(--ds-color-neutral-shadow-subtle-default)),
-    high: (0 8px 24px var(--ds-color-neutral-shadow-subtle-default)),
-    overlay: (0 16px 48px var(--ds-color-neutral-shadow-subtle-default))
-  ))
+  )
 );

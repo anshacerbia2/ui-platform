@@ -225,7 +225,7 @@ step 9 changed by 0.12-0.14 OKLab between modes, so the brand did too.
 
 #### Decision record: spatial identity tokens
 
-How ADR-UIP-VIS-001 and STD-UIP-TKN-001 2.4.0 reach the token output. Until
+How ADR-UIP-VIS-001 and STD-UIP-TKN-001 2.4.0 to 2.6.0 reach the token output. Until
 2026-10-24 the default theme set radius `element` 4px, `control` 6px, and
 `container` 8px, and the documentation site drew its 24px cards as Sass literals;
 shadows were the four generic elevations that each component combined with its
@@ -233,12 +233,13 @@ own border.
 
 | ID  | Decision | Source | Rationale |
 | :-- | :------- | :----- | :-------- |
-| SI1 | Tier-2 radius is the ladder `mark`, `element`, `control`, `container`, `panel`, `pill`. Default: 4, 8, 12, 16, 24px from the Tier-1 steps `sm`, `lg`, `xl`, `2xl` (new, 1rem), `3xl` (new, 1.5rem). Achromatic: 2, 4, 8, 12, 20px. | ADR-UIP-VIS-001 item 2; STD-UIP-TKN-001 2.4.0 | Each step is the next one minus the 4px or 8px insets the components use, so nested shapes stay concentric. The achromatic theme keeps its sharper character and the same order. |
-| SI2 | The gate checks that radius values ascend strictly in every theme and mode, as it already does for z-index; `pill` is excluded as the sentinel. | STD-UIP-TKN-001 2.4.0 | A brand theme may move the ladder, not reorder it; a reordered ladder breaks every nested component at once. |
-| SI3 | Every public theme emits `effect.material.{flat, raised, panel, tooltip, menu, modal, sheet}` as one shadow list each: a 1px ring in `color.neutral.border.subtle.default` (none for `tooltip`), then contact and ambient layers in `color.neutral.shadow.{subtle, default, strong}.default`. Ambient offset, blur, and negative spread grow from `raised` (0 4px 8px −2px) to `sheet` (0 32px 72px −16px). | ADR-UIP-VIS-001 item 1; STD-UIP-TKN-001 2.4.0 | The ring is a shadow, not a border, so it adds no layout size and a component draws its whole edge with one declaration. Negative spread keeps the ambient under the surface instead of haloing it. |
+| SI1 | Revised 2026-10-25. Tier-2 radius keeps the intents `mark`, `element`, `control`, `container`, `panel`, `pill`; `mark` to `panel` are 0 (Tier-1 `none`) and `pill` is 9999px, in the base theme only, which every theme inherits. Until 2026-10-25 the default theme set 4, 8, 12, 16, 24px (Tier-1 `sm`, `lg`, `xl`, `2xl`, `3xl`) and achromatic 2, 4, 8, 12, 20px. | ADR-UIP-VIS-001 item 2 (revision 2); STD-UIP-TKN-001 2.6.0 | Components keep binding the intent that names their role, so a later structure revision changes values, not components. The concentric ladder is the rejected alternative of ADR-UIP-VIS-001 revision 2. |
+| SI2 | Revised 2026-10-25. The gate checks that radius values are non-decreasing from `mark` to `panel` in every theme and mode; `pill` is excluded as the sentinel. Until 2026-10-25 they had to ascend strictly. | STD-UIP-TKN-001 2.6.0 | A flat ladder of 0 is valid; a ladder that descends still fails. |
+| SI3 | Revised 2026-10-25. Every public theme emits `effect.material.{flat, raised, panel, tooltip, menu, modal, sheet}` as one shadow list each. On the page, `flat`, `raised`, and `panel` are the 1px ring in `color.neutral.border.subtle.default` alone. The floating materials are the ring (none for `tooltip`), then contact and ambient layers in `color.neutral.shadow.{subtle, default, strong}.default`; ambient offset, blur, and negative spread grow from `menu` (0 12px 28px −6px) to `sheet` (0 32px 72px −16px). Until 2026-10-25 `raised` and `panel` also had contact and ambient layers. | ADR-UIP-VIS-001 item 1; STD-UIP-TKN-001 2.4.0 | The ring is a shadow, not a border, so it adds no layout size and a component draws its whole edge with one declaration. Negative spread keeps the ambient under the surface instead of haloing it. |
 | SI4 | In dark mode `menu`, `modal`, and `sheet` start with `inset 0 1px 0 0` in `color.neutral.border.default.default`; the light-mode lists are unchanged. The dark theme map deep-merges the material set built with that layer. | STD-UIP-TKN-001 2.4.0 | Shadows of black on a near-black canvas read weakly (PG9); a lit top edge separates a floating surface from the page without a lighter fill, which PG9 rules out. |
 | SI5 | `effect.shadow.*` stays for compatibility; new and changed components use materials. | STD-UIP-TKN-001 2.4.0 | Removing the elevations is a breaking change that waits for every component to adopt a material. |
 | SI6 | Spacing adds the `control` relationship, a control's inline padding: `control-compact`, `control-default`, `control-comfortable` are 8, 12, and 16px in the default theme, from the Tier-1 steps `2`, `3`, and `4`; achromatic inherits them. The gate checks that they ascend, as it does for every spacing relationship. | STD-UIP-TKN-001 2.5.0 | Button (TDD styled BI1) and TextField recorded 12px as local geometry, with no spacing step at 12px; one relationship paired with the small, medium, and large sizes replaces both exceptions and lets a theme move control padding without touching components. |
+| SI7 | Structure is the base theme's alone. A theme supplies `color.*` per mode; achromatic's radius ladder and shadow overrides are removed, so its contract lists colour keys only. The token gate's `structure` category fails when a theme other than the base sets a key of `dimension`, `typography`, `motion`, or `effect` (from the normalizer's per-key origin), when such a value differs from the base theme's in the same mode, or when the base theme's values differ between its modes. An `effect` value is compared by its geometry, with each colour token replaced, so a theme may recolour shadow layers. The one difference between modes the system defines is the dark lit edge of `menu`, `modal`, and `sheet` (SI4), accepted only in exactly that shape. Tests pin a theme setting a structural key, a mode changing one, and a lit edge of another shape. | ADR-UIP-VIS-001 items 6 and 7 (revision 2); STD-UIP-TKN-001 2.6.0, "Theme-invariant structure" | Structure is proven once and holds in every theme; a brand that wants another shape needs a revision of ADR-UIP-VIS-001, not a theme. The packed component fixture now tells the themes apart by a colour (the selected tab's primary indicator), the only thing themes still change. |
 
 #### Decision record: Figma design-tool profile
 
@@ -268,8 +269,10 @@ The gate reports against the ratified STD-UIP-TKN-001 revision (`STANDARD` in
 (`af6462e`) until 2026-10-20, 2.2.0 (`a93e28f`) until 2026-10-24, 2.4.0
 (`345fa32`, scnehaux-architecture#125), which adds the radius intents `mark` and
 `panel` with a strict order and the `effect.material` family (SI1-SI5), until
-2026-10-25, and is now 2.5.0 (`969f5e4`, scnehaux-architecture#128), which adds
-the `control` spacing relationship (SI6).
+2026-10-25, 2.5.0 (`969f5e4`, scnehaux-architecture#128), which adds the
+`control` spacing relationship (SI6), until 2026-10-25, and is now 2.6.0
+(`ef40297`, scnehaux-architecture#131), which makes the structural families
+theme-invariant and the radius order non-decreasing (SI1-SI3, SI7).
 
 ## Configuration
 

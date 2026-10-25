@@ -1,15 +1,12 @@
 @use "sass:map";
 @use "styles/abstracts/contract-token" as contract;
 
-// Keys the achromatic theme overrides; every other key is inherited from the
-// default theme, so the resolved key set equals the default key set.
+// Keys the achromatic theme overrides: colour only (ADR-UIP-VIS-001 item 7).
+// Every other key is inherited from the base theme, so the resolved key set
+// equals the base key set and every structural value is the base theme's.
 $achromatic-contract: (
   color: (
     neutral: contract.$neutral-contract,
     primary: contract.$scheme-contract
-  ),
-  dimension: (radius: (mark, element, control, container, panel)),
-  effect: (
-    shadow: (low, medium, high, overlay)
   )
 );

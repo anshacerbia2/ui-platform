@@ -12,7 +12,7 @@ import { emit, serializeThemes, themeSelector } from "./emit.mjs";
 import { pixelValue, srgbValue } from "./figma.mjs";
 import { normalize } from "./normalize.mjs";
 import { assertDeclarationSafe, formatNumber, toCss } from "./serialize.mjs";
-import { contrastCases, easingDirection, fontFamilies, keySetFindings, measure, orderFindings, stripComments, substitute, validForProperty } from "./validate.mjs";
+import { contrastCases, easingDirection, fontFamilies, keySetFindings, measure, orderFindings, stripComments, structureFindings, substitute, validForProperty } from "./validate.mjs";
 
 const packageDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const str = (text) => ({ kind: "string", text, quoted: false });
@@ -175,8 +175,9 @@ describe("value relationships (STD-UIP-TKN-001 section 3)", () => {
     ["--ds-dimension-spacing-control-comfortable", "1rem"],
     ["--ds-dimension-z-index-base", "0"],
     ["--ds-dimension-z-index-dropdown", "1000"],
-    ["--ds-dimension-radius-element", "0.5rem"],
-    ["--ds-dimension-radius-control", "12px"],
+    ["--ds-dimension-radius-mark", "0"],
+    ["--ds-dimension-radius-element", "0"],
+    ["--ds-dimension-radius-control", "0"],
     ["--ds-dimension-radius-pill", "9999px"],
     ["--ds-typography-heading-xxlarge-font-size", "3rem"],
     ["--ds-typography-heading-xlarge-font-size", "2.5rem"],
@@ -199,7 +200,7 @@ describe("value relationships (STD-UIP-TKN-001 section 3)", () => {
     ["--ds-dimension-spacing-inset-default", "0.5rem", "spacing inset ascends"],
     ["--ds-dimension-spacing-control-default", "1rem", "spacing control ascends"],
     ["--ds-dimension-z-index-dropdown", "0", "z-index strictly ascends"],
-    ["--ds-dimension-radius-control", "8px", "radius strictly ascends"],
+    ["--ds-dimension-radius-mark", "4px", "radius is non-decreasing"],
     ["--ds-typography-heading-xlarge-font-size", "4rem", "heading sizes descend"],
     ["--ds-typography-weight-bold", "300", "weights ascend"],
     ["--ds-motion-exit-duration", "400ms", "exceeds motion.enter.duration"],
@@ -331,6 +332,44 @@ describe("normalizer on the token source", () => {
     }
   });
 
+  it("fails a theme that sets a structural key, a mode that changes one, and a lit edge of another shape (TDD SI7)", () => {
+    const copy = () =>
+      Object.fromEntries(
+        Object.entries(themes).map(([id, modes]) => [
+          id,
+          Object.fromEntries(Object.entries(modes).map(([mode, v]) => [mode, { ...v, records: new Map(v.records), origin: new Map(v.origin) }])),
+        ]),
+      );
+    const pill = themes.default.light.records.get("--ds-dimension-radius-pill");
+    const control = "--ds-dimension-radius-control";
+
+    const brand = copy();
+    brand.achromatic.light.records.set(control, pill);
+    brand.achromatic.light.origin.set(control, "achromatic");
+    expect(structureFindings(brand, config).map((f) => `${f.theme}/${f.mode} ${f.token}: ${f.message}`)).toEqual([
+      `achromatic/light ${control}: a theme sets a structural key; a theme supplies colour only`,
+      `achromatic/light ${control}: structural value 9999px differs from default/light (0)`,
+    ]);
+
+    const mode = copy();
+    mode.default.dark.records.set(control, pill);
+    expect(structureFindings(mode, config).some((f) => f.theme === "default" && f.mode === "dark" && f.token === control)).toBe(true);
+
+    const lit = copy();
+    lit.default.dark.records.set("--ds-effect-material-menu", themes.default.light.records.get("--ds-effect-material-modal"));
+    expect(structureFindings(lit, config).some((f) => f.token === "--ds-effect-material-menu")).toBe(true);
+  });
+
+  it("emits identical structure in every theme and mode, and a theme sets colour only (TDD SI7)", () => {
+    expect(structureFindings(themes, config)).toEqual([]);
+    for (const modes of Object.values(themes)) {
+      for (const { records } of Object.values(modes)) {
+        for (const intent of ["mark", "element", "control", "container", "panel"]) expect(toCss(records.get(`--ds-dimension-radius-${intent}`))).toBe("0");
+        expect(toCss(records.get("--ds-dimension-radius-pill"))).toBe("9999px");
+      }
+    }
+  });
+
   it("emits the material set in every theme, ringed except tooltip, with a lit edge only on dark floating materials (TDD SI3-SI4)", () => {
     const materials = ["flat", "raised", "panel", "tooltip", "menu", "modal", "sheet"];
     const ring = "0 0 0 1px var(--ds-color-neutral-border-subtle-default)";
@@ -343,6 +382,8 @@ describe("normalizer on the token source", () => {
           const value = toCss(records.get(`--ds-effect-material-${m}`));
           expect(value.includes(ring), `${theme}/${mode} ${m} ring`).toBe(m !== "tooltip");
           expect(value.startsWith(lit), `${theme}/${mode} ${m} lit edge`).toBe(mode === "dark" && ["menu", "modal", "sheet"].includes(m));
+          // On the page a material is the ring alone (ADR-UIP-VIS-001 item 1).
+          if (["flat", "raised", "panel"].includes(m)) expect(value, `${theme}/${mode} ${m}`).toBe(ring);
         }
       }
     }
