@@ -15,6 +15,7 @@ describe("IconButton", () => {
     expect(button).toHaveClass("scnx-icon-button");
     expect(button).toHaveAttribute("data-variant", "secondary");
     expect(button).toHaveAttribute("data-size", "medium");
+    expect(button).toHaveAttribute("data-shape", "square");
     fireEvent.click(button);
     expect(onClick).toHaveBeenCalledTimes(1);
   });
@@ -31,6 +32,15 @@ describe("IconButton", () => {
     const button = screen.getByRole("button", { name: "Open settings" });
     expect(button).toHaveAttribute("data-variant", "ghost");
     expect(button).toHaveAttribute("data-size", "small");
+  });
+
+  it("renders the circular system variant as data-shape", () => {
+    render(
+      <IconButton aria-label="Add" shape="circular">
+        <svg aria-hidden="true" />
+      </IconButton>,
+    );
+    expect(screen.getByRole("button", { name: "Add" })).toHaveAttribute("data-shape", "circular");
   });
 
   it("keeps link semantics in link mode, and a disabled link leaves the tab order", () => {

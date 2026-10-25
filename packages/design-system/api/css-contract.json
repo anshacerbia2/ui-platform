@@ -183,6 +183,7 @@
         "data-scnx-resolved-mode",
         "data-scnx-theme",
         "data-selected",
+        "data-shape",
         "data-size",
         "data-state",
         "data-variant",

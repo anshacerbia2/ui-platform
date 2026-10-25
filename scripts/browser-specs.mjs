@@ -196,8 +196,9 @@ for (const engine of browserEngines()) {
               // State is carried by tokens: an unbound opacity must compute 1 (TDD styled CS4).
               // A percentage binding (a Divider's 100% length) resolves against the element's
               // container, which the probe does not share, so it is recorded but not measured.
-              const percentage = (v) => /^\s*-?[\d.]+%\s*$/.test(v);
-              const properties = [...Object.entries(merged).filter(([, v]) => !percentage(v)).map(([p]) => p).flatMap(longhands), ...("opacity" in merged ? [] : ["opacity"])];
+              // A radius percentage computes as written (IconButton's 50% circle), so it is measured.
+              const percentage = (p, v) => !/radius/.test(p) && /^\s*-?[\d.]+%\s*$/.test(v);
+              const properties = [...Object.entries(merged).filter(([p, v]) => !percentage(p, v)).map(([p]) => p).flatMap(longhands), ...("opacity" in merged ? [] : ["opacity"])];
               // A bound border width must draw: its side's style may not be none (TDD styled CS9).
               // The last declaration that sets a side's width decides, in cascade order (`border-bottom: 0` after `border`).
               const sideBound = {};

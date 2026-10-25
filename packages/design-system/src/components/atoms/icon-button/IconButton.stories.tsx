@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { CSSProperties } from "react";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { IconButton } from "./IconButton";
 
@@ -15,6 +16,7 @@ const meta = {
   argTypes: {
     variant: { control: "inline-radio", options: ["primary", "secondary", "ghost", "danger"] },
     size: { control: "inline-radio", options: ["small", "medium", "large"] },
+    shape: { control: "inline-radio", options: ["square", "circular"] },
   },
 } satisfies Meta<typeof IconButton>;
 
@@ -48,6 +50,32 @@ export const Sizes: Story = {
   play: async ({ canvasElement }) => {
     const boxes = within(canvasElement).getAllByRole("button").map((b) => b.getBoundingClientRect());
     await expect(boxes.map((b) => [b.width, b.height])).toEqual([[28, 28], [36, 36], [44, 44]]);
+  },
+};
+
+/**
+ * The circular system variant at every size. The circle is anatomy: a radius
+ * hook set on the scope (here 0) squares the default shape, not this one.
+ */
+export const Circular: Story = {
+  args: { shape: "circular" },
+  render: ({ variant, shape }) => (
+    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", "--scnx-icon-button-radius": "0" } as CSSProperties}>
+      <IconButton aria-label="Close small" variant={variant} shape={shape} size="small"><Close /></IconButton>
+      <IconButton aria-label="Close medium" variant={variant} shape={shape} size="medium"><Close /></IconButton>
+      <IconButton aria-label="Close large" variant={variant} shape={shape} size="large"><Close /></IconButton>
+      <IconButton aria-label="Close square" variant={variant}><Close /></IconButton>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const [small, medium, large, square] = within(canvasElement).getAllByRole("button");
+    for (const button of [small, medium, large]) {
+      await expect(button).toHaveAttribute("data-shape", "circular");
+      await expect(getComputedStyle(button).borderTopLeftRadius).toBe("50%");
+    }
+    await expect(square).toHaveAttribute("data-shape", "square");
+    await expect(getComputedStyle(square).borderTopLeftRadius).toBe("0px");
+    await expect([small, medium, large].map((b) => b.getBoundingClientRect().width)).toEqual([28, 36, 44]);
   },
 };
 

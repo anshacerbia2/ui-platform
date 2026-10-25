@@ -14,6 +14,13 @@ export type IconButtonVariant = "primary" | "secondary" | "ghost" | "danger";
 /** Button's heights as a square: `small` 28 px, `medium` 36 px, `large` 44 px. */
 export type IconButtonSize = "small" | "medium" | "large";
 
+/**
+ * The outline. `circular` is a system variant for a shape that carries meaning
+ * (a floating or avatar-like action); it stays round whatever the radius hook
+ * or theme says.
+ */
+export type IconButtonShape = "square" | "circular";
+
 /** Each member of a props union without its naming attributes, which {@link IconButtonNameProps} supplies. */
 export type WithoutAccessibleName<T> = T extends unknown ? Omit<T, "aria-label" | "aria-labelledby"> : never;
 
@@ -22,4 +29,6 @@ export type IconButtonProps = IconButtonNameProps & {
   variant?: IconButtonVariant;
   /** Size. @default "medium" */
   size?: IconButtonSize;
-} & WithoutAccessibleName<ButtonBaseProps>;
+  /** Shape. @default "square" */
+  shape?: IconButtonShape;
+} &WithoutAccessibleName<ButtonBaseProps>;

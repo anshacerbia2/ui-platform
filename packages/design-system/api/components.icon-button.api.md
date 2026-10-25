@@ -26,7 +26,11 @@ export type IconButtonNameProps = {
 export type IconButtonProps = IconButtonNameProps & {
     variant?: IconButtonVariant;
     size?: IconButtonSize;
+    shape?: IconButtonShape;
 } & WithoutAccessibleName<ButtonBaseProps>;
+
+// @public
+export type IconButtonShape = "square" | "circular";
 
 // @public
 export type IconButtonSize = "small" | "medium" | "large";
