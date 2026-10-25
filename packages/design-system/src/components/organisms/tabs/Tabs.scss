@@ -2,7 +2,7 @@
 
 // TDD primitives P17; TDD styled TB1-TB3. The selected tab carries a 2px
 // indicator and a heavier weight, so colour is not its only cue. A tab is a
-// medium control (36px, control spacing); hover is a pill behind the label,
+// medium control (36px, control spacing); hover is a highlight behind the label,
 // inset from the row, and the indicator is inset to the label. Sides are
 // logical, so a vertical list mirrors in right-to-left text.
 .scnx-tabs {
@@ -44,7 +44,7 @@
     transition-duration: $motion-feedback-duration;
     transition-timing-function: $motion-feedback-easing;
 
-    // The hover pill, inset from the top and bottom of the row.
+    // The hover highlight, inset from the top and bottom of the row.
     &::before {
       content: "";
       position: absolute;
@@ -66,7 +66,7 @@
       position: absolute;
       inset-inline: $dimension-spacing-control-default;
       inset-block-end: 0;
-      border-radius: $dimension-radius-pill;
+      border-radius: $dimension-radius-mark;
     }
 
     &:hover:not(:disabled) {

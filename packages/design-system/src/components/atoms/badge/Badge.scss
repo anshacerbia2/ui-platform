@@ -66,7 +66,7 @@ $badge-schemes: (
     border-radius: $dimension-radius-mark;
   }
 
-  // TDD styled BD4: a 6px status dot in the text color, so it meets the
+  // TDD styled BD4, IS2: a round 6px status dot in the text color, so it meets the
   // label's contrast; its size is component geometry.
   > [data-part="dot"] {
     flex: none;

@@ -165,7 +165,7 @@
     align-items: center;
     justify-content: center;
     padding: $dimension-spacing-stack-compact $dimension-spacing-inline-default;
-    border-radius: $dimension-radius-pill;
+    border-radius: $dimension-radius-element;
     @include typography(label, small);
     font-weight: $typography-weight-semibold;
     color: inherit;
