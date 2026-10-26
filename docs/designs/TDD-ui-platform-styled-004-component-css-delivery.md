@@ -357,6 +357,17 @@ reference's `components/Sidebar/` (ADR-UIP-VIS-002).
 | SB2 | The `color-mix()` badge backgrounds and the flyout's `color-mix()` item fill are removed: a badge is Navigation's own, and a flyout item takes the neutral hover fill. The hook `badge-background` is removed with them. | ADR-UIP-VIS-001 item 8; design reference `components/Sidebar/README.md` | A 10% mix of a surface over transparent was a literal design value outside the tokens, which item 8 rules out. |
 | SB3 | `variant` is `default` or `floating` and is set as `data-variant` on the root. `floating` is the raised material for FloatingLayout: `neutral.surface.raised` fill, `radius.container`, `effect.material.raised`, and a transparent border for forced-colors mode. The former `dark` and `light` values, and the flyout's `variant`, are removed: the prop reached the `aside` as an unknown attribute, so no style ever applied, and the inverse sidebar they named is retired. | Design reference `components/Sidebar/README.md`; ADR-UIP-VIS-001 item 1 | Removing a value is a breaking type change, accepted because the package is before v1; no consumer could have relied on its look. |
 
+#### Decision record: CodeShowcase material
+
+PLAN I2 moves CodeShowcase onto the flat material and the stage; the visual
+target is the design reference's `components/CodeShowcase/` (ADR-UIP-VIS-002).
+
+| ID  | Decision | Sources | Tradeoff |
+| :-- | :------- | :------ | :------- |
+| CX1 | The frame is the flat material: `neutral.surface.raised` fill, `radius.container`, and `effect.material.flat` (the ring) as its edge, with a transparent border for forced-colors mode, in place of a default-colored border, the canvas fill, `effect.shadow.low`, and the `effect.shadow.medium` hover shadow. The lines between its parts take `border.subtle`, the ring's color, and the nav row has no fill of its own. The hooks `shadow-hover` and `nav-background` are removed. | ADR-UIP-VIS-001 item 1; design reference `components/CodeShowcase/README.md` | A static example no longer lifts on hover; the frame reads as one object with its parts. |
+| CX2 | The preview sits on the stage (TDD tokens SI10): `neutral.surface.stage` with a 1 px `neutral.border.stage` dot every 22 px, as a radial gradient, in place of the 30 px conic checkerboard; it is 8 rem high at least and spaces its children by `spacing.inline-default`. The nav row is `size.control-comfortable` (44 px) high, padded `spacing.inset-default` at its start and `spacing.inline-default` at its end. | ADR-UIP-VIS-001 item 4 | The checkerboard marked transparency, which an example rarely needs; the stage is the ground every preview of the system shares. |
+| CX3 | The code sits in the sunken well in `code.small` at a 1.7 line height (a recorded hook fallback), in default text, in place of `code.default` in subtle text. | Design reference `components/CodeShowcase/README.md`; WCAG 2.2 SC 1.4.12 | Longer listings fit on screen; the 1.7 line height keeps a small mono size readable. Syntax colors stay the consumer's highlighter's; the reference's `[data-token]` colors are not part of the component. |
+
 #### Decision record: industrial structure
 
 ADR-UIP-VIS-001 (revisions 2 and 3, 2026-10-25) makes the default theme,
