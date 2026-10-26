@@ -16,6 +16,10 @@
 //   exception. A duration inside a calc() that multiplies a documented runtime
 //   property (a stagger step) is a local value whose purpose that property
 //   records (STD-GLB-FE-005 3.2). An exception no rule uses fails.
+// - an at-rule other than layer, media, supports, container, top-level
+//   font-face, and @keyframes inside a canonical layer whose name starts with
+//   scnx- (TDD styled FE1); the animation that runs it is checked like any
+//   other motion property.
 //
 //   node scripts/styles/check-css.mjs --dist <dir>   check the built assets
 //   node scripts/styles/check-css.mjs --self-test    prove each rule rejects
@@ -428,6 +432,9 @@ export function checkStylesheet(css, { tokenNames, config = STYLE_CONFIG }) {
           visit(node.block?.children.toArray() ?? [], layer, depth + 1, guarded || motion);
         } else if (node.name === "font-face" && depth === 0) {
           continue;
+        } else if (node.name === "keyframes" && layer) {
+          const name = csstree.generate(node.prelude);
+          if (!name.startsWith("scnx-")) findings.push(`@keyframes ${name} does not start with scnx-`);
         } else {
           findings.push(`at-rule @${node.name} is not allowed${depth === 0 ? " at the top level" : ""}`);
         }
@@ -462,6 +469,9 @@ const SELF_TESTS = [
   ["undefined variable", `${STATEMENT}\n@layer components { .scnx-a { color: var(--ds-missing) } }`, "var(--ds-missing)"],
   ["duplicate owner", `${STATEMENT}\n@layer components { .scnx-flex { gap: 0 } }\n@layer recipes { .scnx-flex { gap: 1px } }`, "owned by both"],
   ["import", `${STATEMENT}\n@import "x.css";`, "@import is not allowed"],
+  ["keyframes outside a layer", `${STATEMENT}\n@keyframes scnx-a { from { opacity: 0 } }`, "@keyframes is not allowed at the top level"],
+  ["unprefixed keyframes", `${STATEMENT}\n@layer base { @keyframes fade { from { opacity: 0 } } }`, "@keyframes fade does not start with scnx-"],
+  ["layered keyframes", `${STATEMENT}\n@layer base { @keyframes scnx-a { from { opacity: 0 } } }`, null],
   ["integer z-index", `${STATEMENT}\n@layer components { .scnx-a { z-index: 10 } }`, "is not a z-index token"],
   ["important", `${STATEMENT}\n@layer components { .scnx-a { padding: 0 !important } }`, "has no recorded exception"],
   ["ad-hoc property", `${STATEMENT}\n@layer components { .scnx-a { --card-bg: var(--ds-x) } }`, "ad-hoc custom property --card-bg"],

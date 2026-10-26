@@ -201,6 +201,12 @@ import { ComboboxBase } from "@scnx/core-ui/components/combobox-base";
 import { Tabs } from "@scnx/system/components/tabs";
 import { RadioGroupBase } from "@scnx/core-ui/components/radio-group-base";
 import { SegmentedControl } from "@scnx/system/components/segmented-control";
+import { TooltipBase } from "@scnx/core-ui/components/tooltip-base";
+import { PopoverBase } from "@scnx/core-ui/components/popover-base";
+import { MenuBase } from "@scnx/core-ui/components/menu-base";
+import { Tooltip } from "@scnx/system/components/tooltip";
+import { Popover } from "@scnx/system/components/popover";
+import { Menu } from "@scnx/system/components/menu";
 
 const ItemState = () => <span>{useDisclosureItem().open ? "open" : "closed"}</span>;
 
@@ -314,6 +320,27 @@ export function Island() {
         <SegmentedControl.Item value="24h">24h</SegmentedControl.Item>
         <SegmentedControl.Item value="7d">7 days</SegmentedControl.Item>
       </SegmentedControl>
+      <TooltipBase>
+        <TooltipBase.Trigger><button type="button">Base tip</button></TooltipBase.Trigger>
+        <TooltipBase.Content>Base tooltip</TooltipBase.Content>
+      </TooltipBase>
+      <Tooltip content="Copy link"><button type="button">Copy</button></Tooltip>
+      <PopoverBase>
+        <PopoverBase.Trigger>Base share</PopoverBase.Trigger>
+        <PopoverBase.Content><PopoverBase.Title>Base share</PopoverBase.Title></PopoverBase.Content>
+      </PopoverBase>
+      <Popover>
+        <Popover.Trigger>Share</Popover.Trigger>
+        <Popover.Content><Popover.Title>Share link</Popover.Title></Popover.Content>
+      </Popover>
+      <MenuBase>
+        <MenuBase.Trigger>Base actions</MenuBase.Trigger>
+        <MenuBase.Content><MenuBase.Item>Rename</MenuBase.Item></MenuBase.Content>
+      </MenuBase>
+      <Menu>
+        <Menu.Trigger>Actions</Menu.Trigger>
+        <Menu.Content><Menu.Item>Rename</Menu.Item></Menu.Content>
+      </Menu>
       <Dialog open={false} onOpenChange={() => {}}>
         <Dialog.Title>Styled dialog</Dialog.Title>
         <Dialog.Close>Close</Dialog.Close>

@@ -1,0 +1,94 @@
+@use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
+
+$c: menu;
+
+// TDD styled MN1-MN3 (scnehaux-design card Menu; component wave 1). The menu
+// material: floating fill, the container radius, the menu material's shadow,
+// padded one compact inset, so 8px items are concentric (16 - 8 = 8). Every
+// value reads a `--scnx-menu-{part?}-*` hook that falls back to its token; the
+// 13rem minimum width, the 32px rows, the 16px icons, and the label's tracking
+// are the recorded fallbacks of their hooks. A transparent border keeps the
+// menu's boundary in forced-colors mode.
+.scnx-menu {
+  z-index: $dimension-z-index-dropdown;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-inline-size: hook($c, min-inline-size, 13rem);
+  padding: hook($c, padding, $dimension-spacing-inset-compact);
+  border: hook($c, border-width, $dimension-border-width-default) solid transparent;
+  border-radius: hook($c, radius, $dimension-radius-container);
+  background-color: hook($c, background, $color-surface-floating);
+  color: hook($c, color, $color-text-primary);
+  box-shadow: hook($c, shadow, $effect-material-menu);
+  @include hooked-typography($c, body, small);
+  @include floating-enter($c);
+
+  [data-part="item"] {
+    display: flex;
+    align-items: center;
+    gap: hook($c, item-gap, $dimension-spacing-inline-default);
+    min-block-size: hook($c, item-min-block-size, 2rem);
+    padding: 0 hook($c, item-padding-inline, $dimension-spacing-inline-default);
+    border-radius: hook($c, item-radius, $dimension-radius-element);
+    color: hook($c, item-color, $color-text-primary);
+    cursor: pointer;
+    user-select: none;
+    // The item rounds its focus outline and draws it inside, so it never
+    // touches the next row.
+    outline-offset: calc(-1 * max(2px, #{hook($c, item-outline-width, $dimension-border-width-strong)}));
+
+    // The moving pointer and the arrow keys focus an item, so focus is the highlight.
+    &:focus,
+    &:hover {
+      background-color: hook($c, item-background-highlight, $color-state-hover);
+    }
+
+    &[data-variant="danger"] {
+      color: hook($c, item-color-danger, var(--ds-color-danger-text-subtle-default));
+    }
+
+    &[data-disabled] {
+      color: hook($c, item-color-disabled, var(--ds-color-neutral-text-default-disabled));
+      background-color: transparent;
+      cursor: not-allowed;
+    }
+  }
+
+  [data-part="icon"] {
+    display: flex;
+    flex: none;
+    color: hook($c, icon-color, $color-icon-secondary);
+
+    svg {
+      inline-size: hook($c, icon-size, 1rem);
+      block-size: hook($c, icon-size, 1rem);
+    }
+  }
+
+  [data-variant="danger"] [data-part="icon"] {
+    color: hook($c, icon-color-danger, var(--ds-color-danger-icon-subtle-default));
+  }
+
+  [data-part="shortcut"] {
+    display: flex;
+    gap: hook($c, shortcut-gap, $dimension-spacing-inline-compact);
+    margin-inline-start: auto;
+  }
+
+  // Group labels are eyebrows: mono, uppercase, tracked, subtle text.
+  [data-part="label"] {
+    padding: hook($c, label-padding, $dimension-spacing-stack-default $dimension-spacing-inline-default $dimension-spacing-stack-compact);
+    @include hooked-typography($c, code, small, $prefix: label, $except: (letter-spacing));
+    letter-spacing: hook($c, label-letter-spacing, 0.12em);
+    text-transform: uppercase;
+    color: hook($c, label-color, $color-text-secondary);
+  }
+
+  // A border, so the line survives forced-colors mode.
+  [data-part="separator"] {
+    margin-block: hook($c, separator-margin-block, $dimension-spacing-stack-compact);
+    border-block-start: hook($c, separator-width, $dimension-border-width-default) solid hook($c, separator-color, $color-border-subtle);
+  }
+}

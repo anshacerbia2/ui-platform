@@ -126,6 +126,7 @@
         "scnx-list--variant_unordered",
         "scnx-list--variant_unstyled",
         "scnx-list-item",
+        "scnx-menu",
         "scnx-navbar",
         "scnx-navbar__center",
         "scnx-navbar__end",
@@ -141,6 +142,7 @@
         "scnx-navigation__item-content",
         "scnx-navigation__text",
         "scnx-navigation__trailing-icon",
+        "scnx-popover",
         "scnx-segmented-control",
         "scnx-sidebar",
         "scnx-sidebar__flyout",
@@ -173,6 +175,7 @@
         "scnx-text--weight_regular",
         "scnx-text--weight_semibold",
         "scnx-text-field",
+        "scnx-tooltip",
         "scnx-transition"
       ],
       "dataAttributes": [

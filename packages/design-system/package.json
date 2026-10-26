@@ -90,6 +90,10 @@
       "types": "./dist/components/list/index.d.ts",
       "default": "./dist/components/list/index.js"
     },
+    "./components/menu": {
+      "types": "./dist/components/menu/index.d.ts",
+      "default": "./dist/components/menu/index.js"
+    },
     "./components/navbar": {
       "types": "./dist/components/navbar/index.d.ts",
       "default": "./dist/components/navbar/index.js"
@@ -97,6 +101,10 @@
     "./components/navigation": {
       "types": "./dist/components/navigation/index.d.ts",
       "default": "./dist/components/navigation/index.js"
+    },
+    "./components/popover": {
+      "types": "./dist/components/popover/index.d.ts",
+      "default": "./dist/components/popover/index.js"
     },
     "./components/segmented-control": {
       "types": "./dist/components/segmented-control/index.d.ts",
@@ -133,6 +141,10 @@
     "./components/text-field": {
       "types": "./dist/components/text-field/index.d.ts",
       "default": "./dist/components/text-field/index.js"
+    },
+    "./components/tooltip": {
+      "types": "./dist/components/tooltip/index.d.ts",
+      "default": "./dist/components/tooltip/index.js"
     },
     "./components/transition": {
       "types": "./dist/components/transition/index.d.ts",
@@ -174,8 +186,10 @@
     "./specs/kbd.json": "./dist/specs/kbd.json",
     "./specs/link.json": "./dist/specs/link.json",
     "./specs/list.json": "./dist/specs/list.json",
+    "./specs/menu.json": "./dist/specs/menu.json",
     "./specs/navbar.json": "./dist/specs/navbar.json",
     "./specs/navigation.json": "./dist/specs/navigation.json",
+    "./specs/popover.json": "./dist/specs/popover.json",
     "./specs/segmented-control.json": "./dist/specs/segmented-control.json",
     "./specs/sidebar.json": "./dist/specs/sidebar.json",
     "./specs/stack.json": "./dist/specs/stack.json",
@@ -185,6 +199,7 @@
     "./specs/tabs.json": "./dist/specs/tabs.json",
     "./specs/text.json": "./dist/specs/text.json",
     "./specs/text-field.json": "./dist/specs/text-field.json",
+    "./specs/tooltip.json": "./dist/specs/tooltip.json",
     "./specs/transition.json": "./dist/specs/transition.json",
     "./specs/schema/common.schema.json": "./dist/specs/schema/common.schema.json",
     "./specs/schema/styled.schema.json": "./dist/specs/schema/styled.schema.json",

@@ -1,0 +1,868 @@
+{
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
+  "entry": "@scnx/system/components/menu",
+  "entryKind": "interactive",
+  "stability": "candidate",
+  "primitive": "MenuBase",
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-menu"
+    },
+    {
+      "name": "item",
+      "selector": ".scnx-menu [data-part=item]"
+    },
+    {
+      "name": "icon",
+      "selector": ".scnx-menu [data-part=icon]"
+    },
+    {
+      "name": "shortcut",
+      "selector": ".scnx-menu [data-part=shortcut]"
+    },
+    {
+      "name": "label",
+      "selector": ".scnx-menu [data-part=label]"
+    },
+    {
+      "name": "separator",
+      "selector": ".scnx-menu [data-part=separator]"
+    },
+    {
+      "name": "danger-icon",
+      "selector": ".scnx-menu [data-variant=danger] [data-part=icon]"
+    },
+    {
+      "name": "glyph",
+      "selector": ".scnx-menu [data-part=icon] svg"
+    }
+  ],
+  "options": {},
+  "states": [
+    {
+      "name": "hover",
+      "selectors": [
+        ":hover"
+      ],
+      "enter": {
+        "interaction": "hover"
+      }
+    },
+    {
+      "name": "focus",
+      "selectors": [
+        ":focus"
+      ],
+      "enter": {
+        "interaction": "focus"
+      }
+    },
+    {
+      "name": "danger",
+      "selectors": [
+        "[data-variant=danger]"
+      ],
+      "enter": {
+        "fixture": true
+      }
+    },
+    {
+      "name": "disabled",
+      "selectors": [
+        "[data-disabled]"
+      ],
+      "enter": {
+        "fixture": true
+      }
+    }
+  ],
+  "fixture": {
+    "tree": {
+      "type": "div",
+      "props": {
+        "className": "scnx-menu",
+        "role": "menu",
+        "aria-label": "Actions"
+      },
+      "children": [
+        {
+          "type": "div",
+          "props": {
+            "data-part": "label"
+          },
+          "children": [
+            "Project"
+          ]
+        },
+        {
+          "type": "div",
+          "props": {
+            "role": "menuitem",
+            "tabIndex": -1,
+            "data-part": "item",
+            "data-variant": "default"
+          },
+          "children": [
+            {
+              "type": "span",
+              "props": {
+                "data-part": "icon",
+                "aria-hidden": "true"
+              },
+              "children": [
+                "✎"
+              ]
+            },
+            "Rename",
+            {
+              "type": "span",
+              "props": {
+                "data-part": "shortcut",
+                "aria-hidden": "true"
+              },
+              "children": [
+                "R"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "div",
+          "props": {
+            "role": "menuitem",
+            "tabIndex": -1,
+            "data-part": "item",
+            "data-variant": "default",
+            "aria-disabled": "true",
+            "data-disabled": "true"
+          },
+          "children": [
+            "Archive"
+          ]
+        },
+        {
+          "type": "div",
+          "props": {
+            "role": "separator",
+            "data-part": "separator"
+          }
+        },
+        {
+          "type": "div",
+          "props": {
+            "role": "menuitem",
+            "tabIndex": -1,
+            "data-part": "item",
+            "data-variant": "danger"
+          },
+          "children": [
+            {
+              "type": "span",
+              "props": {
+                "data-part": "icon",
+                "aria-hidden": "true"
+              },
+              "children": [
+                "×"
+              ]
+            },
+            "Delete"
+          ]
+        }
+      ]
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "z-index": "{dimension.z-index.dropdown}",
+        "padding": "{dimension.spacing.inset-compact}",
+        "border": "{dimension.border-width.default} solid transparent",
+        "border-radius": "{dimension.radius.container}",
+        "background-color": "{color.neutral.surface.floating.default}",
+        "color": "{color.neutral.text.default.default}",
+        "box-shadow": "{effect.material.menu}",
+        "font-family": "{typography.body.small.font-family}",
+        "font-size": "{typography.body.small.font-size}",
+        "font-weight": "{typography.body.small.font-weight}",
+        "line-height": "{typography.body.small.line-height}",
+        "letter-spacing": "{typography.body.small.letter-spacing}",
+        "animation": "scnx-rise {motion.feedback.duration} {motion.enter.easing}"
+      }
+    },
+    {
+      "part": "item",
+      "declarations": {
+        "gap": "{dimension.spacing.inline-default}",
+        "padding": "0 {dimension.spacing.inline-default}",
+        "border-radius": "{dimension.radius.element}",
+        "color": "{color.neutral.text.default.default}",
+        "outline-offset": "calc(-1 * max(2px, {dimension.border-width.strong}))"
+      }
+    },
+    {
+      "part": "item",
+      "state": "focus",
+      "declarations": {
+        "background-color": "{color.neutral.surface.default.hover}"
+      }
+    },
+    {
+      "part": "item",
+      "state": "hover",
+      "declarations": {
+        "background-color": "{color.neutral.surface.default.hover}"
+      }
+    },
+    {
+      "part": "item",
+      "state": "danger",
+      "declarations": {
+        "color": "{color.danger.text.subtle.default}"
+      }
+    },
+    {
+      "part": "item",
+      "state": "disabled",
+      "declarations": {
+        "color": "{color.neutral.text.default.disabled}",
+        "background-color": "transparent"
+      }
+    },
+    {
+      "part": "icon",
+      "declarations": {
+        "color": "{color.neutral.icon.subtle.default}"
+      }
+    },
+    {
+      "part": "shortcut",
+      "declarations": {
+        "gap": "{dimension.spacing.inline-compact}"
+      }
+    },
+    {
+      "part": "label",
+      "declarations": {
+        "padding": "{dimension.spacing.stack-default} {dimension.spacing.inline-default} {dimension.spacing.stack-compact}",
+        "font-family": "{typography.code.small.font-family}",
+        "font-size": "{typography.code.small.font-size}",
+        "font-weight": "{typography.code.small.font-weight}",
+        "line-height": "{typography.code.small.line-height}",
+        "color": "{color.neutral.text.subtle.default}"
+      }
+    },
+    {
+      "part": "separator",
+      "declarations": {
+        "margin-block": "{dimension.spacing.stack-compact}",
+        "border-block-start": "{dimension.border-width.default} solid {color.neutral.border.subtle.default}"
+      }
+    },
+    {
+      "part": "danger-icon",
+      "declarations": {
+        "color": "{color.danger.icon.subtle.default}"
+      }
+    }
+  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-menu-item-background-highlight: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-menu-background",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.floating.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Menu.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-border-width",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null,
+      "purpose": "The border of Menu.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-color",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Menu.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-enter-duration",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "animation"
+      ],
+      "fallbacks": [
+        "{motion.feedback.duration}"
+      ],
+      "floor": null,
+      "purpose": "The duration of the Menu's entrance, when the reader allows motion.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-enter-timing-function",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "animation"
+      ],
+      "fallbacks": [
+        "{motion.enter.easing}"
+      ],
+      "floor": null,
+      "purpose": "The easing of the Menu's entrance, when the reader allows motion.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-font-family",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.body.small.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Menu.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-font-size",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.body.small.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Menu.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-font-weight",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.body.small.font-weight}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Menu.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-icon-color",
+      "parts": [
+        "icon"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.icon.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Menu's icon part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-icon-color-danger",
+      "parts": [
+        "danger-icon"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.danger.icon.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of a danger item's icon.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-icon-size",
+      "parts": [
+        "glyph"
+      ],
+      "properties": [
+        "block-size",
+        "inline-size"
+      ],
+      "fallbacks": [
+        "1rem"
+      ],
+      "floor": null,
+      "purpose": "The size of an item's 16px icon.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-item-background-highlight",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.default.hover}"
+      ],
+      "floor": null,
+      "purpose": "The fill of the item under the pointer or keyboard focus.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-item-color",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Menu's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-item-color-danger",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.danger.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of a danger item.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-item-color-disabled",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.disabled}"
+      ],
+      "floor": null,
+      "purpose": "The color of Menu's item part in the disabled state.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-item-gap",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-default}"
+      ],
+      "floor": null,
+      "purpose": "The gap of Menu's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-item-min-block-size",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "min-block-size"
+      ],
+      "fallbacks": [
+        "2rem"
+      ],
+      "floor": null,
+      "purpose": "The min-block-size of Menu's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-item-outline-width",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "outline-offset"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.strong}"
+      ],
+      "floor": "2px",
+      "purpose": "The focus outline width an item's inset outline-offset follows (at least 2px).",
+      "coverage": "scnx-platform and scnx-saas, light and dark; never below the 2px floor.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-item-padding-inline",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-default}"
+      ],
+      "floor": null,
+      "purpose": "The padding of Menu's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-item-radius",
+      "parts": [
+        "item"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.element}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Menu's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-label-color",
+      "parts": [
+        "label"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Menu's label part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-label-font-family",
+      "parts": [
+        "label"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.code.small.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Menu's label part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-label-font-size",
+      "parts": [
+        "label"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.code.small.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Menu's label part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-label-font-weight",
+      "parts": [
+        "label"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.code.small.font-weight}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Menu's label part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-label-letter-spacing",
+      "parts": [
+        "label"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "0.12em"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Menu's label part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-label-line-height",
+      "parts": [
+        "label"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.code.small.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Menu's label part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-label-padding",
+      "parts": [
+        "label"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.stack-default} {dimension.spacing.inline-default} {dimension.spacing.stack-compact}"
+      ],
+      "floor": null,
+      "purpose": "The padding of Menu's label part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-letter-spacing",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.body.small.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Menu.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-line-height",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.body.small.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Menu.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-min-inline-size",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "min-inline-size"
+      ],
+      "fallbacks": [
+        "13rem"
+      ],
+      "floor": null,
+      "purpose": "The min-inline-size of Menu.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-padding",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-compact}"
+      ],
+      "floor": null,
+      "purpose": "The padding of Menu.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-radius",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.container}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Menu.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-separator-color",
+      "parts": [
+        "separator"
+      ],
+      "properties": [
+        "border-block-start"
+      ],
+      "fallbacks": [
+        "{color.neutral.border.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The border-block-start of Menu's separator part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-separator-margin-block",
+      "parts": [
+        "separator"
+      ],
+      "properties": [
+        "margin-block"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.stack-compact}"
+      ],
+      "floor": null,
+      "purpose": "The margin-block of Menu's separator part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-separator-width",
+      "parts": [
+        "separator"
+      ],
+      "properties": [
+        "border-block-start"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null,
+      "purpose": "The border-block-start of Menu's separator part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-shadow",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "{effect.material.menu}"
+      ],
+      "floor": null,
+      "purpose": "The box-shadow of Menu.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-menu-shortcut-gap",
+      "parts": [
+        "shortcut"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-compact}"
+      ],
+      "floor": null,
+      "purpose": "The gap of Menu's shortcut part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
+  ]
+}

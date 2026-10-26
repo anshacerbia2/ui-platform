@@ -414,6 +414,80 @@
       ]
     },
     {
+      "name": "MenuBase",
+      "entry": "@scnx/core-ui/components/menu-base",
+      "stability": "candidate",
+      "root": "none (context only); the menu is a div with role menu in the theme's portal container",
+      "parts": [
+        {
+          "name": "trigger",
+          "element": "button",
+          "selector": "[data-inventory='MenuBase'] button[aria-haspopup='menu']"
+        }
+      ],
+      "controlledProps": [
+        "open"
+      ],
+      "states": [
+        "open",
+        "closed",
+        "disabled"
+      ],
+      "keys": [
+        {
+          "key": "ArrowDown",
+          "part": "trigger",
+          "condition": "focused, the menu closed",
+          "effect": "opens the menu and focuses its first enabled item",
+          "expect": {
+            "part": "trigger",
+            "attribute": "aria-expanded",
+            "value": "true"
+          }
+        },
+        {
+          "key": "Escape",
+          "part": "trigger",
+          "condition": "the menu is open",
+          "effect": "closes the menu and returns focus to the trigger",
+          "expect": {
+            "part": "trigger",
+            "attribute": "aria-expanded",
+            "value": "false"
+          }
+        },
+        {
+          "key": "ArrowUp",
+          "part": "trigger",
+          "condition": "focused, the menu closed",
+          "effect": "opens the menu and focuses its last enabled item"
+        },
+        {
+          "key": "Enter",
+          "part": "trigger",
+          "condition": "focused, the menu closed",
+          "effect": "opens the menu and focuses its first enabled item; on an item, runs it and closes the menu"
+        },
+        {
+          "key": "Home",
+          "part": "trigger",
+          "condition": "an item is focused",
+          "effect": "focuses the first enabled item; End the last; ArrowDown and ArrowUp move between enabled items and wrap"
+        }
+      ],
+      "focus": {
+        "initial": "opening moves focus to the first enabled item (the last with ArrowUp)",
+        "movement": "roving between enabled items: ArrowDown, ArrowUp (wrapping), Home, End, type-ahead on the items' text, and the moving pointer",
+        "restoration": "running an item, Escape, and Tab close the menu and return focus to the trigger; a press outside closes it without moving focus"
+      },
+      "accessibleName": "the menu is named by its trigger (aria-labelledby); a group by its Label; an item by its text",
+      "dataHooks": [
+        "data-state",
+        "data-side",
+        "data-disabled"
+      ]
+    },
+    {
       "name": "NavigationBase",
       "entry": "@scnx/core-ui/components/navigation-base",
       "stability": "candidate",
@@ -479,6 +553,66 @@
         "data-expanded",
         "data-level",
         "data-index"
+      ]
+    },
+    {
+      "name": "PopoverBase",
+      "entry": "@scnx/core-ui/components/popover-base",
+      "stability": "candidate",
+      "root": "none (context only); the content is a div with role dialog in the theme's portal container",
+      "parts": [
+        {
+          "name": "trigger",
+          "element": "button",
+          "selector": "[data-inventory='PopoverBase'] button[aria-haspopup='dialog']"
+        }
+      ],
+      "controlledProps": [
+        "open"
+      ],
+      "states": [
+        "open",
+        "closed"
+      ],
+      "keys": [
+        {
+          "key": "Enter",
+          "part": "trigger",
+          "condition": "focused, the popover closed",
+          "effect": "opens the popover and moves focus into it",
+          "expect": {
+            "part": "trigger",
+            "attribute": "aria-expanded",
+            "value": "true"
+          }
+        },
+        {
+          "key": "Escape",
+          "part": "trigger",
+          "condition": "the popover is open",
+          "effect": "closes the popover and returns focus to the trigger",
+          "expect": {
+            "part": "trigger",
+            "attribute": "aria-expanded",
+            "value": "false"
+          }
+        },
+        {
+          "key": "Space",
+          "part": "trigger",
+          "condition": "focused",
+          "effect": "toggles the popover (native button)"
+        }
+      ],
+      "focus": {
+        "initial": "opening moves focus to the content's element with autofocus, else its first focusable element, else the content",
+        "movement": "native Tab order inside the content; focus may leave it, because the dialog is non-modal",
+        "restoration": "closing with Escape, the Close part, or the trigger returns focus to the trigger unless the reader moved it elsewhere"
+      },
+      "accessibleName": "the content is named by its Title, or by its own aria-label or aria-labelledby; the trigger by its text",
+      "dataHooks": [
+        "data-state",
+        "data-side"
       ]
     },
     {
@@ -860,6 +994,50 @@
         "data-invalid",
         "data-disabled"
       ]
+    },
+    {
+      "name": "TooltipBase",
+      "entry": "@scnx/core-ui/components/tooltip-base",
+      "stability": "candidate",
+      "root": "none (context only; the trigger is the consumer's element)",
+      "parts": [
+        {
+          "name": "trigger",
+          "element": "button",
+          "selector": "[data-inventory='TooltipBase'] button"
+        }
+      ],
+      "controlledProps": [
+        "open"
+      ],
+      "states": [
+        "open",
+        "closed"
+      ],
+      "keys": [
+        {
+          "key": "Escape",
+          "part": "trigger",
+          "condition": "the tooltip is open",
+          "effect": "closes the tooltip; focus stays on the trigger"
+        },
+        {
+          "key": "Tab",
+          "part": "trigger",
+          "condition": "focused by keyboard",
+          "effect": "focus leaves the trigger and the tooltip closes"
+        }
+      ],
+      "focus": {
+        "initial": "focus stays on the trigger; keyboard focus opens the tooltip at once, a resting pointer after the delay",
+        "movement": "none: the tooltip holds no interactive content and is never focused",
+        "restoration": "none: focus never moves"
+      },
+      "accessibleName": "the trigger keeps its own name; the open tooltip describes it through aria-describedby",
+      "dataHooks": [
+        "data-state",
+        "data-side"
+      ]
     }
   ],
   "entries": [
@@ -1069,12 +1247,22 @@
       "kind": "presentational"
     },
     {
+      "entry": "@scnx/system/components/menu",
+      "stability": "candidate",
+      "kind": "interactive"
+    },
+    {
       "entry": "@scnx/system/components/navbar",
       "stability": "candidate",
       "kind": "presentational"
     },
     {
       "entry": "@scnx/system/components/navigation",
+      "stability": "candidate",
+      "kind": "interactive"
+    },
+    {
+      "entry": "@scnx/system/components/popover",
       "stability": "candidate",
       "kind": "interactive"
     },
@@ -1120,6 +1308,11 @@
     },
     {
       "entry": "@scnx/system/components/text-field",
+      "stability": "candidate",
+      "kind": "interactive"
+    },
+    {
+      "entry": "@scnx/system/components/tooltip",
       "stability": "candidate",
       "kind": "interactive"
     },

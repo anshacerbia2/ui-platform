@@ -1,0 +1,46 @@
+{
+  "$schema": "../../../../../scripts/specs/schema/primitive.schema.json",
+  "kind": "primitive",
+  "name": "TooltipBase",
+  "entry": "@scnx/core-ui/components/tooltip-base",
+  "stability": "candidate",
+  "root": "none (context only; the trigger is the consumer's element)",
+  "parts": [
+    {
+      "name": "trigger",
+      "element": "button",
+      "selector": "[data-inventory='TooltipBase'] button"
+    }
+  ],
+  "controlledProps": [
+    "open"
+  ],
+  "states": [
+    "open",
+    "closed"
+  ],
+  "keys": [
+    {
+      "key": "Escape",
+      "part": "trigger",
+      "condition": "the tooltip is open",
+      "effect": "closes the tooltip; focus stays on the trigger"
+    },
+    {
+      "key": "Tab",
+      "part": "trigger",
+      "condition": "focused by keyboard",
+      "effect": "focus leaves the trigger and the tooltip closes"
+    }
+  ],
+  "focus": {
+    "initial": "focus stays on the trigger; keyboard focus opens the tooltip at once, a resting pointer after the delay",
+    "movement": "none: the tooltip holds no interactive content and is never focused",
+    "restoration": "none: focus never moves"
+  },
+  "accessibleName": "the trigger keeps its own name; the open tooltip describes it through aria-describedby",
+  "dataHooks": [
+    "data-state",
+    "data-side"
+  ]
+}

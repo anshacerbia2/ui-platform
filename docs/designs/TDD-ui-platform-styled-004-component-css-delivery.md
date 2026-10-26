@@ -413,6 +413,38 @@ Component wave 1 adds Link; the visual target is the design reference's
 | LK2 | `primary` is `primary.text.subtle` text with a `border-width.default` underline in `primary.border.default` at a 0.22em offset (a recorded hook fallback); on hover the text takes `primary.text.subtle.hover` and the underline `currentColor`. `neutral` inherits the surrounding color with a `neutral.border.strong` underline that takes `currentColor` on hover, for dense copy such as footers and table cells. | ADR-UIP-VIS-001 item 3; WCAG 2.2 SC 1.4.1 | The underline, not the color, marks a link, so a neutral link in body text is still a link. Links are where blue marks meaning (item 3). |
 | LK3 | A link has no background and no button padding; its `radius.mark` only rounds the focus outline drawn by the base styles. A link in running text keeps its line height, which is WCAG 2.2 SC 2.5.8's "Inline" exception to the 24 px target size; the packed components fixture exempts a focused target whose `display` is `inline`, and holds every other target to the floor. | Design reference `components/Link/README.md`; STD-GLB-FE-005 3.9 | An action that does not navigate is a Button; a link styled as a button is a Button with `href`. |
 
+#### Decision record: floating entrance and Tooltip
+
+Component wave 1 adds the floating parts; the visual target is the design
+reference's `components/Tooltip/`, `Popover/`, and `Menu/` (ADR-UIP-VIS-002).
+
+| ID  | Decision | Sources | Tradeoff |
+| :-- | :------- | :------ | :------- |
+| FE1 | A floating part enters with the reference's rise: `@keyframes scnx-rise` (from transparent and one `spacing.inline-compact` lower) in the `base` layer, run by `floating-enter` (`styles/abstracts/hook`) in `motion.feedback.duration` with `motion.enter.easing`, only inside `when-motion-allowed` (HK10); otherwise the part appears at once. The stylesheet gate now accepts `@keyframes` inside a canonical layer when its name starts with `scnx-`, and still rejects one at the top level or without the prefix (self-test cases); the `animation` that runs it is checked like every motion property. | Design reference `components/Surface/README.md` ("Floating materials enter with a 4px rise and a fade"); STD-GLB-FE-005 3.4 | The gate allowed no keyframes before; the prefix keeps the package's names from colliding with a host's. |
+| TT1 | `Tooltip` is `@scnx/system/components/tooltip`, on `TooltipBase` (TDD primitives P32): `content` (a few words, or one sentence; a Kbd for a shortcut), the trigger as `children`, the base's open state, `delay`, and `placement`, and `contentProps` for the tooltip element. It needs a ThemeProvider, whose portal container it renders into. | Design reference `components/Tooltip/README.md` | The trigger is the consumer's element, so its name and focusability are the consumer's; an icon-only trigger still needs its own `aria-label`. |
+| TT2 | The ink material: `neutral.surface.solid` fill under `neutral.text.contrast`, `label.small`, `radius.element`, `effect.material.tooltip`, padded `spacing.inline-compact` by `spacing.inline-default`, at most 16 rem wide and at least 24 px high, 4 px from its trigger, with no stem, above other layers at `z-index.tooltip`. A transparent border keeps its boundary in forced-colors mode. A Kbd in it takes the ink and a `neutral.text.contrast.disabled` ring. | ADR-UIP-VIS-001 item 1; STD-GLB-FE-005 3.9 | The ink fill marks the tooltip as the one floating material that is not a surface to work on. |
+
+#### Decision record: Popover
+
+Component wave 1 adds Popover; the visual target is the design reference's
+`components/Popover/` (ADR-UIP-VIS-002).
+
+| ID  | Decision | Sources | Tradeoff |
+| :-- | :------- | :------ | :------- |
+| PO1 | `Popover` is `@scnx/system/components/popover`, a compound on `PopoverBase` (TDD primitives P33): `Popover`, `Popover.Trigger` and `Popover.Close` (the base's, `asChild` for a styled Button), `Popover.Content`, `Popover.Title`, `Popover.Body` (`data-part="body"`), and `Popover.Actions` (`data-part="actions"`). It needs a ThemeProvider, whose portal container it renders into. | Design reference `components/Popover/README.md` | A list of commands is a Menu and a blocking task a Dialog; the component cannot tell them apart, so its documentation says so. |
+| PO2 | The menu material: `neutral.surface.floating` fill under default text, `radius.container`, `effect.material.menu`, padded `spacing.inset-default`, 20 rem wide (a recorded hook fallback), `body.small` text, 4 px from its trigger, with no stem, above the page at `z-index.popover`, with the FE1 entrance. Its parts are a grid `spacing.stack-compact` apart; the title is `heading.xsmall` at semibold weight, the body subtle text, the actions end-aligned `spacing.inline-default` apart after `spacing.stack-default`. A transparent border keeps its boundary in forced-colors mode. Controls inside keep their own radius: a container radius less its own padding is flat. | ADR-UIP-VIS-001 items 1 and 2 | A 20 rem popover is wider than a viewport under 336 px less the positioner's 8 px margins; it is not clamped, because the stylesheet gate allows no literal factor outside a hook. |
+
+#### Decision record: Menu
+
+Component wave 1 adds Menu; the visual target is the design reference's
+`components/Menu/` (ADR-UIP-VIS-002).
+
+| ID  | Decision | Sources | Tradeoff |
+| :-- | :------- | :------ | :------- |
+| MN1 | `Menu` is `@scnx/system/components/menu`, a compound on `MenuBase` (TDD primitives P34): `Menu`, `Menu.Trigger` (the base's, `asChild` for a Button or IconButton), `Menu.Content`, `Menu.Item`, `Menu.Group` (the base's), `Menu.Label`, and `Menu.Separator`. `Menu.Item` adds `icon` (a decorative 16 px icon, `aria-hidden`), `shortcut` (keys after the label, `aria-hidden`; the consumer names them with `aria-keyshortcuts` on the item), and `variant` (`default` or `danger`). It needs a ThemeProvider, whose portal container it renders into. | Design reference `components/Menu/README.md`; WAI-ARIA 1.2 `aria-keyshortcuts` | A visible shortcut read as part of the item's name ("RenameR") would garble it, so the name is the label alone. Choosing a value is a Select; a destructive item opens a confirming Dialog, which the component cannot enforce. |
+| MN2 | The menu material: `neutral.surface.floating` fill under default text, `radius.container`, `effect.material.menu`, padded `spacing.inset-compact`, at least 13 rem wide, `body.small` text, above the page at `z-index.dropdown`, with the FE1 entrance. Items are 32 px rows (a recorded hook fallback), padded `spacing.inline-default`, `radius.element`, so they are concentric with the menu (16 − 8 = 8 in the concentric ladder). | ADR-UIP-VIS-001 items 1 and 2 | The same rows as the CodeSelect list (CL2), so every list of choices reads alike. |
+| MN3 | The highlight is focus: the item under the pointer or the arrow keys takes `neutral.surface.default.hover`, and keeps the focus outline drawn inside it (`outline-offset` follows the outline's 2 px floor). A danger item is `danger.text.subtle` with a `danger.icon.subtle` icon; a disabled item `neutral.text.default.disabled` with no highlight. Group labels are eyebrows (`code.small`, uppercase, tracked 0.12em, subtle text). The separator is a `border.subtle` border, so it survives forced-colors mode. | ADR-UIP-VIS-001 items 3 and 5; STD-GLB-FE-005 3.9 | The outline and the fill both mark the focused item; forced-colors mode keeps the outline. |
+
 #### Decision record: industrial structure
 
 ADR-UIP-VIS-001 (revisions 2 and 3, 2026-10-25) makes the default theme,

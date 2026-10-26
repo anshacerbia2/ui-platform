@@ -1,0 +1,76 @@
+{
+  "$schema": "../../../../../scripts/specs/schema/primitive.schema.json",
+  "kind": "primitive",
+  "name": "MenuBase",
+  "entry": "@scnx/core-ui/components/menu-base",
+  "stability": "candidate",
+  "root": "none (context only); the menu is a div with role menu in the theme's portal container",
+  "parts": [
+    {
+      "name": "trigger",
+      "element": "button",
+      "selector": "[data-inventory='MenuBase'] button[aria-haspopup='menu']"
+    }
+  ],
+  "controlledProps": [
+    "open"
+  ],
+  "states": [
+    "open",
+    "closed",
+    "disabled"
+  ],
+  "keys": [
+    {
+      "key": "ArrowDown",
+      "part": "trigger",
+      "condition": "focused, the menu closed",
+      "effect": "opens the menu and focuses its first enabled item",
+      "expect": {
+        "part": "trigger",
+        "attribute": "aria-expanded",
+        "value": "true"
+      }
+    },
+    {
+      "key": "Escape",
+      "part": "trigger",
+      "condition": "the menu is open",
+      "effect": "closes the menu and returns focus to the trigger",
+      "expect": {
+        "part": "trigger",
+        "attribute": "aria-expanded",
+        "value": "false"
+      }
+    },
+    {
+      "key": "ArrowUp",
+      "part": "trigger",
+      "condition": "focused, the menu closed",
+      "effect": "opens the menu and focuses its last enabled item"
+    },
+    {
+      "key": "Enter",
+      "part": "trigger",
+      "condition": "focused, the menu closed",
+      "effect": "opens the menu and focuses its first enabled item; on an item, runs it and closes the menu"
+    },
+    {
+      "key": "Home",
+      "part": "trigger",
+      "condition": "an item is focused",
+      "effect": "focuses the first enabled item; End the last; ArrowDown and ArrowUp move between enabled items and wrap"
+    }
+  ],
+  "focus": {
+    "initial": "opening moves focus to the first enabled item (the last with ArrowUp)",
+    "movement": "roving between enabled items: ArrowDown, ArrowUp (wrapping), Home, End, type-ahead on the items' text, and the moving pointer",
+    "restoration": "running an item, Escape, and Tab close the menu and return focus to the trigger; a press outside closes it without moving focus"
+  },
+  "accessibleName": "the menu is named by its trigger (aria-labelledby); a group by its Label; an item by its text",
+  "dataHooks": [
+    "data-state",
+    "data-side",
+    "data-disabled"
+  ]
+}

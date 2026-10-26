@@ -1,0 +1,36 @@
+@use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
+
+$c: tooltip;
+
+// TDD styled TT1-TT2 (scnehaux-design card Tooltip; component wave 1). The
+// ink material: the neutral solid fill under the contrast label, `label.small`,
+// the element radius, and the tooltip material's shadow. Every value reads a
+// `--scnx-tooltip-*` hook that falls back to its token; the 16rem measure is
+// the recorded fallback of its hook, and the 24px minimum height is the target
+// floor's size, so a one-line tooltip matches a small control. A transparent
+// border keeps its boundary in forced-colors mode.
+.scnx-tooltip {
+  z-index: $dimension-z-index-tooltip;
+  display: inline-flex;
+  align-items: center;
+  gap: hook($c, gap, $dimension-spacing-inline-default);
+  box-sizing: border-box;
+  max-inline-size: hook($c, max-inline-size, 16rem);
+  min-block-size: hook($c, min-block-size, 24px);
+  padding: hook($c, padding, $dimension-spacing-inline-compact $dimension-spacing-inline-default);
+  border: hook($c, border-width, $dimension-border-width-default) solid transparent;
+  border-radius: hook($c, radius, $dimension-radius-element);
+  background-color: hook($c, background, var(--ds-color-neutral-surface-solid-default));
+  color: hook($c, color, var(--ds-color-neutral-text-contrast-default));
+  box-shadow: hook($c, shadow, var(--ds-effect-material-tooltip));
+  @include hooked-typography($c, label, small);
+  @include floating-enter($c);
+
+  // A shortcut on the ink: the keycap takes the ink and a contrast ring.
+  > .scnx-kbd {
+    background-color: transparent;
+    color: inherit;
+    box-shadow: hook($c, kbd-shadow, inset 0 0 0 #{$dimension-border-width-default} var(--ds-color-neutral-text-contrast-disabled));
+  }
+}

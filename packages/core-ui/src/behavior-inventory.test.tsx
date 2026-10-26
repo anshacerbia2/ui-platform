@@ -14,6 +14,9 @@ import { ComboboxBase } from "./components/combobox-base";
 import { DialogBase } from "./components/dialog-base";
 import { TabsBase } from "./components/tabs-base";
 import { RadioGroupBase } from "./components/radio-group-base";
+import { MenuBase } from "./components/menu-base";
+import { PopoverBase } from "./components/popover-base";
+import { TooltipBase } from "./components/tooltip-base";
 import { NavigationBase } from "./components/navigation-base";
 import { SidebarBaseRoot, SidebarBaseToggle } from "./components/sidebar-base";
 import { TableOfContentsBase } from "./components/table-of-contents-base";
@@ -42,7 +45,7 @@ const inventory = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../behavio
 };
 
 // Interactive entries of @scnx/core-ui that must have a record.
-const INTERACTIVE = ["ComboboxBase", "ButtonBase", "AccordionBase", "NavigationBase", "TableOfContentsBase", "SidebarBase", "TextFieldBase", "DialogBase", "TabsBase", "RadioGroupBase"];
+const INTERACTIVE = ["ComboboxBase", "ButtonBase", "AccordionBase", "NavigationBase", "TableOfContentsBase", "SidebarBase", "TextFieldBase", "DialogBase", "TabsBase", "RadioGroupBase", "TooltipBase", "PopoverBase", "MenuBase"];
 
 const KEYS: { [key: string]: string } = { Enter: "{Enter}", Space: " ", Tab: "{Tab}", Escape: "{Escape}", ArrowRight: "{ArrowRight}", ArrowLeft: "{ArrowLeft}", ArrowDown: "{ArrowDown}", ArrowUp: "{ArrowUp}", Home: "{Home}", End: "{End}" };
 
@@ -78,6 +81,9 @@ describe("behavior inventory", () => {
           TabsBase,
           ComboboxBase,
           RadioGroupBase,
+          MenuBase,
+          PopoverBase,
+          TooltipBase,
         }}
       />,
     );
