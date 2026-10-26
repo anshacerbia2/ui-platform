@@ -368,6 +368,16 @@ target is the design reference's `components/CodeShowcase/` (ADR-UIP-VIS-002).
 | CX2 | The preview sits on the stage (TDD tokens SI10): `neutral.surface.stage` with a 1 px `neutral.border.stage` dot every 22 px, as a radial gradient, in place of the 30 px conic checkerboard; it is 8 rem high at least and spaces its children by `spacing.inline-default`. The nav row is `size.control-comfortable` (44 px) high, padded `spacing.inset-default` at its start and `spacing.inline-default` at its end. | ADR-UIP-VIS-001 item 4 | The checkerboard marked transparency, which an example rarely needs; the stage is the ground every preview of the system shares. |
 | CX3 | The code sits in the sunken well in `code.small` at a 1.7 line height (a recorded hook fallback), in default text, in place of `code.default` in subtle text. | Design reference `components/CodeShowcase/README.md`; WCAG 2.2 SC 1.4.12 | Longer listings fit on screen; the 1.7 line height keeps a small mono size readable. Syntax colors stay the consumer's highlighter's; the reference's `[data-token]` colors are not part of the component. |
 
+#### Decision record: FloatingLayout materials
+
+PLAN I2 moves FloatingLayout onto its materials; the visual target is the design
+reference's `components/FloatingLayout/` (ADR-UIP-VIS-002).
+
+| ID  | Decision | Sources | Tradeoff |
+| :-- | :------- | :------ | :------- |
+| FL1 | The layout's ground is the stage's, `neutral.surface.stage`, without its dots, because data sits here. It is padded `spacing.inline-default` on every side, and its sidebar and content are `spacing.inline-default` apart (was `spacing.section` apart and `spacing.page` above and below). The sticky sidebar is offset by that padding and is the viewport's height less twice the padding. The hooks `padding-block`, `sidebar-top`, and `sidebar-inset` are replaced by `padding`. | ADR-UIP-VIS-001 item 4; design reference `components/FloatingLayout/README.md` | One gap everywhere reads the sidebar and the content as one layered object; a product that wants more room sets the one hook. |
+| FL2 | The content is the raised material: `neutral.surface.raised` fill, `radius.container`, `effect.material.raised`, and a transparent border for forced-colors mode, padded `spacing.inset-comfortable` and allowed to shrink (`min-inline-size: 0`). The sidebar is the consumer's `Sidebar variant="floating"` (SB3); cards inside the content are flat, one shadow per stack. | ADR-UIP-VIS-001 item 1 | The layout draws the content's material itself but not the sidebar's, because the sidebar is its own component with its own variant. |
+
 #### Decision record: industrial structure
 
 ADR-UIP-VIS-001 (revisions 2 and 3, 2026-10-25) makes the default theme,

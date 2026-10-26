@@ -3,23 +3,37 @@
 
 $c: floating-layout;
 
-// TDD styled HK1-HK7: every value reads a `--scnx-floating-layout-*` hook. The
-// sidebar's height leaves its recorded 1.25rem inset above and below.
+// TDD styled HK1-HK7: every value reads a `--scnx-floating-layout-*` hook.
+//
+// PLAN I2 (TDD styled FL1-FL2): the sidebar and the content float as
+// materials on the stage's ground, one gap from the edges and from each other,
+// so they read as one layered object.
 .scnx-floating-layout {
   display: flex;
-  gap: hook($c, gap, $dimension-spacing-section);
+  gap: hook($c, gap, $dimension-spacing-inline-default);
   min-height: 100vh;
   box-sizing: border-box;
-  padding-block: hook($c, padding-block, $dimension-spacing-page);
+  padding: hook($c, padding, $dimension-spacing-inline-default);
+  // The stage's ground without its dots: data sits here (ADR-UIP-VIS-001 item 4).
+  background-color: hook($c, background, $color-surface-stage);
 
+  // The sidebar stays in view, one padding from the top and the bottom.
   &__sidebar {
     position: sticky;
-    top: hook($c, sidebar-top, $dimension-spacing-page);
+    top: hook($c, padding, $dimension-spacing-inline-default);
     align-self: flex-start;
-    height: calc(100vh - (#{hook($c, sidebar-inset, 1.25rem)} * 2));
+    height: calc(100vh - (#{hook($c, padding, $dimension-spacing-inline-default)} * 2));
   }
 
+  // The raised material. A transparent border keeps the boundary in
+  // forced-colors mode, where box shadows are not drawn.
   &__content {
     flex: 1;
+    min-inline-size: 0;
+    padding: hook($c, content-padding, $dimension-spacing-inset-comfortable);
+    background-color: hook($c, content-background, $color-surface-raised);
+    border: hook($c, content-border-width, $dimension-border-width-default) solid transparent;
+    border-radius: hook($c, content-radius, $dimension-radius-container);
+    box-shadow: hook($c, content-shadow, $effect-material-raised);
   }
 }

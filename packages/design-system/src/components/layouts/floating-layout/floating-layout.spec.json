@@ -7,6 +7,102 @@
   "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-floating-layout-gap: …; }.",
   "hooks": [
     {
+      "hook": "--scnx-floating-layout-background",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.stage.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of FloatingLayout.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-floating-layout-content-background",
+      "parts": [
+        "content"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.raised.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of FloatingLayout's content part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-floating-layout-content-border-width",
+      "parts": [
+        "content"
+      ],
+      "properties": [
+        "border"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null,
+      "purpose": "The border of FloatingLayout's content part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-floating-layout-content-padding",
+      "parts": [
+        "content"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-comfortable}"
+      ],
+      "floor": null,
+      "purpose": "The padding of FloatingLayout's content part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-floating-layout-content-radius",
+      "parts": [
+        "content"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.container}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of FloatingLayout's content part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-floating-layout-content-shadow",
+      "parts": [
+        "content"
+      ],
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "{effect.material.raised}"
+      ],
+      "floor": null,
+      "purpose": "The box-shadow of FloatingLayout's content part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
       "hook": "--scnx-floating-layout-gap",
       "parts": [
         "root"
@@ -15,7 +111,7 @@
         "gap"
       ],
       "fallbacks": [
-        "{dimension.spacing.section}"
+        "{dimension.spacing.inline-default}"
       ],
       "floor": null,
       "purpose": "The gap of FloatingLayout.",
@@ -23,50 +119,21 @@
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
-      "hook": "--scnx-floating-layout-padding-block",
+      "hook": "--scnx-floating-layout-padding",
       "parts": [
-        "root"
-      ],
-      "properties": [
-        "padding-block"
-      ],
-      "fallbacks": [
-        "{dimension.spacing.page}"
-      ],
-      "floor": null,
-      "purpose": "The padding-block of FloatingLayout.",
-      "coverage": "scnx-platform and scnx-saas, light and dark.",
-      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
-    },
-    {
-      "hook": "--scnx-floating-layout-sidebar-inset",
-      "parts": [
+        "root",
         "sidebar"
       ],
       "properties": [
-        "height"
-      ],
-      "fallbacks": [
-        "1.25rem"
-      ],
-      "floor": null,
-      "purpose": "The height of FloatingLayout's sidebar part.",
-      "coverage": "scnx-platform and scnx-saas, light and dark.",
-      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
-    },
-    {
-      "hook": "--scnx-floating-layout-sidebar-top",
-      "parts": [
-        "sidebar"
-      ],
-      "properties": [
+        "height",
+        "padding",
         "top"
       ],
       "fallbacks": [
-        "{dimension.spacing.page}"
+        "{dimension.spacing.inline-default}"
       ],
       "floor": null,
-      "purpose": "The top of FloatingLayout's sidebar part.",
+      "purpose": "The padding of FloatingLayout, which also sets its sidebar's sticky offset and height.",
       "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
