@@ -117,6 +117,10 @@
       "types": "./dist/components/text-field-base/index.d.ts",
       "default": "./dist/components/text-field-base/index.js"
     },
+    "./components/tooltip-base": {
+      "types": "./dist/components/tooltip-base/index.d.ts",
+      "default": "./dist/components/tooltip-base/index.js"
+    },
     "./components/transition-base": {
       "types": "./dist/components/transition-base/index.d.ts",
       "default": "./dist/components/transition-base/index.js"
@@ -156,6 +160,7 @@
     "./specs/tabs-base.json": "./dist/specs/tabs-base.json",
     "./specs/text-base.json": "./dist/specs/text-base.json",
     "./specs/text-field-base.json": "./dist/specs/text-field-base.json",
+    "./specs/tooltip-base.json": "./dist/specs/tooltip-base.json",
     "./specs/transition-base.json": "./dist/specs/transition-base.json",
     "./specs/use-on-click-outside.json": "./dist/specs/use-on-click-outside.json",
     "./specs/theme-provider-base.json": "./dist/specs/theme-provider-base.json",

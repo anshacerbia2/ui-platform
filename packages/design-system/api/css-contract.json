@@ -173,6 +173,7 @@
         "scnx-text--weight_regular",
         "scnx-text--weight_semibold",
         "scnx-text-field",
+        "scnx-tooltip",
         "scnx-transition"
       ],
       "dataAttributes": [

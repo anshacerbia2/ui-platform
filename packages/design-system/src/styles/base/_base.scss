@@ -34,3 +34,14 @@
     outline-color: Highlight;
   }
 }
+
+// A floating material enters with a short rise and a fade (design reference
+// card Surface, "Above the page"), the distance one compact inline space.
+// Components start it through floating-enter (styles/abstracts/hook), only
+// when the reader allows motion (TDD styled HK10).
+@keyframes scnx-rise {
+  from {
+    opacity: 0;
+    translate: 0 $dimension-spacing-inline-compact;
+  }
+}

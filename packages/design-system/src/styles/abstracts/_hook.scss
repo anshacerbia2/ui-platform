@@ -45,3 +45,12 @@
     }
   }
 }
+
+/// A floating part's entrance (TDD styled HK10): the scnx-rise keyframes
+/// (styles/base), in the feedback duration with the enter easing, only when
+/// the reader allows motion; otherwise the part appears at once.
+@mixin floating-enter($component) {
+  @include when-motion-allowed {
+    animation: scnx-rise hook($component, enter-duration, $motion-feedback-duration) hook($component, enter-timing-function, $motion-enter-easing);
+  }
+}

@@ -33,6 +33,7 @@
   @include meta.load-css("components/layouts/surface/Surface");
   @include meta.load-css("components/molecules/alert/Alert");
   @include meta.load-css("components/molecules/segmented-control/SegmentedControl");
+  @include meta.load-css("components/molecules/tooltip/Tooltip");
   @include meta.load-css("components/organisms/accordion/Accordion");
   @include meta.load-css("components/organisms/code-select/CodeSelect");
   @include meta.load-css("components/organisms/code-showcase/CodeShowcase");

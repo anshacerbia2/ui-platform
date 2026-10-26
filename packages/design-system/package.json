@@ -134,6 +134,10 @@
       "types": "./dist/components/text-field/index.d.ts",
       "default": "./dist/components/text-field/index.js"
     },
+    "./components/tooltip": {
+      "types": "./dist/components/tooltip/index.d.ts",
+      "default": "./dist/components/tooltip/index.js"
+    },
     "./components/transition": {
       "types": "./dist/components/transition/index.d.ts",
       "default": "./dist/components/transition/index.js"
@@ -185,6 +189,7 @@
     "./specs/tabs.json": "./dist/specs/tabs.json",
     "./specs/text.json": "./dist/specs/text.json",
     "./specs/text-field.json": "./dist/specs/text-field.json",
+    "./specs/tooltip.json": "./dist/specs/tooltip.json",
     "./specs/transition.json": "./dist/specs/transition.json",
     "./specs/schema/common.schema.json": "./dist/specs/schema/common.schema.json",
     "./specs/schema/styled.schema.json": "./dist/specs/schema/styled.schema.json",

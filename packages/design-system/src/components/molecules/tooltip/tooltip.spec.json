@@ -1,0 +1,344 @@
+{
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
+  "entry": "@scnx/system/components/tooltip",
+  "entryKind": "interactive",
+  "stability": "candidate",
+  "primitive": "TooltipBase",
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-tooltip"
+    },
+    {
+      "name": "kbd",
+      "selector": ".scnx-tooltip>.scnx-kbd"
+    }
+  ],
+  "options": {},
+  "states": [],
+  "fixture": {
+    "tree": {
+      "type": "div",
+      "props": {
+        "className": "scnx-tooltip",
+        "role": "tooltip",
+        "id": "fixture-tooltip"
+      },
+      "children": [
+        "Search ",
+        {
+          "type": "kbd",
+          "props": {
+            "className": "scnx-kbd"
+          },
+          "children": [
+            "K"
+          ]
+        }
+      ]
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "gap": "{dimension.spacing.inline-default}",
+        "padding": "{dimension.spacing.inline-compact} {dimension.spacing.inline-default}",
+        "border": "{dimension.border-width.default} solid transparent",
+        "border-radius": "{dimension.radius.element}",
+        "background-color": "{color.neutral.surface.solid.default}",
+        "color": "{color.neutral.text.contrast.default}",
+        "box-shadow": "{effect.material.tooltip}",
+        "font-family": "{typography.label.small.font-family}",
+        "font-size": "{typography.label.small.font-size}",
+        "font-weight": "{typography.label.small.font-weight}",
+        "line-height": "{typography.label.small.line-height}",
+        "letter-spacing": "{typography.label.small.letter-spacing}",
+        "z-index": "{dimension.z-index.tooltip}",
+        "animation": "scnx-rise {motion.feedback.duration} {motion.enter.easing}"
+      }
+    },
+    {
+      "part": "kbd",
+      "declarations": {
+        "box-shadow": "inset 0 0 0 {dimension.border-width.default} {color.neutral.text.contrast.disabled}"
+      }
+    }
+  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-tooltip-background: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-tooltip-background",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.solid.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Tooltip.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tooltip-border-width",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null,
+      "purpose": "The border of Tooltip.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tooltip-color",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.contrast.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Tooltip.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tooltip-enter-duration",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "animation"
+      ],
+      "fallbacks": [
+        "{motion.feedback.duration}"
+      ],
+      "floor": null,
+      "purpose": "The duration of the Tooltip's entrance, when the reader allows motion.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tooltip-enter-timing-function",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "animation"
+      ],
+      "fallbacks": [
+        "{motion.enter.easing}"
+      ],
+      "floor": null,
+      "purpose": "The easing of the Tooltip's entrance, when the reader allows motion.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tooltip-font-family",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.label.small.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Tooltip.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tooltip-font-size",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.label.small.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Tooltip.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tooltip-font-weight",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.label.small.font-weight}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Tooltip.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tooltip-gap",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-default}"
+      ],
+      "floor": null,
+      "purpose": "The gap of Tooltip.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tooltip-kbd-shadow",
+      "parts": [
+        "kbd"
+      ],
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "inset 0 0 0 {dimension.border-width.default} {color.neutral.text.contrast.disabled}"
+      ],
+      "floor": null,
+      "purpose": "The ring of a shortcut keycap on the Tooltip.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tooltip-letter-spacing",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.label.small.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Tooltip.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tooltip-line-height",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.label.small.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Tooltip.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tooltip-max-inline-size",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "max-inline-size"
+      ],
+      "fallbacks": [
+        "16rem"
+      ],
+      "floor": null,
+      "purpose": "The max-inline-size of Tooltip.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tooltip-min-block-size",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "min-block-size"
+      ],
+      "fallbacks": [
+        "24px"
+      ],
+      "floor": null,
+      "purpose": "The min-block-size of Tooltip.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tooltip-padding",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-compact} {dimension.spacing.inline-default}"
+      ],
+      "floor": null,
+      "purpose": "The padding of Tooltip.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tooltip-radius",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.element}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Tooltip.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-tooltip-shadow",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "{effect.material.tooltip}"
+      ],
+      "floor": null,
+      "purpose": "The box-shadow of Tooltip.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
+  ]
+}

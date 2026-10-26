@@ -20,10 +20,11 @@ export type FixtureComponents = {
   TabsBase: C;
   ComboboxBase: C;
   RadioGroupBase: C;
+  TooltipBase: C;
 };
 
 export function BehaviorFixtures({ components }: { components: FixtureComponents }): ReactElement {
-  const { ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase, DialogBase, TabsBase, ComboboxBase, RadioGroupBase } = components;
+  const { ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase, DialogBase, TabsBase, ComboboxBase, RadioGroupBase, TooltipBase } = components;
   const [pressed, setPressed] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -127,6 +128,14 @@ export function BehaviorFixtures({ components }: { components: FixtureComponents
           <RadioGroupBase.Item value="dark">Dark</RadioGroupBase.Item>
           <RadioGroupBase.Item value="system">System</RadioGroupBase.Item>
         </RadioGroupBase>
+      </div>
+      <div data-inventory="TooltipBase">
+        <TooltipBase>
+          <TooltipBase.Trigger>
+            <button type="button" aria-label="Copy link">Copy</button>
+          </TooltipBase.Trigger>
+          <TooltipBase.Content>Copy link</TooltipBase.Content>
+        </TooltipBase>
       </div>
     </div>
   );

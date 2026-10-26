@@ -16,10 +16,11 @@ import { TextFieldBase } from "./components/text-field-base";
 import { DialogBase } from "./components/dialog-base";
 import { TabsBase } from "./components/tabs-base";
 import { RadioGroupBase } from "./components/radio-group-base";
+import { TooltipBase } from "./components/tooltip-base";
 import { ComboboxBase } from "./components/combobox-base";
 import { TransitionBase } from "./components/transition-base";
 
-const components = { ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase, DialogBase, TabsBase, ComboboxBase, RadioGroupBase };
+const components = { ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase, DialogBase, TabsBase, ComboboxBase, RadioGroupBase, TooltipBase };
 
 const Page = () => (
   <div>
