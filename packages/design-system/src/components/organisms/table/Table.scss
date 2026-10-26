@@ -1,0 +1,89 @@
+@use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
+
+$c: table;
+
+// TDD styled TA1-TA3 (scnehaux-design card Table; component wave 1). Every
+// value reads a `--scnx-table-{part?}-*` hook that falls back to its token; the
+// 36px header and 44px body rows, the eyebrow's tracking, and the shrink
+// column's width are the recorded fallbacks of their hooks (row heights are
+// component geometry, ADR-UIP-VIS-001 item 6). Lines are borders, so they
+// survive forced-colors mode.
+
+// The flat material, which scrolls a table wider than its container. A
+// transparent border keeps the boundary in forced-colors mode.
+.scnx-table {
+  overflow: auto;
+  border: hook($c, frame-border-width, $dimension-border-width-default) solid transparent;
+  border-radius: hook($c, frame-radius, $dimension-radius-container);
+  background-color: hook($c, frame-background, $color-surface-raised);
+  box-shadow: hook($c, frame-shadow, $effect-material-flat);
+
+  &__table {
+    inline-size: 100%;
+    border-collapse: collapse;
+    @include hooked-typography($c, data, compact);
+    color: hook($c, color, $color-text-primary);
+  }
+
+  &__caption {
+    padding: hook($c, caption-padding, $dimension-spacing-inset-compact $dimension-spacing-inset-default);
+    text-align: start;
+    @include hooked-typography($c, body, small, $prefix: caption);
+    color: hook($c, caption-color, $color-text-secondary);
+  }
+
+  // Header cells are eyebrows: mono, uppercase, tracked, subtle text.
+  th {
+    block-size: hook($c, header-block-size, 2.25rem);
+    padding: 0 hook($c, cell-padding-inline, $dimension-spacing-inset-default);
+    text-align: start;
+    white-space: nowrap;
+    @include hooked-typography($c, code, small, $prefix: header, $except: (font-weight letter-spacing));
+    font-weight: hook($c, header-font-weight, $typography-weight-regular);
+    letter-spacing: hook($c, header-letter-spacing, 0.12em);
+    text-transform: uppercase;
+    color: hook($c, header-color, $color-text-secondary);
+    background-color: hook($c, header-background, var(--ds-color-neutral-surface-subtle-default));
+    border-bottom: hook($c, border-width, $dimension-border-width-default) solid hook($c, border-color, $color-border-subtle);
+  }
+
+  td {
+    block-size: hook($c, row-block-size, 2.75rem);
+    padding: 0 hook($c, cell-padding-inline, $dimension-spacing-inset-default);
+  }
+
+  // Rows are divided by a line; with collapsed borders a row's border is drawn.
+  tbody tr {
+    border-bottom: hook($c, border-width, $dimension-border-width-default) solid hook($c, border-color, $color-border-subtle);
+    transition: background-color hook($c, transition-duration, $motion-feedback-duration) hook($c, transition-timing-function, $motion-feedback-easing);
+
+    &:hover {
+      background-color: hook($c, row-background-hover, var(--ds-color-neutral-surface-subtle-hover));
+    }
+
+    &[data-state="selected"] {
+      background-color: hook($c, row-background-selected, $color-primary-subtle);
+    }
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  th[data-align="end"],
+  td[data-align="end"] {
+    text-align: end;
+    font-variant-numeric: tabular-nums;
+  }
+
+  td[data-muted] {
+    color: hook($c, muted-color, $color-text-secondary);
+  }
+
+  th[data-shrink],
+  td[data-shrink] {
+    inline-size: hook($c, shrink-inline-size, 1%);
+    padding-inline-end: 0;
+  }
+}

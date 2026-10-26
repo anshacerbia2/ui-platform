@@ -1,0 +1,865 @@
+{
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
+  "entry": "@scnx/system/components/table",
+  "entryKind": "presentational",
+  "stability": "candidate",
+  "primitive": null,
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-table"
+    },
+    {
+      "name": "table",
+      "selector": ".scnx-table__table"
+    },
+    {
+      "name": "caption",
+      "selector": ".scnx-table__caption"
+    },
+    {
+      "name": "header-cell",
+      "selector": ".scnx-table th"
+    },
+    {
+      "name": "row",
+      "selector": ".scnx-table tbody tr"
+    },
+    {
+      "name": "cell",
+      "selector": ".scnx-table td"
+    }
+  ],
+  "options": {},
+  "states": [
+    {
+      "name": "hover",
+      "selectors": [
+        ":hover"
+      ],
+      "enter": {
+        "interaction": "hover"
+      }
+    },
+    {
+      "name": "selected",
+      "selectors": [
+        "[data-state=selected]"
+      ],
+      "enter": {
+        "fixture": true
+      }
+    },
+    {
+      "name": "last",
+      "selectors": [
+        ":last-child"
+      ],
+      "enter": {
+        "fixture": true
+      }
+    },
+    {
+      "name": "end",
+      "selectors": [
+        "[data-align=end]"
+      ],
+      "enter": {
+        "fixture": true
+      }
+    },
+    {
+      "name": "muted",
+      "selectors": [
+        "[data-muted]"
+      ],
+      "enter": {
+        "fixture": true
+      }
+    },
+    {
+      "name": "shrink",
+      "selectors": [
+        "[data-shrink]"
+      ],
+      "enter": {
+        "fixture": true
+      }
+    }
+  ],
+  "fixture": {
+    "tree": {
+      "type": "Table",
+      "children": [
+        {
+          "type": "Table.Caption",
+          "children": [
+            "People"
+          ]
+        },
+        {
+          "type": "Table.Head",
+          "children": [
+            {
+              "type": "Table.Row",
+              "children": [
+                {
+                  "type": "Table.HeaderCell",
+                  "props": {
+                    "shrink": true
+                  },
+                  "children": [
+                    "#"
+                  ]
+                },
+                {
+                  "type": "Table.HeaderCell",
+                  "props": {
+                    "sort": "ascending"
+                  },
+                  "children": [
+                    "Name"
+                  ]
+                },
+                {
+                  "type": "Table.HeaderCell",
+                  "props": {
+                    "align": "end"
+                  },
+                  "children": [
+                    "Salary"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Table.Body",
+          "children": [
+            {
+              "type": "Table.Row",
+              "children": [
+                {
+                  "type": "Table.Cell",
+                  "props": {
+                    "shrink": true
+                  },
+                  "children": [
+                    "1"
+                  ]
+                },
+                {
+                  "type": "Table.Cell",
+                  "children": [
+                    "Ana"
+                  ]
+                },
+                {
+                  "type": "Table.Cell",
+                  "props": {
+                    "align": "end"
+                  },
+                  "children": [
+                    "12,500"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Table.Row",
+              "props": {
+                "selected": true
+              },
+              "children": [
+                {
+                  "type": "Table.Cell",
+                  "props": {
+                    "shrink": true
+                  },
+                  "children": [
+                    "2"
+                  ]
+                },
+                {
+                  "type": "Table.Cell",
+                  "props": {
+                    "muted": true
+                  },
+                  "children": [
+                    "Budi"
+                  ]
+                },
+                {
+                  "type": "Table.Cell",
+                  "props": {
+                    "align": "end"
+                  },
+                  "children": [
+                    "9,800"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "border": "{dimension.border-width.default} solid transparent",
+        "border-radius": "{dimension.radius.container}",
+        "background-color": "{color.neutral.surface.raised.default}",
+        "box-shadow": "{effect.material.flat}"
+      }
+    },
+    {
+      "part": "table",
+      "declarations": {
+        "font-family": "{typography.data.compact.font-family}",
+        "font-size": "{typography.data.compact.font-size}",
+        "font-weight": "{typography.data.compact.font-weight}",
+        "line-height": "{typography.data.compact.line-height}",
+        "letter-spacing": "{typography.data.compact.letter-spacing}",
+        "color": "{color.neutral.text.default.default}"
+      }
+    },
+    {
+      "part": "caption",
+      "declarations": {
+        "padding": "{dimension.spacing.inset-compact} {dimension.spacing.inset-default}",
+        "font-family": "{typography.body.small.font-family}",
+        "font-size": "{typography.body.small.font-size}",
+        "font-weight": "{typography.body.small.font-weight}",
+        "line-height": "{typography.body.small.line-height}",
+        "letter-spacing": "{typography.body.small.letter-spacing}",
+        "color": "{color.neutral.text.subtle.default}"
+      }
+    },
+    {
+      "part": "header-cell",
+      "declarations": {
+        "padding": "0 {dimension.spacing.inset-default}",
+        "font-family": "{typography.code.small.font-family}",
+        "font-size": "{typography.code.small.font-size}",
+        "line-height": "{typography.code.small.line-height}",
+        "font-weight": "{typography.weight.regular}",
+        "color": "{color.neutral.text.subtle.default}",
+        "background-color": "{color.neutral.surface.subtle.default}",
+        "border-bottom": "{dimension.border-width.default} solid {color.neutral.border.subtle.default}"
+      }
+    },
+    {
+      "part": "cell",
+      "declarations": {
+        "padding": "0 {dimension.spacing.inset-default}"
+      }
+    },
+    {
+      "part": "cell",
+      "state": "muted",
+      "declarations": {
+        "color": "{color.neutral.text.subtle.default}"
+      }
+    },
+    {
+      "part": "row",
+      "declarations": {
+        "border-bottom": "{dimension.border-width.default} solid {color.neutral.border.subtle.default}",
+        "transition": "background-color {motion.feedback.duration} {motion.feedback.easing}"
+      }
+    },
+    {
+      "part": "row",
+      "state": "hover",
+      "declarations": {
+        "background-color": "{color.neutral.surface.subtle.hover}"
+      }
+    },
+    {
+      "part": "row",
+      "state": "selected",
+      "declarations": {
+        "background-color": "{color.primary.surface.subtle.default}"
+      }
+    },
+    {
+      "part": "row",
+      "state": "last",
+      "declarations": {
+        "border-bottom": "0"
+      }
+    }
+  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-table-row-background-hover: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-table-border-color",
+      "parts": [
+        "header-cell",
+        "row"
+      ],
+      "properties": [
+        "border-bottom"
+      ],
+      "fallbacks": [
+        "{color.neutral.border.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The border-bottom of Table's header-cell and row part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-border-width",
+      "parts": [
+        "header-cell",
+        "row"
+      ],
+      "properties": [
+        "border-bottom"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null,
+      "purpose": "The border-bottom of Table's header-cell and row part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-caption-color",
+      "parts": [
+        "caption"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Table's caption part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-caption-font-family",
+      "parts": [
+        "caption"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.body.small.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Table's caption part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-caption-font-size",
+      "parts": [
+        "caption"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.body.small.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Table's caption part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-caption-font-weight",
+      "parts": [
+        "caption"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.body.small.font-weight}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Table's caption part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-caption-letter-spacing",
+      "parts": [
+        "caption"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.body.small.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Table's caption part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-caption-line-height",
+      "parts": [
+        "caption"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.body.small.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Table's caption part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-caption-padding",
+      "parts": [
+        "caption"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-compact} {dimension.spacing.inset-default}"
+      ],
+      "floor": null,
+      "purpose": "The padding of Table's caption part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-cell-padding-inline",
+      "parts": [
+        "cell",
+        "header-cell"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-default}"
+      ],
+      "floor": null,
+      "purpose": "The padding of Table's cell and header-cell part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-color",
+      "parts": [
+        "table"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Table's table part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-font-family",
+      "parts": [
+        "table"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.data.compact.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Table's table part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-font-size",
+      "parts": [
+        "table"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.data.compact.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Table's table part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-font-weight",
+      "parts": [
+        "table"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.data.compact.font-weight}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Table's table part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-frame-background",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.raised.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Table.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-frame-border-width",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null,
+      "purpose": "The border of Table.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-frame-radius",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.container}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Table.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-frame-shadow",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "{effect.material.flat}"
+      ],
+      "floor": null,
+      "purpose": "The box-shadow of Table.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-header-background",
+      "parts": [
+        "header-cell"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Table's header-cell part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-header-block-size",
+      "parts": [
+        "header-cell"
+      ],
+      "properties": [
+        "block-size"
+      ],
+      "fallbacks": [
+        "2.25rem"
+      ],
+      "floor": null,
+      "purpose": "The block-size of Table's header-cell part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-header-color",
+      "parts": [
+        "header-cell"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Table's header-cell part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-header-font-family",
+      "parts": [
+        "header-cell"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.code.small.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Table's header-cell part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-header-font-size",
+      "parts": [
+        "header-cell"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.code.small.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Table's header-cell part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-header-font-weight",
+      "parts": [
+        "header-cell"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.weight.regular}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Table's header-cell part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-header-letter-spacing",
+      "parts": [
+        "header-cell"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "0.12em"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Table's header-cell part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-header-line-height",
+      "parts": [
+        "header-cell"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.code.small.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Table's header-cell part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-letter-spacing",
+      "parts": [
+        "table"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.data.compact.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Table's table part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-line-height",
+      "parts": [
+        "table"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.data.compact.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Table's table part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-muted-color",
+      "parts": [
+        "cell"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of a muted cell.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-row-background-hover",
+      "parts": [
+        "row"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.subtle.hover}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Table's row part in the hover state.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-row-background-selected",
+      "parts": [
+        "row"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.primary.surface.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Table's row part in the selected state.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-row-block-size",
+      "parts": [
+        "cell"
+      ],
+      "properties": [
+        "block-size"
+      ],
+      "fallbacks": [
+        "2.75rem"
+      ],
+      "floor": null,
+      "purpose": "The block-size of Table's cell part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-shrink-inline-size",
+      "parts": [
+        "cell",
+        "header-cell"
+      ],
+      "properties": [
+        "inline-size"
+      ],
+      "fallbacks": [
+        "1%"
+      ],
+      "floor": null,
+      "purpose": "The inline-size of the cells of a shrink column.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-transition-duration",
+      "parts": [
+        "row"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.feedback.duration}"
+      ],
+      "floor": null,
+      "purpose": "The transition of Table's row part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-table-transition-timing-function",
+      "parts": [
+        "row"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.feedback.easing}"
+      ],
+      "floor": null,
+      "purpose": "The transition of Table's row part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
+  ]
+}

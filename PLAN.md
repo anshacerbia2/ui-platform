@@ -115,6 +115,8 @@ components the package does not have yet.
   on, moved ahead of Table and Link on 2026-10-26. They come first in the
   documentation site's adoption order (scnehaux-design Brand-Book sheet 11), and
   they shipped in #137 (TDD styled SG1-SG4, KB1-KB2; TDD primitives P28).
+  Table followed on 2026-10-26 as a compound on native table semantics (TDD
+  styled TA1-TA3).
 - **Wave 2** (not ordered): Avatar, Breadcrumb, Checkbox, Pagination, Progress,
   Radio, Select, Sheet, Skeleton, Spinner, Switch, Textarea, and Toast.
 
