@@ -7,6 +7,7 @@
 import { JSX } from 'react';
 import { NavigationBarBaseCenterProps } from '@scnx/core-ui/components/navigation-bar-base';
 import { NavigationBarBaseEndProps } from '@scnx/core-ui/components/navigation-bar-base';
+import { NavigationBarBaseLinkProps } from '@scnx/core-ui/components/navigation-bar-base';
 import { NavigationBarBaseRootProps } from '@scnx/core-ui/components/navigation-bar-base';
 import { NavigationBarBaseStartProps } from '@scnx/core-ui/components/navigation-bar-base';
 
@@ -31,6 +32,10 @@ export const Navbar: {
         (input: NavbarEndProps): JSX.Element;
         displayName: string;
     };
+    Link: {
+        (input: NavbarLinkProps): JSX.Element;
+        displayName: string;
+    };
 };
 
 // @public
@@ -51,8 +56,19 @@ export const NavbarEnd: {
 // @public (undocumented)
 export type NavbarEndProps = NavigationBarBaseEndProps;
 
+// @public
+export const NavbarLink: {
+    (input: NavbarLinkProps): JSX.Element;
+    displayName: string;
+};
+
 // @public (undocumented)
-export type NavbarProps = NavigationBarBaseRootProps;
+export type NavbarLinkProps = NavigationBarBaseLinkProps;
+
+// @public (undocumented)
+export type NavbarProps = NavigationBarBaseRootProps & {
+    variant?: "default" | "floating";
+};
 
 // @public
 export const NavbarRoot: {

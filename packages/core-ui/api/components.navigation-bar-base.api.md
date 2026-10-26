@@ -34,6 +34,10 @@ export const NavigationBarBase: {
         (input: NavigationBarBaseEndProps): JSX.Element;
         displayName: string;
     };
+    Link: {
+        (input: NavigationBarBaseLinkProps): ReactElement;
+        displayName: string;
+    };
     Nav: {
         (input: NavigationBaseRootProps): JSX.Element;
         displayName: string;
@@ -90,6 +94,18 @@ export const NavigationBarBaseEnd: {
 
 // @public (undocumented)
 export type NavigationBarBaseEndProps = Omit<ComponentPropsWithRef<"div">, "ref">;
+
+// @public
+export const NavigationBarBaseLink: {
+    (input: NavigationBarBaseLinkProps): ReactElement;
+    displayName: string;
+};
+
+// @public (undocumented)
+export type NavigationBarBaseLinkProps = ComponentPropsWithRef<"a"> & {
+    current?: boolean;
+    asChild?: boolean;
+};
 
 // @public
 export const NavigationBarBaseNav: {

@@ -172,7 +172,6 @@ export const SidebarFlyout: {
 export type SidebarFlyoutProps = {
     className?: string;
     width?: string | number;
-    variant?: "dark" | "light";
 };
 
 // @public
@@ -249,7 +248,7 @@ export type SidebarNavProps = SidebarBaseNavProps;
 
 // @public (undocumented)
 export type SidebarProps = {
-    variant?: "dark" | "light";
+    variant?: "default" | "floating";
 } & SidebarBaseRootProps;
 
 // @public
