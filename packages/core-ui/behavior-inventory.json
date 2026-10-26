@@ -1084,6 +1084,11 @@
       "kind": "presentational"
     },
     {
+      "entry": "@scnx/system/components/surface",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
       "entry": "@scnx/system/components/table-of-contents",
       "stability": "candidate",
       "kind": "interactive"

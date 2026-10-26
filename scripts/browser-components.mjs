@@ -82,6 +82,7 @@ import { TextField } from "@scnx/system/components/text-field";
 import { Tabs } from "@scnx/system/components/tabs";
 import { SegmentedControl } from "@scnx/system/components/segmented-control";
 import { Kbd } from "@scnx/system/components/kbd";
+import { Surface } from "@scnx/system/components/surface";
 
 const modes = ${JSON.stringify(["light", "dark"])};
 const themes = ${JSON.stringify(themes)};
@@ -105,6 +106,7 @@ const set = () => h("div", null,
   h(Tabs, { defaultValue: "a" }, h(Tabs.List, { "aria-label": "Sections" }, h(Tabs.Tab, { value: "a" }, "A"), h(Tabs.Tab, { value: "b" }, "B")), h(Tabs.Panel, { value: "a", tabIndex: -1 }, "Panel A"), h(Tabs.Panel, { value: "b", tabIndex: -1 }, "Panel B")),
   h(SegmentedControl, { "aria-label": "Range", defaultValue: "7d" }, h(SegmentedControl.Item, { value: "24h" }, "24h"), h(SegmentedControl.Item, { value: "7d" }, "7 days")),
   h("p", null, h(Kbd, null, "⌘"), h(Kbd, null, "K")),
+  h(Surface, { as: "section", material: "panel", padding: "compact", "aria-label": "Panel" }, h(Surface, { material: "flat", padding: "default" }, "Flat"), h(Surface, { material: "well", padding: "default" }, "Well")),
 );
 const roots = themes.flatMap((theme) => modes.map((mode) =>
   h("div", { "data-scnx-theme": theme, "data-scnx-resolved-mode": mode, "data-fixture-root": theme + "/" + mode }, set())));

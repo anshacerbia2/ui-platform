@@ -106,6 +106,10 @@
       "types": "./dist/components/stack/index.d.ts",
       "default": "./dist/components/stack/index.js"
     },
+    "./components/surface": {
+      "types": "./dist/components/surface/index.d.ts",
+      "default": "./dist/components/surface/index.js"
+    },
     "./components/table-of-contents": {
       "types": "./dist/components/table-of-contents/index.d.ts",
       "default": "./dist/components/table-of-contents/index.js"
@@ -166,6 +170,7 @@
     "./specs/segmented-control.json": "./dist/specs/segmented-control.json",
     "./specs/sidebar.json": "./dist/specs/sidebar.json",
     "./specs/stack.json": "./dist/specs/stack.json",
+    "./specs/surface.json": "./dist/specs/surface.json",
     "./specs/table-of-contents.json": "./dist/specs/table-of-contents.json",
     "./specs/tabs.json": "./dist/specs/tabs.json",
     "./specs/text.json": "./dist/specs/text.json",

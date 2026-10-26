@@ -29,6 +29,7 @@
   @include meta.load-css("components/atoms/transition/Transition");
   @include meta.load-css("components/layouts/edge-layout/EdgeLayout");
   @include meta.load-css("components/layouts/floating-layout/FloatingLayout");
+  @include meta.load-css("components/layouts/surface/Surface");
   @include meta.load-css("components/molecules/alert/Alert");
   @include meta.load-css("components/molecules/segmented-control/SegmentedControl");
   @include meta.load-css("components/organisms/accordion/Accordion");
