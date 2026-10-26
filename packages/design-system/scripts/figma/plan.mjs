@@ -184,6 +184,8 @@ export function effectStyles(recordsByTheme, colorVariables) {
       const path = t.name.replace(/^effect\./, "").replaceAll(".", "/");
       for (const [mode, css] of shared ? [byMode[0]] : byMode) {
         styles.push({
+          theme: records.theme,
+          mode: shared ? null : mode,
           name: shared ? `${records.theme}/${path}` : `${records.theme}/${title(mode)}/${path}`,
           description: `${t.name} in theme "${records.theme}"${shared ? "" : `, ${mode} mode`} — var(${t.cssName}). Colors are bound to variables, so the style follows the frame's mode.`,
           effects: splitTop(css).map((layer) => shadowLayer(layer, colorByCss)),
@@ -205,12 +207,17 @@ export function buildPlan(distDir, { source } = {}) {
     dimension: config(`tokens/figma/${records.theme}.dimension.tokens.json`),
   }));
   const cols = collections(profiles);
+  // FG12: one choice per theme and mode, for a file whose Figma plan holds one mode.
+  const choices = profiles.flatMap(({ themeId, modes }, dimension) =>
+    modes.map(([mode]) => ({ theme: themeId, mode, color: cols[0].modes.indexOf(themeId === DEFAULT_THEME ? title(mode) : `${themeId} ${mode}`), dimension })),
+  );
   const manifest = path.join(distDir, "../package.json");
   const pkg = source ? null : JSON.parse(fs.readFileSync(manifest, "utf8"));
   return {
     schemaVersion: 1,
     source: source ?? `${pkg.name}@${pkg.version}`,
     collections: cols,
+    choices,
     textStyles: sharedTextStyles(recordsByTheme),
     effectStyles: effectStyles(recordsByTheme, cols[0].variables),
   };
