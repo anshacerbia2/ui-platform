@@ -10,7 +10,7 @@ const meta = {
     <SidebarProvider activePath="#people">
       <FloatingLayout {...args}>
         <FloatingLayout.Sidebar>
-          <Sidebar>
+          <Sidebar variant="floating">
             <Sidebar.Nav aria-label="Main">
               <Sidebar.Nav.Group>
                 <Sidebar.Nav.Item href="#dashboard" label="Dashboard" />

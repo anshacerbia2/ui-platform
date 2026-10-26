@@ -33,3 +33,6 @@ const meta = {
 
 export default meta;
 export const Expanded: StoryObj<typeof meta> = {};
+
+/** The raised material, for FloatingLayout (TDD styled SB3). */
+export const Floating: StoryObj<typeof meta> = { args: { variant: "floating" } };

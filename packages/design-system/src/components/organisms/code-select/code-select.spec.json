@@ -15,7 +15,7 @@
         "background-color"
       ],
       "fallbacks": [
-        "{color.neutral.surface.default.default}"
+        "{color.neutral.surface.raised.default}"
       ],
       "floor": null,
       "purpose": "The background-color of CodeSelect's wrapper part.",
@@ -23,35 +23,34 @@
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
-      "hook": "--scnx-code-select-background-hover",
-      "parts": [
-        "wrapper"
-      ],
-      "properties": [
-        "background-color"
-      ],
-      "fallbacks": [
-        "{color.neutral.surface.default.hover}"
-      ],
-      "floor": null,
-      "purpose": "The background-color of CodeSelect's wrapper part in the hover state.",
-      "coverage": "scnx-platform and scnx-saas, light and dark.",
-      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
-    },
-    {
       "hook": "--scnx-code-select-border-color",
       "parts": [
-        "dropdown",
         "wrapper"
       ],
       "properties": [
         "border"
       ],
       "fallbacks": [
-        "{color.neutral.border.default.default}"
+        "{color.neutral.border.strong.default}"
       ],
       "floor": null,
-      "purpose": "The border of CodeSelect's dropdown and wrapper part.",
+      "purpose": "The border-color of CodeSelect's wrapper part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-select-border-color-open",
+      "parts": [
+        "wrapper"
+      ],
+      "properties": [
+        "border-color"
+      ],
+      "fallbacks": [
+        "{color.primary.border.default.focus}"
+      ],
+      "floor": null,
+      "purpose": "The border-color of CodeSelect's wrapper part in the open state.",
       "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
@@ -73,34 +72,18 @@
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
-      "hook": "--scnx-code-select-chevron-color",
+      "hook": "--scnx-code-select-check-color",
       "parts": [
-        "chevron"
+        "check"
       ],
       "properties": [
         "color"
       ],
       "fallbacks": [
-        "{color.neutral.text.subtle.default}"
+        "{color.primary.icon.subtle.default}"
       ],
       "floor": null,
-      "purpose": "The color of CodeSelect's chevron part.",
-      "coverage": "scnx-platform and scnx-saas, light and dark.",
-      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
-    },
-    {
-      "hook": "--scnx-code-select-chevron-size",
-      "parts": [
-        "chevron"
-      ],
-      "properties": [
-        "font-size"
-      ],
-      "fallbacks": [
-        "10px"
-      ],
-      "floor": null,
-      "purpose": "The font-size of CodeSelect's chevron part.",
+      "purpose": "The color of CodeSelect's check part.",
       "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
@@ -185,6 +168,38 @@
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
+      "hook": "--scnx-code-select-dropdown-padding",
+      "parts": [
+        "dropdown"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-compact}"
+      ],
+      "floor": null,
+      "purpose": "The padding of CodeSelect's dropdown part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-select-dropdown-radius",
+      "parts": [
+        "dropdown"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.container}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of CodeSelect's dropdown part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
       "hook": "--scnx-code-select-dropdown-shadow",
       "parts": [
         "dropdown"
@@ -193,7 +208,7 @@
         "box-shadow"
       ],
       "fallbacks": [
-        "{effect.shadow.overlay}"
+        "{effect.material.menu}"
       ],
       "floor": null,
       "purpose": "The box-shadow of CodeSelect's dropdown part.",
@@ -201,18 +216,54 @@
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
-      "hook": "--scnx-code-select-icon-margin-inline-end",
+      "hook": "--scnx-code-select-gap",
       "parts": [
-        "icon"
+        "wrapper"
       ],
       "properties": [
-        "margin-right"
+        "gap"
       ],
       "fallbacks": [
         "{dimension.spacing.inline-default}"
       ],
       "floor": null,
-      "purpose": "The margin-right of CodeSelect's icon part.",
+      "purpose": "The gap of CodeSelect's wrapper part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-select-icon-color",
+      "parts": [
+        "chevron",
+        "icon"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.icon.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of CodeSelect's chevron and icon part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-select-icon-size",
+      "parts": [
+        "check",
+        "chevron",
+        "icon"
+      ],
+      "properties": [
+        "block-size",
+        "inline-size"
+      ],
+      "fallbacks": [
+        "1rem"
+      ],
+      "floor": null,
+      "purpose": "The block-size and inline-size of CodeSelect's check, chevron and icon part.",
       "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
@@ -313,6 +364,22 @@
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
+      "hook": "--scnx-code-select-min-block-size",
+      "parts": [
+        "wrapper"
+      ],
+      "properties": [
+        "min-block-size"
+      ],
+      "fallbacks": [
+        "{dimension.size.control-compact}"
+      ],
+      "floor": "24px",
+      "purpose": "The min-block-size of CodeSelect's wrapper part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; never below the 24px floor.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
       "hook": "--scnx-code-select-min-width",
       "parts": [
         "root"
@@ -357,22 +424,6 @@
       ],
       "floor": null,
       "purpose": "The color of CodeSelect's option part.",
-      "coverage": "scnx-platform and scnx-saas, light and dark.",
-      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
-    },
-    {
-      "hook": "--scnx-code-select-option-color-selected",
-      "parts": [
-        "option"
-      ],
-      "properties": [
-        "color"
-      ],
-      "fallbacks": [
-        "{color.primary.surface.solid.default}"
-      ],
-      "floor": null,
-      "purpose": "The color of CodeSelect's option part in the selected state.",
       "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
@@ -425,6 +476,38 @@
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
+      "hook": "--scnx-code-select-option-font-weight-selected",
+      "parts": [
+        "option"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.weight.medium}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of CodeSelect's option part in the selected state.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-select-option-gap",
+      "parts": [
+        "option"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-default}"
+      ],
+      "floor": null,
+      "purpose": "The gap of CodeSelect's option part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
       "hook": "--scnx-code-select-option-letter-spacing",
       "parts": [
         "option"
@@ -457,34 +540,66 @@
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
-      "hook": "--scnx-code-select-option-padding",
+      "hook": "--scnx-code-select-option-min-block-size",
       "parts": [
         "option"
       ],
       "properties": [
-        "padding"
+        "min-block-size"
       ],
       "fallbacks": [
-        "{dimension.spacing.inset-compact} {dimension.spacing.inset-default}"
+        "2rem"
       ],
       "floor": null,
-      "purpose": "The padding of CodeSelect's option part.",
+      "purpose": "The min-block-size of CodeSelect's option part.",
       "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
-      "hook": "--scnx-code-select-padding",
+      "hook": "--scnx-code-select-option-padding-inline",
+      "parts": [
+        "option"
+      ],
+      "properties": [
+        "padding-inline"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-default}"
+      ],
+      "floor": null,
+      "purpose": "The padding-inline of CodeSelect's option part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-select-option-radius",
+      "parts": [
+        "option"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.element}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of CodeSelect's option part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-code-select-padding-inline",
       "parts": [
         "wrapper"
       ],
       "properties": [
-        "padding"
+        "padding-inline"
       ],
       "fallbacks": [
         "{dimension.spacing.inset-compact}"
       ],
       "floor": null,
-      "purpose": "The padding of CodeSelect's wrapper part.",
+      "purpose": "The padding-inline of CodeSelect's wrapper part.",
       "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
@@ -507,17 +622,16 @@
     {
       "hook": "--scnx-code-select-radius",
       "parts": [
-        "dropdown",
         "wrapper"
       ],
       "properties": [
         "border-radius"
       ],
       "fallbacks": [
-        "{dimension.radius.control}"
+        "{dimension.radius.element}"
       ],
       "floor": null,
-      "purpose": "The border-radius of CodeSelect's dropdown and wrapper part.",
+      "purpose": "The border-radius of CodeSelect's wrapper part.",
       "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },

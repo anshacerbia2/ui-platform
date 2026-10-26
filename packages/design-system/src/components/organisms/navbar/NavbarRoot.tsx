@@ -7,10 +7,11 @@ import { cx } from "styled-system/css";
  */
 export const NavbarRoot = ({ 
   className = "", 
+  variant = "default",
   ...rest 
 }: NavbarProps) => {
   return (
-    <NavigationBarBaseRoot className={cx("scnx-navbar", className)} {...(rest as any)} />
+    <NavigationBarBaseRoot className={cx("scnx-navbar", className)} data-variant={variant} {...(rest as any)} />
   );
 };
 

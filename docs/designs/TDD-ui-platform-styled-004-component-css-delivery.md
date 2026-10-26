@@ -324,6 +324,60 @@ reference's `components/Accordion/` (ADR-UIP-VIS-002).
 | AC2 | The trigger has no fill at rest and takes `neutral.surface.subtle.hover` on hover. | Design reference `components/Accordion/README.md`; ADR-UIP-VIS-001 item 3 | The tonal fill marked every trigger as a control; the label, the chevron, and the hover fill carry that now. |
 | AC3 | Focus is the focus outline on the trigger, drawn inside it (`outline-offset: calc(-1 * border-width.strong)`) and rounded to `radius.container`, because the item clips everything outside its corners. The item's `:focus-within` border recolor and `effect.shadow.focus` are removed. | STD-GLB-FE-005 3.9; WCAG 2.2 SC 2.4.7, 2.4.13 | One focus indicator for the whole system; forced-colors mode keeps an outline, which the removed shadow was not. A script focus matches `:focus-visible` on a button only after keyboard input, and engines count it differently, so the conformance fixture presses Shift (Chromium), focuses with `focusVisible: true` (Firefox, WebKit), and otherwise moves focus by Tab from a sentinel placed before the part. |
 
+#### Decision record: CodeSelect material
+
+PLAN I2 moves CodeSelect onto Select's anatomy and the menu material; the visual
+target is the design reference's `components/CodeSelect/` (ADR-UIP-VIS-002).
+
+| ID  | Decision | Sources | Tradeoff |
+| :-- | :------- | :------ | :------- |
+| CL1 | The trigger is Select's at the small size: `size.control-compact` high (the 24 px target floor holds), `spacing.inset-compact` inline padding, `neutral.surface.raised` fill, a `border.strong` boundary at `radius.element`, and a `primary.border.default.focus` border while the list is open. The text chevron is a 16 px stroked icon in `neutral.icon.subtle`, like the leading icon. The tonal hover fill is removed. | Design reference `components/CodeSelect/README.md`; ADR-UIP-VIS-001 items 1 and 2 | A strong border marks the control without a fill change, as TextField's does (TF1); the hover cue is the pointer and the open border. |
+| CL2 | The open list is the menu material: `neutral.surface.floating` fill, `radius.container`, `spacing.inset-compact` padding, and `effect.material.menu` as its edge, in place of a default-colored border, `radius.control`, and `effect.shadow.overlay`. A transparent border of `border-width.default` keeps the boundary in forced-colors mode, where box shadows are not drawn. Options are 32 px rows (a recorded hook fallback, component geometry by ADR-UIP-VIS-001 item 6), `spacing.inline-default` inline padding, and `radius.element`, with the subtle hover fill on hover and on the active option. | ADR-UIP-VIS-001 item 1; STD-GLB-FE-005 3.9 | The list now reads as the same object as every menu and listbox to come (wave 1 Menu, wave 2 Select). |
+| CL3 | The selected option is medium weight with a trailing check in `primary.icon.subtle`, instead of primary-colored text. The check is rendered through ComboboxBase's option render function and is `aria-hidden`, because `aria-selected` already names the selection. | ADR-UIP-VIS-001 item 3; WCAG 2.2 SC 1.4.1 | Blue marks meaning only (the check), and the weight gives a second cue that does not depend on color. The hooks `background-hover`, `chevron-color`, `chevron-size`, `icon-margin-inline-end`, `option-color-selected`, `option-padding`, and `padding` are removed, and `icon-color`, `icon-size`, `gap`, `min-block-size`, `padding-inline`, `border-color-open`, `dropdown-padding`, `dropdown-radius`, `option-gap`, `option-min-block-size`, `option-padding-inline`, `option-radius`, `option-font-weight-selected`, and `check-color` added, with no alias, because the package is before v1. |
+
+#### Decision record: Navbar identity
+
+PLAN I2 moves Navbar onto the identity; the visual target is the design
+reference's `components/Navbar/` (ADR-UIP-VIS-002).
+
+| ID  | Decision | Sources | Tradeoff |
+| :-- | :------- | :------- | :------- |
+| NB1 | The bar is the canvas (`neutral.surface.canvas`, was `surface.default`) with a `border.subtle` hairline at its bottom, 64 px high. The hairline stays a border: with `box-sizing: border-box` it is drawn inside the bar as the reference's inset shadow is, and unlike a shadow it survives forced-colors mode. The start column keeps the sidebar's width, so the shell's columns align. | Design reference `components/Navbar/README.md`; STD-GLB-FE-005 3.9 | The reference draws the hairline as `inset 0 -1px 0 0`; the two render the same in every color mode except forced colors, where only the border shows. |
+| NB2 | `Navbar.Link` is a destination, on `NavigationBarBase.Link` (TDD primitives P29): a pill `size.control-compact` high (24 px floor), `spacing.inset-compact` inline padding, `radius.element`, label text in `neutral.text.subtle`; on hover default text on `neutral.surface.subtle.hover`; the current page default text at medium weight. Location in the top bar is never blue. | ADR-UIP-VIS-001 item 3; design reference `components/Navbar/README.md` | Blue location lives in the sidebar, tabs, and tables of contents, so the bar's current link is marked by weight and contrast only; the `aria-current` it carries names it for assistive technology. |
+| NB3 | `variant="floating"` is the menu material: `neutral.surface.floating` fill, `radius.container`, `effect.material.menu`, and a transparent border for forced-colors mode; 56 px high (a recorded hook fallback), inset `spacing.inline-default` from its container, its sections padded `spacing.inline-default`, and the start column sized to its content. It is the marketing and documentation header, on the stage. | ADR-UIP-VIS-001 items 1 and 4 | One more option to test in every theme and mode; it is the header the documentation site draws today by hand. |
+
+#### Decision record: Sidebar identity
+
+PLAN I2 moves Sidebar onto the identity; the visual target is the design
+reference's `components/Sidebar/` (ADR-UIP-VIS-002).
+
+| ID  | Decision | Sources | Tradeoff |
+| :-- | :------- | :------ | :------- |
+| SB1 | The column is the canvas (`neutral.surface.canvas`, was `surface.default`) with a `border.subtle` hairline on its inline end, kept a border for forced-colors mode as the Navbar's is (NB1). It is padded `spacing.inset-compact`, and its items take `radius.element` (was `radius.control`), so an item inside a `radius.container` column is concentric. The header is `size.control-comfortable` high with `spacing.inline-default` inline padding, the footer padded `spacing.inset-compact`, and the navigation's block margin `spacing.stack-default`, so the column's own padding is not doubled. Collapsed, the column is 56 px wide (was 80 px), icons only. | Design reference `components/Sidebar/README.md`; ADR-UIP-VIS-001 item 2 | Items keep the primary subtle fill and the marker for the current location: blue location lives in the sidebar (ADR-UIP-VIS-001 item 3). |
+| SB2 | The `color-mix()` badge backgrounds and the flyout's `color-mix()` item fill are removed: a badge is Navigation's own, and a flyout item takes the neutral hover fill. The hook `badge-background` is removed with them. | ADR-UIP-VIS-001 item 8; design reference `components/Sidebar/README.md` | A 10% mix of a surface over transparent was a literal design value outside the tokens, which item 8 rules out. |
+| SB3 | `variant` is `default` or `floating` and is set as `data-variant` on the root. `floating` is the raised material for FloatingLayout: `neutral.surface.raised` fill, `radius.container`, `effect.material.raised`, and a transparent border for forced-colors mode. The former `dark` and `light` values, and the flyout's `variant`, are removed: the prop reached the `aside` as an unknown attribute, so no style ever applied, and the inverse sidebar they named is retired. | Design reference `components/Sidebar/README.md`; ADR-UIP-VIS-001 item 1 | Removing a value is a breaking type change, accepted because the package is before v1; no consumer could have relied on its look. |
+
+#### Decision record: CodeShowcase material
+
+PLAN I2 moves CodeShowcase onto the flat material and the stage; the visual
+target is the design reference's `components/CodeShowcase/` (ADR-UIP-VIS-002).
+
+| ID  | Decision | Sources | Tradeoff |
+| :-- | :------- | :------ | :------- |
+| CX1 | The frame is the flat material: `neutral.surface.raised` fill, `radius.container`, and `effect.material.flat` (the ring) as its edge, with a transparent border for forced-colors mode, in place of a default-colored border, the canvas fill, `effect.shadow.low`, and the `effect.shadow.medium` hover shadow. The lines between its parts take `border.subtle`, the ring's color, and the nav row has no fill of its own. The hooks `shadow-hover` and `nav-background` are removed. | ADR-UIP-VIS-001 item 1; design reference `components/CodeShowcase/README.md` | A static example no longer lifts on hover; the frame reads as one object with its parts. |
+| CX2 | The preview sits on the stage (TDD tokens SI10): `neutral.surface.stage` with a 1 px `neutral.border.stage` dot every 22 px, as a radial gradient, in place of the 30 px conic checkerboard; it is 8 rem high at least and spaces its children by `spacing.inline-default`. The nav row is `size.control-comfortable` (44 px) high, padded `spacing.inset-default` at its start and `spacing.inline-default` at its end. | ADR-UIP-VIS-001 item 4 | The checkerboard marked transparency, which an example rarely needs; the stage is the ground every preview of the system shares. |
+| CX3 | The code sits in the sunken well in `code.small` at a 1.7 line height (a recorded hook fallback), in default text, in place of `code.default` in subtle text. | Design reference `components/CodeShowcase/README.md`; WCAG 2.2 SC 1.4.12 | Longer listings fit on screen; the 1.7 line height keeps a small mono size readable. Syntax colors stay the consumer's highlighter's; the reference's `[data-token]` colors are not part of the component. |
+
+#### Decision record: FloatingLayout materials
+
+PLAN I2 moves FloatingLayout onto its materials; the visual target is the design
+reference's `components/FloatingLayout/` (ADR-UIP-VIS-002).
+
+| ID  | Decision | Sources | Tradeoff |
+| :-- | :------- | :------ | :------- |
+| FL1 | The layout's ground is the stage's, `neutral.surface.stage`, without its dots, because data sits here. It is padded `spacing.inline-default` on every side, and its sidebar and content are `spacing.inline-default` apart (was `spacing.section` apart and `spacing.page` above and below). The sticky sidebar is offset by that padding and is the viewport's height less twice the padding. The hooks `padding-block`, `sidebar-top`, and `sidebar-inset` are replaced by `padding`. | ADR-UIP-VIS-001 item 4; design reference `components/FloatingLayout/README.md` | One gap everywhere reads the sidebar and the content as one layered object; a product that wants more room sets the one hook. |
+| FL2 | The content is the raised material: `neutral.surface.raised` fill, `radius.container`, `effect.material.raised`, and a transparent border for forced-colors mode, padded `spacing.inset-comfortable` and allowed to shrink (`min-inline-size: 0`). The sidebar is the consumer's `Sidebar variant="floating"` (SB3); cards inside the content are flat, one shadow per stack. | ADR-UIP-VIS-001 item 1 | The layout draws the content's material itself but not the sidebar's, because the sidebar is its own component with its own variant. |
+
 #### Decision record: industrial structure
 
 ADR-UIP-VIS-001 (revisions 2 and 3, 2026-10-25) makes the default theme,

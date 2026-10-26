@@ -27,6 +27,7 @@
         "scnx-code--intent_success",
         "scnx-code--intent_warning",
         "scnx-code-select",
+        "scnx-code-select__check",
         "scnx-code-select__chevron",
         "scnx-code-select__dropdown",
         "scnx-code-select__icon",
@@ -127,6 +128,7 @@
         "scnx-navbar",
         "scnx-navbar__center",
         "scnx-navbar__end",
+        "scnx-navbar__link",
         "scnx-navbar__start",
         "scnx-navigation",
         "scnx-navigation__badge",
@@ -351,6 +353,7 @@
         "--ds-color-neutral-border-default-disabled",
         "--ds-color-neutral-border-default-focus",
         "--ds-color-neutral-border-default-selected",
+        "--ds-color-neutral-border-stage-default",
         "--ds-color-neutral-border-strong-default",
         "--ds-color-neutral-border-strong-disabled",
         "--ds-color-neutral-border-strong-focus",
@@ -396,6 +399,7 @@
         "--ds-color-neutral-surface-solid-hover",
         "--ds-color-neutral-surface-solid-pressed",
         "--ds-color-neutral-surface-solid-selected",
+        "--ds-color-neutral-surface-stage-default",
         "--ds-color-neutral-surface-strong-default",
         "--ds-color-neutral-surface-strong-disabled",
         "--ds-color-neutral-surface-strong-hover",
@@ -920,6 +924,7 @@
         "--ds-color-neutral-border-default-disabled",
         "--ds-color-neutral-border-default-focus",
         "--ds-color-neutral-border-default-selected",
+        "--ds-color-neutral-border-stage-default",
         "--ds-color-neutral-border-strong-default",
         "--ds-color-neutral-border-strong-disabled",
         "--ds-color-neutral-border-strong-focus",
@@ -965,6 +970,7 @@
         "--ds-color-neutral-surface-solid-hover",
         "--ds-color-neutral-surface-solid-pressed",
         "--ds-color-neutral-surface-solid-selected",
+        "--ds-color-neutral-surface-stage-default",
         "--ds-color-neutral-surface-strong-default",
         "--ds-color-neutral-surface-strong-disabled",
         "--ds-color-neutral-surface-strong-hover",
@@ -2177,6 +2183,12 @@
         "lifecycle": "candidate"
       },
       {
+        "name": "color.neutral.border.stage.default",
+        "cssName": "--ds-color-neutral-border-stage-default",
+        "type": "color",
+        "lifecycle": "candidate"
+      },
+      {
         "name": "color.neutral.border.strong.default",
         "cssName": "--ds-color-neutral-border-strong-default",
         "type": "color",
@@ -2443,6 +2455,12 @@
       {
         "name": "color.neutral.surface.solid.selected",
         "cssName": "--ds-color-neutral-surface-solid-selected",
+        "type": "color",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "color.neutral.surface.stage.default",
+        "cssName": "--ds-color-neutral-surface-stage-default",
         "type": "color",
         "lifecycle": "candidate"
       },
@@ -5485,6 +5503,12 @@
         "lifecycle": "candidate"
       },
       {
+        "name": "color.neutral.border.stage.default",
+        "cssName": "--ds-color-neutral-border-stage-default",
+        "type": "color",
+        "lifecycle": "candidate"
+      },
+      {
         "name": "color.neutral.border.strong.default",
         "cssName": "--ds-color-neutral-border-strong-default",
         "type": "color",
@@ -5751,6 +5775,12 @@
       {
         "name": "color.neutral.surface.solid.selected",
         "cssName": "--ds-color-neutral-surface-solid-selected",
+        "type": "color",
+        "lifecycle": "candidate"
+      },
+      {
+        "name": "color.neutral.surface.stage.default",
+        "cssName": "--ds-color-neutral-surface-stage-default",
         "type": "color",
         "lifecycle": "candidate"
       },
@@ -8094,6 +8124,7 @@
       "$color-neutral-border-default-disabled",
       "$color-neutral-border-default-focus",
       "$color-neutral-border-default-selected",
+      "$color-neutral-border-stage-default",
       "$color-neutral-border-strong-default",
       "$color-neutral-border-strong-disabled",
       "$color-neutral-border-strong-focus",
@@ -8139,6 +8170,7 @@
       "$color-neutral-surface-solid-hover",
       "$color-neutral-surface-solid-pressed",
       "$color-neutral-surface-solid-selected",
+      "$color-neutral-surface-stage-default",
       "$color-neutral-surface-strong-default",
       "$color-neutral-surface-strong-disabled",
       "$color-neutral-surface-strong-hover",

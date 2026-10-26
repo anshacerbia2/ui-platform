@@ -4,57 +4,55 @@
 $c: code-showcase;
 
 // TDD styled HK1-HK7: every value reads a `--scnx-code-showcase-{part?}-*` hook
-// that falls back to its token; the preview's pattern and minimum height, the
-// language icon's glyph size, and the scrollbar's size are the recorded
-// fallbacks of their hooks. The trigger keeps the 24px target floor
-// (WCAG 2.2 SC 2.5.8) whatever its hook says.
+// that falls back to its token; the stage's dot and grid size, the preview's
+// minimum height, the code's line height, the language icon's glyph size, and
+// the scrollbar's size are the recorded fallbacks of their hooks. The trigger
+// keeps the 24px target floor (WCAG 2.2 SC 2.5.8) whatever its hook says.
+//
+// PLAN I2 (TDD styled CX1-CX3): the frame is the flat material; the preview
+// sits on the stage; the code sits in the sunken well.
 .scnx-code-showcase {
   display: flex;
   flex-direction: column;
   width: 100%;
   margin-block: hook($c, margin-block, $dimension-spacing-stack-comfortable);
-  border: hook($c, border-width, $dimension-border-width-default) solid hook($c, border-color, $color-border-default);
+  // The flat material: raised fill, the container radius, and the ring as its
+  // edge. A transparent border keeps the boundary in forced-colors mode, where
+  // box shadows are not drawn.
+  border: hook($c, border-width, $dimension-border-width-default) solid transparent;
   border-radius: hook($c, radius, $dimension-radius-container);
-  background-color: hook($c, background, $color-surface-canvas);
-  box-shadow: hook($c, shadow, $effect-shadow-low);
-  transition: box-shadow hook($c, transition-duration, $motion-feedback-duration) hook($c, transition-timing-function, $motion-feedback-easing);
+  background-color: hook($c, background, $color-surface-raised);
+  box-shadow: hook($c, shadow, $effect-material-flat);
   overflow: hidden;
 
-  &:hover {
-    box-shadow: hook($c, shadow-hover, $effect-shadow-medium);
-  }
-
-  // Principal-grade internal border management
+  // Lines inside a material share its ring's color (TDD styled AC1).
   & > * + * {
-    border-top: hook($c, border-width, $dimension-border-width-default) solid hook($c, border-color, $color-border-default);
+    border-top: hook($c, border-width, $dimension-border-width-default) solid hook($c, border-color, $color-border-subtle);
   }
 
+  // The stage (ADR-UIP-VIS-001 item 4): a tinted ground with a 1px dot every 22px.
   &__preview {
     padding: hook($c, preview-padding, $dimension-spacing-inset-comfortable);
-    background-color: hook($c, preview-background, $color-surface-default);
-    background-image: hook($c, preview-background-image, conic-gradient(
-      $color-surface-raised 25%,
-      $color-surface-canvas 0 50%,
-      $color-surface-raised 0 75%,
-      $color-surface-canvas 0
-    ));
-    background-size: hook($c, preview-background-size, 30px 30px);
+    background-color: hook($c, preview-background, $color-surface-stage);
+    background-image: hook($c, preview-background-image, radial-gradient(#{$color-border-stage} 1px, transparent 1px));
+    background-size: hook($c, preview-background-size, 22px 22px);
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: hook($c, preview-min-block-size, 120px);
+    gap: hook($c, preview-gap, $dimension-spacing-inline-default);
+    min-height: hook($c, preview-min-block-size, 8rem);
   }
 
   &__nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    min-block-size: hook($c, nav-min-block-size, $dimension-size-control-comfortable);
     column-gap: hook($c, nav-column-gap, $dimension-spacing-inline-comfortable);
     row-gap: hook($c, nav-row-gap, $dimension-spacing-stack-default);
-    padding: hook($c, nav-padding, $dimension-spacing-inset-compact $dimension-spacing-inset-default);
+    padding: hook($c, nav-padding, 0 $dimension-spacing-inline-default 0 $dimension-spacing-inset-default);
     color: hook($c, nav-color, $color-text-secondary);
     @include hooked-typography($c, label, default, $prefix: nav);
-    background-color: hook($c, nav-background, $color-surface-default);
   }
 
   &__tabs {
@@ -158,10 +156,12 @@ $c: code-showcase;
     }
   }
 
+  // The sunken well; code-small at a 1.7 line height, for reading.
   &__code-inner {
     background-color: hook($c, code-background, $color-surface-sunken);
-    color: hook($c, code-color, $color-text-secondary);
-    @include hooked-typography($c, code, default, $prefix: code);
+    color: hook($c, code-color, $color-text-primary);
+    @include hooked-typography($c, code, small, $prefix: code, $except: (line-height));
+    line-height: hook($c, code-line-height, 1.7);
     overflow-x: auto;
 
     // Vendor-integration exception (STD-GLB-FE-005 section 4; styles.config.json):
@@ -172,7 +172,7 @@ $c: code-showcase;
       padding: 0 !important;
       border: none;
       background: transparent !important;
-      color: hook($c, code-color, $color-text-secondary);
+      color: hook($c, code-color, $color-text-primary);
       min-width: max-content;
       display: block;
     }

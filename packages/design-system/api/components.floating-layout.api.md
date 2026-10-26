@@ -218,7 +218,7 @@ export type SidebarNavProps = SidebarBaseNavProps;
 
 // @public (undocumented)
 export type SidebarProps = {
-    variant?: "dark" | "light";
+    variant?: "default" | "floating";
 } & SidebarBaseRootProps;
 
 // @public (undocumented)

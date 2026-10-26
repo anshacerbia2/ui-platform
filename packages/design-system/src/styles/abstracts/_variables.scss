@@ -11,6 +11,9 @@ $color-surface-canvas: var(--ds-color-neutral-surface-canvas-default);
 $color-surface-raised: var(--ds-color-neutral-surface-raised-default);
 $color-surface-floating: var(--ds-color-neutral-surface-floating-default);
 $color-surface-sunken: var(--ds-color-neutral-surface-sunken-default);
+// The stage (ADR-UIP-VIS-001 item 4): the ground that shows work, and its dots.
+$color-surface-stage: var(--ds-color-neutral-surface-stage-default);
+$color-border-stage: var(--ds-color-neutral-border-stage-default);
 
 // ── Symmetrical Matrix Anchors (Core Developer Mappings) ────
 $color-surface-default: var(--ds-color-neutral-surface-default-default);

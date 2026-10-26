@@ -4,10 +4,14 @@
 $c: code-select;
 
 // TDD styled HK1-HK7: every value reads a `--scnx-code-select-{part?}-*` hook
-// that falls back to its token; the minimum width, the chevron's glyph size,
-// and the list's maximum height are the recorded fallbacks of their hooks.
-// The status region's 1px box is the visually-hidden technique, not design,
-// and is a recorded exception.
+// that falls back to its token; the minimum width, the list's maximum height,
+// the 32px option row, and the 16px icons are the recorded fallbacks of their
+// hooks. The trigger keeps the 24px target floor (WCAG 2.2 SC 2.5.8) whatever
+// its hook says. The status region's 1px box is the visually-hidden technique,
+// not design, and is a recorded exception.
+//
+// PLAN I2 (TDD styled CL1-CL3): the trigger is Select's at the small size and
+// the open list is the menu material.
 .scnx-code-select {
   position: relative;
   display: inline-flex;
@@ -16,17 +20,19 @@ $c: code-select;
   &__wrapper {
     display: flex;
     align-items: center;
-    background-color: hook($c, background, $color-surface-default);
-    border: hook($c, border-width, $dimension-border-width-default) solid hook($c, border-color, $color-border-default);
-    border-radius: hook($c, radius, $dimension-radius-control);
-    padding: hook($c, padding, $dimension-spacing-inset-compact);
+    gap: hook($c, gap, $dimension-spacing-inline-default);
     width: 100%;
+    min-block-size: target-floor(hook($c, min-block-size, $dimension-size-control-compact));
+    padding-inline: hook($c, padding-inline, $dimension-spacing-inset-compact);
+    background-color: hook($c, background, $color-surface-raised);
+    border: hook($c, border-width, $dimension-border-width-default) solid hook($c, border-color, $color-border-strong);
+    border-radius: hook($c, radius, $dimension-radius-element);
     cursor: pointer;
-    transition: background-color hook($c, transition-duration, $motion-feedback-duration) hook($c, transition-timing-function, $motion-feedback-easing);
+    transition: border-color hook($c, transition-duration, $motion-feedback-duration) hook($c, transition-timing-function, $motion-feedback-easing);
+  }
 
-    &:hover {
-      background-color: hook($c, background-hover, $color-state-hover);
-    }
+  &[data-state="open"] &__wrapper {
+    border-color: hook($c, border-color-open, var(--ds-color-primary-border-default-focus));
   }
 
   &__input {
@@ -51,16 +57,20 @@ $c: code-select;
     white-space: nowrap;
   }
 
-  &__icon {
-    margin-right: hook($c, icon-margin-inline-end, $dimension-spacing-inline-default);
+  &__icon,
+  &__chevron {
     display: flex;
+    flex: none;
     align-items: center;
+    color: hook($c, icon-color, $color-icon-secondary);
+
+    svg {
+      inline-size: hook($c, icon-size, 1rem);
+      block-size: hook($c, icon-size, 1rem);
+    }
   }
 
   &__chevron {
-    color: hook($c, chevron-color, $color-text-secondary);
-    margin-left: auto;
-    font-size: hook($c, chevron-size, 10px);
     @include when-motion-allowed {
       transition: transform hook($c, chevron-transition-duration, $motion-disclosure-duration) hook($c, chevron-transition-timing-function, $motion-disclosure-easing);
     }
@@ -70,26 +80,34 @@ $c: code-select;
     transform: rotate(180deg);
   }
 
+  // The menu material: floating fill, the container radius, and the material's
+  // shadow as its edge. A transparent border keeps the boundary in
+  // forced-colors mode, where shadows are not drawn.
   &__dropdown {
     list-style: none;
     margin-block-end: 0;
-    padding: 0;
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
     margin-top: hook($c, dropdown-offset, $dimension-spacing-stack-default);
+    padding: hook($c, dropdown-padding, $dimension-spacing-inset-compact);
     background-color: hook($c, dropdown-background, $color-surface-floating);
-    border: hook($c, border-width, $dimension-border-width-default) solid hook($c, border-color, $color-border-default);
-    border-radius: hook($c, radius, $dimension-radius-control);
-    box-shadow: hook($c, dropdown-shadow, var(--ds-effect-shadow-overlay));
+    border: hook($c, border-width, $dimension-border-width-default) solid transparent;
+    border-radius: hook($c, dropdown-radius, $dimension-radius-container);
+    box-shadow: hook($c, dropdown-shadow, $effect-material-menu);
     z-index: $dimension-z-index-dropdown;
     max-height: hook($c, dropdown-max-height, 200px);
     overflow-y: auto;
   }
 
   &__option {
-    padding: hook($c, option-padding, $dimension-spacing-inset-compact $dimension-spacing-inset-default);
+    display: flex;
+    align-items: center;
+    gap: hook($c, option-gap, $dimension-spacing-inline-default);
+    min-block-size: hook($c, option-min-block-size, 2rem);
+    padding-inline: hook($c, option-padding-inline, $dimension-spacing-inline-default);
+    border-radius: hook($c, option-radius, $dimension-radius-element);
     @include hooked-typography($c, label, small, $prefix: option);
     color: hook($c, option-color, $color-text-primary);
     cursor: pointer;
@@ -103,7 +121,16 @@ $c: code-select;
     }
 
     &[data-selected="true"] {
-      color: hook($c, option-color-selected, $color-primary-default); // Use primary color for selected
+      font-weight: hook($c, option-font-weight-selected, $typography-weight-medium);
     }
+  }
+
+  // The selected option's check: a meaning, so it is the primary icon color.
+  &__check {
+    flex: none;
+    margin-inline-start: auto;
+    inline-size: hook($c, icon-size, 1rem);
+    block-size: hook($c, icon-size, 1rem);
+    color: hook($c, check-color, var(--ds-color-primary-icon-subtle-default));
   }
 }

@@ -14,6 +14,7 @@ import { useEffect } from "react";
 export const SidebarRoot = ({
   isOpen,
   className = "",
+  variant = "default",
   ...rest
 }: SidebarProps) => {
   const { isOpen: contextIsOpen, setIsOpen, sidebarId } = useSidebar();
@@ -30,6 +31,7 @@ export const SidebarRoot = ({
       <SidebarBaseRoot
         id={sidebarId}
         className={cx("scnx-sidebar", className)}
+        data-variant={variant}
         isOpen={finalIsOpen}
         {...rest}
       />

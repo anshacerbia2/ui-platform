@@ -53,6 +53,8 @@ describe("grammar (STD-UIP-TKN-001)", () => {
   it.each([
     ["--ds-color-primary-surface-solid-default", "color"],
     ["--ds-color-neutral-surface-canvas-default", "color"],
+    ["--ds-color-neutral-surface-stage-default", "color"],
+    ["--ds-color-neutral-border-stage-default", "color"],
     ["--ds-color-danger-text-contrast-hover", "color"],
     ["--ds-color-neutral-border-default-focus", "color"],
     ["--ds-effect-shadow-overlay", "shadow"],
@@ -84,6 +86,8 @@ describe("grammar (STD-UIP-TKN-001)", () => {
     ["--ds-color-primary-solid-default-default", "unknown role"],
     ["--ds-color-primary-surface-contrast-default", "not allowed for role"],
     ["--ds-color-primary-surface-canvas-default", "neutral-only"],
+    ["--ds-color-primary-border-stage-default", "neutral-only"],
+    ["--ds-color-neutral-text-stage-default", "not allowed for role"],
     ["--ds-color-primary-text-default-pressed", "not allowed for role"],
     ["--ds-color-primary-border-default-hover", "not allowed for role"],
     ["--ds-color-neutral-canvas-default", "color names are"],
@@ -342,6 +346,18 @@ describe("normalizer on the token source", () => {
       for (const intent of ["mark", "element", "control", "container", "panel"]) expect(toCss(records.get(`--ds-dimension-radius-${intent}`))).toBe("0");
       expect(toCss(records.get("--ds-dimension-radius-pill"))).toBe("9999px");
       expect(["compact", "default", "comfortable"].map((d) => toCss(records.get(`--ds-dimension-size-control-${d}`)))).toEqual(["1.75rem", "2.25rem", "2.75rem"]);
+    }
+  });
+
+  it("maps the stage's ground and dots per mode in every theme (TDD SI10)", () => {
+    const value = (records, name) => toCss(records.get(name));
+    for (const [theme, modes] of Object.entries(themes)) {
+      for (const [mode, { records }] of Object.entries(modes)) {
+        const ground = mode === "light" ? "--ds-color-neutral-surface-default-default" : "--ds-color-neutral-surface-sunken-default";
+        const dot = mode === "light" ? "--ds-color-neutral-border-subtle-default" : "--ds-color-neutral-surface-strong-default";
+        expect(value(records, "--ds-color-neutral-surface-stage-default"), `${theme}/${mode} ground`).toBe(value(records, ground));
+        expect(value(records, "--ds-color-neutral-border-stage-default"), `${theme}/${mode} dot`).toBe(value(records, dot));
+      }
     }
   });
 

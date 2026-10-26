@@ -10,9 +10,17 @@ const meta = {
       <Navbar.Start>
         <strong>Scnehaux</strong>
       </Navbar.Start>
-      <Navbar.Center>Workspace</Navbar.Center>
+      <Navbar.Center>
+        <Navbar.Link href="#overview">Overview</Navbar.Link>
+        <Navbar.Link href="#docs" current>
+          Docs
+        </Navbar.Link>
+        <Navbar.Link href="#changelog">Changelog</Navbar.Link>
+      </Navbar.Center>
       <Navbar.End>
-        <Button variant="secondary">Sign out</Button>
+        <Button variant="secondary" size="small">
+          Sign out
+        </Button>
       </Navbar.End>
     </Navbar>
   ),
@@ -20,3 +28,6 @@ const meta = {
 
 export default meta;
 export const Default: StoryObj<typeof meta> = {};
+
+/** The menu material, inset from the viewport: the marketing and documentation header. */
+export const Floating: StoryObj<typeof meta> = { args: { variant: "floating" } };

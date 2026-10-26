@@ -227,12 +227,18 @@ $scheme-contract: (
   )
 );
 
-// Neutral adds the neutral-only elevation emphases to its surface role.
+// Neutral adds the neutral-only elevation emphases to its surface role, and
+// the neutral-only stage (STD-UIP-TKN-001 2.9.0) to its surface and border
+// roles: the stage's ground and the dots of its grid.
 $neutral-contract: map.set($scheme-contract, surface, map.merge(map.get($scheme-contract, surface), (
   canvas: (default: ()),
   raised: (default: ()),
   floating: (default: ()),
-  sunken: (default: ())
+  sunken: (default: ()),
+  stage: (default: ())
+)));
+$neutral-contract: map.set($neutral-contract, border, map.merge(map.get($neutral-contract, border), (
+  stage: (default: ())
 )));
 
 $typography-members: (font-family, font-size, font-weight, line-height, letter-spacing);
