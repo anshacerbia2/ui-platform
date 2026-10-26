@@ -238,14 +238,25 @@ $shadow-level: (subtle: 2, default: 3, strong: 4);
   $surface-floating-val: -if($mode == "light", resolve-core-color("white", null, $mode), resolve-core-color("neutral", 2, $mode));
   $surface-sunken-val: -if($mode == "light", resolve-core-color("neutral", 2, $mode), resolve-core-color("neutral", 1, $mode));
   
-  // Neutral-only elevation emphases are surface emphases (STD-UIP-TKN-001).
+  // The stage (ADR-UIP-VIS-001 item 4, revision 5): its ground is the default
+  // surface in light mode and the sunken one in dark mode; its dots are the
+  // subtle border in light mode and the strong surface in dark mode.
+  $stage-ground-val: -if($mode == "light", map.get($neutral-matrix, surface, default, default), $surface-sunken-val);
+  $stage-dot-val: -if($mode == "light", map.get($neutral-matrix, border, subtle, default), map.get($neutral-matrix, surface, strong, default));
+
+  // Neutral-only elevation emphases are surface emphases, and the stage is a
+  // surface and a border emphasis (STD-UIP-TKN-001 2.9.0).
   $neutral-surface: map.merge(map.get($neutral-matrix, surface), (
     canvas: (default: $canvas-val),
     raised: (default: $surface-raised-val),
     floating: (default: $surface-floating-val),
-    sunken: (default: $surface-sunken-val)
+    sunken: (default: $surface-sunken-val),
+    stage: (default: $stage-ground-val)
   ));
-  $neutral-merged: map.set($neutral-matrix, surface, $neutral-surface);
+  $neutral-border: map.merge(map.get($neutral-matrix, border), (
+    stage: (default: $stage-dot-val)
+  ));
+  $neutral-merged: map.set(map.set($neutral-matrix, surface, $neutral-surface), border, $neutral-border);
 
   // Schemes are the STD-UIP-TKN-001 vocabulary. Data-visualization colors are
   // product-local by that standard and are not shared tokens.

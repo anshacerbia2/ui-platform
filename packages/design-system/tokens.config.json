@@ -38,7 +38,8 @@
       "--ds-color-neutral-surface-raised-default",
       "--ds-color-neutral-surface-floating-default",
       "--ds-color-neutral-surface-subtle-default",
-      "--ds-color-neutral-surface-default-default"
+      "--ds-color-neutral-surface-default-default",
+      "--ds-color-neutral-surface-stage-default"
     ]
   },
   "aliases": {}
