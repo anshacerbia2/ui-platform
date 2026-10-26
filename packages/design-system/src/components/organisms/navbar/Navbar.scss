@@ -6,9 +6,14 @@ $c: navbar;
 
 // TDD styled HK1-HK5: every value reads a `--scnx-navbar-{part?}-*` hook. The
 // navbar height and the start column's width are component geometry
-// (styles/abstracts/_geometry.scss), the recorded fallbacks of their hooks.
+// (styles/abstracts/_geometry.scss), the recorded fallbacks of their hooks, as
+// are the floating bar's 56px height. A link keeps the 24px target floor
+// (WCAG 2.2 SC 2.5.8) whatever its hook says.
+//
+// PLAN I2 (TDD styled NB1-NB3): the bar is the canvas with a bottom hairline;
+// the floating variant is the menu material; links are pills.
 .scnx-navbar {
-  background-color: hook($c, background, $color-surface-default);
+  background-color: hook($c, background, $color-surface-canvas);
   border-bottom: hook($c, border-width, $dimension-border-width-default) solid hook($c, border-color, $color-border-subtle);
   padding: 0; // Remove block padding, rely on height
   display: flex;
@@ -36,5 +41,54 @@ $c: navbar;
   &__center {
     flex: 1;
     justify-content: center;
+  }
+
+  // A destination: a pill in subtle text. Location in the top bar is never
+  // blue (ADR-UIP-VIS-001 item 3): the current link is default text at medium
+  // weight.
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: target-floor(hook($c, link-min-block-size, $dimension-size-control-compact));
+    padding-inline: hook($c, link-padding-inline, $dimension-spacing-inset-compact);
+    border-radius: hook($c, link-radius, $dimension-radius-element);
+    @include hooked-typography($c, label, default, $prefix: link);
+    color: hook($c, link-color, $color-text-secondary);
+    text-decoration: none;
+    transition: background-color hook($c, transition-duration, $motion-feedback-duration) hook($c, transition-timing-function, $motion-feedback-easing);
+
+    &:hover {
+      color: hook($c, link-color-hover, $color-text-primary);
+      background-color: hook($c, link-background-hover, var(--ds-color-neutral-surface-subtle-hover));
+    }
+
+    &[aria-current="page"] {
+      color: hook($c, link-color-current, $color-text-primary);
+      font-weight: hook($c, link-font-weight-current, $typography-weight-medium);
+    }
+  }
+
+  // The floating bar: the menu material, inset from the viewport on the stage.
+  // A transparent border keeps the boundary in forced-colors mode, where box
+  // shadows are not drawn.
+  &[data-variant="floating"] {
+    width: auto;
+    height: hook($c, floating-height, 3.5rem);
+    max-height: hook($c, floating-height, 3.5rem);
+    margin: hook($c, floating-margin, $dimension-spacing-inline-default);
+    background-color: hook($c, floating-background, $color-surface-floating);
+    border: hook($c, border-width, $dimension-border-width-default) solid transparent;
+    border-radius: hook($c, floating-radius, $dimension-radius-container);
+    box-shadow: hook($c, floating-shadow, $effect-material-menu);
+  }
+
+  &[data-variant="floating"] &__start,
+  &[data-variant="floating"] &__center,
+  &[data-variant="floating"] &__end {
+    padding: 0 hook($c, floating-section-padding-inline, $dimension-spacing-inline-default);
+  }
+
+  &[data-variant="floating"] &__start {
+    width: auto;
   }
 }

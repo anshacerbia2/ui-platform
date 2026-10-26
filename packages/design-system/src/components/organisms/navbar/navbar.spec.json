@@ -21,10 +21,42 @@
     {
       "name": "end",
       "selector": ".scnx-navbar__end"
+    },
+    {
+      "name": "link",
+      "selector": ".scnx-navbar__link"
     }
   ],
-  "options": {},
-  "states": [],
+  "options": {
+    "variant": {
+      "values": [
+        "default",
+        "floating"
+      ],
+      "default": "default",
+      "selector": "[data-variant={value}]"
+    }
+  },
+  "states": [
+    {
+      "name": "hover",
+      "selectors": [
+        ":hover"
+      ],
+      "enter": {
+        "interaction": "hover"
+      }
+    },
+    {
+      "name": "current",
+      "selectors": [
+        "[aria-current=page]"
+      ],
+      "enter": {
+        "fixture": true
+      }
+    }
+  ],
   "fixture": {
     "tree": {
       "type": "Navbar",
@@ -38,7 +70,25 @@
         {
           "type": "Navbar.Center",
           "children": [
-            "Search"
+            {
+              "type": "Navbar.Link",
+              "props": {
+                "href": "#docs",
+                "current": true
+              },
+              "children": [
+                "Docs"
+              ]
+            },
+            {
+              "type": "Navbar.Link",
+              "props": {
+                "href": "#blog"
+              },
+              "children": [
+                "Blog"
+              ]
+            }
           ]
         },
         {
@@ -54,7 +104,7 @@
     {
       "part": "root",
       "declarations": {
-        "background-color": "{color.neutral.surface.default.default}",
+        "background-color": "{color.neutral.surface.canvas.default}",
         "border-bottom": "{dimension.border-width.default} solid {color.neutral.border.subtle.default}"
       }
     },
@@ -78,6 +128,77 @@
         "gap": "{dimension.spacing.inline-comfortable}",
         "padding": "0 {dimension.spacing.page}"
       }
+    },
+    {
+      "part": "link",
+      "declarations": {
+        "min-block-size": "max(24px, {dimension.size.control-compact})",
+        "padding-inline": "{dimension.spacing.inset-compact}",
+        "border-radius": "{dimension.radius.element}",
+        "font-family": "{typography.label.default.font-family}",
+        "font-size": "{typography.label.default.font-size}",
+        "font-weight": "{typography.label.default.font-weight}",
+        "line-height": "{typography.label.default.line-height}",
+        "letter-spacing": "{typography.label.default.letter-spacing}",
+        "color": "{color.neutral.text.subtle.default}",
+        "transition": "background-color {motion.feedback.duration} {motion.feedback.easing}"
+      }
+    },
+    {
+      "part": "link",
+      "state": "hover",
+      "declarations": {
+        "color": "{color.neutral.text.default.default}",
+        "background-color": "{color.neutral.surface.subtle.hover}"
+      }
+    },
+    {
+      "part": "link",
+      "state": "current",
+      "declarations": {
+        "color": "{color.neutral.text.default.default}",
+        "font-weight": "{typography.weight.medium}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "variant": "floating"
+      },
+      "declarations": {
+        "margin": "{dimension.spacing.inline-default}",
+        "background-color": "{color.neutral.surface.floating.default}",
+        "border": "{dimension.border-width.default} solid transparent",
+        "border-radius": "{dimension.radius.container}",
+        "box-shadow": "{effect.material.menu}"
+      }
+    },
+    {
+      "part": "start",
+      "option": {
+        "variant": "floating"
+      },
+      "declarations": {
+        "padding": "0 {dimension.spacing.inline-default}"
+      }
+    },
+    {
+      "part": "center",
+      "option": {
+        "variant": "floating"
+      },
+      "declarations": {
+        "padding": "0 {dimension.spacing.inline-default}"
+      }
+    },
+    {
+      "part": "end",
+      "option": {
+        "variant": "floating"
+      },
+      "declarations": {
+        "padding": "0 {dimension.spacing.inline-default}"
+      }
     }
   ],
   "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-navbar-background: …; }.",
@@ -91,7 +212,7 @@
         "background-color"
       ],
       "fallbacks": [
-        "{color.neutral.surface.default.default}"
+        "{color.neutral.surface.canvas.default}"
       ],
       "floor": null,
       "purpose": "The background-color of Navbar.",
@@ -120,6 +241,7 @@
         "root"
       ],
       "properties": [
+        "border",
         "border-bottom"
       ],
       "fallbacks": [
@@ -128,6 +250,105 @@
       "floor": null,
       "purpose": "The border-bottom of Navbar.",
       "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-floating-background",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.floating.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Navbar in the floating variant.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-floating-height",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "height",
+        "max-height"
+      ],
+      "fallbacks": [
+        "3.5rem"
+      ],
+      "floor": null,
+      "purpose": "The height and max-height of Navbar in the floating variant.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-floating-margin",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "margin"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-default}"
+      ],
+      "floor": null,
+      "purpose": "The margin of Navbar in the floating variant.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-floating-radius",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.container}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Navbar in the floating variant.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-floating-section-padding-inline",
+      "parts": [
+        "center",
+        "end",
+        "start"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-default}"
+      ],
+      "floor": null,
+      "purpose": "The padding of Navbar's center, end and start part in the floating variant.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-floating-shadow",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "{effect.material.menu}"
+      ],
+      "floor": null,
+      "purpose": "The box-shadow of Navbar in the floating variant.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -145,6 +366,214 @@
       "floor": null,
       "purpose": "The height and max-height of Navbar.",
       "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-link-background-hover",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.subtle.hover}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Navbar's link part in the hover state.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-link-color",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Navbar's link part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-link-color-current",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Navbar's link part when it is the current page.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-link-color-hover",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Navbar's link part in the hover state.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-link-font-family",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.label.default.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Navbar's link part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-link-font-size",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.label.default.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Navbar's link part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-link-font-weight",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.label.default.font-weight}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Navbar's link part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-link-font-weight-current",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.weight.medium}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Navbar's link part when it is the current page.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-link-letter-spacing",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.label.default.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Navbar's link part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-link-line-height",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.label.default.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Navbar's link part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-link-min-block-size",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "min-block-size"
+      ],
+      "fallbacks": [
+        "{dimension.size.control-compact}"
+      ],
+      "floor": "24px",
+      "purpose": "The min-block-size of Navbar's link part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value; never below the 24px floor.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-link-padding-inline",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "padding-inline"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-compact}"
+      ],
+      "floor": null,
+      "purpose": "The padding-inline of Navbar's link part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-link-radius",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.element}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Navbar's link part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
@@ -197,6 +626,38 @@
       "floor": null,
       "purpose": "The width of Navbar's start part.",
       "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-transition-duration",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.feedback.duration}"
+      ],
+      "floor": null,
+      "purpose": "The transition of Navbar's link part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-navbar-transition-timing-function",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.feedback.easing}"
+      ],
+      "floor": null,
+      "purpose": "The transition of Navbar's link part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     }
   ]

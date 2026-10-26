@@ -5,6 +5,7 @@ export type {
   NavigationBarBaseRootProps,
   NavigationBarBaseStartProps,
   NavigationBarBaseNavProps,
+  NavigationBarBaseLinkProps,
 } from "./types";
 
 export { NavigationBarBaseRoot } from "./NavigationBarBaseRoot";
@@ -14,6 +15,8 @@ export { NavigationBarBaseStart } from "./NavigationBarBaseStart";
 export { NavigationBarBaseCenter } from "./NavigationBarBaseCenter";
 
 export { NavigationBarBaseEnd } from "./NavigationBarBaseEnd";
+
+export { NavigationBarBaseLink } from "./NavigationBarBaseLink";
 
 export { NavigationBarBaseNav } from "./NavigationBarBase";
 

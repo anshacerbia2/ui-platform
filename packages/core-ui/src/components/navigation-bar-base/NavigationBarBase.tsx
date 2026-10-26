@@ -4,6 +4,7 @@ import { NavigationBarBaseRoot as Root } from "./NavigationBarBaseRoot";
 import { NavigationBarBaseStart as Start } from "./NavigationBarBaseStart";
 import { NavigationBarBaseCenter as Center } from "./NavigationBarBaseCenter";
 import { NavigationBarBaseEnd as End } from "./NavigationBarBaseEnd";
+import { NavigationBarBaseLink as Link } from "./NavigationBarBaseLink";
 
 /**
  * Navigation component for the NavigationBarBase.
@@ -39,5 +40,6 @@ export const NavigationBarBase = Object.assign(NavigationBarBaseCompound, {
   Start,
   Center,
   End,
+  Link,
   Nav: NavigationBase,
 });

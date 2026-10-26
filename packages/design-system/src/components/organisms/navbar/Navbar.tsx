@@ -3,6 +3,7 @@ import { NavbarRoot as Root } from "./NavbarRoot";
 import { NavbarStart as Start } from "./NavbarStart";
 import { NavbarCenter as Center } from "./NavbarCenter";
 import { NavbarEnd as End } from "./NavbarEnd";
+import { NavbarLink as Link } from "./NavbarLink";
 
 const NavbarCompound = (props: NavbarProps) => <Root {...props} />;
 NavbarCompound.displayName = "Navbar";
@@ -18,7 +19,9 @@ NavbarCompound.displayName = "Navbar";
  *
  * <Navbar>
  *   <Navbar.Start>Logo</Navbar.Start>
- *   <Navbar.Center>Menu</Navbar.Center>
+ *   <Navbar.Center>
+ *     <Navbar.Link href="/docs" current>Docs</Navbar.Link>
+ *   </Navbar.Center>
  *   <Navbar.End>Actions</Navbar.End>
  * </Navbar>
  * ```
@@ -28,4 +31,5 @@ export const Navbar = Object.assign(NavbarCompound, {
   Start,
   Center,
   End,
+  Link,
 });
