@@ -14,6 +14,21 @@ import { ReactNode } from 'react';
 import { Ref } from 'react';
 
 // @public
+export type LinkBaseAnchorProps = ComponentPropsWithRef<"a"> & {
+    href: string;
+    asChild?: false;
+};
+
+// @public
+export type LinkBaseChildProps = Omit<ComponentPropsWithRef<"a">, "children"> & {
+    asChild: true;
+    children: ReactElement;
+};
+
+// @public (undocumented)
+export type LinkBaseProps = LinkBaseAnchorProps | LinkBaseChildProps;
+
+// @public
 export const NavigationBarBase: {
     (input: NavigationBarBaseRootProps): JSX.Element;
     displayName: string;
@@ -101,10 +116,9 @@ export const NavigationBarBaseLink: {
     displayName: string;
 };
 
-// @public (undocumented)
-export type NavigationBarBaseLinkProps = ComponentPropsWithRef<"a"> & {
+// @public
+export type NavigationBarBaseLinkProps = LinkBaseProps & {
     current?: boolean;
-    asChild?: boolean;
 };
 
 // @public

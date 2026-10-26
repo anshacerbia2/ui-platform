@@ -1,0 +1,43 @@
+@use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
+
+$c: link;
+
+// TDD styled LK1-LK3 (scnehaux-design card Link; component wave 1). Every
+// value reads a `--scnx-link-*` hook that falls back to its token; the
+// underline's offset and the external icon's size and placement are the
+// recorded fallbacks of their hooks. The underline marks the link without
+// relying on color (WCAG 2.2 SC 1.4.1); `mark` rounds its focus outline.
+.scnx-link {
+  color: hook($c, color, var(--ds-color-primary-text-subtle-default));
+  text-decoration-line: underline;
+  text-decoration-thickness: hook($c, underline-thickness, $dimension-border-width-default);
+  text-underline-offset: hook($c, underline-offset, 0.22em);
+  text-decoration-color: hook($c, underline-color, $color-primary-border);
+  border-radius: hook($c, radius, $dimension-radius-mark);
+  transition:
+    color hook($c, transition-duration, $motion-feedback-duration) hook($c, transition-timing-function, $motion-feedback-easing),
+    text-decoration-color hook($c, transition-duration, $motion-feedback-duration) hook($c, transition-timing-function, $motion-feedback-easing);
+
+  &:hover {
+    color: hook($c, color-hover, var(--ds-color-primary-text-subtle-hover));
+    text-decoration-color: currentColor;
+  }
+
+  // In dense copy the link takes the surrounding color; the underline marks it.
+  &[data-variant="neutral"] {
+    color: inherit;
+    text-decoration-color: hook($c, underline-color, $color-border-strong);
+
+    &:hover {
+      text-decoration-color: currentColor;
+    }
+  }
+
+  svg {
+    inline-size: hook($c, icon-size, 0.85em);
+    block-size: hook($c, icon-size, 0.85em);
+    margin-inline-start: hook($c, icon-gap, 0.15em);
+    vertical-align: hook($c, icon-vertical-align, -0.05em);
+  }
+}

@@ -82,6 +82,10 @@
       "types": "./dist/components/kbd/index.d.ts",
       "default": "./dist/components/kbd/index.js"
     },
+    "./components/link": {
+      "types": "./dist/components/link/index.d.ts",
+      "default": "./dist/components/link/index.js"
+    },
     "./components/list": {
       "types": "./dist/components/list/index.d.ts",
       "default": "./dist/components/list/index.js"
@@ -105,6 +109,14 @@
     "./components/stack": {
       "types": "./dist/components/stack/index.d.ts",
       "default": "./dist/components/stack/index.js"
+    },
+    "./components/surface": {
+      "types": "./dist/components/surface/index.d.ts",
+      "default": "./dist/components/surface/index.js"
+    },
+    "./components/table": {
+      "types": "./dist/components/table/index.d.ts",
+      "default": "./dist/components/table/index.js"
     },
     "./components/table-of-contents": {
       "types": "./dist/components/table-of-contents/index.d.ts",
@@ -160,12 +172,15 @@
     "./specs/heading.json": "./dist/specs/heading.json",
     "./specs/icon-button.json": "./dist/specs/icon-button.json",
     "./specs/kbd.json": "./dist/specs/kbd.json",
+    "./specs/link.json": "./dist/specs/link.json",
     "./specs/list.json": "./dist/specs/list.json",
     "./specs/navbar.json": "./dist/specs/navbar.json",
     "./specs/navigation.json": "./dist/specs/navigation.json",
     "./specs/segmented-control.json": "./dist/specs/segmented-control.json",
     "./specs/sidebar.json": "./dist/specs/sidebar.json",
     "./specs/stack.json": "./dist/specs/stack.json",
+    "./specs/surface.json": "./dist/specs/surface.json",
+    "./specs/table.json": "./dist/specs/table.json",
     "./specs/table-of-contents.json": "./dist/specs/table-of-contents.json",
     "./specs/tabs.json": "./dist/specs/tabs.json",
     "./specs/text.json": "./dist/specs/text.json",

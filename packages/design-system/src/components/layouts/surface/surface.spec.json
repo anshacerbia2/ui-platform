@@ -1,0 +1,215 @@
+{
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
+  "entry": "@scnx/system/components/surface",
+  "entryKind": "presentational",
+  "stability": "candidate",
+  "primitive": null,
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-surface"
+    }
+  ],
+  "options": {
+    "material": {
+      "values": [
+        "flat",
+        "raised",
+        "panel",
+        "well"
+      ],
+      "default": "raised",
+      "selector": "[data-material={value}]"
+    },
+    "padding": {
+      "values": [
+        "none",
+        "compact",
+        "default",
+        "comfortable"
+      ],
+      "default": "none",
+      "selector": "[data-padding={value}]"
+    }
+  },
+  "states": [],
+  "fixture": {
+    "props": {
+      "children": "Surface"
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "border": "{dimension.border-width.default} solid transparent",
+        "border-radius": "{dimension.radius.container}",
+        "background-color": "{color.neutral.surface.raised.default}",
+        "color": "{color.neutral.text.default.default}",
+        "box-shadow": "{effect.material.raised}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "material": "flat"
+      },
+      "declarations": {
+        "box-shadow": "{effect.material.flat}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "material": "panel"
+      },
+      "declarations": {
+        "border-radius": "{dimension.radius.panel}",
+        "box-shadow": "{effect.material.panel}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "material": "well"
+      },
+      "declarations": {
+        "background-color": "{color.neutral.surface.sunken.default}",
+        "box-shadow": "none"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "padding": "compact"
+      },
+      "declarations": {
+        "padding": "{dimension.spacing.inset-compact}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "padding": "default"
+      },
+      "declarations": {
+        "padding": "{dimension.spacing.inset-default}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "padding": "comfortable"
+      },
+      "declarations": {
+        "padding": "{dimension.spacing.inset-comfortable}"
+      }
+    }
+  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-surface-background: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-surface-background",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.raised.default}",
+        "{color.neutral.surface.sunken.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Surface.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every material and padding value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-surface-border-width",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null,
+      "purpose": "The border of Surface.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every material and padding value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-surface-color",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Surface.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every material and padding value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-surface-padding",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-comfortable}",
+        "{dimension.spacing.inset-compact}",
+        "{dimension.spacing.inset-default}"
+      ],
+      "floor": null,
+      "purpose": "The padding of Surface.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every material and padding value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-surface-radius",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.container}",
+        "{dimension.radius.panel}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Surface.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every material and padding value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-surface-shadow",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "{effect.material.flat}",
+        "{effect.material.panel}",
+        "{effect.material.raised}"
+      ],
+      "floor": null,
+      "purpose": "The box-shadow of Surface.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every material and padding value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
+  ]
+}

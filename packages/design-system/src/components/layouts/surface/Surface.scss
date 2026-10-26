@@ -1,0 +1,46 @@
+@use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
+
+$c: surface;
+
+// TDD styled SF1-SF3 (scnehaux-design card Surface; PLAN I3). One on-page
+// material: a fill, a radius, and the material's shadow as its edge (a 1px ring
+// drawn as a box shadow, so nesting never shifts layout). Every material reads
+// the same `--scnx-surface-*` hooks, each falling back to that material's
+// token, as Button's variants do. A transparent border keeps every boundary in
+// forced-colors mode, where box shadows are not drawn.
+.scnx-surface {
+  box-sizing: border-box;
+  border: hook($c, border-width, $dimension-border-width-default) solid transparent;
+  border-radius: hook($c, radius, $dimension-radius-container);
+  background-color: hook($c, background, $color-surface-raised);
+  color: hook($c, color, $color-text-primary);
+  box-shadow: hook($c, shadow, $effect-material-raised);
+
+  &[data-material="flat"] {
+    box-shadow: hook($c, shadow, $effect-material-flat);
+  }
+
+  &[data-material="panel"] {
+    border-radius: hook($c, radius, $dimension-radius-panel);
+    box-shadow: hook($c, shadow, $effect-material-panel);
+  }
+
+  // An inset: the sunken fill and no edge of its own.
+  &[data-material="well"] {
+    background-color: hook($c, background, $color-surface-sunken);
+    box-shadow: none;
+  }
+
+  &[data-padding="compact"] {
+    padding: hook($c, padding, $dimension-spacing-inset-compact);
+  }
+
+  &[data-padding="default"] {
+    padding: hook($c, padding, $dimension-spacing-inset-default);
+  }
+
+  &[data-padding="comfortable"] {
+    padding: hook($c, padding, $dimension-spacing-inset-comfortable);
+  }
+}

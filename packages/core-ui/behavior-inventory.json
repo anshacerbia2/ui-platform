@@ -929,6 +929,11 @@
       "kind": "presentational"
     },
     {
+      "entry": "@scnx/core-ui/components/link-base",
+      "stability": "candidate",
+      "kind": "interactive"
+    },
+    {
       "entry": "@scnx/core-ui/components/list-base",
       "stability": "candidate",
       "kind": "presentational"
@@ -1054,6 +1059,11 @@
       "kind": "presentational"
     },
     {
+      "entry": "@scnx/system/components/link",
+      "stability": "candidate",
+      "kind": "interactive"
+    },
+    {
       "entry": "@scnx/system/components/list",
       "stability": "candidate",
       "kind": "presentational"
@@ -1080,6 +1090,16 @@
     },
     {
       "entry": "@scnx/system/components/stack",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/system/components/surface",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/system/components/table",
       "stability": "candidate",
       "kind": "presentational"
     },

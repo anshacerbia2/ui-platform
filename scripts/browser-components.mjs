@@ -14,7 +14,8 @@
 // - keyboard focus on every focusable part draws a visible outline, normally
 //   and under forced colors, where the outline uses the Highlight system color;
 // - every focusable part's pointer target (for CodeSelect, its wrapper) is at
-//   least 24 by 24 CSS pixels (WCAG 2.2 SC 2.5.8; STD-UIP-STY-001).
+//   least 24 by 24 CSS pixels (WCAG 2.2 SC 2.5.8; STD-UIP-STY-001), except an inline
+//   target in running text, the SC's "Inline" exception;
 // The computed tokens of every styled component, per option and state, are
 // checked by scripts/browser-specs.mjs against its specification (TDD styled CS4).
 //
@@ -82,6 +83,9 @@ import { TextField } from "@scnx/system/components/text-field";
 import { Tabs } from "@scnx/system/components/tabs";
 import { SegmentedControl } from "@scnx/system/components/segmented-control";
 import { Kbd } from "@scnx/system/components/kbd";
+import { Surface } from "@scnx/system/components/surface";
+import { Table } from "@scnx/system/components/table";
+import { Link } from "@scnx/system/components/link";
 
 const modes = ${JSON.stringify(["light", "dark"])};
 const themes = ${JSON.stringify(themes)};
@@ -105,6 +109,9 @@ const set = () => h("div", null,
   h(Tabs, { defaultValue: "a" }, h(Tabs.List, { "aria-label": "Sections" }, h(Tabs.Tab, { value: "a" }, "A"), h(Tabs.Tab, { value: "b" }, "B")), h(Tabs.Panel, { value: "a", tabIndex: -1 }, "Panel A"), h(Tabs.Panel, { value: "b", tabIndex: -1 }, "Panel B")),
   h(SegmentedControl, { "aria-label": "Range", defaultValue: "7d" }, h(SegmentedControl.Item, { value: "24h" }, "24h"), h(SegmentedControl.Item, { value: "7d" }, "7 days")),
   h("p", null, h(Kbd, null, "⌘"), h(Kbd, null, "K")),
+  h(Surface, { as: "section", material: "panel", padding: "compact", "aria-label": "Panel" }, h(Surface, { material: "flat", padding: "default" }, "Flat"), h(Surface, { material: "well", padding: "default" }, "Well")),
+  h(Table, { "aria-label": "People" }, h(Table.Head, null, h(Table.Row, null, h(Table.HeaderCell, { sort: "ascending" }, "Name"), h(Table.HeaderCell, { align: "end" }, "Salary"))), h(Table.Body, null, h(Table.Row, null, h(Table.Cell, null, "Ana"), h(Table.Cell, { align: "end" }, "12,500")), h(Table.Row, { selected: true }, h(Table.Cell, { muted: true }, "Budi"), h(Table.Cell, { align: "end" }, "9,800")))),
+  h("p", null, "Read the ", h(Link, { href: "#changelog" }, "changelog"), ", the ", h(Link, { href: "#terms", variant: "neutral" }, "terms"), ", or the ", h(Link, { href: "#npm", external: true }, "npm package"), "."),
 );
 const roots = themes.flatMap((theme) => modes.map((mode) =>
   h("div", { "data-scnx-theme": theme, "data-scnx-resolved-mode": mode, "data-fixture-root": theme + "/" + mode }, set())));
@@ -165,7 +172,7 @@ async function focusWalk(tab) {
         ...(() => {
           const target = el.closest(".scnx-code-select__wrapper") ?? el.closest(".scnx-segmented-control > [data-part=item]") ?? el;
           const box = target.getBoundingClientRect();
-          return { width: box.width, height: box.height };
+          return { width: box.width, height: box.height, inline: getComputedStyle(target).display === "inline" };
         })(),
         key: el.outerHTML.slice(0, 80) + "@" + (root?.getAttribute("data-fixture-root") ?? "host"),
       };
@@ -289,8 +296,9 @@ async function verify(browser) {
       if (state.outlineStyle === "none" || !(state.outlineWidth >= 1)) {
         failures.push(`${where}: no visible outline (${state.outlineStyle} ${state.outlineWidth}px)`);
       }
-      // WCAG 2.2 SC 2.5.8; STD-UIP-STY-001, "Governed values".
-      if (Math.min(state.width, state.height) < 24) {
+      // WCAG 2.2 SC 2.5.8; STD-UIP-STY-001, "Governed values". An inline target in running
+      // text, such as a Link, is the SC's "Inline" exception: its size is set by the line height.
+      if (!state.inline && Math.min(state.width, state.height) < 24) {
         failures.push(`${where}: pointer target ${state.width.toFixed(1)} x ${state.height.toFixed(1)} CSS px is below 24 x 24 (WCAG 2.2 SC 2.5.8)`);
       }
       if (forcedColors === "active" && state.outlineColor !== highlight) {
