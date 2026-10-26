@@ -130,8 +130,12 @@ jobs:
           name: rebuild
           path: artifacts/rebuild/pack-report.json
 
-  packed-consumer:
-    name: Packed consumer
+  # TDD packaging C6: one job packs the tarballs; three jobs run the fixtures
+  # against those same tarballs in parallel; "Packed consumer" requires all four
+  # and assembles the one packed-packages artifact the attestations and the
+  # evidence packet read.
+  pack:
+    name: Pack and inspect
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -164,6 +168,28 @@ jobs:
         run: |
           node scripts/api-report.mjs --self-test
           node scripts/api-report.mjs --packs artifacts/packages --check
+      # The tarballs, the pack report, and the extracted packages the fixtures read.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packs
+          path: artifacts/packages
+          retention-days: 1
+
+  consumers:
+    name: Packed consumer fixtures and supply chain
+    needs: pack
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          name: packs
+          path: artifacts/packages
       - name: Isolated consumers at both React peer boundaries
         run: node scripts/packed-consumer.mjs --packs artifacts/packages
       # TDD packaging RC5: the same consumers on every other Node.js LTS line in
@@ -176,6 +202,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
+      - name: Playwright version
+        id: playwright
+        run: echo "version=$(pnpm exec playwright --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+      # The browser binaries only; the system dependencies are installed every run.
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}-chromium-firefox-webkit
       # TDD packaging RC5: every engine in support-matrix.json (check-ci-policy).
       - name: Install the browser engines of the support matrix
         run: pnpm exec playwright install --with-deps chromium firefox webkit
@@ -186,18 +220,10 @@ jobs:
         run: node scripts/browser-gamut.mjs --packs artifacts/packages
       - name: Packed components in a browser (layers, isolation, focus, forced colors)
         run: node scripts/browser-components.mjs --packs artifacts/packages
-      - name: Styled specifications compute their bound tokens in every engine
-        run: node scripts/browser-specs.mjs --packs artifacts/packages
       - name: Packed ThemeProvider in a browser (SSR, hydration, isolation, strict CSP)
         run: node scripts/browser-theme.mjs --packs artifacts/packages
       - name: Import side effects of every public entry (strict CSP)
         run: node scripts/browser-imports.mjs --packs artifacts/packages
-      # TDD packaging PF1-PF6: comparative evidence; fails only on a missing measurement.
-      - name: Payload and runtime measurements (no budget)
-        run: node scripts/performance.mjs --packs artifacts/packages
-      # TDD theme X1-X5 (STD-UIP-ENG-001 3.3): the X3 forced-layout claims are gates; the rest is evidence.
-      - name: Interaction traces (forced layout, long frames, theme-switch latency)
-        run: node scripts/interaction-traces.mjs --packs artifacts/packages
       - name: Next.js App Router consumer (server-safe and client-only entries)
         run: node scripts/nextjs-consumer.mjs --packs artifacts/packages
       # Evaluation only: Module Federation stays assess (TDD packaging F1-F9).
@@ -218,7 +244,127 @@ jobs:
       - name: Advisories in the workspace and every fixture graph
         run: node scripts/security/audit.mjs --lockfiles artifacts/packages/lockfiles --out artifacts/packages/security
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: ${{ !cancelled() }}
+        with:
+          name: reports-consumers
+          retention-days: 1
+          path: |
+            artifacts/packages/consumer-report.json
+            artifacts/packages/node-22/consumer-report.json
+            artifacts/packages/gamut-report.json
+            artifacts/packages/browser-components-report.json
+            artifacts/packages/browser-theme-report.json
+            artifacts/packages/imports-report.json
+            artifacts/packages/nextjs-report.json
+            artifacts/packages/federation-report.json
+            artifacts/packages/sbom-report.json
+            artifacts/packages/sbom/
+            artifacts/packages/lockfiles/
+            artifacts/packages/security/
+
+  specs:
+    name: Packed styled specifications
+    needs: pack
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          name: packs
+          path: artifacts/packages
+      - name: Playwright version
+        id: playwright
+        run: echo "version=$(pnpm exec playwright --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}-chromium-firefox-webkit
+      - name: Install the browser engines of the support matrix
+        run: pnpm exec playwright install --with-deps chromium firefox webkit
+      # The specifications are checked against the built token output and API
+      # reports in the workspace (TDD styled CS2-CS3); the fixture renders the tarballs.
+      - run: pnpm run build
+      - name: Styled specifications compute their bound tokens in every engine
+        run: node scripts/browser-specs.mjs --packs artifacts/packages
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: reports-specs
+          retention-days: 1
+          path: artifacts/packages/browser-specs-report.json
+
+  measurements:
+    name: Packed payload and interaction measurements
+    needs: pack
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          name: packs
+          path: artifacts/packages
+      - name: Playwright version
+        id: playwright
+        run: echo "version=$(pnpm exec playwright --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}-chromium-firefox-webkit
+      - name: Install the browser engines of the support matrix
+        run: pnpm exec playwright install --with-deps chromium firefox webkit
+      # TDD packaging PF1-PF6: comparative evidence; fails only on a missing measurement.
+      - name: Payload and runtime measurements (no budget)
+        run: node scripts/performance.mjs --packs artifacts/packages
+      # TDD theme X1-X5 (STD-UIP-ENG-001 3.3): the X3 forced-layout claims are gates; the rest is evidence.
+      - name: Interaction traces (forced layout, long frames, theme-switch latency)
+        run: node scripts/interaction-traces.mjs --packs artifacts/packages
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: reports-measurements
+          retention-days: 1
+          path: |
+            artifacts/packages/performance-report.json
+            artifacts/packages/traces-report.json
+
+  # The required check. A job whose needs fail is skipped, and a skipped job
+  # reports success (C1), so this job runs unless the run is cancelled and
+  # fails unless every packed job succeeded.
+  packed-consumer:
+    name: Packed consumer
+    needs: [pack, consumers, specs, measurements]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Every packed job succeeded
+        env:
+          NEEDS: ${{ toJSON(needs) }}
+        run: |
+          echo "$NEEDS" | jq -r 'to_entries[] | "\(.key): \(.value.result)"'
+          echo "$NEEDS" | jq -e 'all(.[]; .result == "success")' > /dev/null
+      - uses: actions/download-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: packs
+          path: artifacts/packages
+      - uses: actions/download-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          pattern: reports-*
+          merge-multiple: true
+          path: artifacts/packages
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
           name: packed-packages
           path: |
@@ -282,6 +428,13 @@ jobs:
       - run: pnpm install --frozen-lockfile
       # The preview loads the built CSS assets (ADR-UIP-WKS-001).
       - run: pnpm run build
+      - name: Playwright version
+        id: playwright
+        run: echo "version=$(pnpm exec playwright --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}-chromium
       - name: Install Chromium for story tests
         run: pnpm exec playwright install --with-deps chromium
       - name: Every story in Chromium, axe-core at error level
