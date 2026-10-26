@@ -121,13 +121,17 @@ function pluginDouble({ modeLimit }) {
     createTextStyle: () => { const s = { id: next("T") }; textStyles.push(s); return s; },
     createEffectStyle: () => { const s = { id: next("E") }; effectStyles.push(s); return s; },
     showUI: () => {},
-    ui: { postMessage: (m) => messages.push(m) },
+    ui: { postMessage: (m) => messages.push(m), onmessage: null },
   };
   return { figma, collections, variables, textStyles, effectStyles, messages };
 }
 
-async function runPlugin(code, double) {
+async function runPlugin(code, double, apply = "all") {
   vm.runInNewContext(code, { figma: double.figma, __html__: "", console });
+  // FG12: the plugin offers its choices first, then applies the one the reader makes.
+  const offer = double.messages.shift();
+  if (!offer?.choices) throw new Error("the plugin did not offer its choices");
+  double.figma.ui.onmessage({ apply });
   for (let i = 0; i < 200 && double.messages.length === 0; i++) await new Promise((r) => setTimeout(r, 5));
   return double.messages.at(-1);
 }
@@ -164,6 +168,20 @@ describe("Figma plugin (FG11)", () => {
     expect(double.collections.map((c) => c.modes.map((m) => m.name))).toEqual([["Light"], ["scnx-platform"]]);
     const canvas = double.variables.find((v) => v.name === "color/neutral/surface/canvas/default");
     expect(Object.keys(canvas.valuesByMode)).toHaveLength(1);
+  });
+
+  it("offers one choice per theme and mode, and fills a one-mode file with the chosen one (FG12)", async () => {
+    expect(plan.choices.map((c) => `${c.theme} ${c.mode}`)).toEqual(["scnx-platform light", "scnx-platform dark", "scnx-saas light", "scnx-saas dark"]);
+    const double = pluginDouble({ modeLimit: 1 });
+    const report = await runPlugin(code(), double, 3);
+    expect(report.errors).toEqual([]);
+    expect(report.modesSkipped).toEqual([]);
+    expect(double.collections.map((c) => c.modes.map((m) => m.name))).toEqual([["scnx-saas dark"], ["scnx-saas"]]);
+    const canvas = double.variables.find((v) => v.name === "color/neutral/surface/canvas/default");
+    const color = plan.collections[0];
+    expect(Object.values(canvas.valuesByMode)).toEqual([color.variables.find((v) => v.name === canvas.name).values[3]]);
+    expect(double.effectStyles.length).toBeGreaterThan(0);
+    expect(double.effectStyles.every((s) => s.name.startsWith("scnx-saas/") && !s.name.startsWith("scnx-saas/Light/"))).toBe(true);
   });
 
   it("leaves variables it did not plan untouched and lists them", async () => {

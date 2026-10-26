@@ -33,11 +33,11 @@ async function ensureCollection(spec, existing, report) {
   return { collection, modeIds };
 }
 
-async function applyVariables(report) {
+async function applyVariables(plan, report) {
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
   const all = await figma.variables.getLocalVariablesAsync();
   const byName = new Map();
-  for (const spec of PLAN.collections) {
+  for (const spec of plan.collections) {
     const { collection, modeIds } = await ensureCollection(spec, collections, report);
     const existing = new Map(all.filter((v) => v.variableCollectionId === collection.id).map((v) => [v.name, v]));
     const planned = new Set(spec.variables.map((v) => v.name));
@@ -66,9 +66,9 @@ async function applyVariables(report) {
   return byName;
 }
 
-async function applyTextStyles(report) {
+async function applyTextStyles(plan, report) {
   const existing = await figma.getLocalTextStylesAsync();
-  for (const spec of PLAN.textStyles) {
+  for (const spec of plan.textStyles) {
     const font = { family: spec.fontFamily, style: spec.fontStyle };
     try {
       await figma.loadFontAsync(font);
@@ -92,9 +92,9 @@ async function applyTextStyles(report) {
   }
 }
 
-async function applyEffectStyles(variables, report) {
+async function applyEffectStyles(plan, variables, report) {
   const existing = await figma.getLocalEffectStylesAsync();
-  for (const spec of PLAN.effectStyles) {
+  for (const spec of plan.effectStyles) {
     const effects = spec.effects.map((e) => {
       const base = { color: e.color, offset: e.offset, radius: e.radius, spread: e.spread, visible: true, blendMode: /** @type {BlendMode} */ ("NORMAL") };
       /** @type {Effect} */
@@ -117,9 +117,25 @@ async function applyEffectStyles(variables, report) {
   }
 }
 
-async function run() {
+/**
+ * FG12: the plan narrowed to one theme and mode, for a file whose Figma plan
+ * holds one mode per collection (Starter): the color mode chosen, its theme's
+ * dimension mode, and that theme's effect styles for the mode (or shared by
+ * its modes). Text styles are shared by every theme.
+ */
+function narrow(plan, choice) {
+  const pick = (spec, i) => ({ ...spec, modes: [spec.modes[i]], variables: spec.variables.map((v) => ({ ...v, values: [v.values[i]] })) });
+  const [color, dimension] = plan.collections;
+  return {
+    ...plan,
+    collections: [pick(color, choice.color), pick(dimension, choice.dimension)],
+    effectStyles: plan.effectStyles.filter((s) => s.theme === choice.theme && (s.mode === null || s.mode === choice.mode)),
+  };
+}
+
+async function run(plan) {
   const report = {
-    source: PLAN.source,
+    source: plan.source,
     collectionsCreated: 0,
     variablesCreated: 0,
     variablesUpdated: 0,
@@ -131,11 +147,17 @@ async function run() {
     unplanned: [],
     errors: [],
   };
-  const variables = await applyVariables(report);
-  await applyTextStyles(report);
-  await applyEffectStyles(variables, report);
+  const variables = await applyVariables(plan, report);
+  await applyTextStyles(plan, report);
+  await applyEffectStyles(plan, variables, report);
   figma.ui.postMessage(report);
 }
 
-figma.showUI(__html__, { width: 420, height: 380, title: "Scnehaux UI", themeColors: true });
-run().catch((error) => figma.ui.postMessage({ fatal: String(error && error.message ? error.message : error) }));
+figma.showUI(__html__, { width: 420, height: 460, title: "Scnehaux UI", themeColors: true });
+// The reader chooses every mode (a Figma plan with modes) or one theme and mode (Starter).
+figma.ui.postMessage({ choices: PLAN.choices.map((c) => `${c.theme} ${c.mode}`) });
+figma.ui.onmessage = (message) => {
+  if (!message || message.apply === undefined) return;
+  const plan = message.apply === "all" ? PLAN : narrow(PLAN, PLAN.choices[message.apply]);
+  run(plan).catch((error) => figma.ui.postMessage({ fatal: String(error && error.message ? error.message : error) }));
+};

@@ -4,6 +4,8 @@
   body { margin: 0; padding: 16px; font: 12px/1.5 Inter, system-ui, sans-serif; color: var(--figma-color-text); background: var(--figma-color-bg); }
   h1 { margin: 0 0 4px; font-size: 13px; font-weight: 600; }
   p { margin: 0 0 12px; color: var(--figma-color-text-secondary); }
+  form label { display: block; margin: 0 0 6px; }
+  button { margin-block-end: 12px; }
   dl { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; margin: 0 0 12px; }
   dd { margin: 0; font-variant-numeric: tabular-nums; text-align: end; }
   ul { margin: 4px 0 12px; padding-inline-start: 16px; max-height: 96px; overflow: auto; }
@@ -11,13 +13,31 @@
   .error { color: var(--figma-color-text-danger); }
 </style>
 <h1>Scnehaux UI tokens</h1>
-<p id="status">Applying the plan…</p>
+<p id="status">Choose what this file holds.</p>
+<form id="choose">
+  <label><input type="radio" name="mode" value="all" checked> Every theme and mode (a Figma plan with modes: Professional and above)</label>
+  <div id="choices"></div>
+  <p>On Starter a collection holds one mode: choose one theme and mode per file.</p>
+  <button type="submit">Apply</button>
+</form>
 <div id="out"></div>
 <script>
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
   const list = (title, items, cls) => (items.length ? `<div class="${cls}">${esc(title)} (${items.length})</div><ul>${items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>` : "");
+  const form = document.getElementById("choose");
+  form.onsubmit = (event) => {
+    event.preventDefault();
+    const value = new FormData(form).get("mode");
+    form.hidden = true;
+    document.getElementById("status").textContent = "Applying the plan…";
+    parent.postMessage({ pluginMessage: { apply: value === "all" ? "all" : Number(value) } }, "*");
+  };
   onmessage = (event) => {
     const r = event.data.pluginMessage;
+    if (r.choices) {
+      document.getElementById("choices").innerHTML = r.choices.map((c, i) => `<label><input type="radio" name="mode" value="${i}"> ${esc(c)} only</label>`).join("");
+      return;
+    }
     const status = document.getElementById("status");
     if (r.fatal) { status.className = "error"; status.textContent = `Failed: ${r.fatal}`; return; }
     status.textContent = `Applied ${r.source}.`;
