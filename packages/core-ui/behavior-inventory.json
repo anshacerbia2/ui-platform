@@ -929,6 +929,11 @@
       "kind": "presentational"
     },
     {
+      "entry": "@scnx/core-ui/components/link-base",
+      "stability": "candidate",
+      "kind": "interactive"
+    },
+    {
       "entry": "@scnx/core-ui/components/list-base",
       "stability": "candidate",
       "kind": "presentational"
@@ -1052,6 +1057,11 @@
       "entry": "@scnx/system/components/kbd",
       "stability": "candidate",
       "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/system/components/link",
+      "stability": "candidate",
+      "kind": "interactive"
     },
     {
       "entry": "@scnx/system/components/list",

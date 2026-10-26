@@ -35,3 +35,4 @@ export type {
   NavigationBaseTextProps,
   NavigationBaseTrailingIconProps,
 } from "../navigation-base/types";
+export type { LinkBaseAnchorProps, LinkBaseChildProps, LinkBaseProps } from "../link-base/types";

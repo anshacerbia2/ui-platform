@@ -1,12 +1,13 @@
 import type { ReactElement } from "react";
-import { Slot } from "../../utils/Slot";
+import { LinkBase } from "../link-base/LinkBase";
+import type { LinkBaseProps } from "../link-base/types";
 import type { NavigationBarBaseLinkProps } from "./types";
 
 /**
- * One destination of the navigation bar: a native `a href`, or with `asChild`
- * its single child, for example a router Link, which receives the link's props
- * (TDD primitives P2). `current` marks the page the reader is on with
- * `aria-current="page"` (TDD primitives P8).
+ * One destination of the navigation bar, on LinkBase (TDD primitives P29,
+ * P30): a native `a href`, or with `asChild` its single child, for example a
+ * router Link. `current` marks the page the reader is on with
+ * `aria-current="page"`; a consumer's own `aria-current` wins.
  *
  * @example
  * ```tsx
@@ -14,9 +15,8 @@ import type { NavigationBarBaseLinkProps } from "./types";
  * <NavigationBarBase.Link asChild><RouterLink to="/blog">Blog</RouterLink></NavigationBarBase.Link>
  * ```
  */
-export const NavigationBarBaseLink = ({ asChild = false, current = false, ...rest }: NavigationBarBaseLinkProps): ReactElement => {
-  const props = { "data-slot": "link", "aria-current": current ? ("page" as const) : undefined, ...rest };
-  return asChild ? <Slot {...props} /> : <a {...props} />;
-};
+export const NavigationBarBaseLink = ({ current = false, ...rest }: NavigationBarBaseLinkProps): ReactElement => (
+  <LinkBase aria-current={current ? "page" : undefined} {...(rest as LinkBaseProps)} />
+);
 
 NavigationBarBaseLink.displayName = "NavigationBarBase.Link";

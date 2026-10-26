@@ -82,6 +82,10 @@
       "types": "./dist/components/kbd/index.d.ts",
       "default": "./dist/components/kbd/index.js"
     },
+    "./components/link": {
+      "types": "./dist/components/link/index.d.ts",
+      "default": "./dist/components/link/index.js"
+    },
     "./components/list": {
       "types": "./dist/components/list/index.d.ts",
       "default": "./dist/components/list/index.js"
@@ -168,6 +172,7 @@
     "./specs/heading.json": "./dist/specs/heading.json",
     "./specs/icon-button.json": "./dist/specs/icon-button.json",
     "./specs/kbd.json": "./dist/specs/kbd.json",
+    "./specs/link.json": "./dist/specs/link.json",
     "./specs/list.json": "./dist/specs/list.json",
     "./specs/navbar.json": "./dist/specs/navbar.json",
     "./specs/navigation.json": "./dist/specs/navigation.json",

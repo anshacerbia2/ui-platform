@@ -402,6 +402,17 @@ Component wave 1 adds Table; the visual target is the design reference's
 | TA2 | The frame is the flat material (`neutral.surface.raised`, `radius.container`, `effect.material.flat`, a transparent border for forced-colors mode) and scrolls a table wider than its container. The table is `data.compact` text. Header cells are eyebrows: `code.small` at regular weight, uppercase, tracked 0.12em, in subtle text on `neutral.surface.subtle`, 36 px high. Body cells are 44 px high; header and body cells are padded `spacing.inset-default` inline. | ADR-UIP-VIS-001 items 1 and 5 | Row heights are recorded hook fallbacks, component geometry by ADR-UIP-VIS-001 item 6. A scrolling frame is reachable by keyboard in Chromium and Firefox, which focus scroll containers; in WebKit a wide table's frame is not focusable, so a consumer whose table overflows gives its frame or a cell a focus stop. |
 | TA3 | Lines are borders in `border.subtle`: under the header row and under every body row except the last. With collapsed borders a row's border is drawn, and borders survive forced-colors mode where the reference's inset shadows do not. A body row takes `neutral.surface.subtle.hover` on hover and `primary.surface.subtle` when selected. | Design reference `components/Table/README.md`; STD-GLB-FE-005 3.9 | Selection is blue because it marks meaning (ADR-UIP-VIS-001 item 3); hover is neutral. |
 
+#### Decision record: Link
+
+Component wave 1 adds Link; the visual target is the design reference's
+`components/Link/` (ADR-UIP-VIS-002).
+
+| ID  | Decision | Sources | Tradeoff |
+| :-- | :------- | :------ | :------- |
+| LK1 | `Link` is `@scnx/system/components/link`, on `LinkBase` (TDD primitives P30): a native link with a required `href`, or with `asChild` its single child, such as a router Link. `variant` is `primary` (default) or `neutral`, set as `data-variant`. `external`, in anchor mode only, appends a 16 px stroked icon after the text, `aria-hidden`, so the link's name is its text; `target` stays the consumer's, set only when the reader expects a new tab. | Design reference `components/Link/README.md`; TDD primitives P30 | The icon does not announce that the link leaves the product; a consumer for whom that matters words the text. `external` is not available with `asChild`, because the child renders its own content. |
+| LK2 | `primary` is `primary.text.subtle` text with a `border-width.default` underline in `primary.border.default` at a 0.22em offset (a recorded hook fallback); on hover the text takes `primary.text.subtle.hover` and the underline `currentColor`. `neutral` inherits the surrounding color with a `neutral.border.strong` underline that takes `currentColor` on hover, for dense copy such as footers and table cells. | ADR-UIP-VIS-001 item 3; WCAG 2.2 SC 1.4.1 | The underline, not the color, marks a link, so a neutral link in body text is still a link. Links are where blue marks meaning (item 3). |
+| LK3 | A link has no background and no button padding; its `radius.mark` only rounds the focus outline drawn by the base styles. | Design reference `components/Link/README.md`; STD-GLB-FE-005 3.9 | An action that does not navigate is a Button; a link styled as a button is a Button with `href`. |
+
 #### Decision record: industrial structure
 
 ADR-UIP-VIS-001 (revisions 2 and 3, 2026-10-25) makes the default theme,

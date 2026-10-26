@@ -1,0 +1,267 @@
+{
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
+  "entry": "@scnx/system/components/link",
+  "entryKind": "interactive",
+  "stability": "candidate",
+  "primitive": null,
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-link"
+    },
+    {
+      "name": "icon",
+      "selector": ".scnx-link svg"
+    }
+  ],
+  "options": {
+    "variant": {
+      "values": [
+        "primary",
+        "neutral"
+      ],
+      "default": "primary",
+      "selector": "[data-variant={value}]"
+    }
+  },
+  "states": [
+    {
+      "name": "hover",
+      "selectors": [
+        ":hover"
+      ],
+      "enter": {
+        "interaction": "hover"
+      }
+    }
+  ],
+  "fixture": {
+    "props": {
+      "href": "#changelog",
+      "external": true,
+      "children": "Changelog"
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "color": "{color.primary.text.subtle.default}",
+        "text-decoration-thickness": "{dimension.border-width.default}",
+        "text-decoration-color": "{color.primary.border.default.default}",
+        "border-radius": "{dimension.radius.mark}",
+        "transition": "color {motion.feedback.duration} {motion.feedback.easing}, text-decoration-color {motion.feedback.duration} {motion.feedback.easing}"
+      }
+    },
+    {
+      "part": "root",
+      "state": "hover",
+      "declarations": {
+        "color": "{color.primary.text.subtle.hover}",
+        "text-decoration-color": "currentColor"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "variant": "neutral"
+      },
+      "declarations": {
+        "text-decoration-color": "{color.neutral.border.strong.default}",
+        "color": "inherit"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "variant": "neutral"
+      },
+      "state": "hover",
+      "declarations": {
+        "text-decoration-color": "currentColor"
+      }
+    }
+  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-link-color: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-link-color",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.primary.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Link.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-link-color-hover",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.primary.text.subtle.hover}"
+      ],
+      "floor": null,
+      "purpose": "The color of Link in the hover state.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-link-icon-gap",
+      "parts": [
+        "icon"
+      ],
+      "properties": [
+        "margin-inline-start"
+      ],
+      "fallbacks": [
+        "0.15em"
+      ],
+      "floor": null,
+      "purpose": "The margin-inline-start of Link's icon part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-link-icon-size",
+      "parts": [
+        "icon"
+      ],
+      "properties": [
+        "block-size",
+        "inline-size"
+      ],
+      "fallbacks": [
+        "0.85em"
+      ],
+      "floor": null,
+      "purpose": "The block-size and inline-size of Link's icon part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-link-icon-vertical-align",
+      "parts": [
+        "icon"
+      ],
+      "properties": [
+        "vertical-align"
+      ],
+      "fallbacks": [
+        "-0.05em"
+      ],
+      "floor": null,
+      "purpose": "The vertical-align of Link's icon part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-link-radius",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.mark}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Link.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-link-transition-duration",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.feedback.duration}"
+      ],
+      "floor": null,
+      "purpose": "The transition of Link.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-link-transition-timing-function",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.feedback.easing}"
+      ],
+      "floor": null,
+      "purpose": "The transition of Link.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-link-underline-color",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "text-decoration-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.border.strong.default}",
+        "{color.primary.border.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The text-decoration-color of Link.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-link-underline-offset",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "text-underline-offset"
+      ],
+      "fallbacks": [
+        "0.22em"
+      ],
+      "floor": null,
+      "purpose": "The text-underline-offset of Link.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-link-underline-thickness",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "text-decoration-thickness"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null,
+      "purpose": "The text-decoration-thickness of Link.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every variant value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
+  ]
+}

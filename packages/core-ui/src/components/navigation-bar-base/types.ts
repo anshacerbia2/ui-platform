@@ -1,4 +1,5 @@
 import type { ComponentPropsWithRef, ReactNode } from "react";
+import type { LinkBaseProps } from "../link-base/types";
 
 export type NavigationBarBaseRootProps = Omit<ComponentPropsWithRef<"header">, "ref">;
 
@@ -12,9 +13,8 @@ export type NavigationBarBaseNavProps = {
   children: ReactNode;
 };
 
-export type NavigationBarBaseLinkProps = ComponentPropsWithRef<"a"> & {
-  /** The link is the page the reader is on: ria-current="page". */
+/** A link of the bar: LinkBase (TDD primitives P30), a native `a href` or `asChild`. */
+export type NavigationBarBaseLinkProps = LinkBaseProps & {
+  /** The link is the page the reader is on: `aria-current="page"`. */
   current?: boolean;
-  /** Renders the single child element, for example a router Link, with the link's props. */
-  asChild?: boolean;
 };
