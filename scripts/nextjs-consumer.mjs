@@ -126,7 +126,19 @@ export default function Page() {
         <section key={specifier} data-entry={specifier}>
           {Object.entries(mod)
             .filter(([name, value]) => /^[A-Z]/.test(name) && isComponent(value))
-            .map(([name, Component]) => <Component key={name}>{"server-safe " + specifier + " " + name}</Component>)}
+            .map(([name, Component]) =>
+              Component.Body && Component.Row && Component.Cell ? (
+                <Component key={name}>
+                  <Component.Body>
+                    <Component.Row>
+                      <Component.Cell>{"server-safe " + specifier + " " + name}</Component.Cell>
+                    </Component.Row>
+                  </Component.Body>
+                </Component>
+              ) : (
+                <Component key={name}>{"server-safe " + specifier + " " + name}</Component>
+              ),
+            )}
         </section>
       ))}
       {/* Client-only entries with serializable props, from the Server Component. */}

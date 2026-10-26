@@ -14,7 +14,8 @@
 // - keyboard focus on every focusable part draws a visible outline, normally
 //   and under forced colors, where the outline uses the Highlight system color;
 // - every focusable part's pointer target (for CodeSelect, its wrapper) is at
-//   least 24 by 24 CSS pixels (WCAG 2.2 SC 2.5.8; STD-UIP-STY-001).
+//   least 24 by 24 CSS pixels (WCAG 2.2 SC 2.5.8; STD-UIP-STY-001), except an inline
+//   target in running text, the SC's "Inline" exception;
 // The computed tokens of every styled component, per option and state, are
 // checked by scripts/browser-specs.mjs against its specification (TDD styled CS4).
 //
@@ -171,7 +172,7 @@ async function focusWalk(tab) {
         ...(() => {
           const target = el.closest(".scnx-code-select__wrapper") ?? el.closest(".scnx-segmented-control > [data-part=item]") ?? el;
           const box = target.getBoundingClientRect();
-          return { width: box.width, height: box.height };
+          return { width: box.width, height: box.height, inline: getComputedStyle(target).display === "inline" };
         })(),
         key: el.outerHTML.slice(0, 80) + "@" + (root?.getAttribute("data-fixture-root") ?? "host"),
       };
@@ -295,8 +296,9 @@ async function verify(browser) {
       if (state.outlineStyle === "none" || !(state.outlineWidth >= 1)) {
         failures.push(`${where}: no visible outline (${state.outlineStyle} ${state.outlineWidth}px)`);
       }
-      // WCAG 2.2 SC 2.5.8; STD-UIP-STY-001, "Governed values".
-      if (Math.min(state.width, state.height) < 24) {
+      // WCAG 2.2 SC 2.5.8; STD-UIP-STY-001, "Governed values". An inline target in running
+      // text, such as a Link, is the SC's "Inline" exception: its size is set by the line height.
+      if (!state.inline && Math.min(state.width, state.height) < 24) {
         failures.push(`${where}: pointer target ${state.width.toFixed(1)} x ${state.height.toFixed(1)} CSS px is below 24 x 24 (WCAG 2.2 SC 2.5.8)`);
       }
       if (forcedColors === "active" && state.outlineColor !== highlight) {
