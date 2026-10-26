@@ -141,6 +141,8 @@ function measure({ caseId, root, selector, exclude, declarations, properties, ma
   for (const [property, value] of Object.entries(declarations)) probe.style.setProperty(property, value);
   if (!("opacity" in declarations)) probe.style.setProperty("opacity", "1");
   scope.append(probe);
+  // A bound animation (a floating entrance) runs on the new probe; its end state is the one to compare.
+  for (const animation of probe.getAnimations()) animation.finish();
   const have = getComputedStyle(el, pseudo);
   const want = getComputedStyle(probe);
   const out = Object.fromEntries(properties.map((p) => [p, [have.getPropertyValue(p), want.getPropertyValue(p)]]));

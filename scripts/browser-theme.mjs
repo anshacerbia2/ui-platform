@@ -90,11 +90,15 @@ export const App = () => (
         </Accordion.Item>
       </Accordion>
     </ThemeProvider>
-    <ThemeProvider themeId="scnx-saas" defaultMode="light" storage={false}><Toggle id="second" /></ThemeProvider>
-    {/* Server-rendered: its markup carries no style attribute (TDD theme THM-009). */}
-    <div data-behavior-matrix="">
-      <BehaviorFixtures components={{ ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase, DialogBase, TabsBase, ComboboxBase, RadioGroupBase, TooltipBase, PopoverBase, MenuBase }} />
-    </div>
+    {/* The behavior matrix sits in the second root, so the page keeps exactly two theme roots;
+        its floating parts open into that provider's portal container. Server-rendered: its
+        markup carries no style attribute (TDD theme THM-009). */}
+    <ThemeProvider themeId="scnx-saas" defaultMode="light" storage={false}>
+      <Toggle id="second" />
+      <div data-behavior-matrix="">
+        <BehaviorFixtures components={{ ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase, DialogBase, TabsBase, ComboboxBase, RadioGroupBase, TooltipBase, PopoverBase, MenuBase }} />
+      </div>
+    </ThemeProvider>
   </main>
 );
 `);
