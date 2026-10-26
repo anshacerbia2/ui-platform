@@ -22,10 +22,11 @@ export type FixtureComponents = {
   RadioGroupBase: C;
   TooltipBase: C;
   PopoverBase: C;
+  MenuBase: C;
 };
 
 export function BehaviorFixtures({ components }: { components: FixtureComponents }): ReactElement {
-  const { ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase, DialogBase, TabsBase, ComboboxBase, RadioGroupBase, TooltipBase, PopoverBase } = components;
+  const { ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase, DialogBase, TabsBase, ComboboxBase, RadioGroupBase, TooltipBase, PopoverBase, MenuBase } = components;
   const [pressed, setPressed] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -147,6 +148,17 @@ export function BehaviorFixtures({ components }: { components: FixtureComponents
             <PopoverBase.Close>Done</PopoverBase.Close>
           </PopoverBase.Content>
         </PopoverBase>
+      </div>
+      <div data-inventory="MenuBase">
+        <MenuBase>
+          <MenuBase.Trigger>Actions</MenuBase.Trigger>
+          <MenuBase.Content>
+            <MenuBase.Item>Rename</MenuBase.Item>
+            <MenuBase.Item disabled>Archive</MenuBase.Item>
+            <MenuBase.Separator />
+            <MenuBase.Item>Delete</MenuBase.Item>
+          </MenuBase.Content>
+        </MenuBase>
       </div>
     </div>
   );

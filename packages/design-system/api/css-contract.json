@@ -126,6 +126,7 @@
         "scnx-list--variant_unordered",
         "scnx-list--variant_unstyled",
         "scnx-list-item",
+        "scnx-menu",
         "scnx-navbar",
         "scnx-navbar__center",
         "scnx-navbar__end",

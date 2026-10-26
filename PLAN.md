@@ -117,7 +117,9 @@ components the package does not have yet.
   they shipped in #137 (TDD styled SG1-SG4, KB1-KB2; TDD primitives P28).
   Table followed on 2026-10-26 as a compound on native table semantics (TDD
   styled TA1-TA3), and Link on the new LinkBase primitive (TDD styled LK1-LK3;
-  TDD primitives P30).
+  TDD primitives P30). Tooltip, Popover, and Menu completed wave 1 the same day,
+  on a floating module of the package's own (TDD primitives P31-P34; TDD styled
+  FE1, TT1-TT2, PO1-PO2, MN1-MN3).
 - **Wave 2** (not ordered): Avatar, Breadcrumb, Checkbox, Pagination, Progress,
   Radio, Select, Sheet, Skeleton, Spinner, Switch, Textarea, and Toast.
 

@@ -85,6 +85,10 @@
       "types": "./dist/components/list-base/index.d.ts",
       "default": "./dist/components/list-base/index.js"
     },
+    "./components/menu-base": {
+      "types": "./dist/components/menu-base/index.d.ts",
+      "default": "./dist/components/menu-base/index.js"
+    },
     "./components/navigation-bar-base": {
       "types": "./dist/components/navigation-bar-base/index.d.ts",
       "default": "./dist/components/navigation-bar-base/index.js"
@@ -156,6 +160,7 @@
     "./specs/heading-base.json": "./dist/specs/heading-base.json",
     "./specs/link-base.json": "./dist/specs/link-base.json",
     "./specs/list-base.json": "./dist/specs/list-base.json",
+    "./specs/menu-base.json": "./dist/specs/menu-base.json",
     "./specs/navigation-bar-base.json": "./dist/specs/navigation-bar-base.json",
     "./specs/navigation-base.json": "./dist/specs/navigation-base.json",
     "./specs/popover-base.json": "./dist/specs/popover-base.json",

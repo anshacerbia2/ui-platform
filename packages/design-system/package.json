@@ -90,6 +90,10 @@
       "types": "./dist/components/list/index.d.ts",
       "default": "./dist/components/list/index.js"
     },
+    "./components/menu": {
+      "types": "./dist/components/menu/index.d.ts",
+      "default": "./dist/components/menu/index.js"
+    },
     "./components/navbar": {
       "types": "./dist/components/navbar/index.d.ts",
       "default": "./dist/components/navbar/index.js"
@@ -182,6 +186,7 @@
     "./specs/kbd.json": "./dist/specs/kbd.json",
     "./specs/link.json": "./dist/specs/link.json",
     "./specs/list.json": "./dist/specs/list.json",
+    "./specs/menu.json": "./dist/specs/menu.json",
     "./specs/navbar.json": "./dist/specs/navbar.json",
     "./specs/navigation.json": "./dist/specs/navigation.json",
     "./specs/popover.json": "./dist/specs/popover.json",
