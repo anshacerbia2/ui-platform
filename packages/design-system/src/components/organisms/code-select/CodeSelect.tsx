@@ -47,10 +47,24 @@ export function CodeSelect({ options = [], value, onChange, placeholder = "Selec
         {icon && <span className="scnx-code-select__icon">{icon}</span>}
         <ComboboxBase.Input ref={inputRef} className="scnx-code-select__input" aria-label={name} placeholder={placeholder} />
         <span className="scnx-code-select__chevron" aria-hidden="true">
-          ▼
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" focusable="false">
+            <path d="M6 9.5l6 6 6-6" />
+          </svg>
         </span>
       </div>
-      <ComboboxBase.Listbox className="scnx-code-select__dropdown" optionClassName="scnx-code-select__option" aria-label={name} />
+      <ComboboxBase.Listbox className="scnx-code-select__dropdown" optionClassName="scnx-code-select__option" aria-label={name}>
+        {(item, { selected }) => (
+          <>
+            {item.label}
+            {/* aria-selected already names the selection; the check is its visible cue. */}
+            {selected && (
+              <svg className="scnx-code-select__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+                <path d="M5 12.5l4.5 4.5L19 7.5" />
+              </svg>
+            )}
+          </>
+        )}
+      </ComboboxBase.Listbox>
       <ComboboxBase.Status className="scnx-code-select__status">{(count) => `${count} ${count === 1 ? "option" : "options"}`}</ComboboxBase.Status>
     </ComboboxBase>
   );
