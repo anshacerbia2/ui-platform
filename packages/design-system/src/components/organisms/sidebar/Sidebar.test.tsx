@@ -36,6 +36,23 @@ describe("Sidebar", () => {
     expect(sidebar).toHaveAttribute("data-state", "collapsed");
   });
 
+  it("marks its variant on the root (TDD styled SB3)", () => {
+    const { rerender } = render(
+      <SidebarProvider>
+        <Sidebar aria-label="Main" />
+      </SidebarProvider>,
+    );
+    const aside = document.querySelector(".scnx-sidebar")!;
+    expect(aside).toHaveAttribute("data-variant", "default");
+    expect(aside).not.toHaveAttribute("variant");
+    rerender(
+      <SidebarProvider>
+        <Sidebar aria-label="Main" variant="floating" />
+      </SidebarProvider>,
+    );
+    expect(document.querySelector(".scnx-sidebar")).toHaveAttribute("data-variant", "floating");
+  });
+
   it("collapsed flyout: Escape closes it and returns focus to its opener", async () => {
     render(<Fixture defaultIsOpen={false} />);
     const opener = screen.getByRole("button", { name: "Payroll" });

@@ -39,8 +39,8 @@ export type FlyoutContextValue = {
 };
 
 export type SidebarProps = {
-  /** Visual variant of the sidebar. */
-  variant?: "dark" | "light";
+  /** `floating` is the raised material, for FloatingLayout; the default is the canvas column of EdgeLayout. @default "default" */
+  variant?: "default" | "floating";
 } & SidebarBaseRootProps;
 
 export type SidebarProviderProps = {
@@ -60,7 +60,6 @@ export type SidebarFooterProps = SidebarBaseFooterProps;
 export type SidebarFlyoutProps = {
   className?: string;
   width?: string | number;
-  variant?: "dark" | "light";
 };
 
 export type NavigableChildProps = {

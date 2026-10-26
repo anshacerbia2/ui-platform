@@ -12,15 +12,10 @@ $c: sidebar;
 // styled HK10): labels slide, and widths, heights, and rotations transition,
 // only inside `when-motion-allowed`; otherwise they change at once, whatever
 // the motion tokens say, and the end states are the same. Fades run always.
-
-.scnx-sidebar {
-  &[data-variant="light"] {
-    .scnx-sidebar__toggle {
-      color: hook($c, toggle-color, $color-text-primary);
-      border-color: hook($c, toggle-border-color, $color-border-subtle);
-    }
-  }
-}
+//
+// PLAN I2 (TDD styled SB1-SB3): the column is the canvas with an end hairline,
+// padded so its items are concentric; the floating variant is the raised
+// material, for FloatingLayout.
 
 .scnx-sidebar {
   position: relative;
@@ -29,8 +24,19 @@ $c: sidebar;
   flex-shrink: 0;
   width: hook($c, width, geometry.$sidebar-width);
   height: 100%;
-  background-color: hook($c, background, $color-surface-default);
+  padding: hook($c, padding, $dimension-spacing-inset-compact);
+  background-color: hook($c, background, $color-surface-canvas);
+  border-inline-end: hook($c, border-width, $dimension-border-width-default) solid hook($c, border-color, $color-border-subtle);
   color: hook($c, color, $color-text-primary);
+
+  // The raised material. A transparent border keeps the boundary in
+  // forced-colors mode, where box shadows are not drawn.
+  &[data-variant="floating"] {
+    background-color: hook($c, floating-background, $color-surface-raised);
+    border: hook($c, border-width, $dimension-border-width-default) solid transparent;
+    border-radius: hook($c, floating-radius, $dimension-radius-container);
+    box-shadow: hook($c, floating-shadow, $effect-material-raised);
+  }
 
   @include when-motion-allowed {
     transition: width hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing);
@@ -38,7 +44,7 @@ $c: sidebar;
 
   &__navigation {
     flex-grow: 1;
-    margin-block: hook($c, navigation-margin-block, $dimension-spacing-stack-comfortable);
+    margin-block: hook($c, navigation-margin-block, $dimension-spacing-stack-default);
     // Overrides the Navigation root padding: Sidebar loads after Navigation
     // in the components layer, so source order decides at equal specificity.
     padding-block: 0;
@@ -61,7 +67,7 @@ $c: sidebar;
     .scnx-navigation__item {
       position: relative;
       color: hook($c, item-color, $color-text-secondary);
-      border-radius: hook($c, item-radius, $dimension-radius-control);
+      border-radius: hook($c, item-radius, $dimension-radius-element);
       transition:
         background-color hook($c, feedback-duration, $motion-feedback-duration) hook($c, feedback-timing-function, $motion-feedback-easing),
         color hook($c, feedback-duration, $motion-feedback-duration) hook($c, feedback-timing-function, $motion-feedback-easing);
@@ -102,10 +108,6 @@ $c: sidebar;
           opacity hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing),
           visibility hook($c, transition-duration, $motion-disclosure-duration);
       }
-    }
-
-    .scnx-navigation__badge {
-      background-color: hook($c, badge-background, color-mix(in oklch, var(--ds-color-neutral-surface-default-default) 10%, transparent));
     }
 
     .scnx-navigation__trailing-icon {
@@ -243,7 +245,10 @@ $c: sidebar;
 
   &__header {
     flex-shrink: 0;
-    padding: hook($c, header-padding, $dimension-spacing-inset-default);
+    display: flex;
+    align-items: center;
+    min-block-size: hook($c, header-min-block-size, $dimension-size-control-comfortable);
+    padding: hook($c, header-padding, 0 $dimension-spacing-inline-default);
     border-bottom: none;
     @include hooked-typography($c, heading, small, $prefix: header, $except: (font-weight));
     font-weight: hook($c, header-font-weight, $typography-weight-semibold);
@@ -252,7 +257,7 @@ $c: sidebar;
   }
 
   &__footer {
-    padding: hook($c, footer-padding, $dimension-spacing-inset-default);
+    padding: hook($c, footer-padding, $dimension-spacing-inset-compact);
     border-top: hook($c, footer-border-width, $dimension-border-width-default) solid hook($c, footer-border-color, $color-border-subtle);
     flex-shrink: 0;
   }
@@ -302,7 +307,7 @@ $c: sidebar;
       &:hover,
       &:focus,
       &[data-active="true"] {
-        background-color: hook($c, flyout-item-background, color-mix(in oklch, var(--ds-color-neutral-surface-default-default) 10%, transparent));
+        background-color: hook($c, flyout-item-background, $color-state-hover);
       }
     }
 
@@ -321,10 +326,6 @@ $c: sidebar;
           opacity hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing),
           visibility hook($c, transition-duration, $motion-disclosure-duration);
       }
-    }
-
-    .scnx-navigation__badge {
-      background-color: hook($c, badge-background, color-mix(in oklch, var(--ds-color-neutral-surface-default-default) 10%, transparent));
     }
 
     .scnx-navigation__trailing-icon {
@@ -407,7 +408,7 @@ $c: sidebar;
   }
 
   &[data-state="collapsed"] {
-    width: hook($c, collapsed-width, 80px);
-    min-width: hook($c, collapsed-width, 80px);
+    width: hook($c, collapsed-width, 3.5rem);
+    min-width: hook($c, collapsed-width, 3.5rem);
   }
 }

@@ -29,7 +29,6 @@ import { cx } from "styled-system/css";
 export const SidebarFlyout = ({
   className = "",
   width,
-  variant = "dark",
 }: SidebarFlyoutProps) => {
   const flyoutRef = useRef<HTMLDivElement>(null);
   const { activeFlyout, isFlyoutClosing, closeFlyout, cleanupFlyout } =
@@ -150,7 +149,7 @@ export const SidebarFlyout = ({
   }
 
   return createPortal(
-    <div ref={flyoutRef} className={cx("scnx-sidebar__flyout", className)} style={pos} data-variant={variant}>
+    <div ref={flyoutRef} className={cx("scnx-sidebar__flyout", className)} style={pos}>
       <Transition
         key={activeFlyout.ownerId}
         open={!isFlyoutClosing}

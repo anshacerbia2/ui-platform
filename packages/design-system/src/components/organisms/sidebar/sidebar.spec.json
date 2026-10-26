@@ -15,7 +15,7 @@
         "background-color"
       ],
       "fallbacks": [
-        "{color.neutral.surface.default.default}"
+        "{color.neutral.surface.canvas.default}"
       ],
       "floor": null,
       "purpose": "The background-color of Sidebar.",
@@ -23,18 +23,35 @@
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
-      "hook": "--scnx-sidebar-badge-background",
+      "hook": "--scnx-sidebar-border-color",
       "parts": [
-        "badge"
+        "root"
       ],
       "properties": [
-        "background-color"
+        "border-inline-end"
       ],
       "fallbacks": [
-        "color-mix(in oklch,{color.neutral.surface.default.default} 10%,transparent)"
+        "{color.neutral.border.subtle.default}"
       ],
       "floor": null,
-      "purpose": "The background-color of Sidebar's badge part.",
+      "purpose": "The border-inline-end of Sidebar.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-border-width",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border",
+        "border-inline-end"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.default}"
+      ],
+      "floor": null,
+      "purpose": "The border-inline-end of Sidebar, and its transparent border in the floating variant.",
       "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
@@ -48,7 +65,7 @@
         "width"
       ],
       "fallbacks": [
-        "80px"
+        "3.5rem"
       ],
       "floor": null,
       "purpose": "The min-width and width of Sidebar.",
@@ -100,6 +117,54 @@
       ],
       "floor": null,
       "purpose": "The transition of Sidebar's item part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-floating-background",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.raised.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Sidebar in the floating variant.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-floating-radius",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.container}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Sidebar in the floating variant.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-floating-shadow",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "{effect.material.raised}"
+      ],
+      "floor": null,
+      "purpose": "The box-shadow of Sidebar in the floating variant.",
       "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
@@ -160,10 +225,10 @@
         "background-color"
       ],
       "fallbacks": [
-        "color-mix(in oklch,{color.neutral.surface.default.default} 10%,transparent)"
+        "{color.neutral.surface.default.hover}"
       ],
       "floor": null,
-      "purpose": "The background-color of Sidebar's item part.",
+      "purpose": "The background-color of an item in Sidebar's flyout when it is hovered, focused, or active.",
       "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
@@ -289,7 +354,7 @@
         "padding"
       ],
       "fallbacks": [
-        "{dimension.spacing.inset-default}"
+        "{dimension.spacing.inset-compact}"
       ],
       "floor": null,
       "purpose": "The padding of Sidebar's footer part.",
@@ -377,6 +442,22 @@
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
     {
+      "hook": "--scnx-sidebar-header-min-block-size",
+      "parts": [
+        "header"
+      ],
+      "properties": [
+        "min-block-size"
+      ],
+      "fallbacks": [
+        "{dimension.size.control-comfortable}"
+      ],
+      "floor": null,
+      "purpose": "The min-block-size of Sidebar's header part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
       "hook": "--scnx-sidebar-header-padding",
       "parts": [
         "header"
@@ -385,7 +466,7 @@
         "padding"
       ],
       "fallbacks": [
-        "{dimension.spacing.inset-default}"
+        "0 {dimension.spacing.inline-default}"
       ],
       "floor": null,
       "purpose": "The padding of Sidebar's header part.",
@@ -497,7 +578,7 @@
         "border-radius"
       ],
       "fallbacks": [
-        "{dimension.radius.control}"
+        "{dimension.radius.element}"
       ],
       "floor": null,
       "purpose": "The border-radius of Sidebar's item part.",
@@ -610,10 +691,26 @@
         "margin-block"
       ],
       "fallbacks": [
-        "{dimension.spacing.stack-comfortable}"
+        "{dimension.spacing.stack-default}"
       ],
       "floor": null,
       "purpose": "The margin-block of Sidebar's navigation part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-sidebar-padding",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "padding"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inset-compact}"
+      ],
+      "floor": null,
+      "purpose": "The padding of Sidebar.",
       "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
@@ -655,15 +752,13 @@
         "toggle"
       ],
       "properties": [
-        "border",
-        "border-color"
+        "border"
       ],
       "fallbacks": [
-        "{color.neutral.border.default.default}",
-        "{color.neutral.border.subtle.default}"
+        "{color.neutral.border.default.default}"
       ],
       "floor": null,
-      "purpose": "The border and border-color of Sidebar's toggle part.",
+      "purpose": "The border of Sidebar's toggle part.",
       "coverage": "scnx-platform and scnx-saas, light and dark.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },
@@ -692,7 +787,6 @@
         "color"
       ],
       "fallbacks": [
-        "{color.neutral.text.default.default}",
         "{color.neutral.text.subtle.default}"
       ],
       "floor": null,
