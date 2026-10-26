@@ -1,0 +1,62 @@
+{
+  "$schema": "../../../../../scripts/specs/schema/primitive.schema.json",
+  "kind": "primitive",
+  "name": "PopoverBase",
+  "entry": "@scnx/core-ui/components/popover-base",
+  "stability": "candidate",
+  "root": "none (context only); the content is a div with role dialog in the theme's portal container",
+  "parts": [
+    {
+      "name": "trigger",
+      "element": "button",
+      "selector": "[data-inventory='PopoverBase'] button[aria-haspopup='dialog']"
+    }
+  ],
+  "controlledProps": [
+    "open"
+  ],
+  "states": [
+    "open",
+    "closed"
+  ],
+  "keys": [
+    {
+      "key": "Enter",
+      "part": "trigger",
+      "condition": "focused, the popover closed",
+      "effect": "opens the popover and moves focus into it",
+      "expect": {
+        "part": "trigger",
+        "attribute": "aria-expanded",
+        "value": "true"
+      }
+    },
+    {
+      "key": "Escape",
+      "part": "trigger",
+      "condition": "the popover is open",
+      "effect": "closes the popover and returns focus to the trigger",
+      "expect": {
+        "part": "trigger",
+        "attribute": "aria-expanded",
+        "value": "false"
+      }
+    },
+    {
+      "key": "Space",
+      "part": "trigger",
+      "condition": "focused",
+      "effect": "toggles the popover (native button)"
+    }
+  ],
+  "focus": {
+    "initial": "opening moves focus to the content's element with autofocus, else its first focusable element, else the content",
+    "movement": "native Tab order inside the content; focus may leave it, because the dialog is non-modal",
+    "restoration": "closing with Escape, the Close part, or the trigger returns focus to the trigger unless the reader moved it elsewhere"
+  },
+  "accessibleName": "the content is named by its Title, or by its own aria-label or aria-labelledby; the trigger by its text",
+  "dataHooks": [
+    "data-state",
+    "data-side"
+  ]
+}

@@ -141,6 +141,7 @@
         "scnx-navigation__item-content",
         "scnx-navigation__text",
         "scnx-navigation__trailing-icon",
+        "scnx-popover",
         "scnx-segmented-control",
         "scnx-sidebar",
         "scnx-sidebar__flyout",

@@ -424,6 +424,16 @@ reference's `components/Tooltip/`, `Popover/`, and `Menu/` (ADR-UIP-VIS-002).
 | TT1 | `Tooltip` is `@scnx/system/components/tooltip`, on `TooltipBase` (TDD primitives P32): `content` (a few words, or one sentence; a Kbd for a shortcut), the trigger as `children`, the base's open state, `delay`, and `placement`, and `contentProps` for the tooltip element. It needs a ThemeProvider, whose portal container it renders into. | Design reference `components/Tooltip/README.md` | The trigger is the consumer's element, so its name and focusability are the consumer's; an icon-only trigger still needs its own `aria-label`. |
 | TT2 | The ink material: `neutral.surface.solid` fill under `neutral.text.contrast`, `label.small`, `radius.element`, `effect.material.tooltip`, padded `spacing.inline-compact` by `spacing.inline-default`, at most 16 rem wide and at least 24 px high, 4 px from its trigger, with no stem, above other layers at `z-index.tooltip`. A transparent border keeps its boundary in forced-colors mode. A Kbd in it takes the ink and a `neutral.text.contrast.disabled` ring. | ADR-UIP-VIS-001 item 1; STD-GLB-FE-005 3.9 | The ink fill marks the tooltip as the one floating material that is not a surface to work on. |
 
+#### Decision record: Popover
+
+Component wave 1 adds Popover; the visual target is the design reference's
+`components/Popover/` (ADR-UIP-VIS-002).
+
+| ID  | Decision | Sources | Tradeoff |
+| :-- | :------- | :------ | :------- |
+| PO1 | `Popover` is `@scnx/system/components/popover`, a compound on `PopoverBase` (TDD primitives P33): `Popover`, `Popover.Trigger` and `Popover.Close` (the base's, `asChild` for a styled Button), `Popover.Content`, `Popover.Title`, `Popover.Body` (`data-part="body"`), and `Popover.Actions` (`data-part="actions"`). It needs a ThemeProvider, whose portal container it renders into. | Design reference `components/Popover/README.md` | A list of commands is a Menu and a blocking task a Dialog; the component cannot tell them apart, so its documentation says so. |
+| PO2 | The menu material: `neutral.surface.floating` fill under default text, `radius.container`, `effect.material.menu`, padded `spacing.inset-default`, 20 rem wide (a recorded hook fallback), `body.small` text, 4 px from its trigger, with no stem, above the page at `z-index.popover`, with the FE1 entrance. Its parts are a grid `spacing.stack-compact` apart; the title is `heading.xsmall` at semibold weight, the body subtle text, the actions end-aligned `spacing.inline-default` apart after `spacing.stack-default`. A transparent border keeps its boundary in forced-colors mode. Controls inside keep their own radius: a container radius less its own padding is flat. | ADR-UIP-VIS-001 items 1 and 2 | A 20 rem popover is wider than a viewport under 336 px less the positioner's 8 px margins; it is not clamped, because the stylesheet gate allows no literal factor outside a hook. |
+
 #### Decision record: industrial structure
 
 ADR-UIP-VIS-001 (revisions 2 and 3, 2026-10-25) makes the default theme,

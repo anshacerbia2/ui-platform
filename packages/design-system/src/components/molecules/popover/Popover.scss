@@ -1,0 +1,43 @@
+@use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
+
+$c: popover;
+
+// TDD styled PO1-PO2 (scnehaux-design card Popover; component wave 1). The
+// menu material: floating fill, the container radius, and the menu material's
+// shadow, padded one default inset, so controls inside keep their own radius
+// (16 - 16 is flat). Every value reads a `--scnx-popover-{part?}-*` hook that
+// falls back to its token; the 20rem width is the recorded fallback of its
+// hook. A transparent border keeps its boundary in forced-colors mode.
+.scnx-popover {
+  z-index: $dimension-z-index-popover;
+  display: grid;
+  gap: hook($c, gap, $dimension-spacing-stack-compact);
+  box-sizing: border-box;
+  inline-size: hook($c, inline-size, 20rem);
+  padding: hook($c, padding, $dimension-spacing-inset-default);
+  border: hook($c, border-width, $dimension-border-width-default) solid transparent;
+  border-radius: hook($c, radius, $dimension-radius-container);
+  background-color: hook($c, background, $color-surface-floating);
+  color: hook($c, color, $color-text-primary);
+  box-shadow: hook($c, shadow, $effect-material-menu);
+  @include hooked-typography($c, body, small);
+  @include floating-enter($c);
+
+  > [data-part="title"] {
+    margin: 0;
+    @include hooked-typography($c, heading, xsmall, $prefix: title, $except: (font-weight));
+    font-weight: hook($c, title-font-weight, $typography-weight-semibold);
+  }
+
+  > [data-part="body"] {
+    color: hook($c, body-color, $color-text-secondary);
+  }
+
+  > [data-part="actions"] {
+    display: flex;
+    justify-content: flex-end;
+    gap: hook($c, actions-gap, $dimension-spacing-inline-default);
+    margin-block-start: hook($c, actions-margin-block-start, $dimension-spacing-stack-default);
+  }
+}

@@ -93,6 +93,10 @@
       "types": "./dist/components/navigation-base/index.d.ts",
       "default": "./dist/components/navigation-base/index.js"
     },
+    "./components/popover-base": {
+      "types": "./dist/components/popover-base/index.d.ts",
+      "default": "./dist/components/popover-base/index.js"
+    },
     "./components/radio-group-base": {
       "types": "./dist/components/radio-group-base/index.d.ts",
       "default": "./dist/components/radio-group-base/index.js"
@@ -154,6 +158,7 @@
     "./specs/list-base.json": "./dist/specs/list-base.json",
     "./specs/navigation-bar-base.json": "./dist/specs/navigation-bar-base.json",
     "./specs/navigation-base.json": "./dist/specs/navigation-base.json",
+    "./specs/popover-base.json": "./dist/specs/popover-base.json",
     "./specs/radio-group-base.json": "./dist/specs/radio-group-base.json",
     "./specs/sidebar-base.json": "./dist/specs/sidebar-base.json",
     "./specs/table-of-contents-base.json": "./dist/specs/table-of-contents-base.json",

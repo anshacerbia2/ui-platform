@@ -21,10 +21,11 @@ export type FixtureComponents = {
   ComboboxBase: C;
   RadioGroupBase: C;
   TooltipBase: C;
+  PopoverBase: C;
 };
 
 export function BehaviorFixtures({ components }: { components: FixtureComponents }): ReactElement {
-  const { ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase, DialogBase, TabsBase, ComboboxBase, RadioGroupBase, TooltipBase } = components;
+  const { ButtonBase, AccordionBase, NavigationBase, TableOfContentsBase, SidebarBaseRoot, SidebarBaseToggle, TextFieldBase, DialogBase, TabsBase, ComboboxBase, RadioGroupBase, TooltipBase, PopoverBase } = components;
   const [pressed, setPressed] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -136,6 +137,16 @@ export function BehaviorFixtures({ components }: { components: FixtureComponents
           </TooltipBase.Trigger>
           <TooltipBase.Content>Copy link</TooltipBase.Content>
         </TooltipBase>
+      </div>
+      <div data-inventory="PopoverBase">
+        <PopoverBase>
+          <PopoverBase.Trigger>Share</PopoverBase.Trigger>
+          <PopoverBase.Content>
+            <PopoverBase.Title>Share link</PopoverBase.Title>
+            <input aria-label="Link" readOnly value="https://scnx.dev/r/42" />
+            <PopoverBase.Close>Done</PopoverBase.Close>
+          </PopoverBase.Content>
+        </PopoverBase>
       </div>
     </div>
   );
