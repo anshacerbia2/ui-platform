@@ -86,6 +86,7 @@ import { Kbd } from "@scnx/system/components/kbd";
 import { Surface } from "@scnx/system/components/surface";
 import { Table } from "@scnx/system/components/table";
 import { Link } from "@scnx/system/components/link";
+import { Breadcrumb } from "@scnx/system/components/breadcrumb";
 
 const modes = ${JSON.stringify(["light", "dark"])};
 const themes = ${JSON.stringify(themes)};
@@ -112,6 +113,7 @@ const set = () => h("div", null,
   h(Surface, { as: "section", material: "panel", padding: "compact", "aria-label": "Panel" }, h(Surface, { material: "flat", padding: "default" }, "Flat"), h(Surface, { material: "well", padding: "default" }, "Well")),
   h(Table, { "aria-label": "People" }, h(Table.Head, null, h(Table.Row, null, h(Table.HeaderCell, { sort: "ascending" }, "Name"), h(Table.HeaderCell, { align: "end" }, "Salary"))), h(Table.Body, null, h(Table.Row, null, h(Table.Cell, null, "Ana"), h(Table.Cell, { align: "end" }, "12,500")), h(Table.Row, { selected: true }, h(Table.Cell, { muted: true }, "Budi"), h(Table.Cell, { align: "end" }, "9,800")))),
   h("p", null, "Read the ", h(Link, { href: "#changelog" }, "changelog"), ", the ", h(Link, { href: "#terms", variant: "neutral" }, "terms"), ", or the ", h(Link, { href: "#npm", external: true }, "npm package"), "."),
+  h(Breadcrumb, null, h(Breadcrumb.Item, null, h(Breadcrumb.Link, { href: "#projects" }, "Projects")), h(Breadcrumb.Item, null, h(Breadcrumb.Page, null, "acme-dashboard"))),
 );
 const roots = themes.flatMap((theme) => modes.map((mode) =>
   h("div", { "data-scnx-theme": theme, "data-scnx-resolved-mode": mode, "data-fixture-root": theme + "/" + mode }, set())));

@@ -19,6 +19,7 @@
         "scnx-accordion__trigger",
         "scnx-alert",
         "scnx-badge",
+        "scnx-breadcrumb",
         "scnx-button",
         "scnx-code",
         "scnx-code--intent_danger",

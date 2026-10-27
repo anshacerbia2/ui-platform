@@ -1167,6 +1167,11 @@
       "kind": "presentational"
     },
     {
+      "entry": "@scnx/system/components/breadcrumb",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
       "entry": "@scnx/system/components/button",
       "stability": "candidate",
       "kind": "interactive"

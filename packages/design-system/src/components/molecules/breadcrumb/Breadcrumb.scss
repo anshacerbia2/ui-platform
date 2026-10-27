@@ -1,0 +1,59 @@
+@use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
+
+$c: breadcrumb;
+
+// TDD styled BC1-BC2 (scnehaux-design card Breadcrumb; component wave 2).
+// `body.small`; ancestors in subtle text, the current page in default text at
+// medium weight; a mono "/" between levels in the strong border. Every value
+// reads a `--scnx-breadcrumb-{part?}-*` hook that falls back to its token. A
+// link keeps the 24px target floor (WCAG 2.2 SC 2.5.8) whatever its hook says.
+.scnx-breadcrumb {
+  @include hooked-typography($c, body, small);
+  color: hook($c, color, $color-text-secondary);
+
+  > [data-part="list"] {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: hook($c, gap, $dimension-spacing-inline-compact);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [data-part="item"] {
+    display: inline-flex;
+    align-items: center;
+    gap: hook($c, gap, $dimension-spacing-inline-compact);
+  }
+
+  // The separator is drawn, not read: its alternative text is empty where the
+  // engine supports it, and the first declaration is the fallback.
+  [data-part="item"] + [data-part="item"]::before {
+    content: "/";
+    content: "/" / "";
+    font-family: hook($c, separator-font-family, typography-member(code, default, font-family));
+    color: hook($c, separator-color, $color-border-strong);
+  }
+
+  [data-part="link"] {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: target-floor(hook($c, link-min-block-size, 0px));
+    padding-inline: hook($c, link-padding-inline, $dimension-spacing-inline-compact);
+    margin-inline: calc(-1 * #{hook($c, link-padding-inline, $dimension-spacing-inline-compact)});
+    border-radius: hook($c, link-radius, $dimension-radius-mark);
+    color: hook($c, link-color, $color-text-secondary);
+    text-decoration: none;
+
+    &:hover {
+      color: hook($c, link-color-hover, $color-text-primary);
+    }
+  }
+
+  [data-part="page"] {
+    color: hook($c, page-color, $color-text-primary);
+    font-weight: hook($c, page-font-weight, $typography-weight-medium);
+  }
+}

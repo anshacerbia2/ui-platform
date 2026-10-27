@@ -26,6 +26,10 @@
       "types": "./dist/components/box/index.d.ts",
       "default": "./dist/components/box/index.js"
     },
+    "./components/breadcrumb": {
+      "types": "./dist/components/breadcrumb/index.d.ts",
+      "default": "./dist/components/breadcrumb/index.js"
+    },
     "./components/button": {
       "types": "./dist/components/button/index.d.ts",
       "default": "./dist/components/button/index.js"
@@ -182,6 +186,7 @@
     "./specs/alert.json": "./dist/specs/alert.json",
     "./specs/badge.json": "./dist/specs/badge.json",
     "./specs/box.json": "./dist/specs/box.json",
+    "./specs/breadcrumb.json": "./dist/specs/breadcrumb.json",
     "./specs/button.json": "./dist/specs/button.json",
     "./specs/code.json": "./dist/specs/code.json",
     "./specs/code-select.json": "./dist/specs/code-select.json",

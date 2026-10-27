@@ -1,0 +1,408 @@
+{
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
+  "entry": "@scnx/system/components/breadcrumb",
+  "entryKind": "presentational",
+  "stability": "candidate",
+  "primitive": null,
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-breadcrumb"
+    },
+    {
+      "name": "list",
+      "selector": ".scnx-breadcrumb>[data-part=list]"
+    },
+    {
+      "name": "item",
+      "selector": ".scnx-breadcrumb [data-part=item]"
+    },
+    {
+      "name": "separator",
+      "selector": ".scnx-breadcrumb [data-part=item]+[data-part=item]::before"
+    },
+    {
+      "name": "link",
+      "selector": ".scnx-breadcrumb [data-part=link]"
+    },
+    {
+      "name": "page",
+      "selector": ".scnx-breadcrumb [data-part=page]"
+    }
+  ],
+  "options": {},
+  "states": [
+    {
+      "name": "hover",
+      "selectors": [
+        ":hover"
+      ],
+      "enter": {
+        "interaction": "hover"
+      }
+    }
+  ],
+  "fixture": {
+    "tree": {
+      "type": "Breadcrumb",
+      "children": [
+        {
+          "type": "Breadcrumb.Item",
+          "children": [
+            {
+              "type": "Breadcrumb.Link",
+              "props": {
+                "href": "#projects"
+              },
+              "children": [
+                "Projects"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Breadcrumb.Item",
+          "children": [
+            {
+              "type": "Breadcrumb.Link",
+              "props": {
+                "href": "#acme"
+              },
+              "children": [
+                "Acme"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Breadcrumb.Item",
+          "children": [
+            {
+              "type": "Breadcrumb.Page",
+              "children": [
+                "acme-dashboard"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "font-family": "{typography.body.small.font-family}",
+        "font-size": "{typography.body.small.font-size}",
+        "font-weight": "{typography.body.small.font-weight}",
+        "line-height": "{typography.body.small.line-height}",
+        "letter-spacing": "{typography.body.small.letter-spacing}",
+        "color": "{color.neutral.text.subtle.default}"
+      }
+    },
+    {
+      "part": "list",
+      "declarations": {
+        "gap": "{dimension.spacing.inline-compact}"
+      }
+    },
+    {
+      "part": "item",
+      "declarations": {
+        "gap": "{dimension.spacing.inline-compact}"
+      }
+    },
+    {
+      "part": "separator",
+      "declarations": {
+        "font-family": "{typography.code.default.font-family}",
+        "color": "{color.neutral.border.strong.default}"
+      }
+    },
+    {
+      "part": "link",
+      "declarations": {
+        "padding-inline": "{dimension.spacing.inline-compact}",
+        "margin-inline": "calc(-1 * {dimension.spacing.inline-compact})",
+        "border-radius": "{dimension.radius.mark}",
+        "color": "{color.neutral.text.subtle.default}"
+      }
+    },
+    {
+      "part": "link",
+      "state": "hover",
+      "declarations": {
+        "color": "{color.neutral.text.default.default}"
+      }
+    },
+    {
+      "part": "page",
+      "declarations": {
+        "color": "{color.neutral.text.default.default}",
+        "font-weight": "{typography.weight.medium}"
+      }
+    }
+  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-breadcrumb-link-color: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-breadcrumb-color",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Breadcrumb.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-breadcrumb-font-family",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.body.small.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Breadcrumb.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-breadcrumb-font-size",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.body.small.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Breadcrumb.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-breadcrumb-font-weight",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.body.small.font-weight}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Breadcrumb.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-breadcrumb-gap",
+      "parts": [
+        "item",
+        "list"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-compact}"
+      ],
+      "floor": null,
+      "purpose": "The gap of Breadcrumb's item and list part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-breadcrumb-letter-spacing",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.body.small.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Breadcrumb.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-breadcrumb-line-height",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.body.small.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Breadcrumb.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-breadcrumb-link-color",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Breadcrumb's link part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-breadcrumb-link-color-hover",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Breadcrumb's link part in the hover state.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-breadcrumb-link-min-block-size",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "min-block-size"
+      ],
+      "fallbacks": [
+        "0px"
+      ],
+      "floor": "24px",
+      "purpose": "The min-block-size of Breadcrumb's link part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; never below the 24px floor.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-breadcrumb-link-padding-inline",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "margin-inline",
+        "padding-inline"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-compact}"
+      ],
+      "floor": null,
+      "purpose": "The margin-inline and padding-inline of Breadcrumb's link part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-breadcrumb-link-radius",
+      "parts": [
+        "link"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.mark}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Breadcrumb's link part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-breadcrumb-page-color",
+      "parts": [
+        "page"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Breadcrumb's page part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-breadcrumb-page-font-weight",
+      "parts": [
+        "page"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.weight.medium}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Breadcrumb's page part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-breadcrumb-separator-color",
+      "parts": [
+        "separator"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.border.strong.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Breadcrumb's separator part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-breadcrumb-separator-font-family",
+      "parts": [
+        "separator"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.code.default.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Breadcrumb's separator part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
+  ]
+}
