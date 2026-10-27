@@ -143,6 +143,7 @@
         "scnx-navigation__text",
         "scnx-navigation__trailing-icon",
         "scnx-popover",
+        "scnx-progress",
         "scnx-segmented-control",
         "scnx-sidebar",
         "scnx-sidebar__flyout",

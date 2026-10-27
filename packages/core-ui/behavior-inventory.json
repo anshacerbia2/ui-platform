@@ -1267,6 +1267,11 @@
       "kind": "interactive"
     },
     {
+      "entry": "@scnx/system/components/progress",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
       "entry": "@scnx/system/components/segmented-control",
       "stability": "candidate",
       "kind": "interactive"

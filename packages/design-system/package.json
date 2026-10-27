@@ -106,6 +106,10 @@
       "types": "./dist/components/popover/index.d.ts",
       "default": "./dist/components/popover/index.js"
     },
+    "./components/progress": {
+      "types": "./dist/components/progress/index.d.ts",
+      "default": "./dist/components/progress/index.js"
+    },
     "./components/segmented-control": {
       "types": "./dist/components/segmented-control/index.d.ts",
       "default": "./dist/components/segmented-control/index.js"
@@ -198,6 +202,7 @@
     "./specs/navbar.json": "./dist/specs/navbar.json",
     "./specs/navigation.json": "./dist/specs/navigation.json",
     "./specs/popover.json": "./dist/specs/popover.json",
+    "./specs/progress.json": "./dist/specs/progress.json",
     "./specs/segmented-control.json": "./dist/specs/segmented-control.json",
     "./specs/sidebar.json": "./dist/specs/sidebar.json",
     "./specs/skeleton.json": "./dist/specs/skeleton.json",

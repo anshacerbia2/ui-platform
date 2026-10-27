@@ -457,6 +457,16 @@ reference's `components/Spinner/` and `Skeleton/` (ADR-UIP-VIS-002).
 | SK1 | `Skeleton` (`@scnx/system/components/skeleton`) is an `aria-hidden` `span`: `shape` is `text` (a 12 px line, default), `block` (`radius.control`), or `circle` (`radius.pill`, square by aspect ratio). The consumer sizes it like the content it replaces and marks the loading region `aria-busy="true"` with a name. The fill is `neutral.surface.default` at `radius.mark`. | Design reference `components/Skeleton/README.md` | The component cannot tell a generic grey card from a matching layout; its documentation says so. |
 | SK2 | It pulses its opacity every 1.6 s (`scnx-pulse`, `motion.attention.easing`) only when the reader allows motion, as the card asks; under reduced motion it is still. The specification harness cancels an endless animation before it measures, on the element and on its probe, so both compare the resting style. | ADR-UIP-VIS-001 item 6.4; TDD styled HK10 | An endless animation never settles; measuring mid-pulse would compare a moment, not the style. |
 
+#### Decision record: Progress
+
+Component wave 2 adds Progress; the visual target is the design reference's
+`components/Progress/` (ADR-UIP-VIS-002).
+
+| ID  | Decision | Sources | Tradeoff |
+| :-- | :------- | :------ | :------- |
+| PG1 | `Progress` (`@scnx/system/components/progress`) shows a known quantity: a visible `label` (medium weight) and an optional formatted `valueText` (subtle text, tabular figures) over the bar. The bar is a native `progress` element (`role` progressbar), named by the label through `aria-labelledby`, with `value` clamped to `0`–`max` (100 by default) and `aria-valuetext` set to the formatted value; the drawn value is `aria-hidden`, so it is read once. The value is an attribute, never a style, so the markup holds under a strict CSP. `scheme` is `primary` (default), `success`, or `danger`. | Design reference `components/Progress/README.md`; WAI-ARIA 1.2 `progressbar`; TDD theme THM-009 | A `div` with an inline width would need a `style` attribute that a strict CSP blocks in server markup. Unknown duration is a Spinner. |
+| PG2 | The track is a 6 px pill (a recorded hook fallback) in `neutral.surface.strong`; the indicator is `primary.surface.solid` (`success.surface.solid` or `danger.surface.solid` by scheme), drawn through each engine's pseudo-elements: `::-webkit-progress-bar` and `::-webkit-progress-value` in WebKit and Chromium, the element and `::-moz-progress-bar` in Firefox. The indicator's width transitions in `motion.disclosure` only when the reader allows motion, where the engine animates it. In forced-colors mode the track takes `forced-color-adjust: none`, so the bar keeps its colors, whose pairs the token gate tests. | ADR-UIP-VIS-001 items 3 and 6.4; STD-GLB-FE-005 3.9 | Forced colors would replace both fills with the canvas and hide the indicator; keeping the theme's colors there is the bar's only visible form. |
+
 #### Decision record: industrial structure
 
 ADR-UIP-VIS-001 (revisions 2 and 3, 2026-10-25) makes the default theme,

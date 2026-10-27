@@ -1,0 +1,90 @@
+@use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
+
+$c: progress;
+
+// TDD styled PG1-PG2 (scnehaux-design card Progress; component wave 2). A
+// label and a value over a pill track; the bar is a native `progress`, drawn
+// through each engine's pseudo-elements (WebKit and Chromium: the bar and the
+// value; Firefox: the element and the bar). Every value reads a
+// `--scnx-progress-{part?}-*` hook that falls back to its token; the 6px track
+// is the recorded fallback of its hook. The indicator's width moves only when
+// the reader allows motion (TDD styled HK10).
+.scnx-progress {
+  display: grid;
+  gap: hook($c, gap, $dimension-spacing-stack-compact);
+  @include hooked-typography($c, label, default);
+  color: hook($c, color, $color-text-primary);
+
+  > [data-part="header"] {
+    display: flex;
+    justify-content: space-between;
+    gap: hook($c, header-gap, $dimension-spacing-inline-default);
+  }
+
+  [data-part="label"] {
+    font-weight: hook($c, label-font-weight, $typography-weight-medium);
+  }
+
+  [data-part="value"] {
+    color: hook($c, value-color, $color-text-secondary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  // The track: the element itself, and in WebKit and Chromium its bar.
+  > [data-part="track"] {
+    appearance: none;
+    display: block;
+    inline-size: 100%;
+    block-size: hook($c, track-block-size, 0.375rem);
+    border: 0;
+    border-radius: hook($c, track-radius, $dimension-radius-pill);
+    background-color: hook($c, track-background, $color-surface-muted);
+    overflow: hidden;
+  }
+
+  > [data-part="track"]::-webkit-progress-bar {
+    border-radius: hook($c, track-radius, $dimension-radius-pill);
+    background-color: hook($c, track-background, $color-surface-muted);
+  }
+
+  // The indicator: the value in WebKit and Chromium, the bar in Firefox.
+  > [data-part="track"]::-webkit-progress-value {
+    border-radius: hook($c, track-radius, $dimension-radius-pill);
+    background-color: hook($c, indicator-background, $color-primary-default);
+
+    @include when-motion-allowed {
+      transition: inline-size hook($c, transition-duration, $motion-disclosure-duration) hook($c, transition-timing-function, $motion-disclosure-easing);
+    }
+  }
+
+  > [data-part="track"]::-moz-progress-bar {
+    border-radius: hook($c, track-radius, $dimension-radius-pill);
+    background-color: hook($c, indicator-background, $color-primary-default);
+  }
+
+  &[data-scheme="success"] > [data-part="track"]::-webkit-progress-value {
+    background-color: hook($c, indicator-background-success, var(--ds-color-success-surface-solid-default));
+  }
+
+  &[data-scheme="success"] > [data-part="track"]::-moz-progress-bar {
+    background-color: hook($c, indicator-background-success, var(--ds-color-success-surface-solid-default));
+  }
+
+  &[data-scheme="danger"] > [data-part="track"]::-webkit-progress-value {
+    background-color: hook($c, indicator-background-danger, var(--ds-color-danger-surface-solid-default));
+  }
+
+  &[data-scheme="danger"] > [data-part="track"]::-moz-progress-bar {
+    background-color: hook($c, indicator-background-danger, var(--ds-color-danger-surface-solid-default));
+  }
+
+  // Forced colors would replace the track's and the indicator's fills with the
+  // canvas, so the bar keeps its own colors there: their contrast is the token
+  // gate's, and the bar stays readable.
+  @media (forced-colors: active) {
+    > [data-part="track"] {
+      forced-color-adjust: none;
+    }
+  }
+}
