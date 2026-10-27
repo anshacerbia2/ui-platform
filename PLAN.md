@@ -155,14 +155,21 @@ Authority owns any waiver from an applicable enterprise standard.
   deprecation window, Component ACRs, migration rehearsal, provenance, and
   rollback record.
 - **P2 — representative slice:** Button, one form control, one overlay, and one
-  composite widget through all applicable gates.
+  composite widget through all applicable gates. Open, from the audit of
+  2026-10-27: right-to-left and localization evidence. Only the composite has
+  right-to-left evidence (TabsBase: unit test, behavior inventory, and story).
+  The floating overlays (Tooltip, Popover, Menu) have a unit test of
+  right-to-left placement only; Button, TextField, and Dialog have none. No
+  entry has localization evidence. The styled conformance fixture
+  (`browser-specs`) measures two themes in two modes, none right-to-left; its
+  right-to-left root is added once the component wave's current fixture changes
+  merge.
 - **P3 — beta pilots:** named standalone and, only if separately authorized,
   federated consumers covering localization, bidirectional layout, multi-brand
   isolation, responsive reflow, touch targets, budgets, migration, and support.
   A pilot installs a published beta, so it waits for the first staged release
   under ADR-UIP-REL-001 (accepted 2026-10-21), which closes lien L3. The pilot's
-  migration evidence lists any
-  use of the baseline Sidebar custom properties that v1 removed (TDD styled,
-  "Rollout and Compatibility").
+  migration evidence lists any use of the baseline Sidebar custom properties
+  that v1 removed (TDD styled, "Rollout and Compatibility").
 - **P4 — stable:** exact-version approval, release evidence, and at least one
   real consumer migration and rollback rehearsal.
