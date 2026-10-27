@@ -128,6 +128,13 @@ function measure({ caseId, root, selector, exclude, declarations, properties, ma
   if (!el) return { missing: true };
   // A vendor pseudo-element (::-webkit-scrollbar) exists only in engines that support it.
   if (pseudo && !CSS.supports(`selector(${pseudo})`)) return { unsupported: true };
+  // An engine may draw a vendor pseudo-element without exposing its computed style
+  // (Chromium answers ::-webkit-progress-value with the host's); it cannot be measured.
+  if (pseudo?.startsWith("::-")) {
+    const own = getComputedStyle(el, pseudo);
+    const hostStyle = getComputedStyle(el);
+    if ([...own].every((name) => own.getPropertyValue(name) === hostStyle.getPropertyValue(name))) return { unsupported: true };
+  }
   if (mark) {
     el.setAttribute("data-spec-target", "");
     return { marked: true };

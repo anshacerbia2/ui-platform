@@ -15,4 +15,3 @@ export type AvatarProps = Omit<ComponentPropsWithRef<"span">, "children" | "role
   decorative?: boolean;
 };
 
-export type AvatarGroupProps = ComponentPropsWithRef<"div">;

@@ -17,18 +17,6 @@
     {
       "name": "status",
       "selector": ".scnx-avatar>[data-part=status]"
-    },
-    {
-      "name": "group",
-      "selector": ".scnx-avatar-group"
-    },
-    {
-      "name": "grouped",
-      "selector": ".scnx-avatar-group>.scnx-avatar"
-    },
-    {
-      "name": "overlapped",
-      "selector": ".scnx-avatar-group>.scnx-avatar+.scnx-avatar"
     }
   ],
   "options": {
@@ -52,26 +40,9 @@
   },
   "states": [],
   "fixture": {
-    "tree": {
-      "type": "AvatarGroup",
-      "props": {
-        "aria-label": "Reviewers"
-      },
-      "children": [
-        {
-          "type": "Avatar",
-          "props": {
-            "name": "Ana Nugraha",
-            "status": "online"
-          }
-        },
-        {
-          "type": "Avatar",
-          "props": {
-            "name": "Budi Santoso"
-          }
-        }
-      ]
+    "props": {
+      "name": "Ana Nugraha",
+      "status": "online"
     }
   },
   "bindings": [
@@ -141,12 +112,6 @@
       "declarations": {
         "border-radius": "{dimension.radius.pill}",
         "background-color": "{color.success.surface.solid.default}",
-        "box-shadow": "0 0 0 {dimension.border-width.strong} {color.neutral.surface.canvas.default}"
-      }
-    },
-    {
-      "part": "grouped",
-      "declarations": {
         "box-shadow": "0 0 0 {dimension.border-width.strong} {color.neutral.surface.canvas.default}"
       }
     }
@@ -232,38 +197,6 @@
       ],
       "floor": null,
       "purpose": "The font-weight of Avatar.",
-      "coverage": "scnx-platform and scnx-saas, light and dark; every size and shape value.",
-      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
-    },
-    {
-      "hook": "--scnx-avatar-group-overlap",
-      "parts": [
-        "overlapped"
-      ],
-      "properties": [
-        "margin-inline-start"
-      ],
-      "fallbacks": [
-        "-0.375rem"
-      ],
-      "floor": null,
-      "purpose": "The margin-inline-start of Avatar's overlapped part.",
-      "coverage": "scnx-platform and scnx-saas, light and dark; every size and shape value.",
-      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
-    },
-    {
-      "hook": "--scnx-avatar-group-ring",
-      "parts": [
-        "grouped"
-      ],
-      "properties": [
-        "box-shadow"
-      ],
-      "fallbacks": [
-        "0 0 0 {dimension.border-width.strong} {color.neutral.surface.canvas.default}"
-      ],
-      "floor": null,
-      "purpose": "The box-shadow of Avatar's grouped part.",
       "coverage": "scnx-platform and scnx-saas, light and dark; every size and shape value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },

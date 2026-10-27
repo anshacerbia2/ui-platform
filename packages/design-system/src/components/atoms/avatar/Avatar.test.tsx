@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { Avatar, AvatarGroup, initialsOf } from "./Avatar";
+import { Avatar, initialsOf } from "./Avatar";
 
 describe("Avatar (TDD styled AV1-AV2)", () => {
   it("takes two initials from a name", () => {
@@ -30,16 +30,13 @@ describe("Avatar (TDD styled AV1-AV2)", () => {
     expect(avatar).toHaveTextContent("BS");
   });
 
-  it("is hidden when decorative, and groups avatars under one name", () => {
-    render(
-      <AvatarGroup aria-label="Reviewers">
-        <Avatar name="Ana Nugraha" />
-        <Avatar name="Budi Santoso" decorative />
-      </AvatarGroup>,
+  it("is hidden from assistive technology when decorative", () => {
+    const { container } = render(
+      <p>
+        <Avatar name="Budi Santoso" decorative /> Budi Santoso
+      </p>,
     );
-    const group = screen.getByRole("group", { name: "Reviewers" });
-    expect(group).toHaveClass("scnx-avatar-group");
-    expect(screen.getAllByRole("img")).toHaveLength(1);
-    expect(group.querySelectorAll(".scnx-avatar")[1]).toHaveAttribute("aria-hidden", "true");
+    expect(screen.queryByRole("img")).toBeNull();
+    expect(container.querySelector(".scnx-avatar")).toHaveAttribute("aria-hidden", "true");
   });
 });

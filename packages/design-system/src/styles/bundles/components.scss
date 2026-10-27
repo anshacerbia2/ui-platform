@@ -21,6 +21,7 @@
 // Atoms -> Layouts -> Molecules -> Organisms
 @layer components {
   @include meta.load-css("components/atoms/avatar/Avatar");
+  @include meta.load-css("components/atoms/avatar-group/AvatarGroup");
   @include meta.load-css("components/atoms/badge/Badge");
   @include meta.load-css("components/atoms/button/Button");
   @include meta.load-css("components/atoms/divider/Divider");

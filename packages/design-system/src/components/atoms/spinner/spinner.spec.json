@@ -37,6 +37,7 @@
       "part": "root",
       "declarations": {
         "border": "{dimension.border-width.strong} solid {color.neutral.border.subtle.default}",
+        "border-block-start-color": "{color.neutral.icon.default.default}",
         "border-radius": "{dimension.radius.pill}",
         "color": "{color.neutral.icon.default.default}",
         "animation": "scnx-spin 0.8s linear infinite"
@@ -51,11 +52,9 @@
         "root"
       ],
       "properties": [
-        "border",
-        "border-width"
+        "border"
       ],
       "fallbacks": [
-        "3px",
         "{dimension.border-width.strong}"
       ],
       "floor": null,
@@ -76,6 +75,22 @@
       ],
       "floor": null,
       "purpose": "The color of Spinner.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-spinner-head-color",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border-block-start-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.icon.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of the Spinner's head, the turning arc of its ring.",
       "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
       "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
     },

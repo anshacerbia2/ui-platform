@@ -1162,6 +1162,11 @@
       "kind": "interactive"
     },
     {
+      "entry": "@scnx/system/components/avatar-group",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
       "entry": "@scnx/system/components/badge",
       "stability": "candidate",
       "kind": "presentational"

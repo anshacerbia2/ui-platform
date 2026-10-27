@@ -13,15 +13,6 @@ export const Avatar: {
     displayName: string;
 };
 
-// @public
-export const AvatarGroup: {
-    (input: AvatarGroupProps): JSX.Element;
-    displayName: string;
-};
-
-// @public (undocumented)
-export type AvatarGroupProps = ComponentPropsWithRef<"div">;
-
 // @public (undocumented)
 export type AvatarProps = Omit<ComponentPropsWithRef<"span">, "children" | "role"> & {
     name: string;

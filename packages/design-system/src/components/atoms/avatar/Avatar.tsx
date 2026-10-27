@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { cx } from "styled-system/css";
-import type { AvatarGroupProps, AvatarProps } from "./types";
+import type { AvatarProps } from "./types";
 
 /** Two letters: the first of the first and the last word, or the first two of one word. */
 export const initialsOf = (name: string): string => {
@@ -18,10 +18,9 @@ export const initialsOf = (name: string): string => {
  *
  * @example
  * ```tsx
- * import { Avatar, AvatarGroup } from "@scnx/system/components/avatar";
+ * import { Avatar } from "@scnx/system/components/avatar";
  *
  * <Avatar name="Ana Nugraha" src="/ana.jpg" status="online" />
- * <AvatarGroup aria-label="Reviewers"><Avatar name="Ana Nugraha" /><Avatar name="Budi Santoso" /></AvatarGroup>
  * ```
  */
 export const Avatar = ({ name, src, size = "medium", shape = "circle", status, decorative = false, className, ...rest }: AvatarProps) => {
@@ -48,8 +47,4 @@ export const Avatar = ({ name, src, size = "medium", shape = "circle", status, d
   );
 };
 
-/** Avatars that overlap, as one named group. */
-export const AvatarGroup = ({ className, ...rest }: AvatarGroupProps) => <div role="group" {...rest} className={cx("scnx-avatar-group", className)} />;
-
 Avatar.displayName = "Avatar";
-AvatarGroup.displayName = "AvatarGroup";

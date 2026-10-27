@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Avatar, AvatarGroup } from "./Avatar";
+import { Avatar } from "./Avatar";
 
 const meta = {
   title: "Atoms/Avatar",
@@ -27,16 +27,5 @@ export const SizesAndShapes: Story = {
         <Avatar name="Acme" shape="square" size="large" />
       </div>
     </div>
-  ),
-};
-
-/** Overlapping by 6px, each ringed in the canvas. */
-export const Group: Story = {
-  render: () => (
-    <AvatarGroup aria-label="Reviewers">
-      <Avatar name="Ana Nugraha" />
-      <Avatar name="Budi Santoso" />
-      <Avatar name="Citra Wulandari" />
-    </AvatarGroup>
   ),
 };

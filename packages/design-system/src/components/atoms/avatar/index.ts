@@ -1,5 +1,5 @@
 "use client";
 
-export type { AvatarGroupProps, AvatarProps } from "./types";
+export type { AvatarProps } from "./types";
 
-export { Avatar, AvatarGroup } from "./Avatar";
+export { Avatar } from "./Avatar";

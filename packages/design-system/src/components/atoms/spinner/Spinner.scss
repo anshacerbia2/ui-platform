@@ -4,11 +4,10 @@
 $c: spinner;
 
 // TDD styled SP1-SP2 (scnehaux-design card Spinner; component wave 2). A ring
-// in the subtle border with a `currentColor` head. Every value reads a
+// in the subtle border with a head in the icon color. Every value reads a
 // `--scnx-spinner-*` hook that falls back to its token; the 16, 20, and 36px
-// sizes, the large ring's 3px width, and the 0.8s turn and 2.4s pulse are the
-// recorded fallbacks of their hooks (component geometry, ADR-UIP-VIS-001
-// item 6). The reduced-motion floor (item 6.4; TDD styled HK10): the ring turns
+// sizes and the 0.8s turn and 2.4s pulse are the recorded fallbacks of their
+// hooks (component geometry, ADR-UIP-VIS-001 item 6). The reduced-motion floor (item 6.4; TDD styled HK10): the ring turns
 // only when the reader allows motion; otherwise it fades in place.
 .scnx-spinner {
   display: inline-block;
@@ -18,7 +17,7 @@ $c: spinner;
   block-size: hook($c, size, 1rem);
   vertical-align: middle;
   border: hook($c, border-width, $dimension-border-width-strong) solid hook($c, track-color, $color-border-subtle);
-  border-block-start-color: currentColor;
+  border-block-start-color: hook($c, head-color, $color-icon-primary);
   border-radius: hook($c, radius, $dimension-radius-pill);
   color: hook($c, color, $color-icon-primary);
   animation: scnx-pulse hook($c, pulse-duration, 2.4s) hook($c, pulse-timing-function, $motion-attention-easing) infinite;
@@ -35,7 +34,6 @@ $c: spinner;
   &[data-size="large"] {
     inline-size: hook($c, size, 2.25rem);
     block-size: hook($c, size, 2.25rem);
-    border-width: hook($c, border-width, 3px);
   }
 
   // The visually hidden label of a status: read, not drawn. The 1px box is the

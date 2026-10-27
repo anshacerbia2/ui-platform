@@ -6,10 +6,10 @@ $c: avatar;
 // TDD styled AV1-AV2 (scnehaux-design card Avatar; component wave 2). Initials
 // in semibold on the strong surface, with a hairline ring; an image covers it.
 // Every value reads a `--scnx-avatar-{part?}-*` hook that falls back to its
-// token; the 24, 32, and 40px sizes, the small size's 10px initials, the 8px
-// status dot, and the group's 6px overlap are the recorded fallbacks of their
-// hooks (component geometry, ADR-UIP-VIS-001 item 6). A square avatar's radius
-// steps with its size: mark, element, control.
+// token; the 24, 32, and 40px sizes, the small size's 10px initials, and the
+// 8px status dot are the recorded fallbacks of their hooks (component geometry,
+// ADR-UIP-VIS-001 item 6). A square avatar's radius steps with its size: mark,
+// element, control.
 .scnx-avatar {
   position: relative;
   display: inline-grid;
@@ -65,18 +65,5 @@ $c: avatar;
     border-radius: hook($c, status-radius, $dimension-radius-pill);
     background-color: hook($c, status-background, var(--ds-color-success-surface-solid-default));
     box-shadow: hook($c, status-ring, 0 0 0 #{$dimension-border-width-strong} #{$color-surface-canvas});
-  }
-}
-
-// Overlapping avatars, each ringed in the canvas so the edges read.
-.scnx-avatar-group {
-  display: inline-flex;
-
-  > .scnx-avatar {
-    box-shadow: hook(avatar-group, ring, 0 0 0 #{$dimension-border-width-strong} #{$color-surface-canvas});
-  }
-
-  > .scnx-avatar + .scnx-avatar {
-    margin-inline-start: hook(avatar-group, overlap, -0.375rem);
   }
 }

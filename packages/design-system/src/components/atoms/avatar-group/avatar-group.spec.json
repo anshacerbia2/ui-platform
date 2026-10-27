@@ -1,0 +1,99 @@
+{
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
+  "entry": "@scnx/system/components/avatar-group",
+  "entryKind": "presentational",
+  "stability": "candidate",
+  "primitive": null,
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-avatar-group"
+    },
+    {
+      "name": "avatar",
+      "selector": ".scnx-avatar-group>.scnx-avatar"
+    },
+    {
+      "name": "overlapped",
+      "selector": ".scnx-avatar-group>.scnx-avatar+.scnx-avatar"
+    }
+  ],
+  "options": {},
+  "states": [],
+  "fixture": {
+    "tree": {
+      "type": "AvatarGroup",
+      "props": {
+        "aria-label": "Reviewers"
+      },
+      "children": [
+        {
+          "type": "span",
+          "props": {
+            "className": "scnx-avatar",
+            "role": "img",
+            "aria-label": "Ana Nugraha"
+          },
+          "children": [
+            "AN"
+          ]
+        },
+        {
+          "type": "span",
+          "props": {
+            "className": "scnx-avatar",
+            "role": "img",
+            "aria-label": "Budi Santoso"
+          },
+          "children": [
+            "BS"
+          ]
+        }
+      ]
+    }
+  },
+  "bindings": [
+    {
+      "part": "avatar",
+      "declarations": {
+        "box-shadow": "0 0 0 {dimension.border-width.strong} {color.neutral.surface.canvas.default}"
+      }
+    }
+  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-avatar-group-overlap: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-avatar-group-overlap",
+      "parts": [
+        "overlapped"
+      ],
+      "properties": [
+        "margin-inline-start"
+      ],
+      "fallbacks": [
+        "-0.375rem"
+      ],
+      "floor": null,
+      "purpose": "The margin-inline-start of AvatarGroup's overlapped part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-avatar-group-ring",
+      "parts": [
+        "avatar"
+      ],
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "0 0 0 {dimension.border-width.strong} {color.neutral.surface.canvas.default}"
+      ],
+      "floor": null,
+      "purpose": "The box-shadow of AvatarGroup's avatar part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
+  ]
+}
