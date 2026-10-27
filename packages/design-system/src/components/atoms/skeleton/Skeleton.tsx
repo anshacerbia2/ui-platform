@@ -7,13 +7,21 @@ import type { SkeletonProps } from "./types";
  * `aria-busy="true"` and give it a name. Size each skeleton like the content it
  * replaces, never as a generic grey card.
  *
+ * Size it with a class, not an inline `style`: under a strict Content Security
+ * Policy (a nonce, without `'unsafe-inline'`), the browser blocks a `style`
+ * attribute rendered on the server.
+ *
  * @example
  * ```tsx
  * import { Skeleton } from "@scnx/system/components/skeleton";
  *
+ * // consumer CSS (no inline style)
+ * // .deploy-avatar { inline-size: 2rem; }
+ * // .deploy-name { inline-size: 12rem; }
+ *
  * <section aria-busy="true" aria-label="Deployments">
- *   <Skeleton shape="circle" style={{ inlineSize: "2rem" }} />
- *   <Skeleton style={{ inlineSize: "60%" }} />
+ *   <Skeleton shape="circle" className="deploy-avatar" />
+ *   <Skeleton className="deploy-name" />
  * </section>
  * ```
  */

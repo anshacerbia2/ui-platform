@@ -34,7 +34,7 @@
     {
       "part": "root",
       "declarations": {
-        "background-color": "{color.neutral.surface.default.default}",
+        "background-color": "{color.neutral.surface.strong.default}",
         "border-radius": "{dimension.radius.mark}",
         "animation": "scnx-pulse 1.6s {motion.attention.easing} infinite"
       }
@@ -69,7 +69,7 @@
         "background-color"
       ],
       "fallbacks": [
-        "{color.neutral.surface.default.default}"
+        "{color.neutral.surface.strong.default}"
       ],
       "floor": null,
       "purpose": "The background-color of Skeleton.",

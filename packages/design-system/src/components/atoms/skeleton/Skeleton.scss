@@ -4,13 +4,13 @@
 $c: skeleton;
 
 // TDD styled SK1-SK2 (scnehaux-design card Skeleton; component wave 2). The
-// default surface, pulsing its opacity every 1.6s only when the reader allows
-// motion (the card turns it off under reduced motion). Every value reads a
+// strong neutral surface, pulsing its opacity every 1.6s only when the reader
+// allows motion (the card turns it off under reduced motion). Every value reads a
 // `--scnx-skeleton-*` hook that falls back to its token; the text line's 12px
 // height and the 1.6s pulse are the recorded fallbacks of their hooks.
 .scnx-skeleton {
   display: block;
-  background-color: hook($c, background, $color-surface-default);
+  background-color: hook($c, background, $color-surface-muted);
   border-radius: hook($c, radius, $dimension-radius-mark);
 
   @include when-motion-allowed {
