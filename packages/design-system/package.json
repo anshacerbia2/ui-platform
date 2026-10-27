@@ -114,6 +114,14 @@
       "types": "./dist/components/sidebar/index.d.ts",
       "default": "./dist/components/sidebar/index.js"
     },
+    "./components/skeleton": {
+      "types": "./dist/components/skeleton/index.d.ts",
+      "default": "./dist/components/skeleton/index.js"
+    },
+    "./components/spinner": {
+      "types": "./dist/components/spinner/index.d.ts",
+      "default": "./dist/components/spinner/index.js"
+    },
     "./components/stack": {
       "types": "./dist/components/stack/index.d.ts",
       "default": "./dist/components/stack/index.js"
@@ -192,6 +200,8 @@
     "./specs/popover.json": "./dist/specs/popover.json",
     "./specs/segmented-control.json": "./dist/specs/segmented-control.json",
     "./specs/sidebar.json": "./dist/specs/sidebar.json",
+    "./specs/skeleton.json": "./dist/specs/skeleton.json",
+    "./specs/spinner.json": "./dist/specs/spinner.json",
     "./specs/stack.json": "./dist/specs/stack.json",
     "./specs/surface.json": "./dist/specs/surface.json",
     "./specs/table.json": "./dist/specs/table.json",

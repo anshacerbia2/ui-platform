@@ -141,8 +141,13 @@ function measure({ caseId, root, selector, exclude, declarations, properties, ma
   for (const [property, value] of Object.entries(declarations)) probe.style.setProperty(property, value);
   if (!("opacity" in declarations)) probe.style.setProperty("opacity", "1");
   scope.append(probe);
-  // A bound animation (a floating entrance) runs on the new probe; its end state is the one to compare.
-  for (const animation of probe.getAnimations()) animation.finish();
+  // A bound animation runs on the new probe: a finite one (a floating entrance) is finished, to
+  // compare its end state; an endless one (a Spinner's turn, a Skeleton's pulse) is cancelled,
+  // as on the measured element (settle), so both compare the resting style.
+  for (const animation of probe.getAnimations()) {
+    if (animation.effect?.getTiming().iterations === Infinity) animation.cancel();
+    else animation.finish();
+  }
   const have = getComputedStyle(el, pseudo);
   const want = getComputedStyle(probe);
   const out = Object.fromEntries(properties.map((p) => [p, [have.getPropertyValue(p), want.getPropertyValue(p)]]));
@@ -154,7 +159,10 @@ function measure({ caseId, root, selector, exclude, declarations, properties, ma
 async function settle(tab, root, caseId) {
   await tab.evaluate(async ({ root, caseId }) => {
     const scope = document.querySelector(`[data-root="${root}"] [data-case="${caseId}"]`);
-    await Promise.all(scope.getAnimations({ subtree: true }).map((a) => a.finished.catch(() => undefined)));
+    const animations = scope.getAnimations({ subtree: true });
+    // An endless animation never finishes; it is cancelled, so the resting style is measured.
+    for (const a of animations) if (a.effect?.getTiming().iterations === Infinity) a.cancel();
+    await Promise.all(animations.filter((a) => a.playState !== "idle").map((a) => a.finished.catch(() => undefined)));
   }, { root, caseId });
 }
 

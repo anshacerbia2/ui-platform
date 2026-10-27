@@ -150,6 +150,8 @@
         "scnx-sidebar__header",
         "scnx-sidebar__navigation",
         "scnx-sidebar__toggle",
+        "scnx-skeleton",
+        "scnx-spinner",
         "scnx-surface",
         "scnx-table",
         "scnx-table-of-contents",

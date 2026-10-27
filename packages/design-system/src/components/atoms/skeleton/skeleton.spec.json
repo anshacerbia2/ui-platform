@@ -1,0 +1,146 @@
+{
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
+  "entry": "@scnx/system/components/skeleton",
+  "entryKind": "presentational",
+  "stability": "candidate",
+  "primitive": null,
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-skeleton"
+    }
+  ],
+  "options": {
+    "shape": {
+      "values": [
+        "text",
+        "block",
+        "circle"
+      ],
+      "default": "text",
+      "selector": "[data-shape={value}]"
+    }
+  },
+  "states": [],
+  "fixture": {
+    "props": {
+      "style": {
+        "inlineSize": "12rem"
+      }
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "background-color": "{color.neutral.surface.default.default}",
+        "border-radius": "{dimension.radius.mark}",
+        "animation": "scnx-pulse 1.6s {motion.attention.easing} infinite"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "shape": "block"
+      },
+      "declarations": {
+        "border-radius": "{dimension.radius.control}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "shape": "circle"
+      },
+      "declarations": {
+        "border-radius": "{dimension.radius.pill}"
+      }
+    }
+  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-skeleton-background: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-skeleton-background",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Skeleton.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every shape value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-skeleton-pulse-duration",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "animation"
+      ],
+      "fallbacks": [
+        "1.6s"
+      ],
+      "floor": null,
+      "purpose": "The period of the pulse, when the reader allows motion.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every shape value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-skeleton-pulse-timing-function",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "animation"
+      ],
+      "fallbacks": [
+        "{motion.attention.easing}"
+      ],
+      "floor": null,
+      "purpose": "The easing of the pulse, when the reader allows motion.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every shape value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-skeleton-radius",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.control}",
+        "{dimension.radius.mark}",
+        "{dimension.radius.pill}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Skeleton.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every shape value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-skeleton-text-block-size",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "block-size"
+      ],
+      "fallbacks": [
+        "0.75rem"
+      ],
+      "floor": null,
+      "purpose": "The height of a text line.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every shape value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
+  ]
+}

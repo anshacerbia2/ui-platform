@@ -82,6 +82,17 @@
       "removal": "None; this is the visually-hidden technique, not design"
     },
     {
+      "rule": "design-literal",
+      "selector": ".scnx-spinner>[data-part=label]",
+      "properties": [
+        "inline-size",
+        "block-size"
+      ],
+      "standard": "WCAG 2.2 SC 4.1.3 (status messages); ADR-UIP-VIS-001 item 6 (guarded floors)",
+      "reason": "The Spinner's label is visually hidden: its 1px box is the visually-hidden technique that keeps what is loading in the accessibility tree, not a design value",
+      "removal": "None; this is the visually-hidden technique, not design"
+    },
+    {
       "rule": "theme-radius",
       "selector": ".scnx-accordion[data-variant=stacked] .scnx-accordion__item",
       "properties": [

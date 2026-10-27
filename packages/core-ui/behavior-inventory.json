@@ -1277,6 +1277,16 @@
       "kind": "interactive"
     },
     {
+      "entry": "@scnx/system/components/skeleton",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/system/components/spinner",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
       "entry": "@scnx/system/components/stack",
       "stability": "candidate",
       "kind": "presentational"
