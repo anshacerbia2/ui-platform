@@ -18,6 +18,10 @@
       "types": "./dist/components/alert/index.d.ts",
       "default": "./dist/components/alert/index.js"
     },
+    "./components/avatar": {
+      "types": "./dist/components/avatar/index.d.ts",
+      "default": "./dist/components/avatar/index.js"
+    },
     "./components/badge": {
       "types": "./dist/components/badge/index.d.ts",
       "default": "./dist/components/badge/index.js"
@@ -184,6 +188,7 @@
     "./specs/components.json": "./dist/specs/components.json",
     "./specs/accordion.json": "./dist/specs/accordion.json",
     "./specs/alert.json": "./dist/specs/alert.json",
+    "./specs/avatar.json": "./dist/specs/avatar.json",
     "./specs/badge.json": "./dist/specs/badge.json",
     "./specs/box.json": "./dist/specs/box.json",
     "./specs/breadcrumb.json": "./dist/specs/breadcrumb.json",

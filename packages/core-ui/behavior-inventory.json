@@ -1157,6 +1157,11 @@
       "kind": "presentational"
     },
     {
+      "entry": "@scnx/system/components/avatar",
+      "stability": "candidate",
+      "kind": "interactive"
+    },
+    {
       "entry": "@scnx/system/components/badge",
       "stability": "candidate",
       "kind": "presentational"

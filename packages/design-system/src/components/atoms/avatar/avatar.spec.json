@@ -1,0 +1,422 @@
+{
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
+  "entry": "@scnx/system/components/avatar",
+  "entryKind": "interactive",
+  "stability": "candidate",
+  "primitive": null,
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-avatar"
+    },
+    {
+      "name": "image",
+      "selector": ".scnx-avatar>[data-part=image]"
+    },
+    {
+      "name": "status",
+      "selector": ".scnx-avatar>[data-part=status]"
+    },
+    {
+      "name": "group",
+      "selector": ".scnx-avatar-group"
+    },
+    {
+      "name": "grouped",
+      "selector": ".scnx-avatar-group>.scnx-avatar"
+    },
+    {
+      "name": "overlapped",
+      "selector": ".scnx-avatar-group>.scnx-avatar+.scnx-avatar"
+    }
+  ],
+  "options": {
+    "size": {
+      "values": [
+        "small",
+        "medium",
+        "large"
+      ],
+      "default": "medium",
+      "selector": "[data-size={value}]"
+    },
+    "shape": {
+      "values": [
+        "circle",
+        "square"
+      ],
+      "default": "circle",
+      "selector": "[data-shape={value}]"
+    }
+  },
+  "states": [],
+  "fixture": {
+    "tree": {
+      "type": "AvatarGroup",
+      "props": {
+        "aria-label": "Reviewers"
+      },
+      "children": [
+        {
+          "type": "Avatar",
+          "props": {
+            "name": "Ana Nugraha",
+            "status": "online"
+          }
+        },
+        {
+          "type": "Avatar",
+          "props": {
+            "name": "Budi Santoso"
+          }
+        }
+      ]
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "border-radius": "{dimension.radius.pill}",
+        "background-color": "{color.neutral.surface.strong.default}",
+        "color": "{color.neutral.text.default.default}",
+        "box-shadow": "inset 0 0 0 {dimension.border-width.default} {color.neutral.border.subtle.default}",
+        "font-family": "{typography.label.small.font-family}",
+        "font-size": "{typography.label.small.font-size}",
+        "line-height": "{typography.label.small.line-height}",
+        "letter-spacing": "{typography.label.small.letter-spacing}",
+        "font-weight": "{typography.weight.semibold}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "size": "small"
+      },
+      "declarations": {
+        "font-size": "0.625rem"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "size": "large"
+      },
+      "declarations": {
+        "font-size": "{typography.label.default.font-size}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "shape": "square"
+      },
+      "declarations": {
+        "border-radius": "{dimension.radius.element}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "shape": "square",
+        "size": "small"
+      },
+      "declarations": {
+        "border-radius": "{dimension.radius.mark}"
+      }
+    },
+    {
+      "part": "root",
+      "option": {
+        "shape": "square",
+        "size": "large"
+      },
+      "declarations": {
+        "border-radius": "{dimension.radius.control}"
+      }
+    },
+    {
+      "part": "status",
+      "declarations": {
+        "border-radius": "{dimension.radius.pill}",
+        "background-color": "{color.success.surface.solid.default}",
+        "box-shadow": "0 0 0 {dimension.border-width.strong} {color.neutral.surface.canvas.default}"
+      }
+    },
+    {
+      "part": "grouped",
+      "declarations": {
+        "box-shadow": "0 0 0 {dimension.border-width.strong} {color.neutral.surface.canvas.default}"
+      }
+    }
+  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-avatar-background: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-avatar-background",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.strong.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Avatar.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and shape value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-avatar-color",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Avatar.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and shape value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-avatar-font-family",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.label.small.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Avatar.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and shape value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-avatar-font-size",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "0.625rem",
+        "{typography.label.default.font-size}",
+        "{typography.label.small.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Avatar.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and shape value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-avatar-font-weight",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.weight.semibold}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Avatar.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and shape value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-avatar-group-overlap",
+      "parts": [
+        "overlapped"
+      ],
+      "properties": [
+        "margin-inline-start"
+      ],
+      "fallbacks": [
+        "-0.375rem"
+      ],
+      "floor": null,
+      "purpose": "The margin-inline-start of Avatar's overlapped part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and shape value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-avatar-group-ring",
+      "parts": [
+        "grouped"
+      ],
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "0 0 0 {dimension.border-width.strong} {color.neutral.surface.canvas.default}"
+      ],
+      "floor": null,
+      "purpose": "The box-shadow of Avatar's grouped part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and shape value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-avatar-letter-spacing",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.label.small.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Avatar.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and shape value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-avatar-line-height",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.label.small.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Avatar.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and shape value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-avatar-radius",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.control}",
+        "{dimension.radius.element}",
+        "{dimension.radius.mark}",
+        "{dimension.radius.pill}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Avatar.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and shape value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-avatar-ring",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "inset 0 0 0 {dimension.border-width.default} {color.neutral.border.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The box-shadow of Avatar.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and shape value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-avatar-size",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "block-size",
+        "inline-size"
+      ],
+      "fallbacks": [
+        "1.5rem",
+        "2.5rem",
+        "2rem"
+      ],
+      "floor": null,
+      "purpose": "The block-size and inline-size of Avatar.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and shape value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-avatar-status-background",
+      "parts": [
+        "status"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.success.surface.solid.default}"
+      ],
+      "floor": null,
+      "purpose": "The background-color of Avatar's status part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and shape value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-avatar-status-radius",
+      "parts": [
+        "status"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.pill}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Avatar's status part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and shape value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-avatar-status-ring",
+      "parts": [
+        "status"
+      ],
+      "properties": [
+        "box-shadow"
+      ],
+      "fallbacks": [
+        "0 0 0 {dimension.border-width.strong} {color.neutral.surface.canvas.default}"
+      ],
+      "floor": null,
+      "purpose": "The box-shadow of Avatar's status part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and shape value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-avatar-status-size",
+      "parts": [
+        "status"
+      ],
+      "properties": [
+        "block-size",
+        "inline-size"
+      ],
+      "fallbacks": [
+        "0.5rem"
+      ],
+      "floor": null,
+      "purpose": "The block-size and inline-size of Avatar's status part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size and shape value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
+  ]
+}

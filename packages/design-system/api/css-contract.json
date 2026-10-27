@@ -18,6 +18,8 @@
         "scnx-accordion__item",
         "scnx-accordion__trigger",
         "scnx-alert",
+        "scnx-avatar",
+        "scnx-avatar-group",
         "scnx-badge",
         "scnx-breadcrumb",
         "scnx-button",

@@ -1,0 +1,82 @@
+@use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
+
+$c: avatar;
+
+// TDD styled AV1-AV2 (scnehaux-design card Avatar; component wave 2). Initials
+// in semibold on the strong surface, with a hairline ring; an image covers it.
+// Every value reads a `--scnx-avatar-{part?}-*` hook that falls back to its
+// token; the 24, 32, and 40px sizes, the small size's 10px initials, the 8px
+// status dot, and the group's 6px overlap are the recorded fallbacks of their
+// hooks (component geometry, ADR-UIP-VIS-001 item 6). A square avatar's radius
+// steps with its size: mark, element, control.
+.scnx-avatar {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  inline-size: hook($c, size, 2rem);
+  block-size: hook($c, size, 2rem);
+  border-radius: hook($c, radius, $dimension-radius-pill);
+  background-color: hook($c, background, $color-surface-muted);
+  color: hook($c, color, $color-text-primary);
+  box-shadow: hook($c, ring, inset 0 0 0 #{$dimension-border-width-default} #{$color-border-subtle});
+  @include hooked-typography($c, label, small, $except: (font-weight));
+  font-weight: hook($c, font-weight, $typography-weight-semibold);
+
+  &[data-size="small"] {
+    inline-size: hook($c, size, 1.5rem);
+    block-size: hook($c, size, 1.5rem);
+    font-size: hook($c, font-size, 0.625rem);
+  }
+
+  &[data-size="large"] {
+    inline-size: hook($c, size, 2.5rem);
+    block-size: hook($c, size, 2.5rem);
+    font-size: hook($c, font-size, typography-member(label, default, font-size));
+  }
+
+  &[data-shape="square"] {
+    border-radius: hook($c, radius, $dimension-radius-element);
+  }
+
+  &[data-shape="square"][data-size="small"] {
+    border-radius: hook($c, radius, $dimension-radius-mark);
+  }
+
+  &[data-shape="square"][data-size="large"] {
+    border-radius: hook($c, radius, $dimension-radius-control);
+  }
+
+  > [data-part="image"] {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+  }
+
+  // The status dot, ringed in the canvas so it reads on any image.
+  > [data-part="status"] {
+    position: absolute;
+    inset-inline-end: 0;
+    inset-block-end: 0;
+    inline-size: hook($c, status-size, 0.5rem);
+    block-size: hook($c, status-size, 0.5rem);
+    border-radius: hook($c, status-radius, $dimension-radius-pill);
+    background-color: hook($c, status-background, var(--ds-color-success-surface-solid-default));
+    box-shadow: hook($c, status-ring, 0 0 0 #{$dimension-border-width-strong} #{$color-surface-canvas});
+  }
+}
+
+// Overlapping avatars, each ringed in the canvas so the edges read.
+.scnx-avatar-group {
+  display: inline-flex;
+
+  > .scnx-avatar {
+    box-shadow: hook(avatar-group, ring, 0 0 0 #{$dimension-border-width-strong} #{$color-surface-canvas});
+  }
+
+  > .scnx-avatar + .scnx-avatar {
+    margin-inline-start: hook(avatar-group, overlap, -0.375rem);
+  }
+}
