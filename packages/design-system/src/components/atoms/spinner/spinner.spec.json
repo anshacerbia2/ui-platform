@@ -1,0 +1,213 @@
+{
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
+  "entry": "@scnx/system/components/spinner",
+  "entryKind": "presentational",
+  "stability": "candidate",
+  "primitive": null,
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-spinner"
+    },
+    {
+      "name": "label",
+      "selector": ".scnx-spinner>[data-part=label]"
+    }
+  ],
+  "options": {
+    "size": {
+      "values": [
+        "small",
+        "medium",
+        "large"
+      ],
+      "default": "small",
+      "selector": "[data-size={value}]"
+    }
+  },
+  "states": [],
+  "fixture": {
+    "props": {
+      "label": "Loading deployments"
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "border": "{dimension.border-width.strong} solid {color.neutral.border.subtle.default}",
+        "border-block-start-color": "{color.neutral.icon.default.default}",
+        "border-radius": "{dimension.radius.pill}",
+        "color": "{color.neutral.icon.default.default}",
+        "animation": "scnx-spin 0.8s linear infinite"
+      }
+    }
+  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-spinner-color: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-spinner-border-width",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border"
+      ],
+      "fallbacks": [
+        "{dimension.border-width.strong}"
+      ],
+      "floor": null,
+      "purpose": "The width of the Spinner's ring.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-spinner-color",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.icon.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Spinner.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-spinner-head-color",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border-block-start-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.icon.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of the Spinner's head, the turning arc of its ring.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-spinner-pulse-duration",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "animation"
+      ],
+      "fallbacks": [
+        "2.4s"
+      ],
+      "floor": null,
+      "purpose": "The period of the fade that signals work under reduced motion.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-spinner-pulse-timing-function",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "animation"
+      ],
+      "fallbacks": [
+        "{motion.attention.easing}"
+      ],
+      "floor": null,
+      "purpose": "The easing of the fade that signals work under reduced motion.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-spinner-radius",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.pill}"
+      ],
+      "floor": null,
+      "purpose": "The border-radius of Spinner.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-spinner-size",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "block-size",
+        "inline-size"
+      ],
+      "fallbacks": [
+        "1.25rem",
+        "1rem",
+        "2.25rem"
+      ],
+      "floor": null,
+      "purpose": "The Spinner's size (16, 20, or 36px by size option).",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-spinner-track-color",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "border"
+      ],
+      "fallbacks": [
+        "{color.neutral.border.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of the Spinner's ring; its head is currentColor.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-spinner-turn-duration",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "animation"
+      ],
+      "fallbacks": [
+        "0.8s"
+      ],
+      "floor": null,
+      "purpose": "The period of one turn, when the reader allows motion.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-spinner-turn-timing-function",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "animation"
+      ],
+      "fallbacks": [
+        "linear"
+      ],
+      "floor": null,
+      "purpose": "The easing of the turn, when the reader allows motion.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every size value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
+  ]
+}

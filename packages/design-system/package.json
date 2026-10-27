@@ -18,6 +18,14 @@
       "types": "./dist/components/alert/index.d.ts",
       "default": "./dist/components/alert/index.js"
     },
+    "./components/avatar": {
+      "types": "./dist/components/avatar/index.d.ts",
+      "default": "./dist/components/avatar/index.js"
+    },
+    "./components/avatar-group": {
+      "types": "./dist/components/avatar-group/index.d.ts",
+      "default": "./dist/components/avatar-group/index.js"
+    },
     "./components/badge": {
       "types": "./dist/components/badge/index.d.ts",
       "default": "./dist/components/badge/index.js"
@@ -25,6 +33,10 @@
     "./components/box": {
       "types": "./dist/components/box/index.d.ts",
       "default": "./dist/components/box/index.js"
+    },
+    "./components/breadcrumb": {
+      "types": "./dist/components/breadcrumb/index.d.ts",
+      "default": "./dist/components/breadcrumb/index.js"
     },
     "./components/button": {
       "types": "./dist/components/button/index.d.ts",
@@ -106,6 +118,10 @@
       "types": "./dist/components/popover/index.d.ts",
       "default": "./dist/components/popover/index.js"
     },
+    "./components/progress": {
+      "types": "./dist/components/progress/index.d.ts",
+      "default": "./dist/components/progress/index.js"
+    },
     "./components/segmented-control": {
       "types": "./dist/components/segmented-control/index.d.ts",
       "default": "./dist/components/segmented-control/index.js"
@@ -113,6 +129,14 @@
     "./components/sidebar": {
       "types": "./dist/components/sidebar/index.d.ts",
       "default": "./dist/components/sidebar/index.js"
+    },
+    "./components/skeleton": {
+      "types": "./dist/components/skeleton/index.d.ts",
+      "default": "./dist/components/skeleton/index.js"
+    },
+    "./components/spinner": {
+      "types": "./dist/components/spinner/index.d.ts",
+      "default": "./dist/components/spinner/index.js"
     },
     "./components/stack": {
       "types": "./dist/components/stack/index.d.ts",
@@ -168,8 +192,11 @@
     "./specs/components.json": "./dist/specs/components.json",
     "./specs/accordion.json": "./dist/specs/accordion.json",
     "./specs/alert.json": "./dist/specs/alert.json",
+    "./specs/avatar.json": "./dist/specs/avatar.json",
+    "./specs/avatar-group.json": "./dist/specs/avatar-group.json",
     "./specs/badge.json": "./dist/specs/badge.json",
     "./specs/box.json": "./dist/specs/box.json",
+    "./specs/breadcrumb.json": "./dist/specs/breadcrumb.json",
     "./specs/button.json": "./dist/specs/button.json",
     "./specs/code.json": "./dist/specs/code.json",
     "./specs/code-select.json": "./dist/specs/code-select.json",
@@ -190,8 +217,11 @@
     "./specs/navbar.json": "./dist/specs/navbar.json",
     "./specs/navigation.json": "./dist/specs/navigation.json",
     "./specs/popover.json": "./dist/specs/popover.json",
+    "./specs/progress.json": "./dist/specs/progress.json",
     "./specs/segmented-control.json": "./dist/specs/segmented-control.json",
     "./specs/sidebar.json": "./dist/specs/sidebar.json",
+    "./specs/skeleton.json": "./dist/specs/skeleton.json",
+    "./specs/spinner.json": "./dist/specs/spinner.json",
     "./specs/stack.json": "./dist/specs/stack.json",
     "./specs/surface.json": "./dist/specs/surface.json",
     "./specs/table.json": "./dist/specs/table.json",

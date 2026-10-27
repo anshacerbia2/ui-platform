@@ -1157,12 +1157,27 @@
       "kind": "presentational"
     },
     {
+      "entry": "@scnx/system/components/avatar",
+      "stability": "candidate",
+      "kind": "interactive"
+    },
+    {
+      "entry": "@scnx/system/components/avatar-group",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
       "entry": "@scnx/system/components/badge",
       "stability": "candidate",
       "kind": "presentational"
     },
     {
       "entry": "@scnx/system/components/box",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/system/components/breadcrumb",
       "stability": "candidate",
       "kind": "presentational"
     },
@@ -1267,6 +1282,11 @@
       "kind": "interactive"
     },
     {
+      "entry": "@scnx/system/components/progress",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
       "entry": "@scnx/system/components/segmented-control",
       "stability": "candidate",
       "kind": "interactive"
@@ -1275,6 +1295,16 @@
       "entry": "@scnx/system/components/sidebar",
       "stability": "candidate",
       "kind": "interactive"
+    },
+    {
+      "entry": "@scnx/system/components/skeleton",
+      "stability": "candidate",
+      "kind": "presentational"
+    },
+    {
+      "entry": "@scnx/system/components/spinner",
+      "stability": "candidate",
+      "kind": "presentational"
     },
     {
       "entry": "@scnx/system/components/stack",

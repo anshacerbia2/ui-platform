@@ -122,6 +122,8 @@ components the package does not have yet.
   FE1, TT1-TT2, PO1-PO2, MN1-MN3).
 - **Wave 2** (not ordered): Avatar, Breadcrumb, Checkbox, Pagination, Progress,
   Radio, Select, Sheet, Skeleton, Spinner, Switch, Textarea, and Toast.
+  Avatar, Spinner, Progress, Skeleton, and Breadcrumb shipped first, on 2026-10-27
+  (TDD styled AV1-AV2, SP1-SP2, PG1-PG2, SK1-SK2, BC1-BC2).
 
 "P1" in "Later work" below is the release contract, not a component wave.
 

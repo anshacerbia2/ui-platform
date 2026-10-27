@@ -1,0 +1,34 @@
+@use "styles/abstracts/variables" as *;
+@use "styles/abstracts/hook" as *;
+
+$c: skeleton;
+
+// TDD styled SK1-SK2 (scnehaux-design card Skeleton; component wave 2). The
+// default surface, pulsing its opacity every 1.6s only when the reader allows
+// motion (the card turns it off under reduced motion). Every value reads a
+// `--scnx-skeleton-*` hook that falls back to its token; the text line's 12px
+// height and the 1.6s pulse are the recorded fallbacks of their hooks.
+.scnx-skeleton {
+  display: block;
+  background-color: hook($c, background, $color-surface-default);
+  border-radius: hook($c, radius, $dimension-radius-mark);
+
+  @include when-motion-allowed {
+    animation: scnx-pulse hook($c, pulse-duration, 1.6s) hook($c, pulse-timing-function, $motion-attention-easing) infinite;
+  }
+
+  &[data-shape="text"] {
+    block-size: hook($c, text-block-size, 0.75rem);
+  }
+
+  &[data-shape="block"] {
+    border-radius: hook($c, radius, $dimension-radius-control);
+  }
+
+  &[data-shape="circle"] {
+    flex: none;
+    align-self: flex-start;
+    aspect-ratio: 1;
+    border-radius: hook($c, radius, $dimension-radius-pill);
+  }
+}

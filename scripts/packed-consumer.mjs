@@ -147,7 +147,9 @@ for (const name of trapped) {
 }
 
 const isComponent = (value) =>
-  typeof value === "function" || (typeof value === "object" && value !== null && typeof value.$$typeof === "symbol");
+  typeof value === "function" || (typeof value === "object" && value !== null && typeof value.$typeof === "symbol");
+// Components whose text is a prop, not their children.
+const PROPS = { Progress: { label: "Content", value: 1 } };
 const results = [];
 for (const specifier of ${JSON.stringify(specifiers)}) {
   const mod = await import(specifier);
@@ -156,7 +158,7 @@ for (const specifier of ${JSON.stringify(specifiers)}) {
   for (const [name, Component] of components) {
     let html;
     try {
-      html = renderToString(createElement(Component, null, "Content"));
+      html = renderToString(createElement(Component, PROPS[name] ?? null, "Content"));
     } catch (error) {
       throw new Error(specifier + " " + name + ": " + error.message);
     }

@@ -1,0 +1,456 @@
+{
+  "$schema": "../../../../../../scripts/specs/schema/styled.schema.json",
+  "kind": "styled",
+  "entry": "@scnx/system/components/progress",
+  "entryKind": "presentational",
+  "stability": "candidate",
+  "primitive": null,
+  "anatomy": [
+    {
+      "name": "root",
+      "selector": ".scnx-progress"
+    },
+    {
+      "name": "header",
+      "selector": ".scnx-progress>[data-part=header]"
+    },
+    {
+      "name": "label",
+      "selector": ".scnx-progress [data-part=label]"
+    },
+    {
+      "name": "value",
+      "selector": ".scnx-progress [data-part=value]"
+    },
+    {
+      "name": "track",
+      "selector": ".scnx-progress>[data-part=track]"
+    },
+    {
+      "name": "track-bar",
+      "selector": ".scnx-progress>[data-part=track]::-webkit-progress-bar"
+    },
+    {
+      "name": "indicator",
+      "selector": ".scnx-progress>[data-part=track]::-webkit-progress-value"
+    },
+    {
+      "name": "indicator-moz",
+      "selector": ".scnx-progress>[data-part=track]::-moz-progress-bar"
+    }
+  ],
+  "options": {
+    "scheme": {
+      "values": [
+        "primary",
+        "success",
+        "danger"
+      ],
+      "default": "primary",
+      "selector": "[data-scheme={value}]"
+    }
+  },
+  "states": [],
+  "fixture": {
+    "props": {
+      "label": "Storage",
+      "value": 72,
+      "valueText": "7.2 of 10 GB"
+    }
+  },
+  "bindings": [
+    {
+      "part": "root",
+      "declarations": {
+        "gap": "{dimension.spacing.stack-compact}",
+        "font-family": "{typography.label.default.font-family}",
+        "font-size": "{typography.label.default.font-size}",
+        "font-weight": "{typography.label.default.font-weight}",
+        "line-height": "{typography.label.default.line-height}",
+        "letter-spacing": "{typography.label.default.letter-spacing}",
+        "color": "{color.neutral.text.default.default}"
+      }
+    },
+    {
+      "part": "header",
+      "declarations": {
+        "gap": "{dimension.spacing.inline-default}"
+      }
+    },
+    {
+      "part": "label",
+      "declarations": {
+        "font-weight": "{typography.weight.medium}"
+      }
+    },
+    {
+      "part": "value",
+      "declarations": {
+        "color": "{color.neutral.text.subtle.default}"
+      }
+    },
+    {
+      "part": "track",
+      "declarations": {
+        "border-radius": "{dimension.radius.pill}",
+        "background-color": "{color.neutral.surface.strong.default}"
+      }
+    },
+    {
+      "part": "track-bar",
+      "declarations": {
+        "border-radius": "{dimension.radius.pill}",
+        "background-color": "{color.neutral.surface.strong.default}"
+      }
+    },
+    {
+      "part": "indicator",
+      "declarations": {
+        "border-radius": "{dimension.radius.pill}",
+        "background-color": "{color.primary.surface.solid.default}",
+        "transition": "inline-size {motion.disclosure.duration} {motion.disclosure.easing}"
+      }
+    },
+    {
+      "part": "indicator-moz",
+      "declarations": {
+        "border-radius": "{dimension.radius.pill}",
+        "background-color": "{color.primary.surface.solid.default}"
+      }
+    },
+    {
+      "part": "indicator",
+      "option": {
+        "scheme": "success"
+      },
+      "declarations": {
+        "background-color": "{color.success.surface.solid.default}"
+      }
+    },
+    {
+      "part": "indicator-moz",
+      "option": {
+        "scheme": "success"
+      },
+      "declarations": {
+        "background-color": "{color.success.surface.solid.default}"
+      }
+    },
+    {
+      "part": "indicator",
+      "option": {
+        "scheme": "danger"
+      },
+      "declarations": {
+        "background-color": "{color.danger.surface.solid.default}"
+      }
+    },
+    {
+      "part": "indicator-moz",
+      "option": {
+        "scheme": "danger"
+      },
+      "declarations": {
+        "background-color": "{color.danger.surface.solid.default}"
+      }
+    }
+  ],
+  "hookScope": "Set a hook on a scope the product owns, not on :root, so a runtime change restyles that scope only, for example .promo { --scnx-progress-indicator-background: …; }.",
+  "hooks": [
+    {
+      "hook": "--scnx-progress-color",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.default.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Progress.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-progress-font-family",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-family"
+      ],
+      "fallbacks": [
+        "{typography.label.default.font-family}"
+      ],
+      "floor": null,
+      "purpose": "The font-family of Progress.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-progress-font-size",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-size"
+      ],
+      "fallbacks": [
+        "{typography.label.default.font-size}"
+      ],
+      "floor": null,
+      "purpose": "The font-size of Progress.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-progress-font-weight",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.label.default.font-weight}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Progress.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-progress-gap",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.stack-compact}"
+      ],
+      "floor": null,
+      "purpose": "The gap of Progress.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-progress-header-gap",
+      "parts": [
+        "header"
+      ],
+      "properties": [
+        "gap"
+      ],
+      "fallbacks": [
+        "{dimension.spacing.inline-default}"
+      ],
+      "floor": null,
+      "purpose": "The gap of Progress's header part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-progress-indicator-background",
+      "parts": [
+        "indicator",
+        "indicator-moz"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.primary.surface.solid.default}"
+      ],
+      "floor": null,
+      "purpose": "The fill of the indicator (scheme primary).",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-progress-indicator-background-danger",
+      "parts": [
+        "indicator",
+        "indicator-moz"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.danger.surface.solid.default}"
+      ],
+      "floor": null,
+      "purpose": "The fill of the indicator in the danger scheme.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-progress-indicator-background-success",
+      "parts": [
+        "indicator",
+        "indicator-moz"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.success.surface.solid.default}"
+      ],
+      "floor": null,
+      "purpose": "The fill of the indicator in the success scheme.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-progress-label-font-weight",
+      "parts": [
+        "label"
+      ],
+      "properties": [
+        "font-weight"
+      ],
+      "fallbacks": [
+        "{typography.weight.medium}"
+      ],
+      "floor": null,
+      "purpose": "The font-weight of Progress's label part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-progress-letter-spacing",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "letter-spacing"
+      ],
+      "fallbacks": [
+        "{typography.label.default.letter-spacing}"
+      ],
+      "floor": null,
+      "purpose": "The letter-spacing of Progress.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-progress-line-height",
+      "parts": [
+        "root"
+      ],
+      "properties": [
+        "line-height"
+      ],
+      "fallbacks": [
+        "{typography.label.default.line-height}"
+      ],
+      "floor": null,
+      "purpose": "The line-height of Progress.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-progress-track-background",
+      "parts": [
+        "track",
+        "track-bar"
+      ],
+      "properties": [
+        "background-color"
+      ],
+      "fallbacks": [
+        "{color.neutral.surface.strong.default}"
+      ],
+      "floor": null,
+      "purpose": "The fill of the track.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-progress-track-block-size",
+      "parts": [
+        "track"
+      ],
+      "properties": [
+        "block-size"
+      ],
+      "fallbacks": [
+        "0.375rem"
+      ],
+      "floor": null,
+      "purpose": "The block-size of Progress's track part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-progress-track-radius",
+      "parts": [
+        "indicator",
+        "indicator-moz",
+        "track",
+        "track-bar"
+      ],
+      "properties": [
+        "border-radius"
+      ],
+      "fallbacks": [
+        "{dimension.radius.pill}"
+      ],
+      "floor": null,
+      "purpose": "The radius of the track and of its indicator.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-progress-transition-duration",
+      "parts": [
+        "indicator"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.disclosure.duration}"
+      ],
+      "floor": null,
+      "purpose": "The duration of the indicator's change of width, when the reader allows motion.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-progress-transition-timing-function",
+      "parts": [
+        "indicator"
+      ],
+      "properties": [
+        "transition"
+      ],
+      "fallbacks": [
+        "{motion.disclosure.easing}"
+      ],
+      "floor": null,
+      "purpose": "The easing of the indicator's change of width, when the reader allows motion.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    },
+    {
+      "hook": "--scnx-progress-value-color",
+      "parts": [
+        "value"
+      ],
+      "properties": [
+        "color"
+      ],
+      "fallbacks": [
+        "{color.neutral.text.subtle.default}"
+      ],
+      "floor": null,
+      "purpose": "The color of Progress's value part.",
+      "coverage": "scnx-platform and scnx-saas, light and dark; every scheme value.",
+      "migration": "Added in @scnx/system 2.0.0-beta.0, before v1; additive, no consumer change."
+    }
+  ]
+}

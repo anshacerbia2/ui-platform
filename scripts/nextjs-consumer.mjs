@@ -135,6 +135,8 @@ export default function Page() {
                     </Component.Row>
                   </Component.Body>
                 </Component>
+              ) : name === "Progress" ? (
+                <Component key={name} label={"server-safe " + specifier + " " + name} value={1} />
               ) : (
                 <Component key={name}>{"server-safe " + specifier + " " + name}</Component>
               ),
@@ -207,6 +209,7 @@ import { MenuBase } from "@scnx/core-ui/components/menu-base";
 import { Tooltip } from "@scnx/system/components/tooltip";
 import { Popover } from "@scnx/system/components/popover";
 import { Menu } from "@scnx/system/components/menu";
+import { Avatar } from "@scnx/system/components/avatar";
 
 const ItemState = () => <span>{useDisclosureItem().open ? "open" : "closed"}</span>;
 
@@ -341,6 +344,7 @@ export function Island() {
         <Menu.Trigger>Actions</Menu.Trigger>
         <Menu.Content><Menu.Item>Rename</Menu.Item></Menu.Content>
       </Menu>
+      <Avatar name="Ana Nugraha" status="online" />
       <Dialog open={false} onOpenChange={() => {}}>
         <Dialog.Title>Styled dialog</Dialog.Title>
         <Dialog.Close>Close</Dialog.Close>

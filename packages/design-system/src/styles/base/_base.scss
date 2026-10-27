@@ -45,3 +45,18 @@
     translate: 0 $dimension-spacing-inline-compact;
   }
 }
+
+// A Spinner's turn, run only when the reader allows motion (TDD styled SP2).
+@keyframes scnx-spin {
+  to {
+    rotate: 1turn;
+  }
+}
+
+// A fade between full and reduced opacity: a Skeleton's pulse, and a Spinner's
+// sign of work under reduced motion, where it does not turn (TDD styled SP2, SK2).
+@keyframes scnx-pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
