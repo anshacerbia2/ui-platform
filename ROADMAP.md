@@ -67,6 +67,28 @@ Phase evidence:
   re-estimated; the owner decides whether it holds. The visual target is the
   design reference repository (ADR-UIP-VIS-002).
 
+## Information security gates (ISMS-005, 2026-11-01)
+
+The approved risk treatment plan
+([ISMS-005](https://github.com/anshacerbia2/scnehaux-architecture/blob/main/07-isms/ISMS-005-risk-treatment-and-soa.md#treatment-plan))
+makes these stable-release (phase 4) items for this repository. Each risk (R) is rated in
+[ISMS-004](https://github.com/anshacerbia2/scnehaux-architecture/blob/main/07-isms/ISMS-004-risk-register.md#the-register);
+each action (T) has its owner role and target date there. When an action completes, this list and
+the SoA in ISMS-005 change together.
+
+- ⏳ **Every action is pinned by commit, not by tag** (T6, R14; by 31 December 2026). The attest job
+  holds `id-token: write`, so a moved tag there could sign a build this repository did not make.
+- ⏳ **A failed scheduled run alerts the Information Security Officer** (T4, R21; by 30 November
+  2026). Today a failed run of `ci` alerts nobody; it shows only to someone who opens the Actions
+  tab.
+- ⏳ **Secret scanning in CI** (T5, R7; by 15 December 2026), as STD-IAM-001 §5 lists. Today nothing
+  scans a change for a secret before it reaches this public repository.
+- ⏳ **The shared workflows are called at a pinned commit** (T6, R14; by 31 December 2026). Today
+  `linter.yml` is called from scnehaux-architecture's `main` branch, so a change there changes what
+  this repository's CI runs.
+- ⏳ **A second person's approval on `main`** (T19, R19 and R23; before the stable release). A ruleset
+  requires one approval once a second maintainer exists; until then each merge is a recorded risk.
+
 ## Non-negotiable boundaries
 
 - CI, merge, and linter success are evidence, not human lifecycle approval.
