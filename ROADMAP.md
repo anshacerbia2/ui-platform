@@ -25,8 +25,8 @@ Phase evidence:
   `prepare` failure did not reproduce on a clean runner; it was caused by a
   stray Yarn Plug'n'Play manifest in one developer's home directory, which
   esbuild used while bundling `panda.config.ts`.
-- **Phase 2:** exit decided on 2026-10-03 by Ansha Cerbia (Architecture Review
-  Board and UI Platform Lead): go with liens L1–L4, for evidence packet
+- **Phase 2:** exit decided on 2026-10-03 by the Architecture Review
+  Board and UI Platform Lead: go with liens L1–L4, for evidence packet
   `1263488f…` (main `6d030a9`, run `37050521714`, attested). Record:
   [P0 exit review](docs/reviews/2026-10-02-p0-exit-review.md), "Exit decision".
 - **Phase 3 (in progress):** the four-component reference slice exists as

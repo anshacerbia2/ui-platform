@@ -134,7 +134,7 @@ as written; the D1 candidates listed under Open items are now ratified.
 | ui-platform           | TDD packaging, primitives, styled, theme | `773a86434ed71610531359c2f8db1c50697721dc` | `96d48de`    | #40          | All jobs passed           |
 | scnehaux-architecture | SAD-003                                  | `19a14428bc4bbb87830c07b7a26ce10b28cfc169` | `f6da8ea`    | #39          | Linter passed             |
 
-Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+Authorization under GDC-000 section 2.6.7, stated by the approver on
 2026-10-02: "Saya, sebagai ARB dan UI Platform Lead, meratifikasi 773a864
 (4 TDD) dan 19a1442 (SAD-003) beserta bukti CI-nya, per 2026-10-02." ("As ARB
 and UI Platform Lead, I ratify 773a864 (four TDDs) and 19a1442 (SAD-003) with
@@ -152,7 +152,7 @@ the CI topology decision record C1–C4.
 
 Authorization under GDC-000 section 2.6.7: asked to state "Saya, sebagai ARB
 dan UI Platform Lead, meratifikasi `a260bf0` (TDD packaging C1–C4) beserta
-bukti CI-nya, per 2026-10-02", Ansha Cerbia replied "gas" on 2026-10-02.
+bukti CI-nya, per 2026-10-02", the approver replied "gas" on 2026-10-02.
 
 Third ratification, appended 2026-10-03: the SAD-003 and GDC-001 revisions
 that followed decision D2.
@@ -161,7 +161,7 @@ that followed decision D2.
 | :-------------------- | :----------------------------------------------------------------------- | :----------------------------------------- | :----------- | :----------- | :-------------- |
 | scnehaux-architecture | SAD-003 (ADRs no longer "proposed"); GDC-001 (`technology_sunset_grace`) | `a98e9bc208373a42c37d97eea9e8096b1d5eadd6` | `9441228`    | #47          | Linter passed   |
 
-Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+Authorization under GDC-000 section 2.6.7, stated by the approver on
 2026-10-03: "Saya, sebagai ARB, meratifikasi a98e9bc (SAD-003 + GDC-001)
 beserta bukti CI-nya, per 2026-10-03." ("As ARB, I ratify a98e9bc (SAD-003 +
 GDC-001) with its CI evidence, as of 2026-10-03.")
@@ -181,7 +181,7 @@ revisions that move the package build to tsdown under ADR-UIP-BLD-002
 | scnehaux-architecture | SAD-003 (tsdown builder; ADR-UIP-BLD-002 as UI authority) | `8f441b5346e270b8834ed7f65aae0e5c03dd0ccd` | `bc68371`    | #51          | Linter passed                                   |
 | ui-platform           | TDD packaging (baseline, K2, K3 on tsdown)                | `fb593282450dcaf3c979267c08f0f9ab0a1ed974` | `023f04f`    | #52          | CI, Chromatic, and P0 evidence workflows passed |
 
-Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+Authorization under GDC-000 section 2.6.7, stated by the approver on
 2026-10-03: "Saya, sebagai ARB dan UI Platform Lead, meratifikasi 8f441b5
 (SAD-003) dan fb59328 (TDD packaging) beserta bukti CI-nya, per 2026-10-03."
 ("As ARB and UI Platform Lead, I ratify 8f441b5 (SAD-003) and fb59328 (TDD
@@ -197,7 +197,7 @@ contract implementation and the reference slice.
 | scnehaux-architecture | SAD-003 (generated API reports); STD-UIP-TKN-001 2.2.0 (control boundary at 3:1)  | `a93e28ff198dc842fd59f5c9df8fcc886407323b` | `1fe4a45`    | #98          | Linter passed                                   |
 | ui-platform           | TDD packaging (S4, V4, V7, RC1–RC6, C2), primitives (P13–P17), styled, and tokens | `bc332cb6d1dc45c8c63139c32eb9d56160c57ae0` | `13349de`    | #68          | CI, Chromatic, and P0 evidence workflows passed |
 
-Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+Authorization under GDC-000 section 2.6.7, stated by the approver on
 2026-10-20: "Saya, sebagai ARB dan UI Platform Lead, meratifikasi d67a02e
 (STD-UIP-ENG-001 2.1.0), a93e28f (SAD-003 + STD-UIP-TKN-001 2.2.0), dan bc332cb
 (TDD packaging, primitives, styled, tokens) beserta bukti CI-nya, per
@@ -221,7 +221,7 @@ right-to-left revision of P17.
 | ui-platform           | TDD packaging PF1–PF6; TDD primitives P17 (right-to-left Tabs)     | `1f852e97586a5e0514475d721139ac321d257237` | `ba58d7d`    | #73          | CI, Chromatic, and P0 evidence workflows passed |
 | ui-platform           | TDD tokens G1–G3                                                   | `88a0d232a3b43eeecb888b3764e610737c0b4cb6` | `a662b18`    | #75          | CI, Chromatic, and P0 evidence workflows passed |
 
-Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+Authorization under GDC-000 section 2.6.7, stated by the approver on
 2026-10-20: "Saya, sebagai ARB dan UI Platform Lead, meratifikasi 5d525f6,
 a96a153, 1ec951e, 1f852e9, dan 88a0d23 beserta bukti CI-nya, per 2026-10-20."
 ("As ARB and UI Platform Lead, I ratify 5d525f6, a96a153, 1ec951e, 1f852e9,
@@ -244,7 +244,7 @@ Seventh ratification, appended 2026-10-21: the alignment of the TDDs with the
 | :---------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------- | :----------- | :----------- | :---------------------------------------------- |
 | ui-platform | TDD packaging (registry fact under RC3; L3 pointer); TDD styled (removed Sidebar custom properties, traced to STD-GLB-FE-005 section 3.2; unshipped `:root` asset) | `f5281528fb5a33ad4558809ee33ce7e76b3d95ea` | `5507fd2`    | #78          | CI, Chromatic, and P0 evidence workflows passed |
 
-Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+Authorization under GDC-000 section 2.6.7, stated by the approver on
 2026-10-21: "Saya, sebagai ARB dan UI Platform Lead, meratifikasi f528152 (TDD
 packaging dan TDD styled) beserta bukti CI-nya, per 2026-10-21." ("As ARB and
 UI Platform Lead, I ratify f528152 (TDD packaging and TDD styled) with their CI
@@ -263,7 +263,7 @@ governed values in component CSS.
 | scnehaux-architecture | STD-UIP-ENG-001 2.3.0 (interaction-trace method)      | `896b06056aa14245c1de6e0aa959ba8459206f6e` | `b9aa805`    | #113         | Linter passed                                   |
 | ui-platform           | TDD styled GV1–GV4 (governed values in component CSS) | `fa73759da780275f2e61a8195fc98969ccb0e382` | `d499e75`    | #81          | CI, Chromatic, and P0 evidence workflows passed |
 
-Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+Authorization under GDC-000 section 2.6.7, stated by the approver on
 2026-10-21: "Saya, sebagai ARB dan UI Platform Lead, meratifikasi 896b060 dan
 fa73759 beserta bukti CI-nya, per 2026-10-21." ("As ARB and UI Platform Lead, I
 ratify 896b060 and fa73759 with their CI evidence, as of 2026-10-21.")
@@ -280,7 +280,7 @@ and transition runtime.
 | :---------- | :-------------------------------------------------------------------------------------------- | :----------------------------------------- | :----------- | :----------- | :---------------------------------------------- |
 | ui-platform | TDD theme X1–X5 (interaction traces) and the corrected layout-read text of the transition FSM | `07c10c384735ba4d6ef4fc4a14381acfe6c14c82` | `b28af99`    | #83          | CI, Chromatic, and P0 evidence workflows passed |
 
-Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+Authorization under GDC-000 section 2.6.7, stated by the approver on
 2026-10-21: "Saya, sebagai ARB dan UI Platform Lead, meratifikasi 07c10c3 (TDD
 theme X1–X5) beserta bukti CI-nya, per 2026-10-21." ("As ARB and UI Platform
 Lead, I ratify 07c10c3 (TDD theme X1–X5) with their CI evidence, as of
@@ -299,7 +299,7 @@ that ADR).
 | :-------------------- | :---------------------------------------------------- | :----------------------------------------- | :----------- | :----------- | :------------------------ |
 | scnehaux-architecture | STD-UIP-PRM-001 2.1.0 (custom composite widgets, APG) | `889e0f974db67562643d35375db9e97edcb323c8` | `d924eec`    | #116         | Linter passed             |
 
-Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+Authorization under GDC-000 section 2.6.7, stated by the approver on
 2026-10-21: "Saya, sebagai ARB dan UI Platform Lead, meratifikasi 889e0f9
 (STD-UIP-PRM-001 2.1.0) beserta bukti CI-nya, per 2026-10-21." ("As ARB and UI
 Platform Lead, I ratify 889e0f9 (STD-UIP-PRM-001 2.1.0) with its CI evidence,
@@ -318,7 +318,7 @@ pointer-target decisions.
 | scnehaux-architecture | STD-UIP-STY-001 2.1.0 (governed values)               | `7a2d50091bea745b9608844fc26f7d16f5ef4507` | `104633f`    | #117         | Linter passed                                   |
 | ui-platform           | TDD primitives P18 (ComboboxBase); TDD styled GV4–GV7 | `335fed42e23c6eb72b49ed370b3e0945bc2fff60` | `946529d`    | #87          | CI, Chromatic, and P0 evidence workflows passed |
 
-Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+Authorization under GDC-000 section 2.6.7, stated by the approver on
 2026-10-21 before the merges: "Saya, sebagai ARB dan UI Platform Lead,
 meratifikasi 7a2d500 (STD-UIP-STY-001 2.1.0) dan 335fed4 (TDD primitives P18,
 TDD styled GV4–GV7) beserta bukti CI-nya, per 2026-10-21." ("As ARB and UI
@@ -332,13 +332,13 @@ Twelfth ratification, appended 2026-10-21: TableOfContents scrolling.
 | :---------- | :--------------------------------------------- | :----------------------------------------- | :------------------------------ | :----------- | :---------------------------------- |
 | ui-platform | TDD primitives P19 (TableOfContents scrolling) | `961786f25cc1bc70308dd2ac22857b7e045a840b` | merge of #89 (this record's PR) | #89          | CI, Chromatic, and Storybook passed |
 
-Authorization under GDC-000 section 2.6.7, stated by Ansha Cerbia on
+Authorization under GDC-000 section 2.6.7, stated by the approver on
 2026-10-21 before the merge: "Saya, sebagai ARB dan UI Platform Lead,
 meratifikasi 961786f (TDD primitives P19) beserta bukti CI-nya, per
 2026-10-21." ("As ARB and UI Platform Lead, I ratify 961786f (TDD primitives
 P19) with its CI evidence, as of 2026-10-21.")
 
-Standing ratification, appended 2026-10-21. Ansha Cerbia, as ARB and UI
+Standing ratification, appended 2026-10-21. The approver, as ARB and UI
 Platform Lead, stated on 2026-10-21: "bro kebanyakan bacot ratification2,
 udah gw ratifikasi semua sampe kelar! jadi lo ga perlu tanya2 lagi! gw butuh
 lo cepat selesaikan! PAHAM! MERGED!" ("I have ratified everything through to
@@ -355,7 +355,7 @@ the current work. Each candidate it covers is listed here with its exact SHA:
 
 Later candidates are appended to this table under the same statement.
 
-Standing acceptance of decisions, appended 2026-10-22. Ansha Cerbia, as ARB,
+Standing acceptance of decisions, appended 2026-10-22. The approver, as ARB,
 stated on 2026-10-22: "Lo rubah aja, gausah terlalu formal di status, gw butuh
 first class grade design, klo memang udh based on best practice, battle tested
 solution, first class grade, dan ada referencenya, lgsg approved aja, gausah
@@ -402,8 +402,8 @@ Not recorded. The P0 exit, and the ROADMAP phase-2 state, change only when the
 authorized human states the decision for packet SHA-256
 `1263488f863510a50933cd0a707ef345cec1c583dd9c4a5db4939bdd1950e141`.
 
-**Decision recorded 2026-10-03: go with liens.** Stated by Ansha Cerbia
-(Architecture Review Board and UI Platform Lead) on 2026-10-03, after decision
+**Decision recorded 2026-10-03: go with liens.** Stated by the
+Architecture Review Board and UI Platform Lead on 2026-10-03, after decision
 D1: "go with liens", for the packet above (main `6d030a9`, run `37050521714`,
 attested). The decision to proceed is qualified by these liens, each to be
 removed by its owner within the agreed time (D3 basis, NASA SP-2016-6105 Rev2
@@ -428,7 +428,7 @@ ACR exists. The inspector and the evidence packet fail on a public entry
 without a record. L4 is removed only when its owner states so for the merged
 commit.
 
-Liens L2 and L4 removed, 2026-10-20. Stated by Ansha Cerbia: "Saya, sebagai
+Liens L2 and L4 removed, 2026-10-20. Stated by the approver: "Saya, sebagai
 Packaging Lead, menyatakan lien L2 selesai berdasarkan 6f5169d; sebagai
 Interaction Lead, lien L4 selesai berdasarkan 8509ad2." ("As Packaging Lead, I
 state lien L2 complete based on 6f5169d; as Interaction Lead, lien L4 complete
@@ -466,7 +466,7 @@ Obligations from D2 that are not liens of this decision: the `tsup` successor
 record (due 2026-11-01, GDC-004 section 2.2), and the trial reviews ending
 2026-12-31.
 
-Update, 2026-10-03: the `tsup` successor obligation is met. Ansha Cerbia
+Update, 2026-10-03: the `tsup` successor obligation is met. The approver
 stated "Saya, sebagai ARB, menerima ADR-UIP-BLD-002 per 2026-10-03." ("As
 ARB, I accept ADR-UIP-BLD-002 as of 2026-10-03."), and the radar names
 `tsdown` as successor with ADR-UIP-BLD-002 as migration guide
