@@ -26,8 +26,8 @@ artifact is ratified.
 
 The candidate corrections were approved by two principal reviewers at the exact
 source heads `f5e3dde0a3fc2093b8603923d6686d74c4ef7595` (architecture) and
-`c7f2a99632eb7ea1037ef9744350c64b8d86b11c` (UI Platform). Ansha Cerbia
-confirmed on 2026-09-29 that he acts as the Architecture Review Board and UI
+`c7f2a99632eb7ea1037ef9744350c64b8d86b11c` (UI Platform). The owner
+confirmed on 2026-09-29 that they act as the Architecture Review Board and UI
 Platform Lead approver for this transition. The status-change commits built
 from those heads remain ratification candidates until their exact hashes and
 validation results are acknowledged under GDC-000 section 2.6.7.
@@ -55,4 +55,4 @@ written.
 | scnehaux-architecture | `84a99ae`        | `cf748f6`    | #17          | Linter passed      |
 | ui-platform           | `56ba42b`        | `03cdefe`    | #6           | All jobs passed    |
 
-Both merges were made by Ansha Cerbia on 2026-09-29.
+Both merges were made by the approver on 2026-09-29.
