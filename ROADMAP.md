@@ -78,9 +78,12 @@ the SoA in ISMS-005 change together.
 
 - ⏳ **Every action is pinned by commit, not by tag** (T6, R14; by 31 December 2026). The attest job
   holds `id-token: write`, so a moved tag there could sign a build this repository did not make.
-- ⏳ **A failed scheduled run alerts the Information Security Officer** (T4, R21; by 30 November
-  2026). Today a failed run of `ci` alerts nobody; it shows only to someone who opens the Actions
-  tab.
+- ✅ **A failed scheduled run alerts the Information Security Officer** (T4, R21; built 2026-11-12).
+  `.github/workflows/scheduled-failure-alert.yml` runs when a scheduled run of `CI` completes. A
+  failure opens one issue per workflow, labelled `scheduled-failure` and assigned to the repository
+  owner's account, so GitHub notifies it whatever its watch settings; a further failure comments on
+  it, and the next scheduled run that passes closes it. In effect from its merge, because
+  `workflow_run` reads the default branch.
 - ⏳ **Secret scanning in CI** (T5, R7; by 15 December 2026), as STD-IAM-001 §5 lists. Today nothing
   scans a change for a secret before it reaches this public repository.
 - ⏳ **The shared workflows are called at a pinned commit** (T6, R14; by 31 December 2026). Today
